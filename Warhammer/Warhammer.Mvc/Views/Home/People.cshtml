@@ -1,0 +1,56 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Person>
+@{
+    ViewBag.Title = "Warhammer Folks";
+}
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">People</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <div id="people">
+                <input class="search" placeholder="Search" />
+                <button class="sort" data-sort="name">
+                    Sort by name
+                </button>
+                <table class="people">
+                    <tbody class="list">
+                        @foreach (Person person in Model)
+                        {
+                            <tr>
+                                <td><a href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td class="name">@person.FullName</td>
+                                <td class="description" style="display: none">@Html.Raw(person.Description)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>People of the Warhammer World.</h3>
+            <p>The warhammer world is populated with strange and interesting people, not all of whom are total bastards. Find the ones you like and the ones you don't, right here on the poeple page!</p>
+        </div>
+    </div>
+
+</div>
+<script src="@Url.Content("~/scripts/list.js")"></script>
+<script>
+    var options = {
+        valueNames: ['name', 'description']
+    };
+
+    var userList = new List('people', options);
+
+</script>

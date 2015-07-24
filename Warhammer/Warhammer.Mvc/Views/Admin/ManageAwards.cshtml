@@ -1,0 +1,36 @@
+﻿@model Warhammer.Mvc.Models.ManageAwardsViewModel
+@using Warhammer.Core.Entities
+
+@{
+    ViewBag.Title = "ManageAwards";
+}
+
+<h2>Manage Awards</h2>
+
+
+<h3>Current Awards:</h3>
+
+<ul>
+    @foreach (Award award in Model.Person.Awards)
+    {
+        <li>
+            <p>@award.Trophy.Name @award.Reason</p>
+            @using (Html.BeginForm("RemoveAward", "Admin"))
+            {
+                @Html.Hidden("personId", Model.Person.Id)
+                @Html.Hidden("awardId", award.Id)
+
+    <input type="submit" value="Remove" class="btn btn-danger" />
+            }
+
+        </li>
+    }
+</ul>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Person.Id)
+    @Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies)
+    @Html.TextBoxFor(m => m.Reason)
+    <input type="submit" value="Add it!"/>
+}

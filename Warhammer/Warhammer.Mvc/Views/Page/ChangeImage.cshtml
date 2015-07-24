@@ -1,0 +1,113 @@
+﻿@using Page = Warhammer.Core.Entities.Page
+@model Page
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="content-wrapper">
+@using (Html.BeginForm("ChangeImage", "Page",
+                               FormMethod.Post, new { enctype = "multipart/form-data" })) { 
+    
+        @Html.HiddenFor(m => m.Id)
+        <div class="banner-content">
+            <div class="header-block">
+                <h1 id="fullName" class="">Change Image For @Model.ShortName</h1>
+            </div>
+
+        </div>
+        <div class="main-content">
+            <div class="content-block">
+
+                @if (Model.ImageData != null && Model.ImageData.Length > 0 && !string.IsNullOrWhiteSpace(Model.ImageMime))
+                {
+                    <h2>Current Image</h2>
+                    <img src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName"/>
+                }
+                
+                <input type="file" id="profileImageFile" name="profileImageFile" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+                <a href="#" id="fileSelect"><h2>Select New Image</h2></a>
+
+
+                <div id="preview">
+                    <h3>Choose your square crop</h3>
+                </div>
+                <input type="hidden" id="x1" name="x1" />
+                <input type="hidden" id="h" name="h" />
+                <input type="hidden" id="y1" name="y1" />
+                <input type="hidden" id="w" name="w" />
+                <input type="submit" value="Save" name="saveAction" class="btn btn-success" />
+                <div class="profile-footer"><span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Last Modified: @Model.Modified</span></div>
+            </div>
+        </div>
+        <div class="side-bar">
+            <div class="content-block">
+                <input type="submit" value="Remove Image" name="saveAction" class="btn btn-danger"/>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/scripts/jquery.Jcrop.min.js")"></script>
+    <script>
+        var jcrop_api;
+        var fileSelect = document.getElementById("fileSelect"),
+            fileElem = document.getElementById("profileImageFile");
+        fileSelect.addEventListener("click", function(e) {
+            if (fileElem) {
+                fileElem.click();
+            }
+            e.preventDefault(); // prevent navigation to "#"
+        }, false);
+
+        function handleFiles(files) {
+
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = /^image\//;
+                if (!imageType.test(file.type)) {
+
+                    continue;
+                }
+
+                var img = document.createElement("img");
+                img.classList.add("obj");
+                img.file = file;
+                img.id = "PreviewImage";
+
+                $('#preview').append(img); // Assuming that "preview" is the div output where the content will be displayed.
+                var reader = new FileReader();
+                reader.onload = (function(aImg) {
+                    return function(e) {
+                        aImg.src = e.target.result;
+                        $(aImg).Jcrop({
+                            boxWidth: 500,
+                            boxHeight: 400,
+                            aspectRatio: 1,
+                            onChange: showCoords,
+                            onSelect: showCoords
+                            },
+
+                        function() {
+
+                            jcrop_api = this;
+                            jcrop_api.animateTo([50, 0, 400, 400]);
+                        });
+                };
+            })
+        (img);
+        reader.readAsDataURL(file);
+        }
+        }
+
+        function showCoords(c) {
+            $('#x1').val(c.x);
+            $('#y1').val(c.y);
+            $('#h').val(c.h);
+            $('#w').val(c.w);
+        };
+    </script>
+}

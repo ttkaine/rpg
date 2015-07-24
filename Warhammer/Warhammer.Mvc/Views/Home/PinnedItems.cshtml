@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Warhammer.Core.Entities.Page>
+@if (Model.Any())
+{
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Resource Pages<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+
+            @foreach (Warhammer.Core.Entities.Page page in Model)
+            {
+                <li>@Html.ActionLink(page.FullName, "Index", "Page", new {id = page.Id}, null)</li>
+            }
+        </ul>
+    </li>
+}

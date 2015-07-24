@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Warhammer.Core</RootNamespace>
+    <AssemblyName>Warhammer.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WADE|AnyCPU'">
+    <OutputPath>bin\WADE\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MURRAY|AnyCPU'">
+    <OutputPath>bin\MURRAY\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\IAuthenticatedDataProvider.cs" />
+    <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
+    <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
+    <Compile Include="Abstract\IImageProcessor.cs" />
+    <Compile Include="Abstract\IModelFactory.cs" />
+    <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
+    <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
+    <Compile Include="Concrete\ImageProcessor.cs" />
+    <Compile Include="Concrete\InlineHtmlImage.cs" />
+    <Compile Include="Concrete\ModelFactory.cs" />
+    <Compile Include="Concrete\Repository.cs" />
+    <Compile Include="Entities\Award.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ChangeLog.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Page.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PageEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PageEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PageEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PageEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PageView.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Person.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Place.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Player.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Session.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SessionLog.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Trophy.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\_Page.cs" />
+    <Compile Include="Entities\_Person.cs" />
+    <Compile Include="Entities\_Place.cs" />
+    <Compile Include="Entities\_Session.cs" />
+    <Compile Include="Entities\_SessionLog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="Entities\PageEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PageEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\PageEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PageEntities.edmx</DependentUpon>
+      <LastGenOutput>PageEntities.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\PageEntities.edmx.diagram">
+      <DependentUpon>PageEntities.edmx</DependentUpon>
+    </None>
+    <None Include="Entities\PageEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PageEntities.edmx</DependentUpon>
+      <LastGenOutput>PageEntities.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

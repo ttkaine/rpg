@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30602.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Core", "Warhammer.Core\Warhammer.Core.csproj", "{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Tests.Unit", "Warhammer.Tests.Unit\Warhammer.Tests.Unit.csproj", "{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Tests.Integration", "Warhammer.Tests.Integration\Warhammer.Tests.Integration.csproj", "{75F0A008-4983-4370-92AD-B159C7FEB709}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Mvc", "Warhammer.Mvc\Warhammer.Mvc.csproj", "{DE90938D-60C0-41A7-9459-66444B778518}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8CFAF995-3411-422B-810E-011C4B5C1118}"
+	ProjectSection(SolutionItems) = preProject
+		Warhammer.sln.DotSettings = Warhammer.sln.DotSettings
+		WebEssentials-Settings.json = WebEssentials-Settings.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Tests.Smoke", "Warhammer.Tests.Smoke\Warhammer.Tests.Smoke.csproj", "{3A0F437D-D50F-45C1-81C2-817680099DF0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		MURRAY|Any CPU = MURRAY|Any CPU
+		Release|Any CPU = Release|Any CPU
+		WADE|Any CPU = WADE|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.MURRAY|Any CPU.ActiveCfg = MURRAY|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.MURRAY|Any CPU.Build.0 = MURRAY|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.MURRAY|Any CPU.ActiveCfg = MURRAY|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.MURRAY|Any CPU.Build.0 = MURRAY|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
+		{C85137A9-F4E2-439F-B4A6-4E95C82A79D2}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.MURRAY|Any CPU.ActiveCfg = MURRAY|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.MURRAY|Any CPU.Build.0 = MURRAY|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
+		{75F0A008-4983-4370-92AD-B159C7FEB709}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.MURRAY|Any CPU.ActiveCfg = MURRAY|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.MURRAY|Any CPU.Build.0 = MURRAY|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.MURRAY|Any CPU.ActiveCfg = Release|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.MURRAY|Any CPU.Build.0 = Release|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.WADE|Any CPU.ActiveCfg = Release|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.WADE|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

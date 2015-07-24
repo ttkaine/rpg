@@ -1,0 +1,79 @@
+﻿@model Warhammer.Mvc.Models.HomePageViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="content-wrapper">
+  @using (Html.BeginForm("Edit", "Person"))
+  {
+      @Html.Hidden("personId", 1)
+      <div class="banner-content">
+          <div class="header-block">     
+              <h1 id="fullName">Warhammer</h1>          
+          </div>
+
+      </div>
+
+    <div class="core-content">
+        <div class="content-block">
+            
+            <h3 id="shortName">People</h3>
+            <ul>          
+                @foreach (var page in Model.MyPeople)
+                {
+                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                }
+                @foreach (var page in Model.AllPeople)
+                {
+                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="core-content">
+        <div class="content-block">
+            <h3 id="shortName">I made this</h3>
+            <ul>
+                @foreach (var page in Model.MyStuff)
+                {
+                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Last changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="core-content">
+        <div class="content-block">
+            @if (Model.NewPages.Any())
+            {
+                <h3>New Pages</h3>
+                <ul>
+                    @foreach (var page in Model.NewPages)
+                    {
+                        <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
+                    }
+                </ul>
+            }
+            @if (Model.UpdatedPages.Any())
+            {
+                <h3>Updated Pages</h3>
+                <ul>
+                    @foreach (var page in Model.UpdatedPages)
+                    {
+                        <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                    }
+                </ul>
+            }
+            <h3>Recent Changes</h3>
+            <ul id="recentChangesList">
+                @foreach (var page in Model.RecentChanges)
+                {
+                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                }
+            </ul>
+
+        </div>
+    </div>
+  }
+</div>

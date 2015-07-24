@@ -1,0 +1,69 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Trophy>
+@{
+    ViewBag.Title = "Trophy Cabinet";
+}
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">The Trophy Cabinet</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <div id="trophies">
+                <input class="search" placeholder="Filter" />
+                <hr />
+                <h2>Trophies</h2>
+                <table class="trophy">
+                    <tbody class="list">
+                        @foreach (Trophy trophy in Model)
+                        {
+                            <tr>
+                                <td style="display: none">@trophy.PointsValue</td>
+                                <td><img src="@Url.Action("TrophyImage", "Home", new { id = trophy.Id }, null)" title="@trophy.Name" alt="Picture of @trophy.Name" class="trophy-image" /></td>
+                                <td class="name">@trophy.Name</td>
+                                <td class="description">@Html.Raw(trophy.Description)</td>
+                                @if (User.IsInRole("Admin") && ViewBag.EditMode)
+                                {
+                                    <td>@Html.ActionLink("Edit", "EditTrophy", "Admin", new { id = trophy.Id }, new { @class = "btn btn-block btn-success" })</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @if (User.IsInRole("Admin") && ViewBag.EditMode)
+                {
+                    <hr />
+                    @Html.ActionLink("+ New", "EditTrophy", "Admin", null, new { @class = "btn btn-block btn-success" })
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>To honour our heroes</h3>
+            <p>The world is a dark and dangerous place, and the real reward perhaps is just surviving.</p>
+            <p>However, recognition of a hero's deeds is always welcome, even if perhaps it isn't as existentially satisfying as a mountain of gold of the kiss of a wonderful lover.</p>
+            <p>For some, these awards are all they'll ever get... but at least they don't go home empty handed, eh?</p>
+        </div>
+    </div>
+
+</div>
+<script src="@Url.Content("~/scripts/list.js")"></script>
+<script>
+    var options = {
+        valueNames: ['name', 'description', 'points']
+    };
+
+    var userList = new List('trophies', options);
+
+</script>

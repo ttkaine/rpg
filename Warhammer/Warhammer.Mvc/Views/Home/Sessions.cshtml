@@ -1,0 +1,87 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Session>
+@{
+    ViewBag.Title = "Sessions";
+}
+
+<div class="content-wrapper">
+
+        @Html.Hidden("personId", 1)
+        <div class="banner-content">
+            <div class="header-block">
+                <h1 id="fullName">Sessions</h1>
+            </div>
+
+        </div>
+
+        <div class="main-content">
+            <div class="content-block session-block">
+                <ul>
+                    @foreach (Session session in Model)
+                    {
+                        <li>
+                            <div class="session-container">
+                                <h1><a href="@Url.Action("Index", "Page", new { id = session.Id })">@session.ShortName</a></h1>
+                                <h2>@session.FullName</h2>
+                                <div class="people-box">
+                                    @if (session.People.Any())
+                                    {
+                                        <ul>
+                                            <li>
+                                                @foreach (Person person in session.People)
+                                                {
+                                                    <a href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                                }
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    }
+                                </div>
+                                <div class="log-box">
+                                    @if (session.People.Any())
+                                    {
+                                        <ul>
+                                           
+                                                @foreach (Person person in session.People)
+                                                {
+                                                    if (person.SessionLogs.Any(l => l.SessionId == session.Id))
+                                                    {
+                                                       
+                                                            SessionLog log = person.SessionLogs.FirstOrDefault(l => l.SessionId == session.Id);
+                                                            if (log != null)
+                                                            {
+                                                                <li>
+                                                                    <a href="@Url.Action("Index","Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="micro-profile-image" /></a>
+                                                                    @Html.ActionLink(log.FullName, "Index", "Page", new { id = log.Id }, null)
+                                                                </li>
+                                                            }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ViewBag.EditMode && person.PlayerId.HasValue && person.Player.UserName == User.Identity.Name)
+                                                        {
+                                                            <li>
+                                                                @Html.ActionLink("Create Log For " + person.FullName, "SessionLog", "Create", new { sessionId = session.Id, personId = person.Id }, new { @class = "btn btn-success" })
+                                                            </li>
+                                                        }
+                                                    }
+                                                }
+                                           
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="side-bar">
+            <div class="content-block">
+
+            </div>
+        </div>
+
+</div>

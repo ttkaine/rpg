@@ -1,0 +1,41 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Person>
+@{
+    ViewBag.Title = "Character League";
+}
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">League</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <ul id="characterLeagueList">
+                @foreach (Person person in Model)
+                {
+                    <li>
+                        <div class="profile-container">
+                            <a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                            <div class="score-box" title="@person.FullName">@person.PointsValue</div>
+                            @person.FullName
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+
+        </div>
+    </div>
+
+</div>

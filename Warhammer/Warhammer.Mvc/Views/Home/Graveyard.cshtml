@@ -1,0 +1,41 @@
+﻿
+@using Warhammer.Core.Entities
+@model IEnumerable<Person>
+@{
+    ViewBag.Title = "The Graveyard";
+}
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block banner-graveyard">
+            <h1 id="fullName">The Graveyard</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <table class="graveyard">
+                
+                @foreach (Person person in Model)
+                {
+                    <tr>
+                        <td><a href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                        <td>@person.FullName</td>
+                        <td>@Html.Raw(person.Obiturary)</td>    
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>A place for those who have fallen.</h3>
+            <p>Whether a character’s end is Heroic or ignominious, famous or forsaken, they all come here to rest in the end.</p>
+        </div>
+    </div>
+
+</div>

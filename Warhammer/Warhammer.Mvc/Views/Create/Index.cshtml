@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Create stuff";
+}
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+            <h2>What would you like to create?</h2>
+
+            <ul>
+                <li>@Html.ActionLink("New Person", "Person", "Create", new { @class = "btn btn-default btn-block" })</li>
+                <li>@Html.ActionLink("New Session", "GameSession", "Create", new { @class = "btn btn-default btn-block" })</li>
+                <li>@Html.ActionLink("New Session Log", "SessionLog", "Create", new { @class = "btn btn-default btn-block" })</li>
+                <li>@Html.ActionLink("Place / Location", "Place", "Create", new { @class = "btn btn-default btn-block" })</li>
+                <li>@Html.ActionLink("Generic Page", "Page", "Create", new { @class = "btn btn-default btn-block" })</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <p>Creating items with the correct type helps tie things together in useful ways - also some types of pages have additional fields that only apply to those types of thing.</p>
+        </div>
+    </div>
+</div>
