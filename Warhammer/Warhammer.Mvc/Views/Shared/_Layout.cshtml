@@ -107,6 +107,7 @@
                             {
                                 if (ViewBag.EditMode)
                                  {
+                                     <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create",   new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
                                      <li class="dropdown">
                                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create<span class="caret"></span></a>
                                          <ul class="dropdown-menu">
@@ -117,15 +118,20 @@
                                              <li>@Html.ActionLink("Page", "Page", "Create")</li>
                                          </ul>
                                      </li>
-                                     <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create",   new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
                                  }
                                  else
                                  {
                                      <li>@Html.ActionLink("Switch to Edit Mode", "EditMode", "Create", new { returnUrl = Request.Url.AbsoluteUri }, null)</li>
                                  }
-                                 @Html.Action("PinnedItems", "Home")
-                                <li>@Html.ActionLink("Sessions", "Sessions", "Home")</li>
-
+                                 
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Useful Pages<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("The Trophy Cabinet", "Trophies", "Home")</li>
+                                        <li>@Html.ActionLink("Sessions", "Sessions", "Home")</li>
+                                        @Html.Action("PinnedItems", "Home")
+                                    </ul>
+                                </li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People<span class="caret"></span></a>
                                     <ul class="dropdown-menu">

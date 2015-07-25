@@ -423,6 +423,7 @@
     <Content Include="Views\Admin\EditTrophy.cshtml" />
     <Content Include="Views\Home\Trophies.cshtml" />
     <Content Include="Views\Admin\ManageAwards.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Award.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

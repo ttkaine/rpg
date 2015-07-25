@@ -24,10 +24,7 @@
                     if (person.Awards.Any())
                     {
                         <ul class="awardBar">
-                            @foreach (Award award in person.Awards)
-                            {
-                                <li><img src="@Url.Action("TrophyImage", "Home", new { id = award.Trophy.Id }, null)" title="@award.Trophy.Name @award.Reason" alt="Picture of @award.Trophy.Name" class="mini-trophy-image" /></li>
-                            }
+                            @Html.DisplayFor(m => person.Awards)
                         </ul>
                     }
                 }
