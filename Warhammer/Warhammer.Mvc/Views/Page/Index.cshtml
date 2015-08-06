@@ -54,6 +54,31 @@
                     if (User.IsInRole("Admin"))
                     {
                         <h1>@person.PointsValue</h1>
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Area</th>
+                                <th>Base</th>
+                                <th>Activity Bonus</th>
+                                <th>Total</th>
+                            </tr>
+                            @foreach (ScoreBreakdown scoreBreakdown in person.ScoreBreakdown)
+                            {
+                                <tr>
+                                    <td>@scoreBreakdown.Name</td>
+                                    <td>@scoreBreakdown.BaseValue</td>
+                                    <td>@(scoreBreakdown.ActivityBonus > 0 ? "+" + @scoreBreakdown.ActivityBonus : "")</td>
+                                    <td>@scoreBreakdown.Score</td>
+                                </tr>
+                            }
+                            <tfoot>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>@person.ScoreBreakdown.Sum(s => s.BaseValue)</td>
+                                    <td>+ @person.ScoreBreakdown.Sum(s => s.ActivityBonus)</td>
+                                    <td>@person.ScoreBreakdown.Sum(s => s.Score)</td>                                  
+                                </tr>
+                            </tfoot>
+                        </table>
                     }
                     if (person.SessionLogs.Any())
                     {

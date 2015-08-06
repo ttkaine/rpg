@@ -1,9 +1,18 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Warhammer.Core.Entities
 {
+    public struct ScoreBreakdown
+    {
+        public string Name { get; set; }
+        public double BaseValue { get; set; }
+        public double ActivityBonus { get; set; }
+        public double Score { get { return BaseValue + ActivityBonus; } }
+    }
+
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
@@ -23,29 +32,58 @@ namespace Warhammer.Core.Entities
             }
         }
 
-        private double PersonScore
+        public List<ScoreBreakdown> ScoreBreakdown
         {
             get
             {
-                double score = base.BaseScore;
                 List<SessionLog> logs = SessionLogs.ToList();
                 List<Page> relatedPages = Related.ToList();
-                
+                List<Session> sessions = Related.OfType<Session>().ToList();
                 relatedPages.AddRange(Related1.ToList());
-                score = score + relatedPages.Where(s => !logs.Contains(s)).Sum(l => l.BaseScore);
-                score = score + logs.Sum(l => l.BaseScore);
-                score = score + Awards.Sum(a => a.Trophy.PointsValue);
-                if (HasImage)
+                relatedPages = relatedPages.Where(s => !sessions.Contains(s) && !logs.Contains(s)).ToList();
+
+                List<ScoreBreakdown> breakdown = new List<ScoreBreakdown>();
+                breakdown.Add(new ScoreBreakdown
                 {
-                    score = score + 10;
-                }
-                return score;
+                    Name = "Sessions",
+                    BaseValue = sessions.Sum(l => l.BaseScore),
+                    ActivityBonus = sessions.Sum(s => s.ActivityBonus)
+                });
+                breakdown.Add(new ScoreBreakdown
+                {
+                    Name = "Session Logs",
+                    BaseValue = logs.Sum(l => l.BaseScore),
+                    ActivityBonus = SessionLogs.Sum(s => s.ActivityBonus)
+                });
+                breakdown.Add(new ScoreBreakdown
+                {
+                    Name = "Related Pages",
+                    BaseValue = relatedPages.Sum(l => l.BaseScore),
+                    ActivityBonus = 0                  
+                });
+                breakdown.Add(new ScoreBreakdown
+                {
+                    Name = "Awards",
+                    BaseValue = Awards.Sum(a => a.Trophy.PointsValue),
+                    ActivityBonus = 0
+                });
+                breakdown.Add(new ScoreBreakdown
+                {
+                    Name = "Image Bonus",
+                    BaseValue = HasImage ? 1 : 0,
+                    ActivityBonus = 0
+                });
+                return breakdown;
             }
-        }
+        } 
 
         public override int PointsValue
         {
-            get { return (int) PersonScore + (int) BaseScore + (int) ActivityBonus; }
+            get
+            {
+                double score = ScoreBreakdown.Sum(s => s.Score);
+                return (int)Math.Ceiling(score);
+            }
         }
     }
 }
