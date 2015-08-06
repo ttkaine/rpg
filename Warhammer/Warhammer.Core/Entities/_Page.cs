@@ -11,7 +11,7 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                if (Created < new DateTime(2015, 7, 7))
+                if (Created < new DateTime(2015, 7, 20))
                 {
                     return 0;
                 }

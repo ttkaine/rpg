@@ -99,6 +99,23 @@ div.session-container{
     margin-bottom: 0;
 }
 
+#characterLeagueList .awardBar {
+    margin: 0;
+    margin-top: -8px;
+}
+
+#characterTable tr:nth-child(even){
+
+   padding-bottom: 20px;
+}
+#characterTable tr:nth-child(odd)>td{
+    box-shadow: #333333 0 -3px 0;
+    }
+#characterTable tr:nth-child(even)>td{
+       border-top: none;
+       padding-bottom: 20px;
+    }
+
 .session-block ul{
     font-size: @font-size-small;
 }
@@ -157,6 +174,7 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
     font: 600 @font-size-h1 'Great Vibes', Helvetica, sans-serif;
 }
 
+.score-box-bonus,
 .score-box,
 .mini-profile-image,
 .profile-image{
@@ -168,7 +186,7 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
     -webkit-box-shadow: #333333 5px 5px 15px ;
     box-shadow: #333333 5px 5px 15px ;
 }
-
+.score-box-bonus,
 .score-box,
 .trophy-image,
 .mini-profile-image{
@@ -177,6 +195,8 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
         margin: 8px;
         margin-top: 0;
     }
+
+
 
 .mini-trophy-image{
         width: 50px;
@@ -204,12 +224,18 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
     margin-bottom: 10px;
 }
 
+.score-box-bonus,
 .score-box
 {
     text-align: center;
-    padding-top: 10px;
+    padding-top: 16px;
     background-color: paleturquoise;
-    font-size: @font-size-jumbo;
+    font-size: 35px;
+}
+
+.score-box-bonus
+{
+    background-color: lightgreen;
 }
 
 .profile-footer {
@@ -277,4 +303,20 @@ table.graveyard td
 {
    vertical-align: top;
    padding: 10px;
+}
+
+#characterLeagueList .profile-container
+{
+    margin-bottom: 20px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    -moz-box-shadow: #333333 5px 5px 5px ;
+    -webkit-box-shadow: #333333 5px 5px 5px ;
+    box-shadow: #333333 5px 5px 5px ;
+}
+
+#characterLeagueList .mini-profile-image{
+    clear:both;
+    float: none;
 }

@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Warhammer.Core.Entities
 {
@@ -25,10 +26,8 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                double bonus = base.ActivityBonus * 5;
-                bonus = bonus + Sessions.Sum(s => s.ActivityBonus);
-                bonus = bonus + SessionLogs.Sum(s => s.ActivityBonus);
-                return bonus;
+                double score = ScoreBreakdown.Sum(s => s.ActivityBonus);
+                return score;
             }
         }
 
@@ -40,7 +39,8 @@ namespace Warhammer.Core.Entities
                 List<Page> relatedPages = Related.ToList();
                 List<Session> sessions = Related.OfType<Session>().ToList();
                 relatedPages.AddRange(Related1.ToList());
-                relatedPages = relatedPages.Where(s => !sessions.Contains(s) && !logs.Contains(s)).ToList();
+                relatedPages = relatedPages.Where(s => !sessions.Contains(s)).ToList();
+                relatedPages = relatedPages.Where(s => !logs.Contains(s)).ToList();
 
                 List<ScoreBreakdown> breakdown = new List<ScoreBreakdown>();
                 breakdown.Add(new ScoreBreakdown
@@ -83,6 +83,21 @@ namespace Warhammer.Core.Entities
             {
                 double score = ScoreBreakdown.Sum(s => s.Score);
                 return (int)Math.Ceiling(score);
+            }
+        }
+
+        public string MiniSummary
+        {
+            get
+            {
+                const int summaryLength = 100;
+                string text = Regex.Replace(Description, "<.*?>", string.Empty);
+                const string str = "...";
+                if (!string.IsNullOrWhiteSpace(text) && text.Length > summaryLength)
+                {
+                    text = text.Substring(0, summaryLength - str.Length) + str;
+                }
+                return text;
             }
         }
     }

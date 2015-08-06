@@ -55,27 +55,29 @@
                     {
                         <h1>@person.PointsValue</h1>
                         <table class="table table-striped">
-                            <tr>
-                                <th>Area</th>
-                                <th>Base</th>
-                                <th>Activity Bonus</th>
-                                <th>Total</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Base</th>
+                                    <th>Activity Bonus</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
                             @foreach (ScoreBreakdown scoreBreakdown in person.ScoreBreakdown)
                             {
                                 <tr>
                                     <td>@scoreBreakdown.Name</td>
-                                    <td>@scoreBreakdown.BaseValue</td>
-                                    <td>@(scoreBreakdown.ActivityBonus > 0 ? "+" + @scoreBreakdown.ActivityBonus : "")</td>
-                                    <td>@scoreBreakdown.Score</td>
+                                    <td>@string.Format("{0:0.00}",scoreBreakdown.BaseValue)</td>
+                                    <td>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</td>
+                                    <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
                                 </tr>
                             }
                             <tfoot>
                                 <tr>
                                     <td>Total</td>
-                                    <td>@person.ScoreBreakdown.Sum(s => s.BaseValue)</td>
-                                    <td>+ @person.ScoreBreakdown.Sum(s => s.ActivityBonus)</td>
-                                    <td>@person.ScoreBreakdown.Sum(s => s.Score)</td>                                  
+                                    <td>@string.Format("{0:0.00}",person.ScoreBreakdown.Sum(s => s.BaseValue))</td>
+                                    <td>@string.Format("+ {0:0.00}",person.ScoreBreakdown.Sum(s => s.ActivityBonus))</td>
+                                    <td>@string.Format("{0:0.00}",person.ScoreBreakdown.Sum(s => s.Score))</td>                                  
                                 </tr>
                             </tfoot>
                         </table>

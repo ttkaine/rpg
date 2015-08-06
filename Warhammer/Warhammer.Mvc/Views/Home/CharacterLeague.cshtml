@@ -16,19 +16,35 @@
 
     <div class="main-content">
         <div class="content-block session-block">
-            <ul id="characterLeagueList">
-                @foreach (Person person in Model)
-                {
-                    <li>
-                        <div class="profile-container">
-                            <a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
-                            <div class="score-box" title="@person.FullName">@person.PointsValue</div>
-                            @person.FullName
-                        </div>
-                        <div class="clearfix"></div>
-                    </li>
-                }
-            </ul>
+            <div id="characterLeagueList">
+                <table id="characterTable" class="table table-responsive">
+                    @foreach (Person person in Model)
+                    {
+                        Person aPerson = person;
+                        <tr class="awardBar">
+                            <td colspan="5">
+                                <ul class="awardBar">
+                                    @Html.DisplayFor(m => aPerson.Awards)
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>@person.FullName</td>
+                            <td>@person.MiniSummary</td>
+                            <td>
+                                @if (person.ActivityBonus > 0.5)
+                                {
+                                    <div class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", person.ActivityBonus)</div>
+                                }
+                            </td>
+                            <td><div class="score-box" title="@person.FullName">@person.PointsValue</div></td>
+                            <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
         </div>
     </div>
 

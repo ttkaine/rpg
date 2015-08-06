@@ -7,7 +7,7 @@ namespace Warhammer.Core.Entities
        [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class SessionLog
     {
-           public override double BaseScore
+           public new double BaseScore
            {
                get
                {
@@ -22,7 +22,7 @@ namespace Warhammer.Core.Entities
                    }
                    int words = theContent.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Count();
                    double baseScore = words / 1000.0;
-                   return baseScore;
+                   return baseScore + base.BaseScore;
                }
            }
     }
