@@ -1,4 +1,4 @@
-/* jquery.Jcrop.css v0.9.12 - MIT License */
+﻿/* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance
   If you are having difficulty with formatting related to styles
@@ -10,7 +10,7 @@
 */
 .jcrop-holder {
   direction: ltr;
-  text-align: left; 
+  text-align: left;
 }
 /* Selection Border */
 .jcrop-vline,
@@ -163,3 +163,4 @@
 img.jcrop-preview {
   max-width: none;
 }
+/*# sourceMappingURL=jcrop.css.map */
