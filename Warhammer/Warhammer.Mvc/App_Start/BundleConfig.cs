@@ -23,7 +23,7 @@ namespace Warhammer.Mvc
             //          "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/WarhammerStyle.css"));
+                      "~/Content/WarhammerStyle.min.css"));
         }
     }
 }

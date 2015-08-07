@@ -239,12 +239,6 @@
     <Content Include="Content\theme.min.css">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
-    <Content Include="Content\variables.css">
-      <DependentUpon>variables.less</DependentUpon>
-    </Content>
-    <Content Include="Content\variables.min.css">
-      <DependentUpon>variables.css</DependentUpon>
-    </Content>
     <Content Include="Content\WarhammerStyle.css">
       <DependentUpon>WarhammerStyle.less</DependentUpon>
     </Content>
@@ -331,7 +325,6 @@
     <Content Include="Content\Less\Bootstrap\variables.less" />
     <Content Include="Content\Less\Bootstrap\wells.less" />
     <Content Include="Content\WarhammerStyle.less" />
-    <Content Include="Content\variables.less" />
     <Content Include="Content\theme.less" />
     <Content Include="Content\theme.css.map">
       <DependentUpon>theme.css</DependentUpon>
@@ -347,9 +340,6 @@
       <DependentUpon>border-radius.css</DependentUpon>
     </Content>
     <Content Include="Content\Less\Bootstrap\variables.css.map">
-      <DependentUpon>variables.css</DependentUpon>
-    </Content>
-    <Content Include="Content\variables.css.map">
       <DependentUpon>variables.css</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
