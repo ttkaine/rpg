@@ -51,9 +51,9 @@
                 {
                     Person person = Model as Person;
 
-                    if (User.IsInRole("Admin"))
+                    if (User.IsInRole("Admin") || (person.Player != null && person.Player.UserName == User.Identity.Name))
                     {
-                        <h1>@person.PointsValue</h1>
+                        <h1>Points Value: @person.PointsValue</h1>
                         <table class="table table-striped">
                             <thead>
                                 <tr>

@@ -31,7 +31,7 @@
                         <tr>
 
                             <td>@person.FullName</td>
-                            <td>@person.MiniSummary</td>
+                            <td>@Html.Raw(person.MiniSummary)</td>
                             <td>
                                 @if (person.ActivityBonus > 0.5)
                                 {
