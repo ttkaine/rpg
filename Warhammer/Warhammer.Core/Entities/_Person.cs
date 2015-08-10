@@ -38,7 +38,6 @@ namespace Warhammer.Core.Entities
                 List<SessionLog> logs = SessionLogs.ToList();
                 List<Page> relatedPages = Related.ToList();
                 List<Session> sessions = Related.OfType<Session>().ToList();
-                relatedPages.AddRange(Related1.ToList());
                 relatedPages = relatedPages.Where(s => !sessions.Contains(s)).ToList();
                 relatedPages = relatedPages.Where(s => !logs.Contains(s)).ToList();
 

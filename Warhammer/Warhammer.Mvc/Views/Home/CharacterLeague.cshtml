@@ -35,7 +35,7 @@
                             <td>
                                 @if (person.ActivityBonus > 0.5)
                                 {
-                                    <div class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", person.ActivityBonus)</div>
+                                    <div class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", Math.Floor(person.ActivityBonus))</div>
                                 }
                             </td>
                             <td><div class="score-box" title="@person.FullName">@person.PointsValue</div></td>
