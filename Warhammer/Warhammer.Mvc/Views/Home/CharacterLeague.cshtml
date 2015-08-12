@@ -14,7 +14,7 @@
 
     </div>
 
-    <div class="main-content">
+    <div class="banner-content">
         <div class="content-block session-block">
             <div id="characterLeagueList">
                 <table id="characterTable" class="table table-responsive">
@@ -22,24 +22,34 @@
                     {
                         Person aPerson = person;
                         <tr class="awardBar">
-                            <td colspan="5">
+                            <td colspan="3">
                                 <ul class="awardBar">
                                     @Html.DisplayFor(m => aPerson.Awards)
                                 </ul>
                             </td>
+                            <td>
+                                <ul class ="awardBar">
+                                    <li>
+                                        <span class="score-box" title="@person.FullName">@person.PointsValue</span>
+                                    </li>
+                                    @if (Math.Floor(person.ActivityBonus) > 0)
+                                    {
+                                        <li>
+                                            <span class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", Math.Floor(person.ActivityBonus))</span>
+                                        </li>
+                                        <li>
+                                            <span class="score-box-base" title="@person.FullName">@string.Format("{0:#}",  person.PointsValue - Math.Floor(person.ActivityBonus))</span>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </td>
+
                         </tr>
                         <tr>
-
-                            <td>@person.FullName</td>
-                            <td>@Html.Raw(person.MiniSummary)</td>
-                            <td>
-                                @if (person.ActivityBonus > 0.5)
-                                {
-                                    <div class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", Math.Floor(person.ActivityBonus))</div>
-                                }
-                            </td>
-                            <td><div class="score-box" title="@person.FullName">@person.PointsValue</div></td>
                             <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                            <td>@person.FullName</td>
+                            <td colspan="2">@Html.Raw(person.MiniSummary)</td>                          
                         </tr>
 
                     }
