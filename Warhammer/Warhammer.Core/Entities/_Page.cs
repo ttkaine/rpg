@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Text.RegularExpressions;
 
 namespace Warhammer.Core.Entities
 {
@@ -56,6 +57,27 @@ namespace Warhammer.Core.Entities
         public virtual int PointsValue
         {
             get { return (int) (BaseScore + ActivityBonus); }
+        }
+
+        public string GetSummary(int length)
+        {
+            const string str = "...";
+            string text = RawText;
+
+            if (!string.IsNullOrWhiteSpace(text) && text.Length > length)
+            {
+                text = text.Substring(0, length - str.Length) + str;
+            }
+            return text;
+        }
+
+        public string RawText
+        {
+            get
+            {
+                string text = Regex.Replace(Description, "<.*?>", string.Empty);
+                return text;
+            }
         }
     }
 }

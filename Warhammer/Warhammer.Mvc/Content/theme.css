@@ -1,9 +1,9 @@
-﻿/*!
+﻿@charset "utf-8";
+/*!
  * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-@charset "utf-8";
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
   font-family: sans-serif;
@@ -6878,6 +6878,7 @@ div.session-container {
   margin-left: -30px;
   margin-top: -15px;
   margin-bottom: 0;
+  white-space: nowrap;
 }
 #characterLeagueList .awardBar {
   margin: 0;
@@ -6941,8 +6942,6 @@ footer {
 .content-block h2.page-content-heading {
   font: 600 36px 'Great Vibes', Helvetica, sans-serif;
 }
-.score-box-bonus,
-.score-box,
 .mini-profile-image,
 .profile-image {
   float: right;
@@ -6953,8 +6952,6 @@ footer {
   -webkit-box-shadow: #333333 5px 5px 15px ;
   box-shadow: #333333 5px 5px 15px ;
 }
-.score-box-bonus,
-.score-box,
 .trophy-image,
 .mini-profile-image {
   width: 80px;
@@ -6962,10 +6959,47 @@ footer {
   margin: 8px;
   margin-top: 0;
 }
+.score-box-base,
+.score-box-bonus,
+.score-box {
+  height: 30px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  -moz-box-shadow: #333333 1px 1px 1px ;
+  -webkit-box-shadow: #333333 1px 1px 1px ;
+  box-shadow: #333333 1px 1px 1px ;
+  text-align: center;
+  padding: 0 8px 5px ;
+  background-color: blue;
+  margin-left: 10px;
+  margin-top: -4px;
+  background-image: linear-gradient(#111155, #222299 40%, #6666ee);
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 1px 1px 1px #000;
+  border: solid 2px #333;
+  border-top: none;
+}
+.score-box-bonus {
+  background-color: lightgreen;
+  background-image: linear-gradient(#115511, #229922 40%, #66ee66);
+}
+.score-box-base {
+  background-color: lightgreen;
+  background-image: linear-gradient(#551111, #992222 40%, #ee6666);
+}
 .mini-trophy-image {
   width: 50px;
   height: 50px;
   margin: 0;
+}
+.awardBar-mini img.mini-trophy-image,
+#characterLeagueList img.mini-trophy-image {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  margin-right: 5px;
 }
 .profile-image {
   width: 200px;
@@ -6983,16 +7017,6 @@ footer {
   height: 30px;
   margin-right: 10px;
   margin-bottom: 10px;
-}
-.score-box-bonus,
-.score-box {
-  text-align: center;
-  padding-top: 16px;
-  background-color: paleturquoise;
-  font-size: 35px;
-}
-.score-box-bonus {
-  background-color: lightgreen;
 }
 .profile-footer {
   font-size: 12px;

@@ -89,14 +89,19 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                const int summaryLength = 100;
-                string text = Regex.Replace(Description, "<.*?>", string.Empty);
-                const string str = "...";
-                if (!string.IsNullOrWhiteSpace(text) && text.Length > summaryLength)
-                {
-                    text = text.Substring(0, summaryLength - str.Length) + str;
-                }
-                return text;
+                return GetSummary(250);
+            }
+        }
+
+        public string SearchString
+        {
+            get
+            {
+                string[] awards = Awards.Select(a => a.Trophy.Name).ToArray();
+                string[] reasons = Awards.Select(a => a.Reason).ToArray();
+                return string.Format("{0} - {1} - {2}", RawText,
+                    string.Join(",",awards ),
+                    string.Join(",", reasons));
             }
         }
     }
