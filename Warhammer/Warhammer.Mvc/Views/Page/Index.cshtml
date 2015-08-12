@@ -23,7 +23,7 @@
                     Person person = Model as Person;
                     if (person.Awards.Any())
                     {
-                        <ul class="awardBar">
+                        <ul class="awardBar @(person.Awards.Count > 12 ? "awardBar-mini" : "")">
                             @Html.DisplayFor(m => person.Awards)
                         </ul>
                     }

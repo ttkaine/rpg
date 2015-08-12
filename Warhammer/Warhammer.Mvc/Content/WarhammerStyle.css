@@ -6878,6 +6878,7 @@ div.session-container {
   margin-left: -30px;
   margin-top: -15px;
   margin-bottom: 0;
+  white-space: nowrap;
 }
 #characterLeagueList .awardBar {
   margin: 0;
@@ -6961,7 +6962,6 @@ footer {
 .score-box-base,
 .score-box-bonus,
 .score-box {
-  float: right;
   height: 30px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -6972,6 +6972,7 @@ footer {
   padding: 0 8px 5px ;
   background-color: blue;
   margin-left: 10px;
+  margin-top: -4px;
   background-image: linear-gradient(#111155, #222299 40%, #6666ee);
   font-size: 18px;
   font-weight: 800;
@@ -6993,6 +6994,7 @@ footer {
   height: 50px;
   margin: 0;
 }
+.awardBar-mini img.mini-trophy-image,
 #characterLeagueList img.mini-trophy-image {
   width: 30px;
   height: 30px;

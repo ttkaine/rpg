@@ -17,51 +17,63 @@
     <div class="banner-content">
         <div class="content-block session-block">
             <div id="characterLeagueList">
-                <table id="characterTable" class="table table-responsive">
-                    @foreach (Person person in Model)
-                    {
-                        Person aPerson = person;
-                        <tr class="awardBar">
-                            <td colspan="3">
-                                <ul class="awardBar">
-                                    @Html.DisplayFor(m => aPerson.Awards)
-                                </ul>
-                            </td>
-                            <td>
-                                <ul class ="awardBar">
-                                    <li>
-                                        <span class="score-box" title="@person.FullName">@person.PointsValue</span>
-                                    </li>
-                                    @if (Math.Floor(person.ActivityBonus) > 0)
-                                    {
+                <input class="search input-lg" placeholder="Filter"  />
+                <hr/>
+
+                <table id="characterTable" class="table table-responsive people">
+                    <tbody class="list">
+                        @foreach (Person person in Model)
+                        {
+                            Person aPerson = person;
+                            <tr class="awardBar">
+                                <td colspan="3">
+                                    <ul class="awardBar">
+                                        @Html.DisplayFor(m => aPerson.Awards)
+                                    </ul>
+                                </td>
+                                <td style="padding: 5px; text-align: right">
+                                    <ul class="awardBar">
+                                        @if (Math.Floor(person.ActivityBonus) > 0)
+                                        {
+                                            <li>
+                                                <span class="score-box-base" title="@person.FullName">@string.Format("{0:#}", person.PointsValue - Math.Floor(person.ActivityBonus))</span>
+                                            </li>
+                                            <li>
+                                                <span class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", Math.Floor(person.ActivityBonus))</span>
+                                            </li>
+                                        }
                                         <li>
-                                            <span class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", Math.Floor(person.ActivityBonus))</span>
+                                            <span class="score-box" title="@person.FullName">@person.PointsValue</span>
                                         </li>
-                                        <li>
-                                            <span class="score-box-base" title="@person.FullName">@string.Format("{0:#}",  person.PointsValue - Math.Floor(person.ActivityBonus))</span>
-                                        </li>
-                                    }
 
-                                </ul>
-                            </td>
 
-                        </tr>
-                        <tr>
-                            <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
-                            <td>@person.FullName</td>
-                            <td colspan="2">@Html.Raw(person.MiniSummary)</td>                          
-                        </tr>
+                                    </ul>
+                                </td>
+                                <td class="description" style="display: none">@Html.Raw(person.SearchString)</td>
+                                <td class="name" style="display: none">@person.FullName</td>
+                            </tr>
+                            <tr>
+                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td class="name">@person.FullName</td>
+                                <td>@Html.Raw(person.MiniSummary)</td>
+                                <td>&nbsp;</td>
+                                <td class="description" style="display: none">@Html.Raw(person.SearchString)</td>
+                            </tr>
 
-                    }
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <div class="side-bar">
-        <div class="content-block">
-
-        </div>
-    </div>
-
 </div>
+
+<script src="@Url.Content("~/scripts/list.js")"></script>
+<script>
+    var options = {
+        valueNames: ['name', 'description']
+    };
+
+    var userList = new List('characterLeagueList', options);
+
+</script>
