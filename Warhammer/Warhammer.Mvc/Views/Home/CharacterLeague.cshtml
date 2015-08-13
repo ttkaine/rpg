@@ -35,15 +35,15 @@
                                     <ul class="awardBar">
                                         @if (Math.Floor(person.ActivityBonus) > 0)
                                         {
+                                            @*<li>
+                                                <span class="score-box-base" title="@person.FullName">@string.Format("{0:#}", person.PointsValue - Math.Floor(person.ActivityBonus)).PadLeft(3,' ')</span>
+                                            </li>*@
                                             <li>
-                                                <span class="score-box-base" title="@person.FullName">@string.Format("{0:#}", person.PointsValue - Math.Floor(person.ActivityBonus))</span>
-                                            </li>
-                                            <li>
-                                                <span class="score-box-bonus" title="@person.FullName">+@string.Format("{0:#}", Math.Floor(person.ActivityBonus))</span>
+                                                <span class="score-box-bonus" title="@person.FullName">@string.Format("+{0:##}", Math.Floor(person.ActivityBonus)).PadLeft(3, ' ')</span>
                                             </li>
                                         }
                                         <li>
-                                            <span class="score-box" title="@person.FullName">@person.PointsValue</span>
+                                            <span class="score-box" title="@person.FullName">@string.Format("{0:#}", person.PointsValue).PadLeft(3, ' ')</span>
                                         </li>
 
 

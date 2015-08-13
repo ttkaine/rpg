@@ -68,7 +68,12 @@
                                 <tr>
                                     <td>@scoreBreakdown.Name</td>
                                     <td>@string.Format("{0:0.00}",scoreBreakdown.BaseValue)</td>
-                                    <td>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</td>
+                                    <td>
+                                        @if (scoreBreakdown.ActivityBonus > 0)
+                                        {
+                                            Html.Raw(string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus));
+                                        }
+                                </td>
                                     <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
                                 </tr>
                             }
