@@ -35,6 +35,14 @@
                     @Html.HiddenFor(p => p.Id)
                     @Html.HiddenFor(p => p.IsDead)
                     <div class="form-horizontal">
+                        @if (string.IsNullOrWhiteSpace(Model.CauseOfDeath))
+                        {
+                            <h1 class="editable" id="causeOfDeath">Cause of Death</h1>
+                        }
+                        else
+                        {
+                            <h1 class="editable" id="causeOfDeath">@Model.CauseOfDeath</h1>
+                        }
                         <h2>Obiturary</h2>
                         <div id="Obiturary" class="editable">
                             @Html.Raw(Model.Obiturary)

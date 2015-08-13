@@ -10,6 +10,7 @@ namespace Warhammer.Core.Concrete
 {
     public class AuthenticatedDataProvider : IAuthenticatedDataProvider
     {
+        private const string DeadAwardName = "The Dead Award";
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
@@ -310,19 +311,39 @@ namespace Warhammer.Core.Concrete
             {
                 person.IsDead = false;
                 Save(person);
+
+                List<int> awardIds = person.Awards.Where(a => a.Trophy.Name == DeadAwardName).Select(t => t.Id).ToList();
+                foreach (int awardid in awardIds)
+                {
+                    RemoveAward(person.Id, awardid);
+                }
             }
         }
 
-        public void KillPerson(int id, string obiturary)
+        public void KillPerson(int id, string obiturary, string causeOfDeath)
         {
+            
             Person person = _repository.People().FirstOrDefault(p => p.Id == id);
             if (person != null)
             {
                 person.IsDead = true;
                 person.Obiturary = obiturary;
+                person.CauseOfDeath = causeOfDeath;
                 person.SignificantUpdate = DateTime.Now;
                 person.SignificantUpdateById = CurrentPlayer.Id;
+
                 Save(person);
+
+                if (person.Awards.All(a => a.Trophy.Name != DeadAwardName))
+                {
+                    Trophy trophy = Trophies().FirstOrDefault(t => t.Name == DeadAwardName);
+                    {
+                        if (trophy != null)
+                        {
+                            AwardTrophy(person.Id, trophy.Id, string.Format(": {0}",causeOfDeath));
+                        }
+                    }
+                }
             }
         }
 

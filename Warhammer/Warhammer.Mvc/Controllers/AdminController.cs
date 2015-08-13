@@ -154,29 +154,23 @@ namespace Warhammer.Mvc.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult KillPerson(Core.Entities.Person person)
+        public ActionResult KillPerson(Person person)
         {
             if (ModelState.IsValid)
             {
-                try
+                if (person.IsDead)
                 {
-                    if (person.IsDead)
-                    {
-                        DataProvider.ResurrectPerson(person.Id);
-                    }
-                    else
-                    {
-                        DataProvider.KillPerson(person.Id, person.Obiturary);
-                    }
+                    DataProvider.ResurrectPerson(person.Id);
+                    return RedirectToAction("Index", "Page", new { id = person.Id });
+                }
+                else
+                {
+                    DataProvider.KillPerson(person.Id, person.Obiturary, person.CauseOfDeath);
+                    return RedirectToAction("Graveyard", "Home");
+                }
                     
-                }
-                catch (Exception ex)
-                {
-                    return View("Killing Error", ex);
-                }
-
             }
-            return RedirectToAction("Graveyard", "Home");
+            return View(person);
         }
 
 

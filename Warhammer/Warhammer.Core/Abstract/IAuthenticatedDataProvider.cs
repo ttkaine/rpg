@@ -37,7 +37,7 @@ namespace Warhammer.Core.Abstract
         void PinPage(int id);
         void MarkAsSeen(int id);
         void ResurrectPerson(int id);
-        void KillPerson(int id, string obiturary);
+        void KillPerson(int id, string obiturary, string causeOfDeath);
         Trophy GetTrophy(int id);
         int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType);
         void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType);

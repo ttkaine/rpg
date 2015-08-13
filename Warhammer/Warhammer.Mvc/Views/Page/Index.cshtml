@@ -32,6 +32,18 @@
                 {
                     <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
                 }
+                
+                @if (Model is Person)
+                {
+                    Person person = Model as Person;
+                    if (person.IsDead && !string.IsNullOrWhiteSpace(person.Obiturary))
+                    {
+                        <div class="obiturary">
+                            <h2>@person.CauseOfDeath</h2>
+                            <div>@Html.Raw(person.Obiturary)</div>
+                        </div>
+                    }
+                }
 
                 <h2 id="shortName" class="editable page-content-heading">@Model.ShortName</h2>
                 <div id="description" class="editable">
