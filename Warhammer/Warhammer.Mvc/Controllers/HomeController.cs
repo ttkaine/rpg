@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -92,6 +94,10 @@ namespace Warhammer.Mvc.Controllers
             }
 
             var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
+
+            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+
             return File(defaultImagePath, "image/jpeg");
         }
     }
