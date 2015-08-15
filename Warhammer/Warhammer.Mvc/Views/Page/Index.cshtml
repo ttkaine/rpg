@@ -83,7 +83,7 @@
                                     <td>
                                         @if (scoreBreakdown.ActivityBonus > 0)
                                         {
-                                            Html.Raw(string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus));
+                                            <text>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</text>
                                         }
                                 </td>
                                     <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
@@ -92,9 +92,9 @@
                             <tfoot>
                                 <tr>
                                     <td>Total</td>
-                                    <td>@string.Format("{0:0.00}",person.ScoreBreakdown.Sum(s => s.BaseValue))</td>
-                                    <td>@string.Format("+ {0:0.00}",person.ScoreBreakdown.Sum(s => s.ActivityBonus))</td>
-                                    <td>@string.Format("{0:0.00}",person.ScoreBreakdown.Sum(s => s.Score))</td>                                  
+                                    <td>@string.Format("{0:0}",person.PermenentScore)</td>
+                                    <td>@string.Format("+ {0:0}",person.ActivityScore)</td>
+                                    <td>@string.Format("{0:0}",person.PointsValue)</td>                                  
                                 </tr>
                             </tfoot>
                         </table>

@@ -26,10 +26,31 @@ namespace Warhammer.Core.Entities
         {
             get
             {
+
                 double score = ScoreBreakdown.Sum(s => s.ActivityBonus);
                 return score;
             }
         }
+
+
+
+        public int ActivityScore
+        {
+            get
+            {
+                return (int)Math.Ceiling(Math.Round(ActivityBonus, 2));
+            }
+        }
+
+        public int PermenentScore
+        { 
+            get
+            {
+                double score = ScoreBreakdown.Sum(s => s.BaseValue);
+                return (int)Math.Ceiling(Math.Round(score, 2));
+            }
+        }
+
 
         public List<ScoreBreakdown> ScoreBreakdown
         {
@@ -78,11 +99,7 @@ namespace Warhammer.Core.Entities
 
         public override int PointsValue
         {
-            get
-            {
-                double score = ScoreBreakdown.Sum(s => s.Score);
-                return (int)Math.Ceiling(score);
-            }
+            get { return PermenentScore + ActivityScore; }
         }
 
         public string MiniSummary
