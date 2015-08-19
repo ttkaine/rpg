@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
@@ -48,6 +50,8 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid && saveAction == "Save")
             {
+                ClearPageCache(page.Id);
+
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
                 if (updatedPage.ImageData == null)
                 {
@@ -65,6 +69,30 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("index", new { id = page.Id });
         }
 
+        private void ClearPageCache(int id)
+        {
+            string path = Url.Action("Image", new { id });
+
+            if (path != null)
+            {
+                Response.RemoveOutputCacheItem(path);
+            }
+            
+            path = Url.Action("Index", new { id });
+
+            if (path != null)
+            {
+                Response.RemoveOutputCacheItem(path);
+            }
+
+            path = Url.Action("CharacterLeague", "Home");
+
+            if (path != null)
+            {
+                Response.RemoveOutputCacheItem(path);
+            }
+        }
+
         [HttpPost]
         public ActionResult DeleteLink(int id, int linkToDeleteId)
         {
@@ -75,8 +103,8 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("index", new { id = id });
         }
-        
 
+        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult Image(int id)
         {
             Page page = DataProvider.GetPage(id);
@@ -91,8 +119,6 @@ namespace Warhammer.Mvc.Controllers
             }
 
             var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
-            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
-            Response.Cache.SetCacheability(HttpCacheability.Public);
             return File(defaultImagePath, "image/jpeg"); 
         }
 
@@ -160,6 +186,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 if (saveAction == "Save")
                 {
+                    ClearPageCache(id);
                     Rectangle cropArea = GetCropArea(y1, x1, h, w);
                     if (profileImageFile != null)
                     {

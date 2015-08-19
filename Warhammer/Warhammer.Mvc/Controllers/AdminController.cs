@@ -53,6 +53,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
+                ClearTrophyCache(trophy.Id);
                 byte[] imageData = null;
 
                 if (imageFile != null)
@@ -86,6 +87,24 @@ namespace Warhammer.Mvc.Controllers
 
             return View(trophy);
         }
+
+        private void ClearTrophyCache(int id)
+        {
+            string path = Url.Action("TrophyImage", "Home", new { id });
+
+            if (path != null)
+            {
+                Response.RemoveOutputCacheItem(path);
+            }
+
+            path = Url.Action("Trophies", "Home", new { id });
+
+            if (path != null)
+            {
+                Response.RemoveOutputCacheItem(path);
+            }
+        }
+
         private Rectangle GetCropArea(double? y1, double? x1, double? h, double? w)
         {
             if (y1.HasValue && x1.HasValue && h.HasValue && w.HasValue)

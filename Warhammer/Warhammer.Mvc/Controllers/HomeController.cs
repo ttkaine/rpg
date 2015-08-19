@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Models;
+using Page = Warhammer.Core.Entities.Page;
 
 namespace Warhammer.Mvc.Controllers
 {
@@ -42,12 +44,14 @@ namespace Warhammer.Mvc.Controllers
             return PartialView(pages);
         }
 
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult Trophies()
         {
             List<Trophy> trophies = DataProvider.Trophies().ToList();
             return View(trophies);
         }
 
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult CharacterLeague()
         {
             List<Person> people = DataProvider.People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
@@ -80,6 +84,7 @@ namespace Warhammer.Mvc.Controllers
             return View();
         }
 
+        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult TrophyImage(int id)
         {
             Trophy trophy = DataProvider.GetTrophy(id);
