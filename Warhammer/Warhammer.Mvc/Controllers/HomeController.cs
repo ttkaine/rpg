@@ -44,7 +44,6 @@ namespace Warhammer.Mvc.Controllers
             return PartialView(pages);
         }
 
-        [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult Trophies()
         {
             List<Trophy> trophies = DataProvider.Trophies().ToList();
