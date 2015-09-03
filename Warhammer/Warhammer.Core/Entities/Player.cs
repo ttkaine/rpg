@@ -21,6 +21,7 @@ namespace Warhammer.Core.Entities
             this.Pages1 = new HashSet<Page>();
             this.PageViews = new HashSet<PageView>();
             this.Awards = new HashSet<Award>();
+            this.Comments = new HashSet<Comment>();
         }
     
         public int Id { get; set; }
@@ -34,5 +35,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Page> Pages1 { get; set; }
         public virtual ICollection<PageView> PageViews { get; set; }
         public virtual ICollection<Award> Awards { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

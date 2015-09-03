@@ -25,6 +25,18 @@
           <Property Name="DateTime" Type="datetime" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="CreatedById" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" />
+          <Property Name="PageId" Type="int" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Page">
           <Key>
             <PropertyRef Name="Id" />
@@ -149,6 +161,42 @@
             </Principal>
             <Dependent Role="Award">
               <PropertyRef Name="TrophyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CreatedById" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -323,6 +371,7 @@
         <EntityContainer Name="WarhammerModelStoreContainer">
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PageView" EntityType="Self.PageView" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
@@ -343,6 +392,18 @@
           <AssociationSet Name="FK_Award_Trophy" Association="Self.FK_Award_Trophy">
             <End Role="Trophy" EntitySet="Trophy" />
             <End Role="Award" EntitySet="Award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Page" Association="Self.FK_Comment_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Person" Association="Self.FK_Comment_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Player" Association="Self.FK_Comment_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="FK_Page_Person" Association="Self.FK_Page_Person">
             <End Role="Player" EntitySet="Player" />
@@ -464,6 +525,19 @@
             <End Role="Trophy" EntitySet="Trophies" />
             <End Role="Award" EntitySet="Awards" />
           </AssociationSet>
+          <EntitySet Name="Comments" EntityType="WarhammerModel.Comment" />
+          <AssociationSet Name="FK_Comment_Page" Association="WarhammerModel.FK_Comment_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Person" Association="WarhammerModel.FK_Comment_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Player" Association="WarhammerModel.FK_Comment_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Page">
           <Key>
@@ -487,6 +561,7 @@
           <Property Name="SignificantUpdate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Pinned" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Page" FromRole="Page" ToRole="PageView" />
+          <NavigationProperty Name="Comments" Relationship="WarhammerModel.FK_Comment_Page" FromRole="Page" ToRole="Comment" />
         </EntityType>
         <EntityType Name="Person" BaseType="WarhammerModel.Page">
           <Property Name="IsDead" Type="Boolean" Nullable="false" />
@@ -498,6 +573,7 @@
           <Property Name="CauseOfDeath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsInMainParty" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Person" FromRole="Person" ToRole="Award" />
+          <NavigationProperty Name="Comments1" Relationship="WarhammerModel.FK_Comment_Person" FromRole="Person" ToRole="Comment" />
         </EntityType>
         <EntityType Name="Session" BaseType="WarhammerModel.Page">
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -552,6 +628,7 @@
           <NavigationProperty Name="Pages1" Relationship="WarhammerModel.FK_Page_Person1" FromRole="Player" ToRole="Page" />
           <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Player" FromRole="Player" ToRole="PageView" />
           <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Player" FromRole="Player" ToRole="Award" />
+          <NavigationProperty Name="Comments" Relationship="WarhammerModel.FK_Comment_Player" FromRole="Player" ToRole="Comment" />
         </EntityType>
         <Association Name="FK_Page_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -725,6 +802,57 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedById" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" />
+          <Property Name="PageId" Type="Int32" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_Comment_Page" FromRole="Comment" ToRole="Page" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Comment_Person" FromRole="Comment" ToRole="Person" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Comment_Player" FromRole="Comment" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK_Comment_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -840,6 +968,19 @@
                 <ScalarProperty Name="ImageData" ColumnName="ImageData" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="WarhammerModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

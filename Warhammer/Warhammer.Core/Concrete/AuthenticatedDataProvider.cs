@@ -435,5 +435,39 @@ namespace Warhammer.Core.Concrete
         {
             return _repository.Pages().Any(p => p.ShortName == shortName && p.FullName == fullName);
         }
+
+        public int AddComment(int pageId, string description)
+        {
+
+            return AddComment(pageId, description, false, null);
+        }
+
+        public int AddComment(int pageId, string description, int personId)
+        {
+            return AddComment(pageId, description, false, personId);
+        }
+
+        public int AddComment(int pageId, string description, bool isAdmin)
+        {
+            return AddComment(pageId, description, isAdmin, null);
+        }
+
+        private int AddComment(int pageId, string description, bool isAdmin, int? personId)
+        {
+            Page page = GetPage(pageId);
+
+            if(page != null)
+            {
+                Comment comment = new Comment();
+                comment.Created = DateTime.Now;
+                comment.Description = description;
+                comment.IsAdmin = isAdmin;
+                comment.PersonId = personId;
+                comment.CreatedById = CurrentPlayer.Id;
+                page.Comments.Add(comment);
+                return Save(page);
+            }
+            return 0;
+        }
     }
 }

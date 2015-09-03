@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
             this.Related = new HashSet<Page>();
             this.Related1 = new HashSet<Page>();
             this.PageViews = new HashSet<PageView>();
+            this.Comments = new HashSet<Comment>();
         }
     
         public int Id { get; set; }
@@ -40,5 +41,6 @@ namespace Warhammer.Core.Entities
         public virtual Player CreatedBy { get; set; }
         public virtual Player ModifiedBy { get; set; }
         public virtual ICollection<PageView> PageViews { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

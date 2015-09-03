@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
             this.SessionLogs = new HashSet<SessionLog>();
             this.Pages = new HashSet<Page>();
             this.Awards = new HashSet<Award>();
+            this.Comments1 = new HashSet<Comment>();
         }
     
         public bool IsDead { get; set; }
@@ -31,5 +32,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Page> Pages { get; set; }
         public virtual Player Player { get; set; }
         public virtual ICollection<Award> Awards { get; set; }
+        public virtual ICollection<Comment> Comments1 { get; set; }
     }
 }

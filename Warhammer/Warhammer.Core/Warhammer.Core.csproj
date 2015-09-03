@@ -85,6 +85,9 @@
     <Compile Include="Entities\ChangeLog.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Comment.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Page.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
