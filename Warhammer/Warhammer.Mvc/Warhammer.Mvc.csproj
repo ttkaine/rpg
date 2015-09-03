@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -214,6 +215,7 @@
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
     <Content Include="Content\Images\graveyard.jpg" />
+    <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Less\Bootstrap\mixins\border-radius.css">
       <DependentUpon>border-radius.less</DependentUpon>
