@@ -7105,4 +7105,8 @@ table.graveyard td {
 .graveyard h3 {
   margin-top: 0;
 }
+.rank {
+  background-color: lightblue;
+  font-size: larger;
+}
 /*# sourceMappingURL=theme.css.map */

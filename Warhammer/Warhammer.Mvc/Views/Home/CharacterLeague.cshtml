@@ -22,8 +22,12 @@
 
                 <table id="characterTable" class="table table-responsive people">
                     <tbody class="list">
+                        @{
+                            int i = 0;
+                        }
                         @foreach (Person person in Model)
                         {
+                            i++;
                             Person aPerson = person;
                             <tr class="awardBar">
                                 <td colspan="3">
@@ -53,10 +57,10 @@
                                 <td class="name" style="display: none">@person.FullName</td>
                             </tr>
                             <tr>
+                                <td><div class="mini-profile-image rank">@i</div></td>
                                 <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
                                 <td class="name">@person.FullName</td>
-                                <td>@Html.Raw(person.MiniSummary)</td>
-                                <td>&nbsp;</td>
+                                <td colspan="2" class="hidden-xs hidden-sm">@Html.Raw(person.MiniSummary)</td>
                                 <td class="description" style="display: none">@Html.Raw(person.SearchString)</td>
                             </tr>
 
