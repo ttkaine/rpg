@@ -45,5 +45,7 @@ namespace Warhammer.Core.Abstract
         ICollection<Trophy> Trophies();
         void AwardTrophy(int personId, int trophyId, string reason);
         void RemoveAward(int personId, int awardId);
+        List<Person> MyTopThreeNpcs();
+        List<Page> Search(string searchTerm);
     }
 }

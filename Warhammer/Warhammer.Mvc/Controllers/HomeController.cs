@@ -27,6 +27,7 @@ namespace Warhammer.Mvc.Controllers
                 RecentChanges = DataProvider.RecentPages().ToList(),
                 MyStuff = DataProvider.MyStuff().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
+                TopNpcs = DataProvider.MyTopThreeNpcs(),
                 AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
             return View(model);
@@ -104,5 +105,25 @@ namespace Warhammer.Mvc.Controllers
 
             return File(defaultImagePath, "image/jpeg");
         }
+
+        [HttpGet]
+        public ActionResult Search()
+        {
+            SearchModel model = new SearchModel();
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult Search(SearchModel model)
+        {
+            if (String.IsNullOrWhiteSpace(model.SearchTerm))
+            {
+                return Search();
+            }
+            ModelState.Clear();
+            List<Page> pages = DataProvider.Search(model.SearchTerm);
+            return PartialView(new SearchModel {SearchTerm = model.SearchTerm, Results = pages});
+        }
+
     }
 }

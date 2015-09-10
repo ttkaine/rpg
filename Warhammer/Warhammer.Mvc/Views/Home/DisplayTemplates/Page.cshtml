@@ -1,0 +1,7 @@
+﻿@model Warhammer.Core.Entities.Page
+<li>
+    <a href="@Url.Action("Index", "Page", new { id = Model.Id} )">
+        @Model.FullName @if (Model.ShortName != Model.FullName)
+        {<span class="note">(@Model.ShortName)</span>}
+    </a>
+</li>

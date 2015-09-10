@@ -1,0 +1,62 @@
+﻿@model Warhammer.Core.Entities.Person
+
+<div class="alert-info alert">
+    <h4>Person</h4>
+    <ul class="awardBar">
+        @Html.DisplayFor(m => m.Awards)
+    </ul>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityBonus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityBonus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DaysSinceModified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DaysSinceModified)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PointsValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PointsValue)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShortName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SignificantUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SignificantUpdate)
+        </dd>
+
+    </dl>
+</div>
+
