@@ -7105,6 +7105,13 @@ table.graveyard td {
 .graveyard h3 {
   margin-top: 0;
 }
+.note {
+  font-size: x-small;
+  color: #777777;
+}
+.homepage h3 {
+  text-decoration: underline solid;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

@@ -1,79 +1,130 @@
-﻿@model Warhammer.Mvc.Models.HomePageViewModel
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.HomePageViewModel
 @{
     ViewBag.Title = "Home Page";
 }
 
-<div class="content-wrapper">
-  @using (Html.BeginForm("Edit", "Person"))
-  {
-      @Html.Hidden("personId", 1)
-      <div class="banner-content">
-          <div class="header-block">     
-              <h1 id="fullName">Warhammer</h1>          
-          </div>
+<div id="homepage" class="content-wrapper">
+    @using (Html.BeginForm("Edit", "Person"))
+    {
+        @Html.Hidden("personId", 1)
+        <div class="banner-content">
+            <div class="header-block">
+                <h1 id="fullName">Warhammer</h1>
+            </div>
 
-      </div>
-
-    <div class="core-content">
-        <div class="content-block">
-            
-            <h3 id="shortName">People</h3>
-            <ul>          
-                @foreach (var page in Model.MyPeople)
-                {
-                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
-                }
-                @foreach (var page in Model.AllPeople)
-                {
-                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
-                }
-            </ul>
         </div>
-    </div>
 
-    <div class="core-content">
-        <div class="content-block">
-            <h3 id="shortName">I made this</h3>
-            <ul>
-                @foreach (var page in Model.MyStuff)
+        <div class="core-content">
+            <div class="content-block">
+
+                @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any())
                 {
-                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Last changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                    <div class="alert alert-warning">
+                        <p>No Exciting updates for you at the moment...</p>
+                    </div>
                 }
-            </ul>
-        </div>
-    </div>
-
-    <div class="core-content">
-        <div class="content-block">
-            @if (Model.NewPages.Any())
-            {
-                <h3>New Pages</h3>
-                <ul>
-                    @foreach (var page in Model.NewPages)
+                else
+                {
+                    <div class="alert alert-success">
+                        @if (Model.NewPages.Any())
+                        {
+                            <h3>New Pages</h3>
+                            <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
+                            <ul>
+                                @foreach (var page in Model.NewPages)
+                                {
+                                    <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
+                                }
+                            </ul>
+                        }
+                        @if (Model.UpdatedPages.Any())
+                        {
+                            <h3>Updated Pages</h3>
+                            <p class="note">These are pages that have had significant updates since you last looked at them...</p>
+                            <ul>
+                                @foreach (var page in Model.UpdatedPages)
+                                {
+                                    <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+                <h3>Recently Active Pages</h3>
+                <p class="note">These are pages that have recently been altered in some way</p>
+                <ul id="recentChangesList">
+                    @foreach (var page in Model.RecentChanges)
                     {
-                        <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
+                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
                     }
                 </ul>
-            }
-            @if (Model.UpdatedPages.Any())
+
+            </div>
+        </div>
+
+        <div class="core-content">
+            @if (Model.MyPeople.Any())
             {
-                <h3>Updated Pages</h3>
+                <div class="content-block">
+                    <h3 id="shortName">My Characters</h3>
+
+                    <table class="table table-striped">
+                        <tbody class="list">
+                            @foreach (Person person in Model.MyPeople)
+                            {
+                                <tr>
+                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                    <td class="name">@person.FullName</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+                <hr />
+            }
+            <div class="content-block">
+
+                @if (Model.TopNpcs.Any())
+                {
+                    <h3 id="shortName">Top NPCs</h3>
+
+                    <table class="table table-striped">
+                        <tbody class="list">
+                            @foreach (Person person in Model.TopNpcs)
+                            {
+                                <tr>
+                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                    <td class="name">@person.FullName</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <div class="core-content">
+            <div class="content-block">
+                <h3 id="shortName">My Stuff</h3>
+                <p class="note">These are the pages you have created for easy editing of your latest stuffs!</p>
                 <ul>
-                    @foreach (var page in Model.UpdatedPages)
+                    @foreach (var page in Model.MyStuff)
                     {
-                        <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )">
+                            <a href="@Url.Action("Index", "Page", new { id = page.Id} )">
+                                @page.FullName @if (page.ShortName != page.FullName)
+                                {<span class="note">(@page.ShortName)</span>}
+                            </a>
+                        </li>
                     }
                 </ul>
-            }
-            <h3>Recent Changes</h3>
-            <ul id="recentChangesList">
-                @foreach (var page in Model.RecentChanges)
-                {
-                    <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
-                }
-            </ul>
-
+            </div>
         </div>
-    </div>
-  }
+
+
+    }
 </div>

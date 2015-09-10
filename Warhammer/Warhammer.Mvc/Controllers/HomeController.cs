@@ -27,6 +27,7 @@ namespace Warhammer.Mvc.Controllers
                 RecentChanges = DataProvider.RecentPages().ToList(),
                 MyStuff = DataProvider.MyStuff().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
+                TopNpcs = DataProvider.MyTopThreeNpcs(),
                 AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
             return View(model);

@@ -431,6 +431,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Person> MyTopThreeNpcs()
+        {
+            //for now we're just going to get the top three by score - later we can have awards for this
+            List<Person> people = People().Where(p => !p.PlayerId.HasValue).ToList();
+            return people.OrderByDescending(p => p.PointsValue).Take(3).ToList();
+        }
+
         public bool PageExists(string shortName, string fullName)
         {
             return _repository.Pages().Any(p => p.ShortName == shortName && p.FullName == fullName);
