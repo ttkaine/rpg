@@ -5,9 +5,7 @@
 }
 
 <div id="homepage" class="content-wrapper">
-    @using (Html.BeginForm("Edit", "Person"))
-    {
-        @Html.Hidden("personId", 1)
+
         <div class="banner-content">
             <div class="header-block">
                 <h1 id="fullName">Warhammer</h1>
@@ -108,23 +106,24 @@
         </div>
 
         <div class="core-content">
-            <div class="content-block">
-                <h3 id="shortName">My Stuff</h3>
-                <p class="note">These are the pages you have created for easy editing of your latest stuffs!</p>
-                <ul>
-                    @foreach (var page in Model.MyStuff)
-                    {
-                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )">
-                            <a href="@Url.Action("Index", "Page", new { id = page.Id} )">
-                                @page.FullName @if (page.ShortName != page.FullName)
-                                {<span class="note">(@page.ShortName)</span>}
-                            </a>
-                        </li>
-                    }
-                </ul>
+            
+        @Html.Action("Search", "Home");
+
+            <hr/>
+                <div class="content-block">
+                    <h3 id="shortName">My Stuff</h3>
+                    <p class="note">These are the pages you have created for easy editing of your latest stuffs!</p>
+                    <ul>
+                        @foreach (var page in Model.MyStuff)
+                        {
+                            <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )">
+                                <a href="@Url.Action("Index", "Page", new { id = page.Id} )">
+                                    @page.FullName @if (page.ShortName != page.FullName)
+                                                   {<span class="note">(@page.ShortName)</span>}
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
-        </div>
-
-
-    }
 </div>

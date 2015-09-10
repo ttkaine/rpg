@@ -438,6 +438,21 @@ namespace Warhammer.Core.Concrete
             return people.OrderByDescending(p => p.PointsValue).Take(3).ToList();
         }
 
+        public List<Page> Search(string searchTerm)
+        {
+            return
+                _repository.Pages()
+                    .Where(
+                        p =>
+                            p.ShortName.Contains(searchTerm) || p.FullName.Contains(searchTerm) ||
+                            p.Description.Contains(searchTerm))
+                    .OrderByDescending(p => p.ShortName == searchTerm)
+                    .ThenByDescending(p => p.FullName == searchTerm)
+                    .ThenByDescending(p => p.ShortName.StartsWith(searchTerm))
+                    .ThenByDescending(p => p.FullName.StartsWith(searchTerm))
+                    .ThenByDescending(p => p.FullName).Take(20).ToList();
+        }
+
         public bool PageExists(string shortName, string fullName)
         {
             return _repository.Pages().Any(p => p.ShortName == shortName && p.FullName == fullName);

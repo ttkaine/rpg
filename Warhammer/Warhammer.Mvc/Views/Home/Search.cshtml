@@ -1,0 +1,16 @@
+﻿@model Warhammer.Mvc.Models.SearchModel
+<div id="searchresult" class="content-block">
+    @using (Ajax.BeginForm("Search", "Home", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "searchresult"}))
+    {
+        @Html.TextBoxFor(m => m.SearchTerm, new {@class = "search btn-block"})
+        <input type="submit" value="Search" class="btn btn-block btn-success"/>
+        <hr/>
+    <ul>
+        @Html.DisplayFor(m => m.Results)
+        @if (!string.IsNullOrEmpty(Model.SearchTerm) && !Model.Results.Any())
+        {
+            <li><p class="note">Sorry... I got nothin...</p></li>
+        }
+</ul>
+    }
+</div>
