@@ -29,7 +29,7 @@ namespace Warhammer.Tests.Integration
             password.SendKeys(_settings.Password);
             password.Submit();
 
-            Assert.IsTrue(_driver.PageSource.Contains("Did"));
+            Assert.IsTrue(_driver.PageSource.Contains("Did"), "Database update should report DID");
 
             _driver.Navigate().GoToUrl(_settings.BaseUrl);
         }

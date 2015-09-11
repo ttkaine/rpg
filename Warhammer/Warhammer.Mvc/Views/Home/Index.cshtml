@@ -8,7 +8,7 @@
 
         <div class="banner-content">
             <div class="header-block">
-                <h1 id="fullName">Warhammer</h1>
+                <h1>Warhammer</h1>
             </div>
 
         </div>
@@ -65,7 +65,7 @@
             @if (Model.MyPeople.Any())
             {
                 <div class="content-block">
-                    <h3 id="shortName">My Characters</h3>
+                    <h3>My Characters</h3>
 
                     <table class="table table-striped">
                         <tbody class="list">
@@ -87,7 +87,7 @@
 
                 @if (Model.TopNpcs.Any())
                 {
-                    <h3 id="shortName">Top NPCs</h3>
+                    <h3>Top NPCs</h3>
 
                     <table class="table table-striped">
                         <tbody class="list">
@@ -111,7 +111,7 @@
 
             <hr/>
                 <div class="content-block">
-                    <h3 id="shortName">My Stuff</h3>
+                    <h3>My Stuff</h3>
                     <p class="note">These are the pages you have created for easy editing of your latest stuffs!</p>
                     <ul>
                         @foreach (var page in Model.MyStuff)
