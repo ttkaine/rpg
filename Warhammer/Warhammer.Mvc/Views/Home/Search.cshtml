@@ -4,13 +4,16 @@
     {
         @Html.TextBoxFor(m => m.SearchTerm, new {@class = "search btn-block"})
         <input type="submit" value="Search" class="btn btn-block btn-success"/>
-        <hr/>
-    <ul>
-        @Html.DisplayFor(m => m.Results)
-        @if (!string.IsNullOrEmpty(Model.SearchTerm) && !Model.Results.Any())
+        if (!string.IsNullOrEmpty(Model.SearchTerm))
         {
-            <li><p class="note">Sorry... I got nothin...</p></li>
+            <hr/>
+            <ul>
+                @Html.DisplayFor(m => m.Results)
+                @if (Model.Results != null && !Model.Results.Any())
+                {
+                    <li><p class="note">Sorry... I got nothin...</p></li>
+                }
+            </ul>
         }
-</ul>
     }
 </div>
