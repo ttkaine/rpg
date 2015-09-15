@@ -38,7 +38,7 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                return (int)Math.Ceiling(Math.Round(ActivityBonus, 2));
+                return (int)Math.Round(ActivityBonus);
             }
         }
 
@@ -47,7 +47,7 @@ namespace Warhammer.Core.Entities
             get
             {
                 double score = ScoreBreakdown.Sum(s => s.BaseValue);
-                return (int)Math.Ceiling(Math.Round(score, 2));
+                return (int)Math.Ceiling(Math.Round(score, 1));
             }
         }
 
