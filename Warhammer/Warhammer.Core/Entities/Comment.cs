@@ -12,21 +12,18 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Trophy
+    public partial class Comment
     {
-        public Trophy()
-        {
-            this.Awards = new HashSet<Award>();
-        }
-    
         public int Id { get; set; }
-        public string Name { get; set; }
         public string Description { get; set; }
-        public byte[] ImageData { get; set; }
-        public string MimeType { get; set; }
-        public int PointsValue { get; set; }
-        public int TypeId { get; set; }
+        public System.DateTime Created { get; set; }
+        public int CreatedById { get; set; }
+        public Nullable<int> PersonId { get; set; }
+        public int PageId { get; set; }
+        public bool IsAdmin { get; set; }
     
-        public virtual ICollection<Award> Awards { get; set; }
+        public virtual Page Page { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual Player Player { get; set; }
     }
 }

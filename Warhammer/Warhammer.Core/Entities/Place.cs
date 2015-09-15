@@ -16,13 +16,13 @@ namespace Warhammer.Core.Entities
     {
         public Place()
         {
-            this.Children = new HashSet<Place>();
+            this.Child = new HashSet<Place>();
         }
     
         public Nullable<int> IsWithin { get; set; }
         public int PlaceType { get; set; }
     
-        public virtual ICollection<Place> Children { get; set; }
+        public virtual ICollection<Place> Child { get; set; }
         public virtual Place Parent { get; set; }
     }
 }
