@@ -147,7 +147,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Page> RecentPages()
         {
-            return _repository.Pages().OrderByDescending(p => p.Modified).Take(20).ToList();
+            return _repository.Pages().OrderByDescending(p => p.SignificantUpdate).Take(20).ToList();
         }
 
         public ICollection<Page> MyStuff()
