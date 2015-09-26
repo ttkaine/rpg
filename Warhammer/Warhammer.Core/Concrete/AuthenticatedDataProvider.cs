@@ -116,8 +116,69 @@ namespace Warhammer.Core.Concrete
                 existingPage.FullName = fullName;
                 existingPage.Description = description;
             }
+            
             Save(existingPage);
+            AutoAddLinks(existingPage);
             return existingPage;
+        }
+
+        private void AutoAddLinks(Page existingPage)
+        {
+            string pageText = existingPage.RawText.ToLower();
+
+            foreach (Page page in _repository.Pages().ToList())
+            {
+                bool isFound = pageText.Contains(string.Format(" {0} ", page.ShortName.ToLower()));
+
+                if (pageText.Contains(string.Format(" {0}.", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0},", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0}'", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format("[[{0}]]", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(">{0} ",page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(">{0},", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(">{0}'", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0} ", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0},", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0}.", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0}'", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (isFound)
+                {
+                    AddLink(page.Id, existingPage.Id);
+                }
+            }
         }
 
         private int Save(Page page)
