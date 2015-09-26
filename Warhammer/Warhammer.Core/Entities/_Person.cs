@@ -41,7 +41,7 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                return (int)Math.Round(ActivityBonus);
+                return (int)Math.Floor(ActivityBonus);
             }
         }
 
