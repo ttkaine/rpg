@@ -126,7 +126,7 @@ namespace Warhammer.Core.Concrete
         {
             string pageText = existingPage.RawText.ToLower();
 
-            foreach (Page page in _repository.Pages().ToList())
+            foreach (Page page in _repository.Pages().Where(p => p.Id != existingPage.Id).ToList())
             {
                 bool isFound = pageText.Contains(string.Format(" {0} ", page.ShortName.ToLower()));
 
