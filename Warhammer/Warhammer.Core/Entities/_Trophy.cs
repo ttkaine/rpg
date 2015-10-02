@@ -7,8 +7,9 @@
         MainPartyBanner = 2,
         FirstFavouriteNpc = 3,
         SecondFavouriteNpc = 4,
-        ThirdFavouriteNpc = 5
+        ThirdFavouriteNpc = 5,
         
+
     }
 
     public partial class Trophy

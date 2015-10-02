@@ -450,7 +450,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Trophy> Trophies()
         {
-            return _repository.Trophies().OrderByDescending(t => t.PointsValue).ThenBy(t => t.Name).ToList();
+            return _repository.Trophies().OrderBy(t => t.TypeId == (int)TrophyType.DefaultAward).ThenBy(t => t.TypeId).ThenByDescending(t => t.PointsValue).ThenBy(t => t.Name).ToList();
         }
 
         public void AwardTrophy(int personId, int trophyId, string reason)
