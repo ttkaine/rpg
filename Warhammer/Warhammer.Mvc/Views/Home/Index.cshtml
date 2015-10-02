@@ -50,11 +50,11 @@
                     </div>
                 }
                 <h3>Recently Active Pages</h3>
-                <p class="note">These are pages that have recently been altered in some way</p>
+                <p class="note">These are pages that have recently been updated or created</p>
                 <ul id="recentChangesList">
                     @foreach (var page in Model.RecentChanges)
                     {
-                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny">@page.SignificantUpdate</span></a></li>
                     }
                 </ul>
 

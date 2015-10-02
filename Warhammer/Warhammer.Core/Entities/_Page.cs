@@ -12,7 +12,7 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                if (Created < new DateTime(2015, 7, 20))
+                if (Created < DateTime.Now.AddMonths(-3))
                 {
                     return 0;
                 }

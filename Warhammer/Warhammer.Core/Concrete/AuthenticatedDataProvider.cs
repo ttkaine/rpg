@@ -114,8 +114,69 @@ namespace Warhammer.Core.Concrete
                 existingPage.FullName = fullName;
                 existingPage.Description = description;
             }
+            
             Save(existingPage);
+            AutoAddLinks(existingPage);
             return existingPage;
+        }
+
+        private void AutoAddLinks(Page existingPage)
+        {
+            string pageText = existingPage.RawText.ToLower();
+
+            foreach (Page page in _repository.Pages().Where(p => p.Id != existingPage.Id).ToList())
+            {
+                bool isFound = pageText.Contains(string.Format(" {0} ", page.ShortName.ToLower()));
+
+                if (pageText.Contains(string.Format(" {0}.", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0},", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0}'", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format("[[{0}]]", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(">{0} ",page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(">{0},", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(">{0}'", page.ShortName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0} ", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0},", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0}.", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (pageText.Contains(string.Format(" {0}'", page.FullName.ToLower())))
+                {
+                    isFound = true;
+                }
+                if (isFound)
+                {
+                    AddLink(page.Id, existingPage.Id);
+                }
+            }
         }
 
         private int Save(Page page)
@@ -145,7 +206,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Page> RecentPages()
         {
-            return _repository.Pages().OrderByDescending(p => p.Modified).Take(20).ToList();
+            return _repository.Pages().OrderByDescending(p => p.SignificantUpdate).Take(20).ToList();
         }
 
         public ICollection<Page> MyStuff()

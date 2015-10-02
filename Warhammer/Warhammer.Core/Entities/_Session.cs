@@ -1,5 +1,4 @@
-﻿using System;
-using System.CodeDom.Compiler;
+﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +11,12 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                return MonthsAgo < 1 ? 1 : 1 / MonthsAgo;
+                double twiceMonths = MonthsAgo*2;
+                if (twiceMonths > 6)
+                {
+                    return 0;
+                }
+                return twiceMonths < 1 ? 1 : 1 / twiceMonths;
             }
         }
 
@@ -27,7 +31,7 @@ namespace Warhammer.Core.Entities
                 }
                 else
                 {
-                    return 0;
+                    return 9999;
                 }
             }
         }
