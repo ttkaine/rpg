@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Warhammer.Core.Abstract;
@@ -10,7 +9,6 @@ namespace Warhammer.Core.Concrete
 {
     public class AuthenticatedDataProvider : IAuthenticatedDataProvider
     {
-        private const string DeadAwardName = "The Dead Award";
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
@@ -312,7 +310,7 @@ namespace Warhammer.Core.Concrete
                 person.IsDead = false;
                 Save(person);
 
-                List<int> awardIds = person.Awards.Where(a => a.Trophy.Name == DeadAwardName).Select(t => t.Id).ToList();
+                List<int> awardIds = person.Awards.Where(a => a.Trophy.TypeId == (int)TrophyType.DeadAward).Select(t => t.Id).ToList();
                 foreach (int awardid in awardIds)
                 {
                     RemoveAward(person.Id, awardid);
@@ -334,9 +332,9 @@ namespace Warhammer.Core.Concrete
 
                 Save(person);
 
-                if (person.Awards.All(a => a.Trophy.Name != DeadAwardName))
+                if (person.Awards.All(a => a.Trophy.TypeId != (int)TrophyType.DeadAward))
                 {
-                    Trophy trophy = Trophies().FirstOrDefault(t => t.Name == DeadAwardName);
+                    Trophy trophy = Trophies().FirstOrDefault(t => t.TypeId == (int)TrophyType.DeadAward);
                     {
                         if (trophy != null)
                         {
