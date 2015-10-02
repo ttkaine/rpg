@@ -198,6 +198,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageAwardsViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MyFavNpcModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -425,6 +426,9 @@
     <Content Include="Views\Shared\DisplayTemplates\Award.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Home\FavouriteNpcs.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\FavNpc.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -436,6 +440,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Home\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

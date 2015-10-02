@@ -490,11 +490,10 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public List<Person> MyTopThreeNpcs()
+        public Person PersonWithMyAward(TrophyType awardType)
         {
-            //for now we're just going to get the top three by score - later we can have awards for this
-            List<Person> people = People().Where(p => !p.PlayerId.HasValue).ToList();
-            return people.OrderByDescending(p => p.PointsValue).Take(3).ToList();
+            return People().FirstOrDefault(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
+                                                                  && a.Trophy.TypeId == (int) awardType));
         }
 
         public List<Page> Search(string searchTerm)
@@ -531,6 +530,51 @@ namespace Warhammer.Core.Concrete
         public int AddComment(int pageId, string description, bool isAdmin)
         {
             return AddComment(pageId, description, isAdmin, null);
+        }
+
+        public List<Person> TopNpcs()
+        {
+            List<Person> people = People().Where(p => !p.PlayerId.HasValue).ToList();
+            return people.OrderByDescending(p => p.PointsValue).Take(5).ToList();
+        }
+
+        public List<Person> AllNpcs()
+        {
+            return People().Where(p => p.PlayerId == null).ToList();
+        }
+
+        public void SetMyAward(int personId, TrophyType trophyType)
+        {
+            Person person = GetPerson(personId);
+            Trophy trophy = Trophies().FirstOrDefault(t => t.TypeId == (int) trophyType);
+            if (person != null && trophy != null)
+            {
+                List<int> typesToRemove = GetExlusiveTrophyTypes(trophyType);
+                List<Award> currentAwards = _repository.Awards().Where(a => ((typesToRemove.Contains(a.Trophy.TypeId) && a.PersonId == personId) || a.Trophy.TypeId == (int)trophyType) && a.NominatedById == CurrentPlayer.Id).ToList();
+                foreach (Award award in currentAwards)
+                {
+                    RemoveAward(award.PersonId, award.Id);
+                }
+
+                AwardTrophy(personId, trophy.Id, ": Awarded by " + CurrentPlayer.DisplayName);
+            }
+        }
+
+        private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
+        {
+            List<int> favAwardId = new List<int>
+            {
+                (int)TrophyType.FirstFavouriteNpc,
+                (int)TrophyType.SecondFavouriteNpc,
+                (int)TrophyType.ThirdFavouriteNpc,
+            };
+
+            if (favAwardId.Contains((int) trophyType))
+            {
+                return favAwardId;
+            }
+
+            return new List<int>{(int)trophyType};
         }
 
         private int AddComment(int pageId, string description, bool isAdmin, int? personId)

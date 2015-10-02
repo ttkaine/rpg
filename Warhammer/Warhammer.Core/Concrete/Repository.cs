@@ -83,6 +83,11 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public IQueryable<Award> Awards()
+        {
+            return _entities.Awards;
+        }
+
         #endregion
 
         #region Save
