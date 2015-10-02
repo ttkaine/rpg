@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Warhammer.Core.Abstract;
@@ -10,7 +9,6 @@ namespace Warhammer.Core.Concrete
 {
     public class AuthenticatedDataProvider : IAuthenticatedDataProvider
     {
-        private const string DeadAwardName = "The Dead Award";
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
@@ -373,7 +371,7 @@ namespace Warhammer.Core.Concrete
                 person.IsDead = false;
                 Save(person);
 
-                List<int> awardIds = person.Awards.Where(a => a.Trophy.Name == DeadAwardName).Select(t => t.Id).ToList();
+                List<int> awardIds = person.Awards.Where(a => a.Trophy.TypeId == (int)TrophyType.DeadAward).Select(t => t.Id).ToList();
                 foreach (int awardid in awardIds)
                 {
                     RemoveAward(person.Id, awardid);
@@ -395,9 +393,9 @@ namespace Warhammer.Core.Concrete
 
                 Save(person);
 
-                if (person.Awards.All(a => a.Trophy.Name != DeadAwardName))
+                if (person.Awards.All(a => a.Trophy.TypeId != (int)TrophyType.DeadAward))
                 {
-                    Trophy trophy = Trophies().FirstOrDefault(t => t.Name == DeadAwardName);
+                    Trophy trophy = Trophies().FirstOrDefault(t => t.TypeId == (int)TrophyType.DeadAward);
                     {
                         if (trophy != null)
                         {
@@ -452,7 +450,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Trophy> Trophies()
         {
-            return _repository.Trophies().OrderByDescending(t => t.PointsValue).ThenBy(t => t.Name).ToList();
+            return _repository.Trophies().OrderBy(t => t.TypeId == (int)TrophyType.DefaultAward).ThenBy(t => t.TypeId).ThenByDescending(t => t.PointsValue).ThenBy(t => t.Name).ToList();
         }
 
         public void AwardTrophy(int personId, int trophyId, string reason)
@@ -492,11 +490,10 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public List<Person> MyTopThreeNpcs()
+        public Person PersonWithMyAward(TrophyType awardType)
         {
-            //for now we're just going to get the top three by score - later we can have awards for this
-            List<Person> people = People().Where(p => !p.PlayerId.HasValue).ToList();
-            return people.OrderByDescending(p => p.PointsValue).Take(3).ToList();
+            return People().FirstOrDefault(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
+                                                                  && a.Trophy.TypeId == (int) awardType));
         }
 
         public List<Page> Search(string searchTerm)
@@ -517,6 +514,85 @@ namespace Warhammer.Core.Concrete
         public bool PageExists(string shortName, string fullName)
         {
             return _repository.Pages().Any(p => p.ShortName == shortName && p.FullName == fullName);
+        }
+
+        public int AddComment(int pageId, string description)
+        {
+
+            return AddComment(pageId, description, false, null);
+        }
+
+        public int AddComment(int pageId, string description, int personId)
+        {
+            return AddComment(pageId, description, false, personId);
+        }
+
+        public int AddComment(int pageId, string description, bool isAdmin)
+        {
+            return AddComment(pageId, description, isAdmin, null);
+        }
+
+        public List<Person> TopNpcs()
+        {
+            List<Person> people = People().Where(p => !p.PlayerId.HasValue).ToList();
+            return people.OrderByDescending(p => p.PointsValue).Take(5).ToList();
+        }
+
+        public List<Person> AllNpcs()
+        {
+            return People().Where(p => p.PlayerId == null).ToList();
+        }
+
+        public void SetMyAward(int personId, TrophyType trophyType)
+        {
+            Person person = GetPerson(personId);
+            Trophy trophy = Trophies().FirstOrDefault(t => t.TypeId == (int) trophyType);
+            if (person != null && trophy != null)
+            {
+                List<int> typesToRemove = GetExlusiveTrophyTypes(trophyType);
+                List<Award> currentAwards = _repository.Awards().Where(a => ((typesToRemove.Contains(a.Trophy.TypeId) && a.PersonId == personId) || a.Trophy.TypeId == (int)trophyType) && a.NominatedById == CurrentPlayer.Id).ToList();
+                foreach (Award award in currentAwards)
+                {
+                    RemoveAward(award.PersonId, award.Id);
+                }
+
+                AwardTrophy(personId, trophy.Id, ": Awarded by " + CurrentPlayer.DisplayName);
+            }
+        }
+
+        private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
+        {
+            List<int> favAwardId = new List<int>
+            {
+                (int)TrophyType.FirstFavouriteNpc,
+                (int)TrophyType.SecondFavouriteNpc,
+                (int)TrophyType.ThirdFavouriteNpc,
+            };
+
+            if (favAwardId.Contains((int) trophyType))
+            {
+                return favAwardId;
+            }
+
+            return new List<int>{(int)trophyType};
+        }
+
+        private int AddComment(int pageId, string description, bool isAdmin, int? personId)
+        {
+            Page page = GetPage(pageId);
+
+            if(page != null)
+            {
+                Comment comment = new Comment();
+                comment.Created = DateTime.Now;
+                comment.Description = description;
+                comment.IsAdmin = isAdmin;
+                comment.PersonId = personId;
+                comment.CreatedById = CurrentPlayer.Id;
+                page.Comments.Add(comment);
+                return Save(page);
+            }
+            return 0;
         }
     }
 }

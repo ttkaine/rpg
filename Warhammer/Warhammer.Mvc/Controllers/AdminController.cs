@@ -211,15 +211,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    DataProvider.PinPage(page.Id);
-                }
-                catch (Exception ex)
-                {
-                    return View("Pinning Error", ex);
-                }
-
+                DataProvider.PinPage(page.Id);
             }
             return RedirectToAction("Index", "Home");
         }

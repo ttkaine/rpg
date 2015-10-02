@@ -199,18 +199,18 @@
                         </ul>
                         <div class="clearfix"></div>
                     }
-                    if (place.Children.Any())
+                    if (place.Child.Any())
                     {
                         <h3>Contains these places</h3>
                         <ul>
-                            @foreach (Place childPlace in place.Children)
+                            @foreach (Place childPlace in place.Child)
                             {
                                 <li>
                                     @Html.ActionLink(childPlace.FullName, "Index", new { id = childPlace.Id })
-                                    @if (childPlace.Children.Any())
+                                    @if (childPlace.Child.Any())
                                     {
                                         <ul>
-                                            @foreach (Place grandchildPlace in childPlace.Children)
+                                            @foreach (Place grandchildPlace in childPlace.Child)
                                             {
                                                 <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new { id = grandchildPlace.Id })</li>
                                             }

@@ -25,6 +25,18 @@
           <Property Name="DateTime" Type="datetime" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="CreatedById" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" />
+          <Property Name="PageId" Type="int" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Page">
           <Key>
             <PropertyRef Name="Id" />
@@ -115,6 +127,7 @@
           <Property Name="ImageData" Type="varbinary(max)" />
           <Property Name="MimeType" Type="nvarchar" MaxLength="150" />
           <Property Name="PointsValue" Type="int" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Award_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
@@ -149,6 +162,42 @@
             </Principal>
             <Dependent Role="Award">
               <PropertyRef Name="TrophyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CreatedById" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -323,6 +372,7 @@
         <EntityContainer Name="WarhammerModelStoreContainer">
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PageView" EntityType="Self.PageView" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
@@ -343,6 +393,18 @@
           <AssociationSet Name="FK_Award_Trophy" Association="Self.FK_Award_Trophy">
             <End Role="Trophy" EntitySet="Trophy" />
             <End Role="Award" EntitySet="Award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Page" Association="Self.FK_Comment_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Person" Association="Self.FK_Comment_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Player" Association="Self.FK_Comment_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="FK_Page_Person" Association="Self.FK_Page_Person">
             <End Role="Player" EntitySet="Player" />
@@ -406,51 +468,13 @@
     <edmx:ConceptualModels>
       <Schema Namespace="WarhammerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="WarhammerDataEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Pages" EntityType="WarhammerModel.Page" />
-          <AssociationSet Name="PersonAtSession" Association="WarhammerModel.PersonAtSession">
-            <End Role="Page" EntitySet="Pages" />
-            <End Role="Page1" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SessionLog_Person" Association="WarhammerModel.FK_SessionLog_Person">
-            <End Role="Person" EntitySet="Pages" />
-            <End Role="SessionLog" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SessionLog_Session" Association="WarhammerModel.FK_SessionLog_Session">
-            <End Role="Session" EntitySet="Pages" />
-            <End Role="SessionLog" EntitySet="Pages" />
-          </AssociationSet>
-          <EntitySet Name="Players" EntityType="WarhammerModel.Player" />
-          <AssociationSet Name="FK_Page_Person" Association="WarhammerModel.FK_Page_Person">
-            <End Role="Person" EntitySet="Pages" />
-            <End Role="Page" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Page_Player" Association="WarhammerModel.FK_Page_Player">
-            <End Role="Player" EntitySet="Players" />
-            <End Role="Page" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Person_Player" Association="WarhammerModel.FK_Person_Player">
-            <End Role="Player" EntitySet="Players" />
-            <End Role="Person" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Page_Person1" Association="WarhammerModel.FK_Page_Person1">
-            <End Role="Player" EntitySet="Players" />
-            <End Role="Page" EntitySet="Pages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Place_Place" Association="WarhammerModel.FK_Place_Place">
-            <End Role="Place" EntitySet="Pages" />
-            <End Role="Place1" EntitySet="Pages" />
-          </AssociationSet>
-          <EntitySet Name="ChangeLogs" EntityType="WarhammerModel.ChangeLog" />
-          <EntitySet Name="PageViews" EntityType="WarhammerModel.PageView" />
-          <AssociationSet Name="FK_PageView_Page" Association="WarhammerModel.FK_PageView_Page">
-            <End Role="Page" EntitySet="Pages" />
-            <End Role="PageView" EntitySet="PageViews" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PageView_Player" Association="WarhammerModel.FK_PageView_Player">
-            <End Role="Player" EntitySet="Players" />
-            <End Role="PageView" EntitySet="PageViews" />
-          </AssociationSet>
           <EntitySet Name="Awards" EntityType="WarhammerModel.Award" />
+          <EntitySet Name="ChangeLogs" EntityType="WarhammerModel.ChangeLog" />
+          <EntitySet Name="Comments" EntityType="WarhammerModel.Comment" />
+          <EntitySet Name="Pages" EntityType="WarhammerModel.Page" />
+          <EntitySet Name="PageViews" EntityType="WarhammerModel.PageView" />
+          <EntitySet Name="Players" EntityType="WarhammerModel.Player" />
+          <EntitySet Name="Trophies" EntityType="WarhammerModel.Trophy" />
           <AssociationSet Name="FK_Award_Person" Association="WarhammerModel.FK_Award_Person">
             <End Role="Person" EntitySet="Pages" />
             <End Role="Award" EntitySet="Awards" />
@@ -459,209 +483,59 @@
             <End Role="Player" EntitySet="Players" />
             <End Role="Award" EntitySet="Awards" />
           </AssociationSet>
-          <EntitySet Name="Trophies" EntityType="WarhammerModel.Trophy" />
           <AssociationSet Name="FK_Award_Trophy" Association="WarhammerModel.FK_Award_Trophy">
             <End Role="Trophy" EntitySet="Trophies" />
             <End Role="Award" EntitySet="Awards" />
           </AssociationSet>
-          </EntityContainer>
-        <EntityType Name="Page">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ShortName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="ImageMime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedById" Type="Int32" Nullable="false" />
-          <Property Name="ModifedById" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Related" Relationship="WarhammerModel.PersonAtSession" FromRole="Page" ToRole="Page1" />
-          <NavigationProperty Name="Related1" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Internal" />
-          <NavigationProperty Name="CreatedBy" Relationship="WarhammerModel.FK_Page_Player" FromRole="Page" ToRole="Player" />
-          <NavigationProperty Name="ModifiedBy" Relationship="WarhammerModel.FK_Page_Person1" FromRole="Page" ToRole="Player" />
-          <Property Name="SignificantUpdateById" Type="Int32" Nullable="false" />
-          <Property Name="SignificantUpdate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Pinned" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Page" FromRole="Page" ToRole="PageView" />
-        </EntityType>
-        <EntityType Name="Person" BaseType="WarhammerModel.Page">
-          <Property Name="IsDead" Type="Boolean" Nullable="false" />
-          <Property Name="Obiturary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Person" FromRole="Person" ToRole="SessionLog" />
-          <Property Name="PlayerId" Type="Int32" />
-          <NavigationProperty Name="Pages" Relationship="WarhammerModel.FK_Page_Person" FromRole="Person" ToRole="Page" />
-          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Person_Player" FromRole="Person" ToRole="Player" />
-          <Property Name="CauseOfDeath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsInMainParty" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Person" FromRole="Person" ToRole="Award" />
-        </EntityType>
-        <EntityType Name="Session" BaseType="WarhammerModel.Page">
-          <Property Name="DateTime" Type="DateTime" Precision="3" />
-          <Property Name="Length" Type="Int32" />
-          <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Session" FromRole="Session" ToRole="SessionLog" />
-        </EntityType>
-        <Association Name="PersonAtSession">
-          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
-          <End Type="WarhammerModel.Page" Role="Page1" Multiplicity="*" />
-        </Association>
-        <EntityType Name="SessionLog" BaseType="WarhammerModel.Page">
-          <Property Name="PersonId" Type="Int32" />
-          <Property Name="SessionId" Type="Int32" />
-          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_SessionLog_Person" FromRole="SessionLog" ToRole="Person" />
-          <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_SessionLog_Session" FromRole="SessionLog" ToRole="Session" />
-        </EntityType>
-        <Association Name="FK_SessionLog_Person">
-          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
-          <End Type="WarhammerModel.SessionLog" Role="SessionLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SessionLog">
-              <PropertyRef Name="PersonId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SessionLog_Session">
-          <End Type="WarhammerModel.Session" Role="Session" Multiplicity="0..1" />
-          <End Type="WarhammerModel.SessionLog" Role="SessionLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Session">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SessionLog">
-              <PropertyRef Name="SessionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Player">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="DisplayName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Pages" Relationship="WarhammerModel.FK_Page_Player" FromRole="Player" ToRole="Page" />
-          <NavigationProperty Name="People" Relationship="WarhammerModel.FK_Person_Player" FromRole="Player" ToRole="Person" />
-          <NavigationProperty Name="Pages1" Relationship="WarhammerModel.FK_Page_Person1" FromRole="Player" ToRole="Page" />
-          <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Player" FromRole="Player" ToRole="PageView" />
-          <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Player" FromRole="Player" ToRole="Award" />
-        </EntityType>
-        <Association Name="FK_Page_Person">
-          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
-          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Page">
-              <PropertyRef Name="ModifedById" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Page_Player">
-          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
-          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Page">
-              <PropertyRef Name="CreatedById" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Person_Player">
-          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="0..1" />
-          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Person">
-              <PropertyRef Name="PlayerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Page_Person1">
-          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
-          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Page">
-              <PropertyRef Name="ModifedById" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Place" BaseType="WarhammerModel.Page">
-          <Property Name="IsWithin" Type="Int32" />
-          <Property Name="PlaceType" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Children" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place" ToRole="Place1" />
-          <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place1" ToRole="Place" />
-        </EntityType>
-        <Association Name="FK_Place_Place">
-          <End Type="WarhammerModel.Place" Role="Place" Multiplicity="0..1" />
-          <End Type="WarhammerModel.Place" Role="Place1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Place">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Place1">
-              <PropertyRef Name="IsWithin" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ChangeLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="PageView">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PageId" Type="Int32" Nullable="false" />
-          <Property Name="PlayerId" Type="Int32" Nullable="false" />
-          <Property Name="Viewed" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageView_Page" FromRole="PageView" ToRole="Page" />
-          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PageView_Player" FromRole="PageView" ToRole="Player" />
-        </EntityType>
-        <Association Name="FK_PageView_Page">
-          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
-          <End Type="WarhammerModel.PageView" Role="PageView" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Page">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PageView">
-              <PropertyRef Name="PageId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PageView_Player">
-          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
-          <End Type="WarhammerModel.PageView" Role="PageView" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PageView">
-              <PropertyRef Name="PlayerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+          <AssociationSet Name="FK_Comment_Page" Association="WarhammerModel.FK_Comment_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Person" Association="WarhammerModel.FK_Comment_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Player" Association="WarhammerModel.FK_Comment_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Page_Person" Association="WarhammerModel.FK_Page_Person">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Page" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Page_Player" Association="WarhammerModel.FK_Page_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Page" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PageView_Page" Association="WarhammerModel.FK_PageView_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="PageView" EntitySet="PageViews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PageView_Player" Association="WarhammerModel.FK_PageView_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="PageView" EntitySet="PageViews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Player" Association="WarhammerModel.FK_Person_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Person" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SessionLog_Person" Association="WarhammerModel.FK_SessionLog_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="SessionLog" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Place_Place" Association="WarhammerModel.FK_Place_Place">
+            <End Role="Place" EntitySet="Pages" />
+            <End Role="Place1" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SessionLog_Session" Association="WarhammerModel.FK_SessionLog_Session">
+            <End Role="Session" EntitySet="Pages" />
+            <End Role="SessionLog" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="PersonAtSession" Association="WarhammerModel.PersonAtSession">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="Page1" EntitySet="Pages" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Award">
           <Key>
             <PropertyRef Name="Id" />
@@ -676,6 +550,121 @@
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Award_Person" FromRole="Award" ToRole="Person" />
           <NavigationProperty Name="NominatedBy" Relationship="WarhammerModel.FK_Award_Player" FromRole="Award" ToRole="Player" />
           <NavigationProperty Name="Trophy" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Award" ToRole="Trophy" />
+        </EntityType>
+        <EntityType Name="ChangeLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedById" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" />
+          <Property Name="PageId" Type="Int32" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_Comment_Page" FromRole="Comment" ToRole="Page" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Comment_Person" FromRole="Comment" ToRole="Person" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Comment_Player" FromRole="Comment" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Page">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShortName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ImageMime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedById" Type="Int32" Nullable="false" />
+          <Property Name="ModifedById" Type="Int32" Nullable="false" />
+          <Property Name="SignificantUpdateById" Type="Int32" Nullable="false" />
+          <Property Name="SignificantUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Pinned" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="WarhammerModel.FK_Comment_Page" FromRole="Page" ToRole="Comment" />
+          <NavigationProperty Name="ModifiedBy" Relationship="WarhammerModel.FK_Page_Person" FromRole="Page" ToRole="Player" />
+          <NavigationProperty Name="CreatedBy" Relationship="WarhammerModel.FK_Page_Player" FromRole="Page" ToRole="Player" />
+          <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Page" FromRole="Page" ToRole="PageView" />
+          <NavigationProperty Name="Related" Relationship="WarhammerModel.PersonAtSession" FromRole="Page" ToRole="Page1" />
+          <NavigationProperty Name="Pages" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" />
+        </EntityType>
+        <EntityType Name="PageView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PageId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="Viewed" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageView_Page" FromRole="PageView" ToRole="Page" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PageView_Player" FromRole="PageView" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Person" BaseType="WarhammerModel.Page">
+          <Property Name="IsDead" Type="Boolean" Nullable="false" />
+          <Property Name="Obiturary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PlayerId" Type="Int32" />
+          <Property Name="CauseOfDeath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsInMainParty" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Person" FromRole="Person" ToRole="Award" />
+          <NavigationProperty Name="PersonComments" Relationship="WarhammerModel.FK_Comment_Person" FromRole="Person" ToRole="Comment" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Person_Player" FromRole="Person" ToRole="Player" />
+          <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Person" FromRole="Person" ToRole="SessionLog" />
+        </EntityType>
+        <EntityType Name="Place" BaseType="WarhammerModel.Page">
+          <Property Name="IsWithin" Type="Int32" />
+          <Property Name="PlaceType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Child" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place" ToRole="Place1" />
+          <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place1" ToRole="Place" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Player" FromRole="Player" ToRole="Award" />
+          <NavigationProperty Name="Comments" Relationship="WarhammerModel.FK_Comment_Player" FromRole="Player" ToRole="Comment" />
+          <NavigationProperty Name="Pages" Relationship="WarhammerModel.FK_Page_Person" FromRole="Player" ToRole="Page" />
+          <NavigationProperty Name="Pages1" Relationship="WarhammerModel.FK_Page_Player" FromRole="Player" ToRole="Page" />
+          <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Player" FromRole="Player" ToRole="PageView" />
+          <NavigationProperty Name="People" Relationship="WarhammerModel.FK_Person_Player" FromRole="Player" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Session" BaseType="WarhammerModel.Page">
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="Length" Type="Int32" />
+          <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Session" FromRole="Session" ToRole="SessionLog" />
+        </EntityType>
+        <EntityType Name="SessionLog" BaseType="WarhammerModel.Page">
+          <Property Name="PersonId" Type="Int32" />
+          <Property Name="SessionId" Type="Int32" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_SessionLog_Person" FromRole="SessionLog" ToRole="Person" />
+          <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_SessionLog_Session" FromRole="SessionLog" ToRole="Session" />
+        </EntityType>
+        <EntityType Name="Trophy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="MimeType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="PointsValue" Type="Int32" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Trophy" ToRole="Award" />
         </EntityType>
         <Association Name="FK_Award_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -701,18 +690,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Trophy">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="MimeType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="PointsValue" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Trophy" ToRole="Award" />
-        </EntityType>
         <Association Name="FK_Award_Trophy">
           <End Type="WarhammerModel.Trophy" Role="Trophy" Multiplicity="1" />
           <End Type="WarhammerModel.Award" Role="Award" Multiplicity="*" />
@@ -725,100 +702,148 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Comment_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Page_Person">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Page">
+              <PropertyRef Name="ModifedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Page_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Page">
+              <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PageView_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.PageView" Role="PageView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PageView">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PageView_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.PageView" Role="PageView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PageView">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SessionLog_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="WarhammerModel.SessionLog" Role="SessionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SessionLog">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Place_Place">
+          <End Type="WarhammerModel.Place" Role="Place" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Place" Role="Place1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Place1">
+              <PropertyRef Name="IsWithin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SessionLog_Session">
+          <End Type="WarhammerModel.Session" Role="Session" Multiplicity="0..1" />
+          <End Type="WarhammerModel.SessionLog" Role="SessionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SessionLog">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonAtSession">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
+          <End Type="WarhammerModel.Page" Role="Page1" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WarhammerModelStoreContainer" CdmEntityContainer="WarhammerDataEntities">
-          <EntitySetMapping Name="Pages">
-            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
-              <MappingFragment StoreEntitySet="Page">
-                <ScalarProperty Name="Pinned" ColumnName="Pinned" />
-                <ScalarProperty Name="SignificantUpdate" ColumnName="SignificantUpdate" />
-                <ScalarProperty Name="SignificantUpdateById" ColumnName="SignificantUpdateById" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ModifedById" ColumnName="ModifedById" />
-                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
-                <ScalarProperty Name="Modified" ColumnName="Modified" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="ImageMime" ColumnName="ImageMime" />
-                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
-              <MappingFragment StoreEntitySet="Person">
-                <ScalarProperty Name="IsInMainParty" ColumnName="IsInMainParty" />
-                <ScalarProperty Name="CauseOfDeath" ColumnName="CauseOfDeath" />
-                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IsDead" ColumnName="IsDead" />
-                <ScalarProperty Name="Obiturary" ColumnName="Obiturary" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
-              <MappingFragment StoreEntitySet="Session">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="Length" ColumnName="Length" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.SessionLog)">
-              <MappingFragment StoreEntitySet="SessionLog">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
-                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Place)">
-              <MappingFragment StoreEntitySet="Place">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IsWithin" ColumnName="IsWithin" />
-                <ScalarProperty Name="PlaceType" ColumnName="PlaceType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="PersonAtSession" TypeName="WarhammerModel.PersonAtSession" StoreEntitySet="PersonAtSession">
-            <EndProperty Name="Page1">
-              <ScalarProperty Name="Id" ColumnName="SessionId" />
-            </EndProperty>
-            <EndProperty Name="Page">
-              <ScalarProperty Name="Id" ColumnName="PersonId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="Players">
-            <EntityTypeMapping TypeName="WarhammerModel.Player">
-              <MappingFragment StoreEntitySet="Player">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
-                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ChangeLogs">
-            <EntityTypeMapping TypeName="WarhammerModel.ChangeLog">
-              <MappingFragment StoreEntitySet="ChangeLog">
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PageViews">
-            <EntityTypeMapping TypeName="WarhammerModel.PageView">
-              <MappingFragment StoreEntitySet="PageView">
-                <ScalarProperty Name="Viewed" ColumnName="Viewed" />
-                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Awards">
             <EntityTypeMapping TypeName="WarhammerModel.Award">
               <MappingFragment StoreEntitySet="Award">
@@ -832,9 +857,103 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ChangeLogs">
+            <EntityTypeMapping TypeName="WarhammerModel.ChangeLog">
+              <MappingFragment StoreEntitySet="ChangeLog">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="WarhammerModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pages">
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
+              <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Pinned" ColumnName="Pinned" />
+                <ScalarProperty Name="SignificantUpdate" ColumnName="SignificantUpdate" />
+                <ScalarProperty Name="SignificantUpdateById" ColumnName="SignificantUpdateById" />
+                <ScalarProperty Name="ModifedById" ColumnName="ModifedById" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ImageMime" ColumnName="ImageMime" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.SessionLog)">
+              <MappingFragment StoreEntitySet="SessionLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsDead" ColumnName="IsDead" />
+                <ScalarProperty Name="Obiturary" ColumnName="Obiturary" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="CauseOfDeath" ColumnName="CauseOfDeath" />
+                <ScalarProperty Name="IsInMainParty" ColumnName="IsInMainParty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
+              <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Place)">
+              <MappingFragment StoreEntitySet="Place">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsWithin" ColumnName="IsWithin" />
+                <ScalarProperty Name="PlaceType" ColumnName="PlaceType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PageViews">
+            <EntityTypeMapping TypeName="WarhammerModel.PageView">
+              <MappingFragment StoreEntitySet="PageView">
+                <ScalarProperty Name="Viewed" ColumnName="Viewed" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="WarhammerModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Trophies">
             <EntityTypeMapping TypeName="WarhammerModel.Trophy">
               <MappingFragment StoreEntitySet="Trophy">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
                 <ScalarProperty Name="MimeType" ColumnName="MimeType" />
                 <ScalarProperty Name="ImageData" ColumnName="ImageData" />
@@ -844,6 +963,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="PersonAtSession" TypeName="WarhammerModel.PersonAtSession" StoreEntitySet="PersonAtSession">
+            <EndProperty Name="Page1">
+              <ScalarProperty Name="Id" ColumnName="SessionId" />
+            </EndProperty>
+            <EndProperty Name="Page">
+              <ScalarProperty Name="Id" ColumnName="PersonId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

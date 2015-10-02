@@ -16,9 +16,10 @@ namespace Warhammer.Core.Entities
     {
         public Page()
         {
-            this.Related = new HashSet<Page>();
-            this.Related1 = new HashSet<Page>();
+            this.Comments = new HashSet<Comment>();
             this.PageViews = new HashSet<PageView>();
+            this.Related = new HashSet<Page>();
+            this.Pages = new HashSet<Page>();
         }
     
         public int Id { get; set; }
@@ -35,10 +36,11 @@ namespace Warhammer.Core.Entities
         public System.DateTime SignificantUpdate { get; set; }
         public bool Pinned { get; set; }
     
-        public virtual ICollection<Page> Related { get; set; }
-        internal virtual ICollection<Page> Related1 { get; set; }
-        public virtual Player CreatedBy { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual Player ModifiedBy { get; set; }
+        public virtual Player CreatedBy { get; set; }
         public virtual ICollection<PageView> PageViews { get; set; }
+        public virtual ICollection<Page> Related { get; set; }
+        public virtual ICollection<Page> Pages { get; set; }
     }
 }

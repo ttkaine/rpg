@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30602.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Core", "Warhammer.Core\Warhammer.Core.csproj", "{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}"
 EndProject
@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Warhammer.sln.DotSettings = Warhammer.sln.DotSettings
 		WebEssentials-Settings.json = WebEssentials-Settings.json
+		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warhammer.Tests.Smoke", "Warhammer.Tests.Smoke\Warhammer.Tests.Smoke.csproj", "{3A0F437D-D50F-45C1-81C2-817680099DF0}"

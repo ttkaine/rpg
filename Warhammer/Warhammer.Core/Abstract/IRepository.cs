@@ -19,5 +19,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<Trophy> Trophies();
         int Save(Trophy trophy);
         void Delete(Award award);
+        IQueryable<Award> Awards();
     }
 }

@@ -25,11 +25,12 @@ namespace Warhammer.Core.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Page> Pages { get; set; }
-        public virtual DbSet<Player> Players { get; set; }
-        public virtual DbSet<ChangeLog> ChangeLogs { get; set; }
-        public virtual DbSet<PageView> PageViews { get; set; }
         public virtual DbSet<Award> Awards { get; set; }
+        public virtual DbSet<ChangeLog> ChangeLogs { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<PageView> PageViews { get; set; }
+        public virtual DbSet<Player> Players { get; set; }
         public virtual DbSet<Trophy> Trophies { get; set; }
     }
 }

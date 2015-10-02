@@ -1,0 +1,5 @@
+﻿@model Warhammer.Core.Entities.Person
+<tr>
+    <td><a id="personLink_@Model.Id" href="@Url.Action("Index", "Page", new {id = Model.Id})"><img src="@Url.Action("Image", "Page", new {id = Model.Id}, null)" title="@Model.FullName" alt="Picture of @Model.FullName" class="mini-profile-image" /></a></td>
+    <td class="name">@Model.FullName</td>
+</tr>

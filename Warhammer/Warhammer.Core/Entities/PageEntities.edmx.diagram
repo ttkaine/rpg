@@ -4,34 +4,37 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8ff36b70a42743f1b29c097509174022" Name="Diagram1" ZoomLevel="93">
-        <EntityTypeShape EntityType="WarhammerModel.Page" Width="1.5" PointX="0.75" PointY="1" />
-        <EntityTypeShape EntityType="WarhammerModel.Person" Width="1.5" PointX="4.25" PointY="5" />
-        <InheritanceConnector EntityType="WarhammerModel.Person" />
-        <EntityTypeShape EntityType="WarhammerModel.Session" Width="1.5" PointX="5.625" PointY="3.125" />
-        <InheritanceConnector EntityType="WarhammerModel.Session" />
-        <AssociationConnector Association="WarhammerModel.PersonAtSession" />
-        <EntityTypeShape EntityType="WarhammerModel.SessionLog" Width="1.5" PointX="7.875" PointY="2.75" />
-        <AssociationConnector Association="WarhammerModel.FK_SessionLog_Person" />
-        <AssociationConnector Association="WarhammerModel.FK_SessionLog_Session" />
-        <InheritanceConnector EntityType="WarhammerModel.SessionLog" />
-        <EntityTypeShape EntityType="WarhammerModel.Player" Width="1.5" PointX="1.25" PointY="5.625" />
-        <AssociationConnector Association="WarhammerModel.FK_Page_Person" />
-        <AssociationConnector Association="WarhammerModel.FK_Page_Player" />
-        <AssociationConnector Association="WarhammerModel.FK_Person_Player" />
-        <AssociationConnector Association="WarhammerModel.FK_Page_Person1" />
-        <EntityTypeShape EntityType="WarhammerModel.Place" Width="1.5" PointX="3.25" PointY="1" />
-        <AssociationConnector Association="WarhammerModel.FK_Place_Place" />
-        <InheritanceConnector EntityType="WarhammerModel.Place" />
-        <EntityTypeShape EntityType="WarhammerModel.ChangeLog" Width="1.5" PointX="3.375" PointY="8.75" />
-        <EntityTypeShape EntityType="WarhammerModel.PageView" Width="1.5" PointX="6.5" PointY="5.625" />
-        <AssociationConnector Association="WarhammerModel.FK_PageView_Page" />
-        <AssociationConnector Association="WarhammerModel.FK_PageView_Player" />
-        <EntityTypeShape EntityType="WarhammerModel.Award" Width="1.5" PointX="9.5" PointY="5.375" />
+      <Diagram DiagramId="8ff36b70a42743f1b29c097509174022" Name="Diagram1" ZoomLevel="134">
+        <EntityTypeShape EntityType="WarhammerModel.Award" Width="1.5" PointX="10.5" PointY="9.875" />
+        <EntityTypeShape EntityType="WarhammerModel.ChangeLog" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WarhammerModel.Comment" Width="1.5" PointX="7.5" PointY="5.875" />
+        <EntityTypeShape EntityType="WarhammerModel.Page" Width="1.5" PointX="3" PointY="8.625" />
+        <EntityTypeShape EntityType="WarhammerModel.PageView" Width="1.5" PointX="8.25" PointY="10.25" />
+        <EntityTypeShape EntityType="WarhammerModel.Person" Width="1.5" PointX="6" PointY="9.625" />
+        <EntityTypeShape EntityType="WarhammerModel.Place" Width="1.5" PointX="5.25" PointY="15.625" />
+        <EntityTypeShape EntityType="WarhammerModel.Player" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="WarhammerModel.Session" Width="1.5" PointX="5.25" PointY="18.625" />
+        <EntityTypeShape EntityType="WarhammerModel.SessionLog" Width="1.5" PointX="7.625" PointY="14.5" />
+        <EntityTypeShape EntityType="WarhammerModel.Trophy" Width="1.5" PointX="8.25" PointY="17" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Person" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Player" />
-        <EntityTypeShape EntityType="WarhammerModel.Trophy" Width="1.5" PointX="5.375" PointY="9" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Trophy" />
+        <AssociationConnector Association="WarhammerModel.FK_Comment_Page" />
+        <AssociationConnector Association="WarhammerModel.FK_Comment_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_Comment_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_Page_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_Page_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_PageView_Page" />
+        <AssociationConnector Association="WarhammerModel.FK_PageView_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_Person_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_SessionLog_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_Place_Place" />
+        <AssociationConnector Association="WarhammerModel.FK_SessionLog_Session" />
+        <AssociationConnector Association="WarhammerModel.PersonAtSession" />
+        <InheritanceConnector EntityType="WarhammerModel.SessionLog" />
+        <InheritanceConnector EntityType="WarhammerModel.Person" />
+        <InheritanceConnector EntityType="WarhammerModel.Session" />
+        <InheritanceConnector EntityType="WarhammerModel.Place" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

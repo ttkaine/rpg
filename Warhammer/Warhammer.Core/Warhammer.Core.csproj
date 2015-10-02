@@ -85,6 +85,9 @@
     <Compile Include="Entities\ChangeLog.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Comment.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Page.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -129,11 +132,14 @@
     <Compile Include="Entities\_Place.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
+    <Compile Include="Entities\_Trophy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="Entities\PageEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PageEntities.Designer.cs</LastGenOutput>

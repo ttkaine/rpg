@@ -27,7 +27,7 @@ namespace Warhammer.Mvc.Controllers
                 RecentChanges = DataProvider.RecentPages().ToList(),
                 MyStuff = DataProvider.MyStuff().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
-                TopNpcs = DataProvider.MyTopThreeNpcs(),
+                TopNpcs = DataProvider.TopNpcs(),
                 AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
             return View(model);
@@ -125,5 +125,59 @@ namespace Warhammer.Mvc.Controllers
             return PartialView(new SearchModel {SearchTerm = model.SearchTerm, Results = pages});
         }
 
+        public ActionResult FavouriteNpcs()
+        {
+            ModelState.Clear();
+            List<Person> npcs = DataProvider.AllNpcs().OrderBy(p => p.FullName).ToList();
+            MyFavNpcModel model = new MyFavNpcModel
+            {
+                First = DataProvider.PersonWithMyAward(TrophyType.FirstFavouriteNpc),
+                Second = DataProvider.PersonWithMyAward(TrophyType.SecondFavouriteNpc),
+                Third = DataProvider.PersonWithMyAward(TrophyType.ThirdFavouriteNpc)
+            };
+
+            if (model.First != null)
+            {
+                model.FirstId = model.First.Id;
+                model.ChooseFirstNpcList = new SelectList(npcs, "Id", "FullName", model.First.Id);
+            }
+            else
+            {
+                model.ChooseFirstNpcList = new SelectList(npcs, "Id", "FullName");
+            }
+
+            if (model.Second != null)
+            {
+                model.SecondId = model.Second.Id;
+                model.ChooseSecondNpcList = new SelectList(npcs, "Id", "FullName", model.Second.Id);
+            }
+            else
+            {
+                model.ChooseSecondNpcList = new SelectList(npcs, "Id", "FullName");
+            }
+
+            if (model.Third != null)
+            {
+                model.ThirdId = model.Third.Id;
+                model.ChooseThirdNpcList = new SelectList(npcs, "Id", "FullName", model.Third.Id);
+            }
+            else
+            {
+                model.ChooseThirdNpcList = new SelectList(npcs, "Id", "FullName");
+            }
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateFavNpc(MyFavNpcModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetMyAward(model.ThirdId, TrophyType.ThirdFavouriteNpc);
+                DataProvider.SetMyAward(model.SecondId, TrophyType.SecondFavouriteNpc);
+                DataProvider.SetMyAward(model.FirstId, TrophyType.FirstFavouriteNpc);
+            }
+            return FavouriteNpcs();
+        }
     }
 }

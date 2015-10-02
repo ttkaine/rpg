@@ -34,7 +34,7 @@ namespace Warhammer.Core.Entities
 
         public IEnumerable<Award> OrderedAwards
         {
-            get { return Awards.OrderByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name).ThenBy(a => a.Id ); }
+            get { return Awards.OrderBy(t => t.Trophy.TypeId == (int)TrophyType.DefaultAward).ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name).ThenBy(a => a.Id ); }
         }
 
         public int ActivityScore

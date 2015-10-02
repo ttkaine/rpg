@@ -16,11 +16,12 @@ namespace Warhammer.Core.Entities
     {
         public Player()
         {
+            this.Awards = new HashSet<Award>();
+            this.Comments = new HashSet<Comment>();
             this.Pages = new HashSet<Page>();
-            this.People = new HashSet<Person>();
             this.Pages1 = new HashSet<Page>();
             this.PageViews = new HashSet<PageView>();
-            this.Awards = new HashSet<Award>();
+            this.People = new HashSet<Person>();
         }
     
         public int Id { get; set; }
@@ -29,10 +30,11 @@ namespace Warhammer.Core.Entities
         public byte[] ImageData { get; set; }
         public string Description { get; set; }
     
+        public virtual ICollection<Award> Awards { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Page> Pages { get; set; }
-        public virtual ICollection<Person> People { get; set; }
         public virtual ICollection<Page> Pages1 { get; set; }
         public virtual ICollection<PageView> PageViews { get; set; }
-        public virtual ICollection<Award> Awards { get; set; }
+        public virtual ICollection<Person> People { get; set; }
     }
 }
