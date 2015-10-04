@@ -7,7 +7,34 @@
     {
         using (Ajax.BeginForm("UpdateFavNpc", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "favNpcBlock" }))
         {
-            
+            <table class="table table-striped">
+
+                @if (Model.First == null)
+                {
+                    <tr><td colspan="2">No favourite NPC set</td></tr>
+                }
+                else
+                {
+                    @Html.DisplayFor(m => Model.First)
+                }
+                @if (Model.Second == null)
+                {
+                    <tr><td colspan="2">No second favourite NPC set</td></tr>
+                }
+                else
+                {
+                    @Html.DisplayFor(m => Model.Second)
+                }
+                @if (Model.Third == null)
+                {
+                    <tr><td colspan="2">No third favourite NPC set</td></tr>
+                }
+                else
+                {
+                    @Html.DisplayFor(m => Model.Third)
+                }
+
+            </table>
 
             @Html.DropDownListFor(m => Model.FirstId, Model.ChooseFirstNpcList)
 

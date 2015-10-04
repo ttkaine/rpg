@@ -128,6 +128,12 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult FavouriteNpcs()
         {
             ModelState.Clear();
+            var model = MyFavNpcModel();
+            return PartialView(model);
+        }
+
+        private MyFavNpcModel MyFavNpcModel()
+        {
             List<Person> npcs = DataProvider.AllNpcs().OrderBy(p => p.FullName).ToList();
             MyFavNpcModel model = new MyFavNpcModel
             {
@@ -165,7 +171,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 model.ChooseThirdNpcList = new SelectList(npcs, "Id", "FullName");
             }
-            return PartialView(model);
+            return model;
         }
 
         [HttpPost]
@@ -177,7 +183,9 @@ namespace Warhammer.Mvc.Controllers
                 DataProvider.SetMyAward(model.SecondId, TrophyType.SecondFavouriteNpc);
                 DataProvider.SetMyAward(model.FirstId, TrophyType.FirstFavouriteNpc);
             }
-            return FavouriteNpcs();
+            ModelState.Clear();
+            var favModel = MyFavNpcModel();
+            return PartialView("FavouriteNpcs", favModel);
         }
     }
 }
