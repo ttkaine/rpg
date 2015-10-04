@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8ff36b70a42743f1b29c097509174022" Name="Diagram1" ZoomLevel="134">
+      <Diagram DiagramId="8ff36b70a42743f1b29c097509174022" Name="Diagram1" ZoomLevel="64">
         <EntityTypeShape EntityType="WarhammerModel.Award" Width="1.5" PointX="10.5" PointY="9.875" />
         <EntityTypeShape EntityType="WarhammerModel.ChangeLog" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="WarhammerModel.Comment" Width="1.5" PointX="7.5" PointY="5.875" />
@@ -35,6 +35,14 @@
         <InheritanceConnector EntityType="WarhammerModel.Person" />
         <InheritanceConnector EntityType="WarhammerModel.Session" />
         <InheritanceConnector EntityType="WarhammerModel.Place" />
+        <EntityTypeShape EntityType="WarhammerModel.Scene" Width="1.5" PointX="11.25" PointY="13.875" />
+        <EntityTypeShape EntityType="WarhammerModel.ScenePost" Width="1.5" PointX="13.5" PointY="11.5" />
+        <AssociationConnector Association="WarhammerModel.FK_Scene_Page" />
+        <AssociationConnector Association="WarhammerModel.FK_Scene_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_ScenePost_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_Scene_Place" />
+        <AssociationConnector Association="WarhammerModel.FK_ScenePost_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_ScenePost_Scene" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -560,6 +560,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public ICollection<Scene> MyScenes()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>

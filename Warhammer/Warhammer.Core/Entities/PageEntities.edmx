@@ -101,6 +101,27 @@
           <Property Name="ImageData" Type="varbinary(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Scene">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LeadCharacterId" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScenePost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SceneId" Type="int" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="TextContent" Type="nvarchar(max)" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="EditedDateTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="Session">
           <Key>
             <PropertyRef Name="Id" />
@@ -321,6 +342,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Scene_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Scene" Type="Self.Scene" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Scene" Type="Self.Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LeadCharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Place">
+          <End Role="Place" Type="Self.Place" Multiplicity="0..1" />
+          <End Role="Scene" Type="Self.Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="ScenePost" Type="Self.ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="ScenePost" Type="Self.ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Scene">
+          <End Role="Scene" Type="Self.Scene" Multiplicity="1" />
+          <End Role="ScenePost" Type="Self.ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scene">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="SceneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Session_Page">
           <End Role="Page" Type="Self.Page" Multiplicity="1" />
           <End Role="Session" Type="Self.Session" Multiplicity="0..1" />
@@ -379,6 +472,8 @@
           <EntitySet Name="PersonAtSession" EntityType="Self.PersonAtSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Place" EntityType="Self.Place" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scene" EntityType="Self.Scene" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScenePost" EntityType="Self.ScenePost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
@@ -445,6 +540,30 @@
           <AssociationSet Name="FK_Place_Place" Association="Self.FK_Place_Place">
             <End Role="Place" EntitySet="Place" />
             <End Role="Place1" EntitySet="Place" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Page" Association="Self.FK_Scene_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Scene" EntitySet="Scene" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Person" Association="Self.FK_Scene_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Scene" EntitySet="Scene" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Place" Association="Self.FK_Scene_Place">
+            <End Role="Place" EntitySet="Place" />
+            <End Role="Scene" EntitySet="Scene" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Person" Association="Self.FK_ScenePost_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ScenePost" EntitySet="ScenePost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Player" Association="Self.FK_ScenePost_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="ScenePost" EntitySet="ScenePost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Scene" Association="Self.FK_ScenePost_Scene">
+            <End Role="Scene" EntitySet="Scene" />
+            <End Role="ScenePost" EntitySet="ScenePost" />
           </AssociationSet>
           <AssociationSet Name="FK_Session_Page" Association="Self.FK_Session_Page">
             <End Role="Page" EntitySet="Page" />
@@ -535,6 +654,32 @@
             <End Role="Page" EntitySet="Pages" />
             <End Role="Page1" EntitySet="Pages" />
           </AssociationSet>
+          <EntitySet Name="Scenes" EntityType="WarhammerModel.Scene" />
+          <EntitySet Name="ScenePosts" EntityType="WarhammerModel.ScenePost" />
+          <AssociationSet Name="FK_Scene_Page" Association="WarhammerModel.FK_Scene_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="Scene" EntitySet="Scenes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Person" Association="WarhammerModel.FK_Scene_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="Scene" EntitySet="Scenes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Person" Association="WarhammerModel.FK_ScenePost_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="ScenePost" EntitySet="ScenePosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Place" Association="WarhammerModel.FK_Scene_Place">
+            <End Role="Place" EntitySet="Pages" />
+            <End Role="Scene" EntitySet="Scenes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Player" Association="WarhammerModel.FK_ScenePost_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="ScenePost" EntitySet="ScenePosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Scene" Association="WarhammerModel.FK_ScenePost_Scene">
+            <End Role="Scene" EntitySet="Scenes" />
+            <End Role="ScenePost" EntitySet="ScenePosts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -597,6 +742,7 @@
           <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Page" FromRole="Page" ToRole="PageView" />
           <NavigationProperty Name="Related" Relationship="WarhammerModel.PersonAtSession" FromRole="Page" ToRole="Page1" />
           <NavigationProperty Name="Pages" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" />
+          <NavigationProperty Name="Scene" Relationship="WarhammerModel.FK_Scene_Page" FromRole="Page" ToRole="Scene" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -619,12 +765,15 @@
           <NavigationProperty Name="PersonComments" Relationship="WarhammerModel.FK_Comment_Person" FromRole="Person" ToRole="Comment" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Person_Player" FromRole="Person" ToRole="Player" />
           <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Person" FromRole="Person" ToRole="SessionLog" />
+          <NavigationProperty Name="Scenes" Relationship="WarhammerModel.FK_Scene_Person" FromRole="Person" ToRole="Scene" />
+          <NavigationProperty Name="ScenePosts" Relationship="WarhammerModel.FK_ScenePost_Person" FromRole="Person" ToRole="ScenePost" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
           <Property Name="PlaceType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Child" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place" ToRole="Place1" />
           <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place1" ToRole="Place" />
+          <NavigationProperty Name="Scenes" Relationship="WarhammerModel.FK_Scene_Place" FromRole="Place" ToRole="Scene" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
@@ -641,6 +790,7 @@
           <NavigationProperty Name="Pages1" Relationship="WarhammerModel.FK_Page_Player" FromRole="Player" ToRole="Page" />
           <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Player" FromRole="Player" ToRole="PageView" />
           <NavigationProperty Name="People" Relationship="WarhammerModel.FK_Person_Player" FromRole="Player" ToRole="Person" />
+          <NavigationProperty Name="ScenePosts" Relationship="WarhammerModel.FK_ScenePost_Player" FromRole="Player" ToRole="ScenePost" />
         </EntityType>
         <EntityType Name="Session" BaseType="WarhammerModel.Page">
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -838,6 +988,106 @@
           <End Type="WarhammerModel.Page" Role="Page" Multiplicity="*" />
           <End Type="WarhammerModel.Page" Role="Page1" Multiplicity="*" />
         </Association>
+        <EntityType Name="Scene">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LeadCharacterId" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_Scene_Page" FromRole="Scene" ToRole="Page" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Scene_Person" FromRole="Scene" ToRole="Person" />
+          <NavigationProperty Name="Place" Relationship="WarhammerModel.FK_Scene_Place" FromRole="Scene" ToRole="Place" />
+          <NavigationProperty Name="ScenePosts" Relationship="WarhammerModel.FK_ScenePost_Scene" FromRole="Scene" ToRole="ScenePost" />
+        </EntityType>
+        <EntityType Name="ScenePost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SceneId" Type="Int32" Nullable="false" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="TextContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EditedDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ScenePost_Person" FromRole="ScenePost" ToRole="Person" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_ScenePost_Player" FromRole="ScenePost" ToRole="Player" />
+          <NavigationProperty Name="Scene" Relationship="WarhammerModel.FK_ScenePost_Scene" FromRole="ScenePost" ToRole="Scene" />
+        </EntityType>
+        <Association Name="FK_Scene_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LeadCharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.ScenePost" Role="ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Place">
+          <End Type="WarhammerModel.Place" Role="Place" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.ScenePost" Role="ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Scene">
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="1" />
+          <End Type="WarhammerModel.ScenePost" Role="ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scene">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="SceneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -971,6 +1221,29 @@
               <ScalarProperty Name="Id" ColumnName="PersonId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Scenes">
+            <EntityTypeMapping TypeName="WarhammerModel.Scene">
+              <MappingFragment StoreEntitySet="Scene">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LeadCharacterId" ColumnName="LeadCharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScenePosts">
+            <EntityTypeMapping TypeName="WarhammerModel.ScenePost">
+              <MappingFragment StoreEntitySet="ScenePost">
+                <ScalarProperty Name="EditedDateTime" ColumnName="EditedDateTime" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="TextContent" ColumnName="TextContent" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="SceneId" ColumnName="SceneId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
