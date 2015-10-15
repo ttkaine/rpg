@@ -7,35 +7,6 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Session
     {
-        public override double ActivityBonus
-        {
-            get
-            {
-                double twiceMonths = MonthsAgo*2;
-                if (twiceMonths > 6)
-                {
-                    return 0;
-                }
-                return twiceMonths < 1 ? 1 : 1 / twiceMonths;
-            }
-        }
-
-        private double MonthsAgo
-        {
-
-            get
-            {
-                if (DateTime.HasValue)
-                {
-                    return System.DateTime.Now.Subtract(this.DateTime.Value).Days/(365.25/12);
-                }
-                else
-                {
-                    return 9999;
-                }
-            }
-        }
-
         public override double BaseScore
         {
             get

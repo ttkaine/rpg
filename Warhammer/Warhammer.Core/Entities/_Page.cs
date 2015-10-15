@@ -12,11 +12,12 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                if (Created < DateTime.Now.AddMonths(-3))
+                double ageWithLag = AgeInDays - 7;
+                if (Created < DateTime.Now.AddMonths(-1))
                 {
                     return 0;
                 }
-                return AgeInMonths < 1 ? 1 : 1/AgeInMonths;
+                return ageWithLag < 1 ? 1 : 1 / ageWithLag;
             } 
         }
 

@@ -21,8 +21,8 @@ namespace Warhammer.Core.Entities
                        theContent = theContent.Replace("  ", " ");
                    }
                    int words = theContent.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Count();
-                   double baseScore = words / 1000.0;
-                   return baseScore + base.BaseScore;
+                   double baseScore = words / 2000.0;
+                   return baseScore + 1;
                }
            }
     }
