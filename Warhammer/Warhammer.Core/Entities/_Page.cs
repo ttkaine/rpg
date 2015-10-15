@@ -30,7 +30,7 @@ namespace Warhammer.Core.Entities
         {
             get { return DateTime.Now.Subtract(Created).Days/(365.25/12); }           
         }
-        public double AgeInDays
+        public virtual double AgeInDays
         {
             get
             {

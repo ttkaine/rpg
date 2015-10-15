@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +15,24 @@ namespace Warhammer.Core.Entities
                 return 1.0;
             }     
         }
+
+        public override double AgeInDays
+        {
+            get
+            {
+                if (DateTime.HasValue)
+                {
+                    TimeSpan span = System.DateTime.Now - DateTime.Value;
+                    double days = span.TotalDays;
+                    return days;
+                }
+                else
+                {
+                    return 1000;
+                }
+            }
+        }
+
         public IEnumerable<Person> People
         {
             get { return Related.OfType<Person>(); }
