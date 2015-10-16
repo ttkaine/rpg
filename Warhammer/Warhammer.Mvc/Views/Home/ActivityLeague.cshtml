@@ -1,0 +1,27 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Person>
+@{
+    ViewBag.Title = "Activity League";
+}
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block banner-hallOfFame">
+            <h1 id="fullName">Currently Active People</h1>
+        </div>
+
+    </div>
+
+    <div class="banner-content">
+        <div class="content-block session-block">
+            <div id="activityLeagueList">
+                <ul>
+                    @Html.DisplayFor(m => Model)
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>

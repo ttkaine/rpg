@@ -6772,6 +6772,7 @@ body {
   background: url('images/bg-large.jpg') no-repeat center center fixed;
   background-size: cover;
   padding-top: 80px;
+  counter-reset: league;
 }
 @media screen and (max-width: 1700px) {
   body {
@@ -6945,6 +6946,20 @@ footer {
 .mini-profile-image,
 .profile-image {
   float: right;
+}
+.point,
+.league-profile-image,
+.trophy-image,
+.mini-profile-image {
+  width: 80px;
+  height: 80px;
+  margin: 8px;
+  margin-top: 0;
+}
+.point,
+.league-profile-image,
+.mini-profile-image,
+.profile-image {
   -moz-border-radius: 100px;
   -webkit-border-radius: 100px;
   border-radius: 100px;
@@ -6952,12 +6967,32 @@ footer {
   -webkit-box-shadow: #333333 5px 5px 15px ;
   box-shadow: #333333 5px 5px 15px ;
 }
-.trophy-image,
-.mini-profile-image {
-  width: 80px;
-  height: 80px;
-  margin: 8px;
-  margin-top: 0;
+.point {
+  display: inline;
+  background-color: lavenderblush;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border: 2px solid #666;
+  color: #666;
+  text-align: center;
+}
+.personRow {
+  border-top: solid 1px #000;
+  height: 200px;
+}
+.personRow:before {
+  counter-increment: league;
+  content: counter(league) "";
+  display: inline;
+  background-color: lavenderblush;
+  border-radius: 50%;
+  height: 36px;
+  padding: 8px;
+  border: 2px solid #666;
+  color: #666;
+  text-align: center;
 }
 .score-box-base,
 .score-box-bonus,
@@ -6994,6 +7029,7 @@ footer {
   height: 50px;
   margin: 0;
 }
+.personRow img.mini-trophy-image,
 .awardBar-mini img.mini-trophy-image,
 #characterLeagueList img.mini-trophy-image {
   width: 30px;

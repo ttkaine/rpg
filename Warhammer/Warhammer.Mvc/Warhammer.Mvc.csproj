@@ -431,6 +431,9 @@
     <Content Include="Views\Home\FavouriteNpcs.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\FavNpc.cshtml" />
+    <Content Include="Views\Home\ActivityLeague.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\Person.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\Score.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

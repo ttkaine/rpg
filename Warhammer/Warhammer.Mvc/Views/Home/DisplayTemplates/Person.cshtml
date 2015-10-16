@@ -1,0 +1,11 @@
+﻿@model Warhammer.Core.Entities.Person
+           
+<li class="personRow">
+    <ul class="awardBar">
+        @Html.DisplayFor(m => Model.OrderedAwards)
+    </ul>
+    @Html.DisplayFor(m => m.ActivityScore)
+    <a id="personLink_@Model.Id" href="@Url.Action("Index", "Page", new { id = Model.Id })"><img src="@Url.Action("Image", "Page", new {id = Model.Id}, null)" title="@Model.FullName" alt="Picture of @Model.FullName" class="league-profile-image" /></a>
+    @Html.DisplayFor(m => m.FullName)
+
+</li>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -37,6 +38,7 @@ namespace Warhammer.Core.Entities
             get { return Awards.OrderBy(t => t.Trophy.TypeId == (int)TrophyType.DefaultAward).ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name).ThenBy(a => a.Id ); }
         }
 
+        [UIHint("Score")]
         public int ActivityScore
         {
             get
@@ -45,6 +47,7 @@ namespace Warhammer.Core.Entities
             }
         }
 
+        [UIHint("Score")]
         public int PermenentScore
         { 
             get
@@ -53,7 +56,6 @@ namespace Warhammer.Core.Entities
                 return (int)Math.Ceiling(Math.Round(score, 1));
             }
         }
-
 
         public List<ScoreBreakdown> ScoreBreakdown
         {
@@ -98,8 +100,9 @@ namespace Warhammer.Core.Entities
                 });
                 return breakdown;
             }
-        } 
+        }
 
+        [UIHint("Score")]
         public override int PointsValue
         {
             get { return PermenentScore + ActivityScore; }

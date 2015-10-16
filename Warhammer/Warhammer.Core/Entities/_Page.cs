@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace Warhammer.Core.Entities
@@ -55,6 +56,7 @@ namespace Warhammer.Core.Entities
             get { return ImageData != null && ImageData.Length > 50 && !string.IsNullOrWhiteSpace(ImageMime); }
         }
 
+        [UIHint("Score")]
         public virtual int PointsValue
         {
             get { return (int) (BaseScore + ActivityBonus); }

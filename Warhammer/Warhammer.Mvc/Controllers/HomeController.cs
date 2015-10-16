@@ -58,6 +58,12 @@ namespace Warhammer.Mvc.Controllers
             return View(people);
         }
 
+        public ActionResult ActivityLeague()
+        {
+            List<Person> people = DataProvider.People().Where(s => s.ActivityScore > 0).OrderByDescending(s => s.ActivityBonus).ThenByDescending(s => s.Modified).ToList();
+            return View(people);
+        }
+
         public ActionResult Graveyard()
         {
             List<Person> people = DataProvider.People().Where(p => p.IsDead).OrderBy(s => s.FullName).ToList();
