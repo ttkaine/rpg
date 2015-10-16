@@ -11,13 +11,11 @@ namespace Warhammer.Core.Concrete
     {
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
-        private readonly IViewModelFactory _factory;
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IViewModelFactory factory)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
-            _factory = factory;
         }
 
         public Player CurrentPlayer

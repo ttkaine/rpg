@@ -9,11 +9,11 @@
     <script type="text/javascript">
         function getAjaxWebService()
         {
-            return "@Url.Content("~/RoleplayService.asmx")";
+            return "@Url.Content("~/Roleplay")";
         }
         $(document).ready(function ()
         {
-            setupPage();
+            setupPage(@ViewBag.SessionId);
         });
     </script>
 
@@ -142,8 +142,8 @@
                 <div class="PlayerTextPostControls">
                     <div class="PlayerTextContainer">
                         <div id="divCharacterControls" class="PlayerCharacterControls">
-                            <img id="imgCharacter" src="images/default_character.jpg" class="PlayerCharacterPortrait" />
-                            <input id="btnEditCharacter" type="button" value="Edit Character Sheet" class="EditCharacterSheetButton" onclick="btnEditCharacter_Click();" />    
+                            <img id="imgCharacter" src="/content/images/roleplayforum/default_character.jpg" class="PlayerCharacterPortrait" />
+                            @*<input id="btnEditCharacter" type="button" value="Edit Character Sheet" class="EditCharacterSheetButton" onclick="btnEditCharacter_Click();" />*@
                         </div>
                         <div class="PlayerTextControl">
                             <textarea id="txtPost" class="PlayerPostTextBox NotCMS" onkeypress="txtPost_keyPress(event);"></textarea>

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.UI;
 using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Concrete;
@@ -13,6 +15,7 @@ using Warhammer.Core.RoleplayViewModels;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.HtmlBuilders;
 using Warhammer.Mvc.JsonObjects;
+using Page = Warhammer.Core.Entities.Page;
 
 namespace Warhammer.Mvc.Controllers
 {
@@ -25,24 +28,39 @@ namespace Warhammer.Mvc.Controllers
 
 
 
-        public RoleplayController(IAuthenticatedDataProvider data) : base(data)
+        public RoleplayController(IAuthenticatedDataProvider data, IViewModelFactory viewModelFactory, IPostManager postManager) : base(data)
         {
-			//ViewModelFactory = new ViewModelFactory(new DataAccess());
-			//PostManager = new PostManager(new DataAccess());
-			//CharacterManager = new CharacterManager(new DataAccess());
-		}   
+	        ViewModelFactory = viewModelFactory;
+	        PostManager = postManager;
+	        //CharacterManager = new CharacterManager(new DataAccess());
+        }   
 		
 		//
         // GET: /Roleplay/
-        public ActionResult Index()
-        {
-            return View();
-        }
+		public ActionResult Index(int? id)
+		{
+			if (id.HasValue)
+			{
+				Page page = DataProvider.GetPage(id.Value);
+				if (page != null)
+				{
+					Session session = page as Session;
+					if (session != null && session.IsTextSession && !session.IsClosed)
+					{
+						ViewBag.SessionId = session.Id;
+
+						return View();
+					}
+				}
+			}
+
+			return RedirectToAction("Index", "Home");
+		}
 
 
 
 
-		public ActionResult GetLatestPostsForSession(int sessionId, int lastPostId, string lastUpdateTime)
+		public JsonResult GetLatestPostsForSession(int sessionId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -127,7 +145,7 @@ namespace Warhammer.Mvc.Controllers
 			return postCollection;
 		}
 
-		public  ActionResult GetCharacterList(int sessionId)
+		public JsonResult GetCharacterList(int sessionId)
 		{			
 			if (DataProvider.IsLoggedIn())
 			{
@@ -152,7 +170,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public ActionResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
+		public JsonResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -225,7 +243,7 @@ namespace Warhammer.Mvc.Controllers
 			return Regex.Replace(source, "<.*?>", string.Empty);
 		}
 
-		public ActionResult MakeDiceRollPost(int sessionId, int characterId, int lastPostId, int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximum, string lastUpdateTime)
+		public JsonResult MakeDiceRollPost(int sessionId, int characterId, int lastPostId, int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximum, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -295,7 +313,7 @@ namespace Warhammer.Mvc.Controllers
 
 		}
 
-		public  ActionResult GetCharacterDetails(int sessionId, int characterId)
+		public  JsonResult GetCharacterDetails(int sessionId, int characterId)
 		{
 			CharacterViewModel character = ViewModelFactory.GetCharacter(characterId);
 			JsonCharacterDetails jsonCharacter = new JsonCharacterDetails();
@@ -344,7 +362,7 @@ namespace Warhammer.Mvc.Controllers
 			return Json("[" + serializer.Serialize(jsonCharacter) + "]");
 		}
 
-		public ActionResult GetSessionTitle(int sessionId)
+		public JsonResult GetSessionTitle(int sessionId)
 		{
 			SessionViewModel session = ViewModelFactory.GetSession(sessionId);
 
@@ -358,7 +376,7 @@ namespace Warhammer.Mvc.Controllers
 			return Json(serializer.Serialize(title));
 		}
 
-		public ActionResult DeletePost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
+		public JsonResult DeletePost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -393,7 +411,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public ActionResult EditTextPost(int sessionId, int postId, int lastPostId, string text, string lastUpdateTime)
+		public JsonResult EditTextPost(int sessionId, int postId, int lastPostId, string text, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -465,7 +483,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public ActionResult RevertPost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
+		public JsonResult RevertPost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -500,7 +518,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public ActionResult GetRecipientList(int sessionId, string recipientString)
+		public JsonResult GetRecipientList(int sessionId, string recipientString)
 		{
 			if (DataProvider.IsLoggedIn())
 			{
@@ -538,49 +556,49 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public ActionResult GetEditableCharacterSheet(int characterId)
-		{
-			if (DataProvider.IsLoggedIn())
-			{
-				CharacterViewModel character = ViewModelFactory.GetCharacterForCurrentUser(characterId);
-				JavaScriptSerializer serializer = new JavaScriptSerializer();
+		//public JsonResult GetEditableCharacterSheet(int characterId)
+		//{
+		//	if (DataProvider.IsLoggedIn())
+		//	{
+		//		CharacterViewModel character = ViewModelFactory.GetCharacterForCurrentUser(characterId);
+		//		JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-				if (character != null)
-				{
-					JsonCharacterSheet characterSheet; 
-					if (!string.IsNullOrWhiteSpace(character.CharacterSheet))
-					{
-						try
-						{
-							characterSheet = (JsonCharacterSheet)serializer.Deserialize(character.CharacterSheet, typeof(JsonCharacterSheet));
-							characterSheet = JsonCharacterSheetFactory.RefreshCharacterSheetFromSource(characterSheet);
-						}
-						catch
-						{
-							characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
-						}
-					}
-					else
-					{
-						characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
-					}
+		//		if (character != null)
+		//		{
+		//			JsonCharacterSheet characterSheet; 
+		//			if (!string.IsNullOrWhiteSpace(character.CharacterSheet))
+		//			{
+		//				try
+		//				{
+		//					characterSheet = (JsonCharacterSheet)serializer.Deserialize(character.CharacterSheet, typeof(JsonCharacterSheet));
+		//					characterSheet = JsonCharacterSheetFactory.RefreshCharacterSheetFromSource(characterSheet);
+		//				}
+		//				catch
+		//				{
+		//					characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
+		//				}
+		//			}
+		//			else
+		//			{
+		//				characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
+		//			}
 
-					CharacterSheetBuilder sheetBuilder = CharacterSheetBuilder.Instance;
-					string characterSheetHtml = sheetBuilder.GetCharacterSheetEditorHtml(characterSheet);
-					return Json(serializer.Serialize(characterSheetHtml));
-				}
-				else
-				{
-					return Json(serializer.Serialize("<p>You are not allowed to edit this character.</p>"));					
-				}
-			}
-			else
-			{
-				throw new Exception("Session timeout");
-			}
-		}
+		//			CharacterSheetBuilder sheetBuilder = CharacterSheetBuilder.Instance;
+		//			string characterSheetHtml = sheetBuilder.GetCharacterSheetEditorHtml(characterSheet);
+		//			return Json(serializer.Serialize(characterSheetHtml));
+		//		}
+		//		else
+		//		{
+		//			return Json(serializer.Serialize("<p>You are not allowed to edit this character.</p>"));					
+		//		}
+		//	}
+		//	else
+		//	{
+		//		throw new Exception("Session timeout");
+		//	}
+		//}
 
-		//public ActionResult SubmitCharacterSheet(int characterId, string jsonSheet)
+		//public JsonResult SubmitCharacterSheet(int characterId, string jsonSheet)
 		//{
 		//	if (DataProvider.IsLoggedIn())
 		//	{
@@ -604,5 +622,23 @@ namespace Warhammer.Mvc.Controllers
 		//		throw new Exception("Session timeout");
 		//	}
 		//}
+
+		[OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+		public ActionResult Image(int id)
+		{
+			CharacterViewModel character = ViewModelFactory.GetCharacter(id);
+			var defaultDir = Server.MapPath("/Content/Images/RoleplayForum");
+
+			if (character != null)
+			{
+				if (character.Image != null && character.Image.Length > 100 && !string.IsNullOrWhiteSpace(character.ImageMimeType))
+				{
+					return File(character.Image, character.ImageMimeType);
+				}
+			}
+
+			var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
+			return File(defaultImagePath, "image/jpeg");
+		}
 	}	
 }

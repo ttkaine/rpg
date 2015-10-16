@@ -4,9 +4,14 @@ var lastUpdateTime;
 var refreshInterval;
 var selectedTab;
 var recipients;
+var sessionId;
+var rootPath;
 
-function setupPage()
+function setupPage(id)
 {
+    rootPath = getAjaxWebService();
+
+    sessionId = id;
     lastPostId = 0;
     lastUpdateTime = "01 Jan 2000 00:00:00";
     selectedTab = 1;
@@ -143,29 +148,29 @@ function toggleOoc(doSlide)
     }
 }
 
-function queryString(key)
-{
-    var re = new RegExp('(?:\\?|&)' + key + '=(.*?)(?=&|$)', 'gi');
-    var r = [], m;
-    while ((m = re.exec(document.location.search)) != null) r.push(m[1]);
-    return r;
-}
+//function queryString(key)
+//{
+//    var re = new RegExp('(?:\\?|&)' + key + '=(.*?)(?=&|$)', 'gi');
+//    var r = [], m;
+//    while ((m = re.exec(document.location.search)) != null) r.push(m[1]);
+//    return r;
+//}
 
 function setSessionTitle()
 {
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var parameters = '{"sessionId": ' + sessionId + ' }';
 
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/GetSessionTitle",
+        url: rootPath + "/GetSessionTitle",
         data: parameters,
         dataType: "json",
         async: false,
         success: function (data)
         {
-            var jsonData = eval(data.d);
+            var jsonData = eval(data);
             $("#divSessionTitle").html(jsonData);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -244,7 +249,7 @@ function handleNewPosts(jsonData, scrollToEnd)
 
 function addNewPosts(doAsync)
 {
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var parameters = '{"sessionId": ' + sessionId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
@@ -254,13 +259,13 @@ function addNewPosts(doAsync)
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/GetLatestPostsForSession",
+        url: rootPath + "/GetLatestPostsForSession",
         data: parameters,
         dataType: "json",
         async: doAsync,
         success: function (data)
         {
-            var jsonData = eval(data.d)[0];
+            var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -282,19 +287,19 @@ function pageRefresh()
 
 function setupCharacterDropDown()
 {
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var parameters = '{"sessionId": ' + sessionId + ' }';
 
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/GetCharacterList",
+        url: rootPath + "/GetCharacterList",
         data: parameters,
         dataType: "json",
         async: false,
         success: function (data)
         {
-            var jsonData = eval(data.d);
+            var jsonData = eval(data);
             $("#ddlPostAs").empty();
             if (jsonData.length > 0)
             {
@@ -357,7 +362,7 @@ function postSubmitted(text)
 {
     clearInterval(refreshInterval);
 
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var isOoc = $("#divOutOfCharacterButton").attr("class") == "ToggleButtonEnabled";
     var characterId = -1;
     if ($("#ddlPostAs option").size() > 0)
@@ -378,13 +383,13 @@ function postSubmitted(text)
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/MakeTextPost",
+        url: rootPath + "/MakeTextPost",
         data: parameters,
         dataType: "json",
         async: true,
         success: function (data)
         {
-            var jsonData = eval(data.d)[0];
+            var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
             refreshInterval = setInterval(pageRefresh, 3000);
         },
@@ -424,7 +429,7 @@ function postDiceRoll()
 {
     clearInterval(refreshInterval);
 
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var characterId = -1;
     if ($("#ddlPostAs option").size() > 0)
     {
@@ -454,13 +459,13 @@ function postDiceRoll()
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/MakeDiceRollPost",
+        url: rootPath + "/MakeDiceRollPost",
         data: parameters,
         dataType: "json",
         async: true,
         success: function (data)
         {
-            var jsonData = eval(data.d)[0];
+            var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
             refreshInterval = setInterval(pageRefresh, 3000);
         },
@@ -473,61 +478,61 @@ function postDiceRoll()
 
 }
 
-function viewCharacter(characterId, characterName)
-{
-    activateCharacterTab(1);
+//function viewCharacter(characterId, characterName)
+//{
+//    activateCharacterTab(1);
 
-    if ($("#CharacterPopOver").attr("shown") == "false")
-    {
-        $("#CharacterPopOver").animate({ "left": "5px", "opacity": "1" }, 1000);
-        $("#CharacterPopOver").attr("shown", "true");
-    }
+//    if ($("#CharacterPopOver").attr("shown") == "false")
+//    {
+//        $("#CharacterPopOver").animate({ "left": "5px", "opacity": "1" }, 1000);
+//        $("#CharacterPopOver").attr("shown", "true");
+//    }
 
-    $("#CharacterPopOverName").html(characterName);
-    $("#CharacterPopOverDescription").attr("style", "display:none;");
-    $("#CharacterPopOverLoading").attr("style", "display:block;");
-    var sessionId = queryString("id");
+//    $("#CharacterPopOverName").html(characterName);
+//    $("#CharacterPopOverDescription").attr("style", "display:none;");
+//    $("#CharacterPopOverLoading").attr("style", "display:block;");
+//    //var sessionId = queryString("id");
 
-    var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ' }';
+//    var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ' }';
 
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/GetCharacterDetails",
-        data: parameters,
-        dataType: "json",
-        async: true,
-        success: function (data)
-        {
-            var jsonData = eval(data.d)[0];
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        url: rootPath + "/GetCharacterDetails",
+//        data: parameters,
+//        dataType: "json",
+//        async: true,
+//        success: function (data)
+//        {
+//            var jsonData = eval(data)[0];
 
-            $("#CharacterPopOverDescription").html('<img src="imagehandler.ashx?type=character&id=' + characterId + '" class="CharacterPopOverImage" />' + jsonData.Description);
-            $("#CharacterPopOverSheet").html(jsonData.CharacterSheet);
+//            $("#CharacterPopOverDescription").html('<img src="' + rootPath + '/image/' + characterId + '" class="CharacterPopOverImage" />' + jsonData.Description);
+//            $("#CharacterPopOverSheet").html(jsonData.CharacterSheet);
 
-            $("#CharacterPopOverLoading").attr("style", "display:none;");
-            $("#CharacterPopOverDescription").attr("style", "display:block;");
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            $("#CharacterPopOverDescription").html("Unable to retrieve Character from server.");
-            $("#CharacterPopOverSheet").html("Unable to retrieve Character from server.");
-            $("#CharacterPopOverLoading").attr("style", "display:none;");
-            $("#CharacterPopOverDescription").attr("style", "display:block;");
-        }
-    });
-}
+//            $("#CharacterPopOverLoading").attr("style", "display:none;");
+//            $("#CharacterPopOverDescription").attr("style", "display:block;");
+//        },
+//        error: function (jqXHR, textStatus, errorThrown)
+//        {
+//            $("#CharacterPopOverDescription").html("Unable to retrieve Character from server.");
+//            $("#CharacterPopOverSheet").html("Unable to retrieve Character from server.");
+//            $("#CharacterPopOverLoading").attr("style", "display:none;");
+//            $("#CharacterPopOverDescription").attr("style", "display:block;");
+//        }
+//    });
+//}
 
-function closeCharacterPopOver()
-{
-    if ($("#CharacterPopOver").attr("shown") == "true")
-    {
-        $("#CharacterPopOver").animate({ "left": "-650px", "opacity": "0" }, 1000, function ()
-        {
-            $("#CharacterPopOverSheet").html("");
-        });
-        $("#CharacterPopOver").attr("shown", "false");
-    }
-}
+//function closeCharacterPopOver()
+//{
+//    if ($("#CharacterPopOver").attr("shown") == "true")
+//    {
+//        $("#CharacterPopOver").animate({ "left": "-650px", "opacity": "0" }, 1000, function ()
+//        {
+//            $("#CharacterPopOverSheet").html("");
+//        });
+//        $("#CharacterPopOver").attr("shown", "false");
+//    }
+//}
 
 function deletePost(postId)
 {
@@ -537,7 +542,7 @@ function deletePost(postId)
     {
         clearInterval(refreshInterval);
 
-        var sessionId = queryString("id");
+        //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
         var outerHeight = $("#divPostContainer").outerHeight();
         var scrollTop = $("#divPostContainer").scrollTop();
@@ -547,13 +552,13 @@ function deletePost(postId)
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: getAjaxWebService() + "/DeletePost",
+            url: rootPath + "/DeletePost",
             data: parameters,
             dataType: "json",
             async: true,
             success: function (data)
             {
-                var jsonData = eval(data.d)[0];
+                var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
                 refreshInterval = setInterval(pageRefresh, 3000);
             },
@@ -591,7 +596,7 @@ function revertPost(postId)
     {
         clearInterval(refreshInterval);
 
-        var sessionId = queryString("id");
+        //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
         var outerHeight = $("#divPostContainer").outerHeight();
         var scrollTop = $("#divPostContainer").scrollTop();
@@ -601,13 +606,13 @@ function revertPost(postId)
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: getAjaxWebService() + "/RevertPost",
+            url: rootPath + "/RevertPost",
             data: parameters,
             dataType: "json",
             async: true,
             success: function (data)
             {
-                var jsonData = eval(data.d)[0];
+                var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
                 refreshInterval = setInterval(pageRefresh, 3000);
             },
@@ -641,7 +646,7 @@ function editedPostSubmitted(postId, text)
 {
     clearInterval(refreshInterval);
 
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "text": "' + text + '", "lastUpdateTime": "' + lastUpdateTime + '" }';
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
@@ -651,13 +656,13 @@ function editedPostSubmitted(postId, text)
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/EditTextPost",
+        url: rootPath + "/EditTextPost",
         data: parameters,
         dataType: "json",
         async: true,
         success: function (data)
         {
-            var jsonData = eval(data.d)[0];
+            var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
             refreshInterval = setInterval(pageRefresh, 3000);
         },
@@ -714,19 +719,19 @@ function setupRecipients()
 {
     $("#btnUpdateRecipients").prop("disabled", true);
     var recipientString = recipients.join(",");
-    var sessionId = queryString("id");
+    //var sessionId = queryString("id");
     var parameters = '{"sessionId": ' + sessionId + ', "recipientString": "' + recipientString + '" }';
 
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/GetRecipientList",
+        url: rootPath + "/GetRecipientList",
         data: parameters,
         dataType: "json",
         async: false,
         success: function (data)
         {
-            var jsonData = eval(data.d);
+            var jsonData = eval(data);
             $("#divRecipients").html("");
             if (jsonData.length > 0)
             {
@@ -806,193 +811,193 @@ function setupCharacterDetails()
 
     if (characterId > 0)
     {
-        $("#imgCharacter").attr("src", "imagehandler.ashx?type=character&id=" + characterId);
-        $("#imgCharacter").css("cursor", "pointer");
+        $("#imgCharacter").attr("src", rootPath + "/image/" + characterId);
+       // $("#imgCharacter").css("cursor", "pointer");
         $("#btnEditCharacter").prop("disabled", false);
         $("#btnEditCharacter").attr("onclick", "editCharacterSheet(" + characterId + ");");
-        $("#imgCharacter").attr("onclick", "viewCharacter(" + characterId + ", '" + $("#ddlPostAs option:selected").text() + "');");
+        //$("#imgCharacter").attr("onclick", "viewCharacter(" + characterId + ", '" + $("#ddlPostAs option:selected").text() + "');");
     }
     else
     {
         if (characterId == 0)
         {
-            $("#imgCharacter").attr("src", "images/gm.jpg");
+            $("#imgCharacter").attr("src", "/content/images/roleplayforum/gm.jpg");
         }
         else
         {
-            $("#imgCharacter").attr("src", "images/default_character.jpg");
+            $("#imgCharacter").attr("src", "/content/images/roleplayforum/default_character.jpg");
         }
-        $("#imgCharacter").css("cursor", "default");
+        //$("#imgCharacter").css("cursor", "default");
         $("#btnEditCharacter").prop("disabled", true);
         $("#btnEditCharacter").removeAttr("onclick");
-        $("#imgCharacter").removeAttr("onclick");
+        //$("#imgCharacter").removeAttr("onclick");
     }
 }
 
-function cancelEditCharacterSheet()
-{
-    $("#modalOverlay").fadeOut(200);
-    $("#editCharacterSheetPopup").fadeOut(200);
-}
+//function cancelEditCharacterSheet()
+//{
+//    $("#modalOverlay").fadeOut(200);
+//    $("#editCharacterSheetPopup").fadeOut(200);
+//}
 
-function editCharacterSheet(characterId)
-{
-    $("#btnSubmitCharacterSheet").prop("disabled", false);
+//function editCharacterSheet(characterId)
+//{
+//    $("#btnSubmitCharacterSheet").prop("disabled", false);
 
-    $("#divEditCharacterSheetPopupContent").attr("style", "display:none;");
-    $("#divEditCharacterSheetPopupLoading").attr("style", "display:block;");
+//    $("#divEditCharacterSheetPopupContent").attr("style", "display:none;");
+//    $("#divEditCharacterSheetPopupLoading").attr("style", "display:block;");
 
-    $("#btnSubmitCharacterSheet").attr("onclick", "updateCharacterSheet(" + characterId + ");");
+//    $("#btnSubmitCharacterSheet").attr("onclick", "updateCharacterSheet(" + characterId + ");");
 
-    $("#modalOverlay").fadeIn(200);
-    $("#editCharacterSheetPopup").fadeIn(200);
+//    $("#modalOverlay").fadeIn(200);
+//    $("#editCharacterSheetPopup").fadeIn(200);
 
-    setupEditCharacterSheet(characterId);
-}
+//    setupEditCharacterSheet(characterId);
+//}
 
-function setupEditCharacterSheet(characterId)
-{
-    var parameters = '{"characterId": ' + characterId + ' }';
+//function setupEditCharacterSheet(characterId)
+//{
+//    var parameters = '{"characterId": ' + characterId + ' }';
 
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/GetEditableCharacterSheet",
-        data: parameters,
-        dataType: "json",
-        async: true,
-        success: function (data)
-        {
-            var jsonData = eval(data.d);
-            $("#divCharacterSheetContainer").html(jsonData);
-            $("#divEditCharacterSheetPopupContent").fadeIn(400);
-            $("#divEditCharacterSheetPopupLoading").attr("style", "display:none");
-            $("#btnSubmitCharacterSheet").prop("disabled", false);
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        url: rootPath + "/GetEditableCharacterSheet",
+//        data: parameters,
+//        dataType: "json",
+//        async: true,
+//        success: function (data)
+//        {
+//            var jsonData = eval(data);
+//            $("#divCharacterSheetContainer").html(jsonData);
+//            $("#divEditCharacterSheetPopupContent").fadeIn(400);
+//            $("#divEditCharacterSheetPopupLoading").attr("style", "display:none");
+//            $("#btnSubmitCharacterSheet").prop("disabled", false);
 
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            alert("Unable to edit character sheet at this time.");
-            cancelEditCharacterSheet();
-        }
-    });
-}
+//        },
+//        error: function (jqXHR, textStatus, errorThrown)
+//        {
+//            alert("Unable to edit character sheet at this time.");
+//            cancelEditCharacterSheet();
+//        }
+//    });
+//}
 
-function updateCharacterSheet(characterId)
-{
-    $("#btnSubmitCharacterSheet").prop("disabled", true);
+//function updateCharacterSheet(characterId)
+//{
+//    $("#btnSubmitCharacterSheet").prop("disabled", true);
 
-    var sheet = new Object();
-    sheet.CharacterSheetStyle = parseInt($("#divEditableCharacterSheet").attr("sheetType"));
-    sheet.IsPrivate = $("#chkPrivateSheet").is(":checked");
-    sheet.XP = $("#txtXp").val().trim();
-    sheet.Chips = $("#txtChips").val().trim();
-    sheet.CurrentDamage = $("#txtCurrentDamage").val().trim();
-    sheet.Insanity = $("#txtInsanity").val().trim();
+//    var sheet = new Object();
+//    sheet.CharacterSheetStyle = parseInt($("#divEditableCharacterSheet").attr("sheetType"));
+//    sheet.IsPrivate = $("#chkPrivateSheet").is(":checked");
+//    sheet.XP = $("#txtXp").val().trim();
+//    sheet.Chips = $("#txtChips").val().trim();
+//    sheet.CurrentDamage = $("#txtCurrentDamage").val().trim();
+//    sheet.Insanity = $("#txtInsanity").val().trim();
     
 
-    if (isNaN($("#txtBaseHitCapacity").val().trim()) || $("#txtBaseHitCapacity").val().trim() == "")
-    {
-        sheet.BaseHitCapacity = 6;
-    }
-    else
-    {
-        sheet.BaseHitCapacity = parseInt($("#txtBaseHitCapacity").val());
-    }
+//    if (isNaN($("#txtBaseHitCapacity").val().trim()) || $("#txtBaseHitCapacity").val().trim() == "")
+//    {
+//        sheet.BaseHitCapacity = 6;
+//    }
+//    else
+//    {
+//        sheet.BaseHitCapacity = parseInt($("#txtBaseHitCapacity").val());
+//    }
 
-    sheet.Skills = new Object();
-    $(".SkillRow").each(function (index)
-    {
-        var skillName = $(this).find(".SkillRowTitle").html().trim();
-        var skillValue = $(this).find(".SkillTextBox").val().trim();
+//    sheet.Skills = new Object();
+//    $(".SkillRow").each(function (index)
+//    {
+//        var skillName = $(this).find(".SkillRowTitle").html().trim();
+//        var skillValue = $(this).find(".SkillTextBox").val().trim();
 
-        sheet.Skills[skillName] = skillValue;
-    });
+//        sheet.Skills[skillName] = skillValue;
+//    });
 
-    sheet.Traits = new Object();
-    $(".TraitRow").each(function (index)
-    {
-        var traitName = $(this).find(".TraitRowTitle").html().trim();
-        var selectedValue = "";
-        for (var i = 1; i <= 3; i++)
-        {
-            if ($("[trait_name='" + traitName + "'][trait_value='" + i + "']").attr("dot_selected") == "true")
-            {
-                selectedValue = i.toString();
-            }
-        }
+//    sheet.Traits = new Object();
+//    $(".TraitRow").each(function (index)
+//    {
+//        var traitName = $(this).find(".TraitRowTitle").html().trim();
+//        var selectedValue = "";
+//        for (var i = 1; i <= 3; i++)
+//        {
+//            if ($("[trait_name='" + traitName + "'][trait_value='" + i + "']").attr("dot_selected") == "true")
+//            {
+//                selectedValue = i.toString();
+//            }
+//        }
 
-        sheet.Traits[traitName] = selectedValue;
-    });
+//        sheet.Traits[traitName] = selectedValue;
+//    });
 
-    sheet.Specialities = new Object();
-    $(".SpecialityRow").each(function (index)
-    {
-        var specName = $(this).find(".SpecialityNameTextBox").val().trim();
-        var specValue = $(this).find(".SpecialityValueTextBox").val().trim();
+//    sheet.Specialities = new Object();
+//    $(".SpecialityRow").each(function (index)
+//    {
+//        var specName = $(this).find(".SpecialityNameTextBox").val().trim();
+//        var specValue = $(this).find(".SpecialityValueTextBox").val().trim();
 
-        if (specName != "")
-        {
-            sheet.Specialities[specName] = specValue;
-        }
-    });
+//        if (specName != "")
+//        {
+//            sheet.Specialities[specName] = specValue;
+//        }
+//    });
 
-    sheet.Other = new Object();
-    $(".OtherRow").each(function (index)
-    {
-        var otherName = $(this).find(".OtherNameTextBox").val().trim();
-        var otherValue = $(this).find(".OtherValueTextBox").val().trim();
+//    sheet.Other = new Object();
+//    $(".OtherRow").each(function (index)
+//    {
+//        var otherName = $(this).find(".OtherNameTextBox").val().trim();
+//        var otherValue = $(this).find(".OtherValueTextBox").val().trim();
 
-        if (otherName != "")
-        {
-            sheet.Other[otherName] = otherValue;
-        }
-    });
+//        if (otherName != "")
+//        {
+//            sheet.Other[otherName] = otherValue;
+//        }
+//    });
 
-    sheet.MinorWounds = new Object();
-    sheet.SeriousWounds = new Object();
-    $("[wound_row]").each(function (index)
-    {
-        var locationName = $(this).attr("wound_row").trim();
-        var minorValue = $(this).find(".MinorWoundTextBox").val().trim();
-        var seriousValue = $(this).find(".SeriousWoundTextBox").val().trim();
+//    sheet.MinorWounds = new Object();
+//    sheet.SeriousWounds = new Object();
+//    $("[wound_row]").each(function (index)
+//    {
+//        var locationName = $(this).attr("wound_row").trim();
+//        var minorValue = $(this).find(".MinorWoundTextBox").val().trim();
+//        var seriousValue = $(this).find(".SeriousWoundTextBox").val().trim();
 
-        sheet.MinorWounds[locationName] = minorValue;
-        sheet.SeriousWounds[locationName] = seriousValue;
-    });
+//        sheet.MinorWounds[locationName] = minorValue;
+//        sheet.SeriousWounds[locationName] = seriousValue;
+//    });
 
-    var jsonSheet = JSON.stringify(sheet);
-    submitCharacterSheet(characterId, jsonSheet);
-}
+//    var jsonSheet = JSON.stringify(sheet);
+//    submitCharacterSheet(characterId, jsonSheet);
+//}
 
-function submitCharacterSheet(characterId, jsonSheet)
-{
-    var parameters = "{'characterId': " + characterId + ", 'jsonSheet': '" + jsonSheet + "' }";
+//function submitCharacterSheet(characterId, jsonSheet)
+//{
+//    var parameters = "{'characterId': " + characterId + ", 'jsonSheet': '" + jsonSheet + "' }";
 
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: getAjaxWebService() + "/SubmitCharacterSheet",
-        data: parameters,
-        dataType: "json",
-        async: true,
-        success: function (data)
-        {
-            $("#modalOverlay").fadeOut(200);
-            $("#editCharacterSheetPopup").fadeOut(200);
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        url: rootPath + "/SubmitCharacterSheet",
+//        data: parameters,
+//        dataType: "json",
+//        async: true,
+//        success: function (data)
+//        {
+//            $("#modalOverlay").fadeOut(200);
+//            $("#editCharacterSheetPopup").fadeOut(200);
 
-            if ($("#CharacterPopOver").attr("shown") == "true")
-            {
-                viewCharacter(characterId, $("#CharacterPopOverName").html());
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            alert("Unable to edit character sheet at this time.");
-            $("#btnSubmitCharacterSheet").prop("disabled", false);
-        }
-    });
-}
+//            if ($("#CharacterPopOver").attr("shown") == "true")
+//            {
+//                viewCharacter(characterId, $("#CharacterPopOverName").html());
+//            }
+//        },
+//        error: function (jqXHR, textStatus, errorThrown)
+//        {
+//            alert("Unable to edit character sheet at this time.");
+//            $("#btnSubmitCharacterSheet").prop("disabled", false);
+//        }
+//    });
+//}
 
 function activateCharacterTab(tab)
 {

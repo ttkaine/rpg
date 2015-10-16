@@ -2,7 +2,7 @@
 #roleplayContent 
 {
     width: 100%;
-    margin: 0 auto;
+    margin: 60px auto 0 auto;
     padding: 0;
 }
 
@@ -13,21 +13,22 @@
 
 .SessionContent
 {
-    width: 988px;
+    width: calc(100% - 2px);
+    max-width: 1100px;
     padding: 0;
     border: 1px solid #333;
     background-color: #bbb;
-    margin: 10px 0;
+    margin: 10px auto;
     position: relative;
     overflow: hidden;
 }
 
 .SessionHeader
 {
-    width: 950px;
+    width: calc(100% - 38px);
     padding: 5px 19px;
     border-bottom: 1px solid #333;
-    background-color: #666;   
+    background-color: #222;   
     font-size: 20px;
     line-height: 20px;
     color: White;
@@ -51,10 +52,10 @@
 
 .PostContainer
 {
-    width: 980px;
+    width: calc(100% - 8px);
     padding: 5px 0 0 8px;
     margin: 0;
-    height: 500px;   
+    height: calc(100vh - 390px);   
     font-family: Arial;
     overflow-y: scroll;
     z-index: 1000;
@@ -62,7 +63,7 @@
 
 .PlayerControls
 {
-    width: 988px;
+    width: 100%;
     padding: 0;
     margin: 0;
     border-top: 1px solid #333;
@@ -72,7 +73,7 @@
 
 .PlayerControlsHeader
 {
-    width: 980px;
+    width: calc(100% - 8px);
     padding: 4px;
     border-bottom: 1px solid #333;
     margin: 0;   
@@ -82,7 +83,7 @@
 
 .PlayerPostControls
 {
-    width: 988px;
+    width: 100%;
     height: 230px;
     padding: 0;
     margin: 0;   
@@ -163,7 +164,7 @@
 
 .PlayerTextPostControls
 {
-    width: 988px;
+    width: 100%;
     height: 230px;
     padding: 0;
     margin: 0;   
@@ -172,7 +173,7 @@
 
 .PlayerDiceControls
 {
-    width: 730px;
+    width: calc(100% - 259px);
     padding: 10px 9px 10px 250px;
     height: 210px;
     margin: 0;
@@ -180,12 +181,12 @@
     top: 0;
     left: 0;
     z-index: 5000;
-    background: #ccccff url(../images/dice_control.jpg) no-repeat scroll top left;
+    background: #ccccff url(/content/images/roleplayforum/dice_control.jpg) no-repeat scroll top left;
 }
 
 .PlayerTextContainer
 {
-    width: 970px;
+    width: calc(100% - 18px);
     height: 160px;
     padding: 10px 9px;
     margin: 0;
@@ -216,8 +217,8 @@
 {
     display: block;
     margin: 5px auto;
-    width: 100px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border: 1px solid #333;
 }
 
@@ -230,7 +231,7 @@
 
 .PlayerTextControl
 {
-    width: 810px;
+    width: calc(100% - 180px);
     padding: 0;
     float: right;
     margin: 0;
@@ -238,9 +239,9 @@
 
 .PlayerPostTextBox
 {
-    width: 700px;
-    max-width: 700px !important;
-    min-width: 700px !important;
+    width: calc(100% - 50px);
+    max-width: calc(100% - 50px) !important;
+    min-width: calc(100% - 50px) !important;
     height: 150px;
     min-height: 150px !important;
     max-height: 150px !important;
@@ -260,8 +261,8 @@
 }
 
 .TextPostButtonContainer
-{   
-    width: 970px;    
+{
+    width: calc(100% - 18px);    
     margin: 0;
     padding: 9px 9px 10px 9px;
     text-align: right;
@@ -285,7 +286,7 @@
 .OverlayBackground
 {
     position: absolute;
-    background: url(../images/display_lock_tile.jpg) repeat scroll top left;   
+    background: url(/content/images/roleplayforum/display_lock_tile.jpg) repeat scroll top left;   
     opacity: 0.9;
     filter:alpha(opacity=90);
     position: absolute;
@@ -316,7 +317,7 @@
     border-radius: 25px;
     margin: 100px auto 0 auto;
     padding: 50px 0 0 0; 
-    background: #fff url(../images/main_loading.gif) no-repeat scroll center 120px; 
+    background: #fff url(/content/images/roleplayforum/main_loading.gif) no-repeat scroll center 120px; 
     text-align: center; 
     font-size: 18px;
 }
@@ -336,7 +337,7 @@
     margin: 0 0 0 1px;
     border: 2px solid #6666ff;   
     border-top: 5px solid #6666ff;   
-    background: #fff url(../images/post_strip.jpg) repeat-y scroll top left;
+    background: #fff url(/content/images/roleplayforum/post_strip.jpg) repeat-y scroll top left;
     clear: both;   
     box-shadow: 5px 5px 5px #888888;
     position: relative;
@@ -366,7 +367,7 @@
     height: 16px;
     float: left;
     margin: 5px 0 0 10px;
-    background: url(../images/viewdetails.png) no-repeat scroll top left;   
+    background: url(/content/images/roleplayforum/viewdetails.png) no-repeat scroll top left;   
     cursor: pointer;
 }
 
@@ -390,7 +391,7 @@
 .InCharacterPost .CharacterPicture
 {
     width: 100px;
-    height: 120px;
+    height: 100px;
     border: 1px solid #333;
     margin: 0 auto;
     padding: 0;
@@ -459,7 +460,7 @@
     margin: 0 0 0 1px;
     border: 2px solid #ff6666;   
     border-top: 5px solid #ff6666;       
-    background: #fff url(../images/post_strip.jpg) repeat-y scroll top left;
+    background: #fff url(/content/images/roleplayforum/post_strip.jpg) repeat-y scroll top left;
     box-shadow: 5px 5px 5px #888888;
     position: relative;
     border-radius: 5px;
@@ -490,11 +491,19 @@
 .GmInCharacterPost .CharacterPicture
 {
     width: 100px;
-    height: 120px;
+    height: 100px;
     border: 1px solid #333;
     margin: 0 auto;
     padding: 0;
     display: block;   
+}
+
+.CharacterPicture img
+{
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .GmInCharacterPost .PostedDate
@@ -566,7 +575,7 @@
     height: 16px;
     float: left;
     margin: 5px 0 0 10px;
-    background: url(../images/viewdetails.png) no-repeat scroll top left;   
+    background: url(/content/images/roleplayforum/viewdetails.png) no-repeat scroll top left;   
     cursor: pointer;
 }
 
@@ -704,7 +713,7 @@
     width: 680px;
     height: 75px;
     padding: 10px 20px 15px 150px;
-    background: url(../images/dice_roll.jpg) no-repeat scroll top left;
+    background: url(/content/images/roleplayforum/dice_roll.jpg) no-repeat scroll top left;
     margin: 0;
     float: right;
     font-size: 14px;   
@@ -815,7 +824,7 @@
     width: 17px;
     height: 17px;
     cursor: pointer;
-    background: url(../images/controlclose.jpg) no-repeat scroll top left;
+    background: url(/content/images/roleplayforum/controlclose.jpg) no-repeat scroll top left;
     float: right;   
 }
 
@@ -883,7 +892,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #fff url(../images/main_loading.gif) no-repeat scroll center center;    
+    background: #fff url(/content/images/roleplayforum/main_loading.gif) no-repeat scroll center center;    
 }
 
 .CharacterPopOverImage
@@ -956,7 +965,7 @@
     width: 17px;
     height: 17px;
     cursor: pointer;
-    background: url(../images/controlclose.jpg) no-repeat scroll top left;
+    background: url(/content/images/roleplayforum/controlclose.jpg) no-repeat scroll top left;
     float: right;   
 }
 
@@ -992,7 +1001,7 @@
 
 .DiceRollButtonContainer
 {
-    width: 740px;
+    width: calc(100% - 249px);
     padding: 9px 10px 10px 9px;
     position: absolute;
     text-align: right;
@@ -1090,7 +1099,7 @@
     color: #333;     
     background-color: #fff;
     margin: 0 auto;
-    background: #fff url(../images/main_loading.gif) no-repeat scroll center center;  
+    background: #fff url(/content/images/roleplayforum/main_loading.gif) no-repeat scroll center center;  
 }
 
 .EditRecipientsPopup .PopupSubmit
@@ -1143,7 +1152,7 @@
 
 .RecipientCheckBox
 {
-    margin: 0 10px 0 0;   
+    margin: 0 10px 0 0 !important;   
 }
 
 .EditCharacterSheetPopup
@@ -1197,7 +1206,7 @@
     color: #333;     
     background-color: #fff;
     margin: 0 auto;
-    background: #fff url(../images/main_loading.gif) no-repeat scroll center center;  
+    background: #fff url(/content/images/roleplayforum/main_loading.gif) no-repeat scroll center center;  
 }
 
 .EditCharacterSheetPopup .PopupSubmit

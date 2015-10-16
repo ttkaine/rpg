@@ -100,18 +100,18 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("</span><span class=\"PostCharacter\">");
 			html.Append(post.CharacterName);
 			html.Append("</span>");
-			if (post.CharacterId > 0)
-			{
-				html.Append("<span class=\"ViewCharacterIcon\" onclick=\"viewCharacter(");
-				html.Append(post.CharacterId);
-				html.Append(", '");
-				html.Append(post.CharacterName);
-				html.Append("');\"></span>");
-			}
+			//if (post.CharacterId > 0)
+			//{
+			//	html.Append("<span class=\"ViewCharacterIcon\" onclick=\"viewCharacter(");
+			//	html.Append(post.CharacterId);
+			//	html.Append(", '");
+			//	html.Append(post.CharacterName);
+			//	html.Append("');\"></span>");
+			//}
 			html.Append("<span class=\"PostPlayer\">");
 			html.Append(post.PlayerName);
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
-			html.Append("<img src=\"imagehandler.ashx?type=character&id=");
+			html.Append("<img src=\"/Roleplay/Image/");
 			html.Append(post.CharacterId);
 			html.Append("\" />");
 			html.Append("</span><span class=\"PostedDate\">");
@@ -255,14 +255,14 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("</span><span class=\"PostCharacter\">");
 			html.Append(post.CharacterName);
 			html.Append("</span>");
-			if (post.CharacterId > 0)
-			{
-				html.Append("<span class=\"ViewCharacterIcon\" onclick=\"viewCharacter(");
-				html.Append(post.CharacterId);
-				html.Append(", '");
-				html.Append(post.CharacterName);
-				html.Append("');\"></span>");
-			}		
+			//if (post.CharacterId > 0)
+			//{
+			//	html.Append("<span class=\"ViewCharacterIcon\" onclick=\"viewCharacter(");
+			//	html.Append(post.CharacterId);
+			//	html.Append(", '");
+			//	html.Append(post.CharacterName);
+			//	html.Append("');\"></span>");
+			//}		
 			html.Append("<span class=\"PostPlayer\">");
 			html.Append(post.PlayerName);
 			html.Append(" (GM)</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
@@ -272,7 +272,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			}
 			else
 			{
-				html.Append("<img src=\"imagehandler.ashx?type=character&id=");
+				html.Append("<img src=\"/Roleplay/Image/");
 				html.Append(post.CharacterId);
 				html.Append("\" />");				
 			}

@@ -12,6 +12,7 @@ namespace Warhammer.Core.RoleplayViewModels
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public byte[] Image { get; set; }
+		public string ImageMimeType { get; set; }
 		public string CharacterSheet { get; set; }
 
 		public CharacterViewModel()

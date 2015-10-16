@@ -24,7 +24,7 @@ namespace Warhammer.Core.Abstract
 
 		//List<SessionViewModel> GetCurrentSessionsForUserInCampaign();
 		//List<SessionViewModel> GetCompletedSessionsForUserInCampaign();
-		SessionViewModel GetSessionForCurrentUser(int sessionId);
+		//SessionViewModel GetSessionForCurrentUser(int sessionId);
 		SessionViewModel GetSession(int sessionId);
 
 		List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId);

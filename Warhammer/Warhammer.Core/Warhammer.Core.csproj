@@ -120,6 +120,7 @@
     <Compile Include="Entities\Player.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\Session.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -144,6 +145,7 @@
     <Compile Include="RoleplayViewModels\PostViewModel.cs" />
     <Compile Include="RoleplayViewModels\SessionViewModel.cs" />
     <Compile Include="RoleplayViewModels\TextPostViewModel.cs" />
+    <Compile Include="Tools\DiceRoller.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
