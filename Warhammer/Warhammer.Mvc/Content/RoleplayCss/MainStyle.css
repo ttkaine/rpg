@@ -1,0 +1,493 @@
+﻿
+body 
+{
+    margin: 0;
+    padding: 0;
+    background-color: #ddd;
+    font-family: Tahoma, Arial, Sans-Serif;
+}
+
+.Clear
+{
+    clear: both;
+}
+
+.Wrapper
+{
+	margin: 0 auto;
+	width: 990px;
+	padding: 0px;
+	height: 100%;
+	float: none;
+}
+
+.MainDiv
+{
+	padding: 10px 0 20px 0;
+	margin:  0;
+	text-align: left;
+	width: 990px;	
+}	
+
+.MainHeader
+{
+    margin: 0;
+    width: 970px;
+    height: 20px;
+    padding: 10px;
+    background-color: #333;       
+}
+
+.MainHeader .HeaderLeft
+{
+    width: 400px;
+    float: left;
+    font-size: 20px;
+    line-height: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.MainHeader .HeaderRight
+{
+    width: 400px;
+    margin: 3px 0 0 0;
+    float: right;
+    text-align: right;
+    font-size: 14px;
+    line-height: 14px;
+    color: #fff;
+}
+
+.MainHeader a
+{   
+    color: #fff;
+    text-decoration: none;
+}
+
+.MainHeader a:hover
+{
+    text-decoration: underline;
+}
+
+.MainContent
+{
+    width: 950px;
+    padding: 19px;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    background-color: #fff;   
+}
+
+.MainContent h1
+{
+    margin-top: 0;   
+}
+
+.NavBar
+{
+    width: 970px;
+    padding: 9px;
+    margin: 0;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    background-color: #eee;          
+}
+
+.UpdatePlayerName
+{
+    width: 300px;
+    padding: 10px;
+    margin: 50px 0 50px 20px;   
+    background-color: #eee;
+    border: 1px solid #333;
+    clear: both;
+    font-size: 16px;
+    color: #333;
+}
+
+.UpdatePlayerName span
+{
+    display: block;
+}
+
+.UpdatePlayerName .Title
+{
+    width: 100%;
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    padding: 0;
+}
+
+.UpdatePlayerName .Content
+{
+    width: 100%;
+    margin: 0 0 10px 0;
+    padding: 0;       
+}
+
+.TextBox1
+{
+    width: 298px;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-family: Tahoma, Arial, Sans-Serif;   
+}
+
+.UpdatePlayerName .UpdateMessage
+{
+    width: 100%;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #990000;     
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;      
+}
+
+.UpdateButton
+{
+    display: block;
+    margin: 10px 0;
+    padding: 5px 10px;
+    background-color: #ccccee;
+    border: 1px solid #333399;
+    color: #333399;
+    text-decoration: none;   
+    text-align: center;    
+    font-size: 16px;
+}
+
+.MainContent .Header
+{
+    display: block;
+    width: 100%;
+    margin: 0 0 30px 0;
+    font-size: 24px;
+    font-weight: bold;   
+}
+
+.ChangePasswordContainer
+{
+    width: 300px;
+    padding: 10px;
+    margin: 50px 0 50px 20px;   
+    background-color: #eee;
+    border: 1px solid #333;
+    clear: both;
+    font-size: 16px;
+    color: #333;    
+}
+
+.ChangePasswordContainer .Title
+{
+    width: 100%;
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    padding: 0;
+}
+
+.ListAddButton
+{
+    width: 100%;
+    margin: 20px 0 30px 0;   
+}
+
+.FormContainer
+{
+    width: 500px;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #eee;
+    border: 1px solid #333;   
+    font-size: 16px;
+    color: #333;
+}
+
+.FormContainer .FormRow
+{
+    width: 100%;
+    margin: 0 0 10px 0;   
+}
+
+.FormContainer .Title
+{
+    display: block;
+    width: 100%;
+    margin: 0 0 3px 0;
+}
+
+.FormContainer .Content
+{
+    display: block;
+    width: 100%;
+    margin: 0;   
+}
+
+.TextBox2
+{
+    width: 500px;
+    height: 400px;
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 16px;
+}   
+
+.TextBox3
+{
+    width: 500px;
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 16px;
+}   
+
+.FormWarning
+{
+    width: 100%;
+    margin: 20px 0;
+    padding: 0;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    color: #990000;   
+}
+
+.FormSubmit
+{
+    width: 100%;
+    margin: 20px 0 0 0;   
+}
+
+.DeleteButton
+{
+    float: right;   
+}
+
+.DescriptionContent
+{
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    margin: 0 0 20px 0;
+    padding: 0;   
+}
+
+.CampaignCharacters
+{
+    width: 300px;
+    padding: 10px;
+    margin: 20px 0;   
+    background-color: #eee;
+    border: 1px solid #333;
+    clear: both;
+    font-size: 16px;
+    color: #333;
+}
+
+.CampaignCharacters span
+{
+    display: block;
+}
+
+.CampaignCharacters .Title
+{
+    width: 100%;
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    padding: 0;
+}
+
+.CampaignCharacters .Content
+{
+    width: 100%;
+    margin: 0 0 10px 0;
+    padding: 0;       
+}
+
+.CharactersList
+{
+    width: 298px;
+    height: 200px;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-family: Tahoma, Arial, Sans-Serif;       
+}
+
+.CharactersDropDown
+{
+    width: 298px;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    font-family: Tahoma, Arial, Sans-Serif;   
+}
+
+.CampaignSessions
+{
+    width: 100%;
+    margin: 20px 0;
+    padding: 0;   
+    font-size: 16px;
+}
+
+.CampaignSessions .Title
+{
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    margin: 0 0 20px 0;   
+}
+
+.EditLink
+{
+    font-size: 13px;   
+    color: #666;
+}
+
+.SessionList
+{
+    width: 100%;
+    margin: 20px 0;
+    padding: 0;   
+}
+
+.SessionListCampaign
+{
+    width: 90%;
+    margin: 10px auto;
+    padding: 0;   
+}
+
+.SessionListSessions
+{
+    width: 100%;
+    margin: 10px 0;
+    padding: 0;   
+}
+
+.SessionListItem
+{
+    width: 800px;
+    padding: 0;
+    margin: 0 auto 10px auto;
+    border: 1px solid #666;   
+}
+
+.SessionListItemHeader
+{
+    display: block;
+    width: 780px;
+    padding: 5px 10px;
+    border-bottom: 1px solid #666;
+    color: #333;
+    background-color: #eaeaea;      
+}
+
+.SessionListItemDescription
+{
+    display: block;
+    width: 760px;
+    padding: 0 20px;
+    margin: 0 0 10px 0;
+    background-color: #fff;
+    color: #333;   
+}
+
+.SessionListItemLink
+{
+    width: 100%;
+    margin: 10px 0;
+    padding: 0;
+    text-align: center;   
+}
+
+.SessionListItemLink a
+{
+    font-size: 20px;   
+}
+
+.SessionListItemFooter
+{
+    width: 780px;
+    padding: 5px 10px;
+    margin: 0;
+    border-top: 1px solid #999;
+    background-color: #efefef;
+    text-align: right;
+    font-size: 14px;
+}
+
+.SessionListItemFooter a
+{
+    color: #666;
+}
+
+
+
+
+
+
+
+
+
+
+
+.Menu
+{
+	float: left;
+	list-style-type: none;
+}
+
+.Menu li
+{
+	float: left;
+	list-style-type: none;
+	padding: 0;
+	display: block;
+}
+
+.Menu li a
+{
+	float: left;
+	display: block;
+	margin: 0;
+}
+
+.StandardNav
+{
+    width: 970px;
+    padding: 0;
+    margin: 0;    
+}
+
+.StandardNav li
+{
+    padding: 0 20px;   
+}
+
+.StandardNav .NavItem
+{
+    border-right: 1px solid #333;   
+}
+
+.StandardNav li a
+{
+    font-size: 16px;
+    line-height: 16px;   
+    padding: 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.StandardNav li a:hover
+{
+    text-decoration: underline;
+}
+

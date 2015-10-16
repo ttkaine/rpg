@@ -32,5 +32,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<PageView> PageViews { get; set; }
         public virtual DbSet<Player> Players { get; set; }
         public virtual DbSet<Trophy> Trophies { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
     }
 }

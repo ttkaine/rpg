@@ -1,1 +1,9 @@
-﻿{"version":3,"sources":["variables.less"],"names":[],"mappings":"AAAA,SAAS","file":"variables.css"}
+{
+  "version": 3,
+  "file": "variables.css",
+  "sources": [
+    "variables.less"
+  ],
+  "names": [],
+  "mappings": "AAAA,SAAS"
+}

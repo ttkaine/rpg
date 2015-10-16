@@ -53,5 +53,6 @@ namespace Warhammer.Core.Abstract
         List<Person> TopNpcs();
         List<Person> AllNpcs();
         void SetMyAward(int personId, TrophyType trophyType);
+	    bool IsLoggedIn();
     }
 }

@@ -1,0 +1,269 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RoleplayForum/Session.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RoleplayForum/CharacterSheet.js")"></script>
+    <script type="text/javascript">
+        function getAjaxWebService()
+        {
+            return "@Url.Content("~/Roleplay")";
+        }
+        $(document).ready(function ()
+        {
+            setupPage(@ViewBag.SessionId);
+        });
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/RoleplayCss/MainStyle.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/RoleplayCss/Roleplay.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/RoleplayCss/CharacterSheet.css")" />
+    
+    <style type="text/css">
+        
+        
+    </style>
+}
+
+<div id="roleplayContent">
+    <div id="modalOverlay" class="ModalOverlay" style="display:none">
+        <div class="ModalOverlayBackground"></div>
+        <div id="editPostPopup" class="EditPostPopup" style="display:none;">
+            <div class="PopupHeader">
+                <span class="EditPostPopupTitle">Edit Post</span>
+                <span class="PopupClose" onclick="cancelEditPost();"></span>
+                <div class="Clear"></div>
+            </div>
+            <div class="PopupContent">
+                <textarea id="txtEditPost" class="EditPostTextBox NotCMS" cols="20" rows="2"></textarea>            
+            </div>
+            <div class="PopupSubmit">
+                <input id="btnEditPostSubmit" class="PopupButton" type="button" value="EDIT POST" />
+                <input id="btnCancelEditPost" class="PopupButton" type="button" value="CANCEL" onclick="cancelEditPost();" />
+            </div>
+            <div class="Clear"></div>
+        </div><!-- EditPostPopup -->   
+        
+        <div id="editRecipientsPopup" class="EditRecipientsPopup" style="display:none;">
+            <div class="PopupHeader">
+                <span class="EditRecipientsPopupTitle">Choose Recipients</span>
+                <span class="PopupClose" onclick="cancelEditRecipients();"></span>
+                <div class="Clear"></div>
+            </div>            
+            <div id="divRecipientsPopupContent" class="PopupContent">
+                <div class="AllRecipientsContainer">
+                    <input id="chkEveryone" type="checkbox" onclick="toggleRecipientsEnabled();" />
+                    Everyone
+                </div>
+                <div id="divRecipientsOverlay" class="RecipientsOverlay"></div>
+                <div id="divRecipients" class="RecipientsContainer">
+                </div>
+            </div>
+            <div id="divRecipientsPopupLoading" class="PopupContentLoading">
+            </div>
+            <div class="PopupSubmit">
+                <input id="btnUpdateRecipients" class="PopupButton" type="button" value="UPDATE RECIPIENTS" onclick="updateRecipients();" />
+                <input id="btnCancelRecipients" class="PopupButton" type="button" value="CANCEL" onclick="cancelEditRecipients();" />
+            </div>
+            <div class="Clear"></div>
+        </div><!-- EditRecipientsPopup -->   
+
+        <div id="editCharacterSheetPopup" class="EditCharacterSheetPopup" style="display:none;">
+            <div class="PopupHeader">
+                <span class="EditCharacterSheetPopupTitle">Edit Character Sheet</span>
+                <span class="PopupClose" onclick="cancelEditCharacterSheet();"></span>
+                <div class="Clear"></div>
+            </div>            
+            <div id="divEditCharacterSheetPopupContent" class="PopupContent">
+                <div id="divCharacterSheetContainer" class="EditableCharacterSheetContainer">
+
+                </div>
+            </div>
+            <div id="divEditCharacterSheetPopupLoading" class="PopupContentLoading">
+            </div>
+            <div class="PopupSubmit">
+                <input id="btnSubmitCharacterSheet" class="PopupButton" type="button" value="SUBMIT CHANGES" />
+                <input id="btnCancelEditCharacterSheet" class="PopupButton" type="button" value="CANCEL" onclick="cancelEditCharacterSheet();" />
+            </div>
+            <div class="Clear"></div>
+        </div><!-- EditCharacterSheetPopup -->   
+    </div>
+
+    <div id="divSessionContent" class="SessionContent">
+        <div id="divOverlay" class="Overlay">
+            <div class="OverlayBackground"></div>
+            <div class="CalculatingContainer">
+                <div class="CalculatingBox">
+                    Loading Session...
+                </div>
+            </div><!-- CalculatingContainer -->
+        </div><!-- Overlay -->
+
+        <div id="divSessionHeader" class="SessionHeader">
+            <div id="divSessionTitle" class="SessionTitle">
+                Session Title
+            </div>
+            <div id="divOocToggleContainer" class="OocToggleContainer">                
+                Show OOC
+                <input id="chkShowOoc" type="checkbox" checked="checked" onclick="toggleOoc(true);" />
+            </div>
+            <div class="Clear"></div>
+        </div><!-- SessionHeader -->
+        <div id="divPostContainer" class="PostContainer">
+
+
+
+
+        </div><!-- PostContainer -->
+        <div id="divPlayerControls" class="PlayerControls">
+			<div class="PlayerControlsHeader">
+                <div id="divPostTypeControlContainer" class="PostTypeControlContainer">
+                    <span class="PostTypeSpan">
+                        <div class="ToggleButtonEnabled" id="divInCharacterButton" checked="checked" onclick="selectedTabChanged(1);">In Character</div>
+                    </span>
+                    <span class="PostTypeSpan">
+                        <div class="ToggleButtonDisabled" id="divOutOfCharacterButton" checked="unchecked" onclick="selectedTabChanged(2);">Out Of Character</div>
+                    </span>
+                    <span class="PostTypeSpan">
+                        <div class="ToggleButtonDisabled" id="divDiceRollButton" checked="unchecked" onclick="selectedTabChanged(3);">Dice Roll</div>
+                    </span>
+                    <div class="Clear"></div>
+                </div><!-- OocControlContainer -->
+                <div class="PostAsContainer" id="divPostAsContainer">
+                    <span id="spanPostAs" class="PostAs">Post As: </span>
+                    <select id="ddlPostAs" class="PostAsDropDown" onchange="ddlPostAs_Changed();">
+                    </select>                    
+                </div><!-- PostAsContainer -->			
+                <div class="Clear"></div>
+			</div>
+		    <div id="divPlayerPostControls" class="PlayerPostControls">
+                <div class="PlayerTextPostControls">
+                    <div class="PlayerTextContainer">
+                        <div id="divCharacterControls" class="PlayerCharacterControls">
+                            <img id="imgCharacter" src="/content/images/roleplayforum/default_character.jpg" class="PlayerCharacterPortrait" />
+                            @*<input id="btnEditCharacter" type="button" value="Edit Character Sheet" class="EditCharacterSheetButton" onclick="btnEditCharacter_Click();" />*@
+                        </div>
+                        <div class="PlayerTextControl">
+                            <textarea id="txtPost" class="PlayerPostTextBox NotCMS" onkeypress="txtPost_keyPress(event);"></textarea>
+                        </div>
+                        <div class="Clear"></div>
+                    </div>
+                    <div class="Clear"></div>
+                    <div class="TextPostButtonContainer">
+                        <div class="PlayerPrivacyContainer">
+                            <span class="PrivacyTitle">
+                                Send to:
+                            </span>
+                            <span id="spanRecipients" class="Recipients">
+                                Everyone
+                            </span>
+                            <span class="PrivacyControl">
+                                <input id="btnRecipients" type="button" value="EDIT" class="EditPrivacyButton" onclick="showEditRecipientsPopup();" />
+                            </span>
+                            <span class="PrivacyControl">
+                                <input id="btnClearRecipients" type="button" value="CLEAR" class="EditPrivacyButton" onclick="clearRecipients();" />
+                            </span>
+                        </div>
+                        <input id="btnPost" type="button" value="POST" class="PlayerPostButton" onclick="btnPost_Click();" />    
+                    </div><!-- PostButtonContainer -->
+                </div><!-- PlayerTextPostControls -->
+
+				<div id="divPlayerDiceControls" class="PlayerDiceControls" style="display:none;">
+					<div class="DiceControlsRow">
+						Roll Type: 
+						<span class="DiceControlSpan">
+							<select id="ddlRollType" class="DiceControlDropDown" onchange="ddlRollType_Change();">
+								<option value="1">D10 Dice Pool</option>
+								<option value="2">D* Totalled</option>
+							</select>
+						</span>
+					</div><!-- DiceControlsRow -->
+					<div class="DiceControlsRow">
+						Re-roll Maximums: 
+						<span class="DiceControlSpan">
+							<input id="chkReRolls" class="DiceControlCheckBox" type="checkbox" checked="checked" />
+						</span>
+					</div><!-- DiceControlsRow -->                    
+					<div class="DiceControlsRow">
+						Dice Count: 
+						<span class="DiceControlSpan">
+							<select id="ddlDiceCount" class="DiceControlDropDown">
+							</select>
+						</span>                    
+					</div><!-- DiceControlsRow -->
+					<div id="divDiceSize" class="DiceControlsRow">
+						Dice Type: 
+						<span class="DiceControlSpan">
+							<select id="ddlDieSize" class="DiceControlDropDown" style="display:none;">
+								<option value="4">D4</option>
+								<option value="6" selected="selected">D6</option>
+								<option value="8">D8</option>
+								<option value="10">D10</option>
+								<option value="12">D12</option>
+								<option value="20">D20</option>
+								<option value="100">D100</option>
+							</select>
+							<span id="spanD10" class="D10Fixed" style="display:block">D10</span>
+						</span>
+					</div><!-- DiceControlsRow -->
+					<div id="divRollTarget" class="DiceControlsRow">
+						Success Target: 
+						<span class="DiceControlSpan">
+							<select id="ddlRollTarget" class="DiceControlDropDown">
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8" selected="selected">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</span>
+					</div><!-- DiceControlsRow -->					                  
+					<div class="DiceRollButtonContainer">
+						<input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="btnRollDice_Click();" />    
+					</div><!-- DiceRollButtonContainer -->						
+				</div><!-- PlayerDiceControls -->
+
+                <div class="Clear"></div>
+            </div>
+        </div><!-- PlayerControls -->
+    </div><!-- SessionContent -->
+
+    <div id="CharacterPopOver" class="CharacterPopOver" style="opacity:0;left:-650px;" shown="false">
+        <div class="PopOverHeader">
+            <span id="CharacterPopOverName" class="CharacterPopOverName"></span>
+            <span class="PopOverClose" onclick="closeCharacterPopOver();"></span>
+            <div class="Clear"></div>
+        </div>
+        <div class="PopOverContent">
+            <span id="CharacterPopOverLoading" class="PopOverLoading"></span>
+
+            <div class="PopOverTabs">
+                <span id="tabCharacterProfile" class="CharacterTabEnabled" onclick="activateCharacterTab(1);">Profile</span>
+                <span id="tabCharacterSheet" class="CharacterTabDisabled" onclick="activateCharacterTab(2);">Character Sheet</span>
+                <div class="Clear"></div>
+            </div>
+            <div class="PopOverPageContent">
+                <div id="CharacterPopOverDescription" class="CharacterPopOverDescription"></div>
+                <div id="CharacterPopOverSheet" class="CharacterSheetContainer" style="display:none;"></div>
+            </div>
+        </div>
+    </div><!-- CharacterPopOver -->
+
+    <div id="preLoadImages" style="display:none;">
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/controlclose.jpg")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/default_character.jpg")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/dice_control.jpg")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/dice_roll.jpg")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/gm.jpg")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/post_strip.jpg")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/trait_checked.png")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/trait_unchecked.png")" />
+        <img src="@Url.Content("~/Content/Images/RoleplayForum/ViewDetails.png")" />
+    </div>
+</div>

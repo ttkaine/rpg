@@ -22,5 +22,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<Award> Awards();
         IQueryable<PageView> PageViews();
         void Delete(PageView pageView);
+		int Save(Post post);
+		IQueryable<Post> Posts();
+		void Delete(Post post);
     }
 }

@@ -71,13 +71,15 @@
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
     <Compile Include="Abstract\IImageProcessor.cs" />
-    <Compile Include="Abstract\IModelFactory.cs" />
+    <Compile Include="Abstract\IPostManager.cs" />
+    <Compile Include="Abstract\IViewModelFactory.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\ImageProcessor.cs" />
     <Compile Include="Concrete\InlineHtmlImage.cs" />
-    <Compile Include="Concrete\ModelFactory.cs" />
+    <Compile Include="Concrete\PostManager.cs" />
+    <Compile Include="Concrete\ViewModelFactory.cs" />
     <Compile Include="Concrete\Repository.cs" />
     <Compile Include="Entities\Award.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
@@ -118,6 +120,7 @@
     <Compile Include="Entities\Player.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\Session.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -133,7 +136,16 @@
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
     <Compile Include="Entities\_Trophy.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />
+    <Compile Include="RoleplayViewModels\CharacterViewModel.cs" />
+    <Compile Include="RoleplayViewModels\DiceRollPostViewModel.cs" />
+    <Compile Include="RoleplayViewModels\PlayerViewModel.cs" />
+    <Compile Include="RoleplayViewModels\PostViewModel.cs" />
+    <Compile Include="RoleplayViewModels\SessionViewModel.cs" />
+    <Compile Include="RoleplayViewModels\TextPostViewModel.cs" />
+    <Compile Include="Tools\DiceRoller.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

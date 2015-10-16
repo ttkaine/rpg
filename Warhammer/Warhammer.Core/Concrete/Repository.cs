@@ -99,7 +99,33 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
-        #endregion
+	    public int Save(Post post)
+	    {
+			if (post.Id == 0)
+			{
+				_entities.Posts.Add(post);
+			}
+			else
+			{
+				_entities.Entry(post).State = EntityState.Modified;
+			}
+			_entities.SaveChanges();
+
+			return post.Id;
+	    }
+
+	    public IQueryable<Post> Posts()
+	    {
+			return _entities.Posts;
+	    }
+
+	    public void Delete(Post post)
+	    {
+			_entities.Posts.Remove(post);
+			_entities.SaveChanges();
+		}
+
+	    #endregion
 
         #region Save
 
