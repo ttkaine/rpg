@@ -118,6 +118,9 @@
     <Compile Include="Entities\Player.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Post.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Session.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
