@@ -187,9 +187,20 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\RoleplayController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlBuilders\CharacterSheetBuilder.cs" />
+    <Compile Include="HtmlBuilders\PostBuilder.cs" />
+    <Compile Include="HtmlBuilders\SessionDownloadBuilder.cs" />
+    <Compile Include="JsonObjects\JsonCharacterDetails.cs" />
+    <Compile Include="JsonObjects\JsonCharacterListItem.cs" />
+    <Compile Include="JsonObjects\JsonCharacterSheet.cs" />
+    <Compile Include="JsonObjects\JsonCharacterSheetFactory.cs" />
+    <Compile Include="JsonObjects\JsonPost.cs" />
+    <Compile Include="JsonObjects\JsonRecipient.cs" />
+    <Compile Include="JsonObjects\JsonResponseWithPostCollection.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
@@ -222,6 +233,17 @@
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\no-image.jpg" />
+    <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
+    <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
+    <Content Include="Content\Images\RoleplayForum\dice_control.jpg" />
+    <Content Include="Content\Images\RoleplayForum\dice_roll.jpg" />
+    <Content Include="Content\Images\RoleplayForum\display_lock_tile.jpg" />
+    <Content Include="Content\Images\RoleplayForum\gm.jpg" />
+    <Content Include="Content\Images\RoleplayForum\main_loading.gif" />
+    <Content Include="Content\Images\RoleplayForum\post_strip.jpg" />
+    <Content Include="Content\Images\RoleplayForum\trait_checked.png" />
+    <Content Include="Content\Images\RoleplayForum\trait_unchecked.png" />
+    <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Less\Bootstrap\mixins\border-radius.css">
       <DependentUpon>border-radius.less</DependentUpon>
     </Content>
@@ -240,6 +262,11 @@
     <Content Include="Content\Less\jcrop.min.css">
       <DependentUpon>jcrop.css</DependentUpon>
     </Content>
+    <Content Include="Content\RoleplayCss\CharacterSheet.css" />
+    <Content Include="Content\RoleplayCss\LoginStyle.css" />
+    <Content Include="Content\RoleplayCss\MainStyle.css" />
+    <Content Include="Content\RoleplayCss\Roleplay.css" />
+    <Content Include="Content\RoleplayCss\SessionDownload.css" />
     <Content Include="Content\theme.css">
       <DependentUpon>theme.less</DependentUpon>
     </Content>
@@ -365,6 +392,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\RoleplayForum\CharacterSheet.js" />
+    <Content Include="Scripts\RoleplayForum\Session.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -429,6 +458,7 @@
     <Content Include="Views\Home\FavouriteNpcs.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\FavNpc.cshtml" />
+    <Content Include="Views\Roleplay\Index.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -11,9 +11,9 @@ namespace Warhammer.Core.Concrete
     {
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
-        private readonly IModelFactory _factory;
+        private readonly IViewModelFactory _factory;
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IViewModelFactory factory)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
@@ -560,7 +560,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
+	    public bool IsLoggedIn()
+	    {
+		    return CurrentPlayer != null;
+	    }
+
+	    private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>
             {

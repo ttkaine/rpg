@@ -1,0 +1,721 @@
+﻿
+.EditableCharacterSheet 
+{
+    width: 600px;
+    padding: 0;
+    margin: 0;   
+}
+
+.LeftColumn
+{
+    width: 300px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.RightColumn
+{
+    width: 300px;
+    float: right;
+    margin: 0;
+    padding: 0;   
+}
+
+.SkillsContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.SkillsContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.SkillRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 5px 0;  
+}
+
+.SkillRowTitle
+{
+    display: block;
+    width: 210px;
+    float: left;
+    margin: 3px 0 0 0;
+    padding: 0 0 0 5px;
+    border-bottom: 1px dotted #bbb;
+}
+
+.EditableCharacterSheet .SkillRowContent
+{
+    display: block;
+    width: 50px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+}
+
+.SkillTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 45px;
+    margin: 0;   
+}
+
+.TraitsContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.TraitsContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.TraitRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 2px 0;  
+}
+
+.TraitRowTitle
+{
+    display: block;
+    width: 190px;
+    float: left;
+    margin: 3px 0 0 0;
+    padding: 0 0 0 5px;
+    border-bottom: 1px dotted #bbb;
+}
+
+.EditableCharacterSheet .TraitRowContent
+{
+    display: block;
+    width: 75px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+}
+
+.DotSelectorContainer
+{
+    width: 75px;
+    height: 21px;
+    padding: 3px 0 0 0;
+    margin: 0;   
+}
+
+.DotSelectorUnchecked, .DotSelectorChecked
+{
+    width: 21px;
+    height: 21px;
+    float: left;
+    display: block;
+    margin: 0 0 0 4px;
+    cursor: pointer;
+}
+
+.DotSelectorUnchecked
+{
+    background: url(../images/trait_unchecked.png) no-repeat scroll top left;
+}
+
+.DotSelectorChecked
+{
+    background: url(../images/trait_checked.png) no-repeat scroll top left;
+}
+
+
+.SpecialityContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.SpecialityContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.SpecialityRowContainer
+{
+    width: 288px;
+    padding: 0;
+    margin: 0;   
+}
+
+.SpecialityRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 5px 0;  
+}
+
+.SpecialityRowTitle
+{
+    display: block;
+    width: 195px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.EditableCharacterSheet .SpecialityRowContent
+{
+    display: block;
+    width: 50px;
+    float: left;
+    margin: 0 0 0 3px;
+    padding: 0;  
+}
+
+.RemoveSpecialityRow
+{
+    display: block;
+    width: 17px;
+    height: 17px;
+    margin: 3px 0 0 0;
+    float: right;
+    background: url(../images/controlclose.jpg) no-repeat scroll top left; 
+    cursor: pointer;  
+}
+
+.SpecialityNameTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 188px;
+    margin: 0;       
+}
+
+.SpecialityButtonContainer
+{
+    width: 100%;
+    padding: 10px 0 5px 0;
+    margin: 0;
+    text-align: center;   
+}
+
+.SpecialityValueTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 45px;
+    margin: 0;   
+}
+
+.OtherContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.OtherContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.OtherRowContainer
+{
+    width: 288px;
+    padding: 0;
+    margin: 0;   
+}
+
+.OtherRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 5px 0;  
+}
+
+.OtherRowTitle
+{
+    display: block;
+    width: 195px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.EditableCharacterSheet .OtherRowContent
+{
+    display: block;
+    width: 50px;
+    float: left;
+    margin: 0 0 0 3px;
+    padding: 0;  
+}
+
+.OtherNameTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 188px;
+    margin: 0;       
+}
+
+.OtherButtonContainer
+{
+    width: 100%;
+    padding: 10px 0 5px 0;
+    margin: 0;
+    text-align: center;   
+}
+
+.OtherValueTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 45px;
+    margin: 0;   
+}
+
+.RemoveOtherRow
+{
+    display: block;
+    width: 17px;
+    height: 17px;
+    margin: 3px 0 0 0;
+    float: right;
+    background: url(../images/controlclose.jpg) no-repeat scroll top left; 
+    cursor: pointer;  
+}
+
+.HitCapacityContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.HitCapacityContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.BaseHitCapacity
+{
+    display: block;
+    float: right;
+    width: 80px;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 22px;
+    color: #fff;
+    text-align: right;
+}
+
+.BaseHitCapacityTextBox
+{
+    width: 20px;
+    margin: 0 0 0 2px;
+    padding: 1px;
+    font-size: 14px;   
+    text-align: center;
+}
+
+.HitCapacityTable
+{
+    width: 270px;
+    padding: 0;
+    margin: 10px auto;
+    font-size: 14px;
+}
+
+.CurrentDamageTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 50px;
+    margin: 0;      
+    text-align: center;  
+}
+
+.CurrentDamageDisplay
+{
+    width: 56px;
+    text-align: center;
+    font-size: 18px;   
+}
+
+.HitCapacityTable .HeaderRow td
+{
+    text-align: center;     
+}
+
+.HitCapacityTable .BodyRow span
+{
+    display: block;
+    padding: 10px;
+    margin: 0;
+    text-align: center;   
+    border: 1px solid #999;
+    border-radius: 10px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.HitCapacityItem
+{
+    width: 35px;   
+    font-size: 18px;
+}
+
+.WoundsContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.WoundsContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.WoundsTable
+{
+    width: 270px;
+    padding: 0;
+    margin: 10px auto;
+    font-size: 14px;
+}
+
+.MinorWoundTextBox, .SeriousWoundTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    width: 50px;
+    margin: 0;      
+    text-align: center;  
+}
+
+.WoundsTable .HeaderRow td
+{
+    text-align: center;   
+    font-size: 14px;
+}
+
+.WoundsTable .BodyRow td
+{
+    font-size: 16px;    
+    text-align: center;   
+}
+
+.WoundsTable .BodyRow span
+{
+    display: block;
+    padding: 10px;
+    margin: 0;
+    text-align: center;   
+    border: 1px solid #999;
+    border-radius: 10px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.WoundDisplay
+{
+    width: 56px;   
+}
+
+.SheetHeader
+{
+    width: 588px;
+    padding: 0 0 5px 0;
+    margin: 0 0 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.SheetHeader .Title
+{
+    display: block;
+    width: 570px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.CharacterSheetPrivacyContainer
+{
+    display: block;
+    float: right;
+    width: 80px;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 22px;
+    color: #fff;
+    text-align: right;
+}
+
+.XpContainer, .ChipsContainer
+{
+    width: 270px;
+    padding: 0;
+    margin: 0 30px 0 0;
+    float: left;   
+}
+
+.ChipsContainer
+{
+    margin: 0;
+}
+
+.XpRow, .ChipsRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 5px 0;  
+}
+
+.XpRowTitle, .ChipsRowTitle
+{
+    display: block;
+    width: 210px;
+    float: left;
+    margin: 3px 0 0 0;
+    padding: 0 0 0 5px;
+    border-bottom: 1px dotted #bbb;
+}
+
+.EditableCharacterSheet .XpRowContent, .EditableCharacterSheet .ChipsRowContent
+{
+    display: block;
+    width: 50px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+}
+
+.DisplayCharacterSheet .XpRowContent, .DisplayCharacterSheet .ChipsRowContent
+{
+    display: block;
+    width: 50px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+    text-align: center;
+    border-bottom: 1px solid #bbb;
+    font-size: 16px;
+    height: 21px;
+}
+
+.XpTextBox, .ChipsTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 45px;
+    margin: 0;   
+}
+
+.InsanityContainer
+{
+    width: 288px;
+    padding: 0 0 5px 0;
+    margin: 0 10px 10px 0;
+    border: 1px solid #333;
+    background-color: #fff;   
+    float: left;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.InsanityContainer .Title
+{
+    display: block;
+    width: 270px;
+    padding: 5px 9px;
+    border-bottom: 1px solid #333;
+    background-color: #666;
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;   
+}
+
+.InsanityRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 5px 0;  
+}
+
+.InsanityRowTitle
+{
+    display: block;
+    width: 210px;
+    float: left;
+    margin: 3px 0 0 0;
+    padding: 0 0 0 5px;
+    border-bottom: 1px dotted #bbb;
+}
+
+.EditableCharacterSheet .InsanityRowContent
+{
+    display: block;
+    width: 50px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+}
+
+.DisplayCharacterSheet .InsanityRowContent
+{
+    display: block;
+    width: 50px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+    text-align: center;
+    border-bottom: 1px solid #bbb;
+    font-size: 16px;
+    height: 21px;
+}
+
+.InsanityTextBox
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    width: 45px;
+    margin: 0;   
+    text-align: center;
+}
+
+.CharacterSheetPrivacyCheckBox
+{
+ 
+}
+
+.GenericRow
+{
+    width: 270px;
+    padding: 0 9px;
+    font-size: 14px; 
+    height: 24px;
+    margin: 0 0 5px 0;  
+}
+
+.GenericRowTitle
+{
+    display: block;
+    width: 210px;
+    float: left;
+    margin: 3px 0 0 0;
+    padding: 0 0 0 5px;
+    border-bottom: 1px dotted #bbb;
+}
+
+.DisplayCharacterSheet .GenericRowContent
+{
+    display: block;
+    width: 50px;
+    height: 21px;
+    float: right;
+    margin: 0;
+    padding: 0;  
+    text-align: center;
+    border-bottom: 1px solid #bbb;
+    font-size: 16px;
+}
+
+.GenericEmpty
+{
+    display: block;
+    padding: 10px;
+    text-align: center;   
+}

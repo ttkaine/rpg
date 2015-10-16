@@ -1,0 +1,1226 @@
+﻿
+#roleplayContent 
+{
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#roleplayContent div
+{
+    box-sizing: content-box;
+}
+
+.SessionContent
+{
+    width: 988px;
+    padding: 0;
+    border: 1px solid #333;
+    background-color: #bbb;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.SessionHeader
+{
+    width: 950px;
+    padding: 5px 19px;
+    border-bottom: 1px solid #333;
+    background-color: #666;   
+    font-size: 20px;
+    line-height: 20px;
+    color: White;
+}
+
+.SessionHeader .SessionTitle
+{
+    display: block;
+    width: 70%;
+    float: left;   
+}
+
+.SessionHeader .OocToggleContainer
+{
+    display: block;
+    width: 30%;
+    float: right;
+    text-align: right;
+    font-size: 16px;    
+}
+
+.PostContainer
+{
+    width: 980px;
+    padding: 5px 0 0 8px;
+    margin: 0;
+    height: 500px;   
+    font-family: Arial;
+    overflow-y: scroll;
+    z-index: 1000;
+}
+
+.PlayerControls
+{
+    width: 988px;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #333;
+    background-color: #eee;  
+    position: relative;
+}
+
+.PlayerControlsHeader
+{
+    width: 980px;
+    padding: 4px;
+    border-bottom: 1px solid #333;
+    margin: 0;   
+    position: relative;
+    background-color: #aaccaa;
+}
+
+.PlayerPostControls
+{
+    width: 988px;
+    height: 230px;
+    padding: 0;
+    margin: 0;   
+    background-color: #eee;
+    position: relative;
+}
+
+.PostTypeControlContainer
+{   
+    width: 590px;
+    margin: 0;
+    float: left;
+}
+
+.PostTypeSpan
+{
+    display: block;
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+.ToggleButtonEnabled, .ToggleButtonDisabled
+{
+    display: block;
+    width: 180px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 5px 0 0;
+    float: left;
+}
+
+.ToggleButtonEnabled
+{
+    border: 2px solid #fff;
+    background-color: #333;
+    color: #fff;   
+    text-shadow: -1px 1px 8px #eee, 1px -1px 8px #eee;
+}
+
+.ToggleButtonDisabled
+{
+    border: 2px solid #bbb;
+    background-color: #ddd;   
+    color: #bbb;
+}
+
+.PostAsContainer
+{
+    width: 332px;
+    padding: 0;
+    margin: 2px 0 0 0;
+    float: right;   
+    font-size: 18px;  
+}
+
+.PostAsDropDown
+{
+    width: 250px;
+    padding: 2px;
+    margin: 0;   
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 18px;
+    margin: 1px 4px;
+    float: left;
+}
+
+.PostAs
+{
+    display: block;
+    float: left;
+    margin: 4px;
+}
+
+
+.PlayerTextPostControls
+{
+    width: 988px;
+    height: 230px;
+    padding: 0;
+    margin: 0;   
+    position: relative;   
+}
+
+.PlayerDiceControls
+{
+    width: 730px;
+    padding: 10px 9px 10px 250px;
+    height: 210px;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5000;
+    background: #ccccff url(../images/dice_control.jpg) no-repeat scroll top left;
+}
+
+.PlayerTextContainer
+{
+    width: 970px;
+    height: 160px;
+    padding: 10px 9px;
+    margin: 0;
+}
+
+.PlayerPrivacyContainer
+{
+    width: 700px;
+    padding: 0;
+    margin: 0;
+    float: left;  
+    text-align: left; 
+}
+
+.PlayerCharacterControls
+{
+    width: 160px;
+    height: 160px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    float: left;   
+    
+    background-color: #ddd;
+}
+
+.PlayerCharacterPortrait
+{
+    display: block;
+    margin: 5px auto;
+    width: 100px;
+    height: 120px;
+    border: 1px solid #333;
+}
+
+.EditCharacterSheetButton
+{
+    display: block;
+    width: 140px;
+    margin: 0 auto;   
+}
+
+.PlayerTextControl
+{
+    width: 810px;
+    padding: 0;
+    float: right;
+    margin: 0;
+}
+
+.PlayerPostTextBox
+{
+    width: 700px;
+    max-width: 700px !important;
+    min-width: 700px !important;
+    height: 150px;
+    min-height: 150px !important;
+    max-height: 150px !important;
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    padding: 4px;
+    margin: 0 auto;   
+    display: block;
+}
+
+.PlayerPostButton
+{
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
+    margin: 0;    
+}
+
+.TextPostButtonContainer
+{   
+    width: 970px;    
+    margin: 0;
+    padding: 9px 9px 10px 9px;
+    text-align: right;
+    border-top: 1px solid #333;
+}
+
+.Overlay
+{
+    float: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.OverlayBackground
+{
+    position: absolute;
+    background: url(../images/display_lock_tile.jpg) repeat scroll top left;   
+    opacity: 0.9;
+    filter:alpha(opacity=90);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;    
+    z-index: 5000;
+    margin: 0;
+    padding: 0;
+}
+
+.CalculatingContainer
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 6000;
+    margin: 0;
+    padding: 0;   
+}
+
+.CalculatingBox
+{
+    width: 300px;
+    height: 200px;
+    border: 1px solid #999;
+    border-radius: 25px;
+    margin: 100px auto 0 auto;
+    padding: 50px 0 0 0; 
+    background: #fff url(../images/main_loading.gif) no-repeat scroll center 120px; 
+    text-align: center; 
+    font-size: 18px;
+}
+
+.Post
+{
+    width: 930px;
+    padding: 0 5px 5px 0;
+    margin: 5px 0;
+    position: relative;   
+    clear: both;
+}
+
+.InCharacterPost
+{
+    width: 900px;
+    margin: 0 0 0 1px;
+    border: 2px solid #6666ff;   
+    border-top: 5px solid #6666ff;   
+    background: #fff url(../images/post_strip.jpg) repeat-y scroll top left;
+    clear: both;   
+    box-shadow: 5px 5px 5px #888888;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.InCharacterPost .PostHeader
+{
+    width: 880px;
+    padding: 0 10px 4px 10px;
+    border-bottom: #6666ff;
+    background-color: #6666ff;
+    color: #fff;
+    font-size: 20px;
+}
+
+.InCharacterPost .PostCharacter
+{
+    float: left;   
+}
+
+.InCharacterPost .ViewCharacterIcon
+{
+    display: block;
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin: 5px 0 0 10px;
+    background: url(../images/viewdetails.png) no-repeat scroll top left;   
+    cursor: pointer;
+}
+
+.InCharacterPost .PostPlayer
+{
+    float: right;
+    text-align: right;   
+}
+
+.InCharacterPost .PostInfo
+{
+    width: 110px;
+    padding: 10px 9px 10px 10px;
+    margin: 0;
+    background-color: #eee;
+    float: left;
+    font-size: 14px;
+    color: #333;  
+}
+
+.InCharacterPost .CharacterPicture
+{
+    width: 100px;
+    height: 120px;
+    border: 1px solid #333;
+    margin: 0 auto;
+    padding: 0;
+    display: block;   
+}
+
+.InCharacterPost .PostedDate
+{    
+    display: block;
+    font-size: 10px;
+    margin: 5px 0 0 0;       
+    text-align: center;
+}
+
+.InCharacterPost .PostContent
+{
+    width: 720px;
+    padding: 10px 20px 40px 30px;
+    margin: 0;
+    float: right;
+    font-size: 14px;   
+    color: #333;
+}
+
+.InCharacterPost .PrivateMessageRecipients
+{
+    width: 700px;
+    padding: 9px;
+    border: 1px solid #999;
+    background-color: #fff;
+    margin: 10px 20px 0 0;
+    font-size: 12px;
+    line-height: 20px;  
+    float: right;
+}
+
+.InCharacterPost .PostEditControls
+{
+    width: 700px;
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;   
+}
+
+.InCharacterPost .PostEditButton
+{
+    float: right;
+    margin: 0 0 0 5px;
+}
+
+.InCharacterPost .EditedDate
+{
+    float: right;
+    margin: 1px 10px 0 0;
+    font-size: 12px;
+    line-height: 24px;
+    font-style: italic;
+}
+
+.GmInCharacterPost
+{
+    width: 900px;
+    margin: 0 0 0 1px;
+    border: 2px solid #ff6666;   
+    border-top: 5px solid #ff6666;       
+    background: #fff url(../images/post_strip.jpg) repeat-y scroll top left;
+    box-shadow: 5px 5px 5px #888888;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.GmInCharacterPost .PostHeader
+{
+    width: 880px;
+    padding: 0 10px 4px 10px;
+    border-bottom: #ff6666;
+    background-color: #ff6666;
+    color: #fff;
+    font-size: 20px;
+}
+
+.GmInCharacterPost .PostInfo
+{
+    width: 110px;
+    padding: 10px 9px 10px 10px;
+    margin: 0;
+    background-color: #eee;
+    float: left;
+    font-size: 14px;
+    color: #333;  
+}
+
+.GmInCharacterPost .CharacterPicture
+{
+    width: 100px;
+    height: 120px;
+    border: 1px solid #333;
+    margin: 0 auto;
+    padding: 0;
+    display: block;   
+}
+
+.GmInCharacterPost .PostedDate
+{    
+    display: block;
+    font-size: 10px;
+    margin: 5px 0 0 0;       
+    text-align: center;  
+}
+
+
+.GmInCharacterPost .PostContent
+{
+    width: 720px;
+    padding: 10px 20px 40px 30px;
+    margin: 0;
+    float: right;
+    font-size: 14px;   
+    color: #333;
+}
+
+.GmInCharacterPost .PrivateMessageRecipients
+{
+    width: 700px;
+    padding: 9px;
+    border: 1px solid #999;
+    background-color: #fff;
+    margin: 10px 20px 0 0;
+    font-size: 12px;
+    line-height: 20px;  
+    float: right;
+}
+
+.GmInCharacterPost .PostEditControls
+{
+    width: 700px;
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;   
+}
+
+.GmInCharacterPost .PostEditButton
+{
+    float: right;
+    margin: 0 0 0 5px;
+}
+
+.GmInCharacterPost .EditedDate
+{
+    float: right;
+    margin: 1px 10px 0 0;
+    font-size: 12px;
+    line-height: 24px;
+    font-style: italic;
+}
+
+.GmInCharacterPost .PostCharacter
+{
+    float: left;   
+}
+
+.GmInCharacterPost .ViewCharacterIcon
+{
+    display: block;
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin: 5px 0 0 10px;
+    background: url(../images/viewdetails.png) no-repeat scroll top left;   
+    cursor: pointer;
+}
+
+.GmInCharacterPost .PostPlayer
+{
+    float: right;
+    text-align: right;   
+}
+
+.OutOfCharacterPost
+{
+    width: 850px;
+    margin: 0 0 0 21px;
+    border: 1px solid #cccc33;   
+    background: #ffffaa;
+    box-shadow: 5px 5px 5px #888888;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.OutOfCharacterPost .PostHeader
+{
+    width: 830px;
+    padding: 4px 10px;
+    color: #333;
+    background-color: #eaea99;
+    border-bottom: 1px solid #cccc33;
+    font-size: 16px;
+}
+
+.OutOfCharacterPost .PostCharacter
+{
+    float: left;   
+}
+
+.OutOfCharacterPost .PostPlayer
+{
+    float: right;
+    text-align: right;   
+}
+
+.OutOfCharacterPost .PostContent
+{
+    width: 790px;
+    padding: 10px 30px 40px 30px;
+    margin: 0;
+    float: right;
+    font-size: 14px;   
+    color: #333;
+}
+
+.OutOfCharacterPost .PrivateMessageRecipients
+{
+    width: 770px;
+    padding: 9px;
+    border: 1px solid #999;
+    background-color: #fff;
+    margin: 10px auto 0 auto;
+    font-size: 12px;
+    line-height: 20px;  
+}
+
+.OutOfCharacterPost .PostEditControls
+{
+    width: 700px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;   
+    height: 25px;
+}
+
+.OutOfCharacterPost .PostEditButton
+{
+    float: right;
+    margin: 0 0 0 5px;
+}
+
+.OutOfCharacterPost .EditedDate
+{
+    float: right;
+    margin: 1px 10px 0 0;
+    font-size: 12px;
+    line-height: 24px;
+    font-style: italic;
+}
+
+.PostCover
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #bbb;
+    z-index: 4000;   
+}
+
+.DiceRollPost
+{
+    width: 850px;
+    margin: 0 0 0 21px;
+    border: 1px solid #6666cc;   
+    background: #ccccff;
+    box-shadow: 5px 5px 5px #888888;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.DiceRollPost .PostHeader
+{
+    width: 830px;
+    padding: 4px 10px;
+    color: #333;
+    background-color: #bbbbea;
+    border-bottom: 1px solid #6666cc;
+    font-size: 16px;
+}
+
+.DiceRollPost .PostCharacter
+{
+    float: left;   
+}
+
+.DiceRollPost .PostPlayer
+{
+    float: right;
+    text-align: right;   
+}
+
+.DiceRollPost .PostContent
+{
+    width: 680px;
+    height: 75px;
+    padding: 10px 20px 15px 150px;
+    background: url(../images/dice_roll.jpg) no-repeat scroll top left;
+    margin: 0;
+    float: right;
+    font-size: 14px;   
+    color: #333;
+    position: relative;
+}
+
+.DiceRollPost .RollDescription
+{
+    display: block;
+    width: 540px;
+    font-size: 24px;
+    margin: 0;  
+}
+
+.DiceRollPost .RollResult
+{
+    display: block;
+    padding: 10px;
+    background-color: #fff;
+    font-size: 20px;
+    text-align: right;        
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid #6666cc; 
+    border-radius: 5px;  
+}
+
+.DiceRollPost .BonusDie
+{
+    color: #339933;   
+}
+
+.DiceControlsRow
+{
+    width: 330px;
+    margin: 0 20px 10px 10px;
+    font-size: 18px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;   
+    float: left;
+}
+
+.DiceControlSpan
+{
+    width: 172px;   
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.DiceControlDropDown
+{
+    width: 170px;
+    padding: 2px;
+    font-size: 18px;
+    margin: 0;
+}
+
+.DiceControlCheckBox
+{
+    margin: 7px 0 0 5px;
+}
+
+.D10Fixed
+{
+    margin: 0 0 0 5px;
+}
+
+.CharacterPopOver
+{
+    width: 650px;
+    position: fixed;
+    z-index: 10000;
+    background: #fff;
+    border: 1px solid #333;
+    box-shadow: 5px 5px 10px #333;   
+    top: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.CharacterPopOver .PopOverHeader
+{
+    width: 640px;
+    padding: 5px;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    background-color: #ddd;   
+    color: #333;
+    font-size: 18px;
+}
+
+.CharacterPopOverName
+{
+    float: left;
+    margin: 0 0 0 5px;
+    padding: 0;   
+}
+
+.PopOverClose
+{
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    background: url(../images/controlclose.jpg) no-repeat scroll top left;
+    float: right;   
+}
+
+.CharacterPopOver .PopOverContent
+{
+    width: 650px;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+.CharacterPopOver .PopOverTabs
+{
+    width: 640px;
+    padding: 2px 5px;
+    background-color: #aaccaa;
+    margin: 0;
+    border-bottom: 1px solid #333;    
+}
+
+.CharacterTabEnabled, .CharacterTabDisabled
+{
+    display: block;
+    width: 150px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    margin: 0 5px 0 0;
+    float: left;
+}
+
+.CharacterTabEnabled
+{
+    border: 2px solid #fff;
+    background-color: #333;
+    color: #fff;   
+    text-shadow: -1px 1px 8px #eee, 1px -1px 8px #eee;
+}
+
+.CharacterTabDisabled
+{
+    border: 2px solid #bbb;
+    background-color: #ddd;   
+    color: #bbb;
+}
+
+
+.CharacterPopOver .PopOverPageContent
+{
+    width: 620px;
+    padding: 10px 20px 10px 10px;
+    height: 500px;
+    overflow-y: scroll;  
+    font-size: 15px;
+    color: #333; 
+}
+
+.CharacterPopOver .PopOverLoading
+{
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff url(../images/main_loading.gif) no-repeat scroll center center;    
+}
+
+.CharacterPopOverImage
+{
+    margin: 0 10px 10px 0;
+    float: left;   
+    border: 1px solid #333;
+}
+
+.ModalOverlay
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20000;  
+}
+
+.ModalOverlayBackground
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+    z-index: 21000;       
+}
+
+.EditPostPopup
+{
+    position: absolute;
+    width: 600px;
+    height: 500px;
+    z-index: 25000;
+    background-color: #fff;
+    border: 1px solid #333;
+    box-shadow: 5px 5px 10px #333;   
+    margin: auto;
+    padding: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.EditPostPopup .PopupHeader
+{
+    width: 590px;
+    padding: 5px;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    background-color: #ddd;   
+    color: #333;
+    font-size: 18px;
+}
+
+.EditPostPopupTitle
+{
+    float: left;
+    margin: 0 0 0 5px;
+    padding: 0;   
+}
+
+.PopupClose
+{
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    background: url(../images/controlclose.jpg) no-repeat scroll top left;
+    float: right;   
+}
+
+.EditPostPopup .PopupContent
+{
+    width: 580px;
+    padding: 10px;
+    color: #333;     
+}
+
+.EditPostPopup .PopupSubmit
+{
+    width: 580px;
+    padding: 10px;
+    margin: 20px 0 0 0;
+    color: #333;     
+    text-align: right;
+}
+
+.EditPostTextBox
+{
+    width: 566px;
+    max-width: 564px !important;
+    min-width: 564px !important;
+    height: 363px;   
+    min-height: 363px !important;
+    max-height: 363px !important;
+    margin: 0;
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 14px;
+    padding: 6px;    
+}
+
+.DiceRollButtonContainer
+{
+    width: 740px;
+    padding: 9px 10px 10px 9px;
+    position: absolute;
+    text-align: right;
+    bottom: 0;
+    right: 0; 
+    border-top: 1px solid #333;  
+}
+
+.PrivacyTitle
+{
+    font-size: 18px;
+    line-height: 30px;
+    margin: 0 5px 0 0;
+    float: left;
+    padding: 0;      
+}
+
+.Recipients
+{
+    background-color: #fff;
+    float: left;
+    min-width: 150px;
+    max-width: 500px;
+    font-size: 16px;
+    padding: 3px 10px 3px 4px;
+    border: 1px solid #999;
+    margin: 1px 2px 0 0;
+    text-overflow: ellipsis;
+    white-space:nowrap; 
+    overflow: hidden;
+}
+
+.PrivacyControl
+{
+    float: left;
+    margin: 0;
+    font-size: 18px;
+}
+
+.EditPrivacyButton
+{
+    display: block;
+    padding: 3px 3px 2px 3px;
+    font-size: 15px;
+}
+
+.EditRecipientsPopup
+{
+    position: absolute;
+    width: 400px;
+    height: 500px;
+    z-index: 25000;
+    background-color: #fff;
+    border: 1px solid #333;
+    box-shadow: 5px 5px 10px #333;   
+    margin: auto;
+    padding: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.EditRecipientsPopup .PopupHeader
+{
+    width: 390px;
+    padding: 5px;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    background-color: #ddd;   
+    color: #333;
+    font-size: 18px;
+}
+
+.EditRecipientsPopupTitle
+{
+    float: left;
+    margin: 0 0 0 5px;
+    padding: 0;   
+}
+
+.EditRecipientsPopup .PopupContent
+{
+    width: 380px;
+    padding: 10px;
+    color: #333;     
+    position: relative;
+}
+
+.EditRecipientsPopup .PopupContentLoading
+{
+    width: 380px;
+    height: 380px;
+    padding: 10px;
+    color: #333;     
+    background-color: #fff;
+    margin: 0 auto;
+    background: #fff url(../images/main_loading.gif) no-repeat scroll center center;  
+}
+
+.EditRecipientsPopup .PopupSubmit
+{
+    width: 380px;
+    padding: 10px;
+    margin: 20px 0 0 0;
+    color: #333;     
+    text-align: right;
+}
+
+.AllRecipientsContainer
+{
+    width: 360px;
+    margin: 0 auto;
+    padding: 0;
+    height: 30px;
+    font-size: 18px;
+}
+
+.RecipientsContainer
+{
+    width: 360px;
+    border: 1px solid #999;
+    overflow-y: scroll;
+    padding: 9px;
+    height: 320px;
+    margin: 10px auto 0 auto;   
+}
+
+.RecipientsOverlay
+{
+    width: 380px;
+    height: 350px;
+    background-color: #fff;
+    opacity: 0.7;
+    position: absolute;
+    top: 40px;
+    left: 10px;   
+    z-index: 30000;
+}
+
+.RecipientListItem
+{
+    display: block;
+    width: 300px;
+    padding: 3px;
+    font-size: 16px;       
+}
+
+.RecipientCheckBox
+{
+    margin: 0 10px 0 0;   
+}
+
+.EditCharacterSheetPopup
+{
+    position: absolute;
+    width: 650px;
+    height: 640px;
+    z-index: 25000;
+    background-color: #fff;
+    border: 1px solid #333;
+    box-shadow: 5px 5px 10px #333;   
+    margin: auto;
+    padding: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.EditCharacterSheetPopup .PopupHeader
+{
+    width: 640px;
+    padding: 5px;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    background-color: #ddd;   
+    color: #333;
+    font-size: 18px;
+}
+
+.EditCharacterSheetPopupTitle
+{
+    float: left;
+    margin: 0 0 0 5px;
+    padding: 0;   
+}
+
+.EditCharacterSheetPopup .PopupContent
+{
+    width: 630px;
+    padding: 10px;
+    color: #333;     
+    position: relative;
+}
+
+.EditCharacterSheetPopup .PopupContentLoading
+{
+    width: 630px;
+    height: 520px;
+    padding: 10px;
+    color: #333;     
+    background-color: #fff;
+    margin: 0 auto;
+    background: #fff url(../images/main_loading.gif) no-repeat scroll center center;  
+}
+
+.EditCharacterSheetPopup .PopupSubmit
+{
+    width: 630px;
+    padding: 10px;
+    margin: 20px 0 0 0;
+    color: #333;     
+    text-align: right;
+}
+
+.EditableCharacterSheetContainer
+{
+    width: 600px;
+    height: 500px;
+    padding: 10px 20px 10px 10px;
+    overflow-y: scroll;
+    background-color: #bbb;
+    box-shadow: inset -5px 0 30px #333;
+    border: 1px solid #333;
+    margin: 0 auto;   
+}
+
+.DisplayCharacterSheet
+{
+}
