@@ -306,8 +306,19 @@ namespace Warhammer.Core.Concrete
                 {
                     RemoveLink(page.Id, relatedPage.Id);
                 }
+                List<PageView> views = page.PageViews.ToList();
+                foreach (PageView pageView in views)
+                {
+                    DeletePageView(pageView.Id);
+                }
                 _repository.Delete(page);
             }
+        }
+
+        private void DeletePageView(int id)
+        {
+            PageView pageView = _repository.PageViews().FirstOrDefault(p => p.Id == id);
+            _repository.Delete(pageView);
         }
 
         public bool PageExists(string shortName)

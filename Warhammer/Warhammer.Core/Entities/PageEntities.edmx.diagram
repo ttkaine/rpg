@@ -35,6 +35,9 @@
         <InheritanceConnector EntityType="WarhammerModel.Person" />
         <InheritanceConnector EntityType="WarhammerModel.Session" />
         <InheritanceConnector EntityType="WarhammerModel.Place" />
+        <EntityTypeShape EntityType="WarhammerModel.Post" Width="1.5" PointX="10.5" PointY="13.75" />
+        <AssociationConnector Association="WarhammerModel.FK_Post_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_Post_Session" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

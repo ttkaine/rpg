@@ -227,6 +227,7 @@
     <Content Include="Content\DbUpdateScripts\0010.sql" />
     <Content Include="Content\DbUpdateScripts\0011.sql" />
     <Content Include="Content\DbUpdateScripts\0012.sql" />
+    <Content Include="Content\DbUpdateScripts\0013.sql" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
@@ -395,7 +396,9 @@
     <Content Include="Scripts\RoleplayForum\CharacterSheet.js" />
     <Content Include="Scripts\RoleplayForum\Session.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

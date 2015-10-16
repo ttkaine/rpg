@@ -88,6 +88,17 @@ namespace Warhammer.Core.Concrete
             return _entities.Awards;
         }
 
+        public IQueryable<PageView> PageViews()
+        {
+            return _entities.PageViews;
+        }
+
+        public void Delete(PageView pageView)
+        {
+            _entities.PageViews.Remove(pageView);
+            _entities.SaveChanges();
+        }
+
         #endregion
 
         #region Save
