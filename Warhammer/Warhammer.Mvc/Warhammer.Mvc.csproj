@@ -216,6 +216,7 @@
     <Content Include="Content\DbUpdateScripts\0010.sql" />
     <Content Include="Content\DbUpdateScripts\0011.sql" />
     <Content Include="Content\DbUpdateScripts\0012.sql" />
+    <Content Include="Content\DbUpdateScripts\0013.sql" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />

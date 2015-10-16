@@ -17,11 +17,15 @@ namespace Warhammer.Core.Entities
         public Session()
         {
             this.SessionLogs = new HashSet<SessionLog>();
+            this.Posts = new HashSet<Post>();
         }
     
         public Nullable<System.DateTime> DateTime { get; set; }
         public Nullable<int> Length { get; set; }
+        public bool IsClosed { get; set; }
+        public bool IsTextSession { get; set; }
     
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }
