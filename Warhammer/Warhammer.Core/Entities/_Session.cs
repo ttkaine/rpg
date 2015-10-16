@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,35 +8,6 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Session
     {
-        public override double ActivityBonus
-        {
-            get
-            {
-                double twiceMonths = MonthsAgo*2;
-                if (twiceMonths > 6)
-                {
-                    return 0;
-                }
-                return twiceMonths < 1 ? 1 : 1 / twiceMonths;
-            }
-        }
-
-        private double MonthsAgo
-        {
-
-            get
-            {
-                if (DateTime.HasValue)
-                {
-                    return System.DateTime.Now.Subtract(this.DateTime.Value).Days/(365.25/12);
-                }
-                else
-                {
-                    return 9999;
-                }
-            }
-        }
-
         public override double BaseScore
         {
             get
@@ -43,6 +15,24 @@ namespace Warhammer.Core.Entities
                 return 1.0;
             }     
         }
+
+        public override double AgeInDays
+        {
+            get
+            {
+                if (DateTime.HasValue)
+                {
+                    TimeSpan span = System.DateTime.Now - DateTime.Value;
+                    double days = span.TotalDays;
+                    return days;
+                }
+                else
+                {
+                    return 1000;
+                }
+            }
+        }
+
         public IEnumerable<Person> People
         {
             get { return Related.OfType<Person>(); }
