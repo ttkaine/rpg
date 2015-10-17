@@ -46,8 +46,8 @@ function selectedTabChanged(tab)
     {
         $("#divInCharacterButton").attr("class", "ToggleButtonEnabled");
         $("#divInCharacterButton").attr("checked", "checked");
-        $("#divPlayerPostControls").attr("style", "background-color:#eee;");
-        $("#divCharacterControls").attr("style", "background-color:#ddd;");
+        $("#divPlayerPostControls").attr("style", "background-color:#fff;");
+        $("#divCharacterControls").attr("style", "background-color:#fff;");
         $("#imgCharacter").attr("style", "display:block;");
         $("#btnEditCharacter").attr("style", "display:block;");
     }

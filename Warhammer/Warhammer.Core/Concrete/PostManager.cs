@@ -218,7 +218,9 @@ namespace Warhammer.Core.Concrete
 					{
 						if (player.IsGm || player.Id == post.PlayerId)
 						{
-							Repo.Delete(post);
+							post.IsDeleted = true;
+							post.DeletedDate = DateTime.Now;
+							Repo.Save(post);
 							return true;
 						}
 					}

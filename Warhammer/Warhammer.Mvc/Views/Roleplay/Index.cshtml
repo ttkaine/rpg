@@ -176,14 +176,14 @@
 						<span class="DiceControlSpan">
 							<select id="ddlRollType" class="DiceControlDropDown" onchange="ddlRollType_Change();">
 								<option value="1">D10 Dice Pool</option>
-								<option value="2">D* Totalled</option>
+								<option value="2" selected="selected">D* Totalled</option>
 							</select>
 						</span>
 					</div><!-- DiceControlsRow -->
 					<div class="DiceControlsRow">
 						Re-roll Maximums: 
 						<span class="DiceControlSpan">
-							<input id="chkReRolls" class="DiceControlCheckBox" type="checkbox" checked="checked" />
+							<input id="chkReRolls" class="DiceControlCheckBox" type="checkbox" />
 						</span>
 					</div><!-- DiceControlsRow -->                    
 					<div class="DiceControlsRow">
@@ -196,19 +196,19 @@
 					<div id="divDiceSize" class="DiceControlsRow">
 						Dice Type: 
 						<span class="DiceControlSpan">
-							<select id="ddlDieSize" class="DiceControlDropDown" style="display:none;">
+							<select id="ddlDieSize" class="DiceControlDropDown" style="display:block;">
 								<option value="4">D4</option>
-								<option value="6" selected="selected">D6</option>
+								<option value="6">D6</option>
 								<option value="8">D8</option>
 								<option value="10">D10</option>
 								<option value="12">D12</option>
 								<option value="20">D20</option>
-								<option value="100">D100</option>
+								<option value="100" selected="selected">D100</option>
 							</select>
-							<span id="spanD10" class="D10Fixed" style="display:block">D10</span>
+							<span id="spanD10" class="D10Fixed" style="display:none;">D10</span>
 						</span>
 					</div><!-- DiceControlsRow -->
-					<div id="divRollTarget" class="DiceControlsRow">
+					<div id="divRollTarget" class="DiceControlsRow" style="display:none;">
 						Success Target: 
 						<span class="DiceControlSpan">
 							<select id="ddlRollTarget" class="DiceControlDropDown">

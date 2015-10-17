@@ -268,7 +268,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append(" (GM)</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
 			if (post.CharacterName == "GM")
 			{
-				html.Append("<img src=\"images/gm.jpg\" />");
+				html.Append("<img src=\"/content/images/roleplayforum/gm.jpg\" />");
 			}
 			else
 			{

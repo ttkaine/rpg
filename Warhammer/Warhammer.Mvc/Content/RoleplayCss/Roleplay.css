@@ -4,6 +4,8 @@
     width: 100%;
     margin: 60px auto 0 auto;
     padding: 0;
+    opacity: 0.8;
+    min-width: 460px;
 }
 
 #roleplayContent div
@@ -13,22 +15,22 @@
 
 .SessionContent
 {
-    width: calc(100% - 2px);
+    width: 100%;
     max-width: 1100px;
     padding: 0;
-    border: 1px solid #333;
     background-color: #bbb;
     margin: 10px auto;
     position: relative;
     overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px #333
 }
 
 .SessionHeader
 {
     width: calc(100% - 38px);
-    padding: 5px 19px;
-    border-bottom: 1px solid #333;
-    background-color: #222;   
+    padding: 8px 19px 5px 19px;
+    background-color: #000;   
     font-size: 20px;
     line-height: 20px;
     color: White;
@@ -66,8 +68,7 @@
     width: 100%;
     padding: 0;
     margin: 0;
-    border-top: 1px solid #333;
-    background-color: #eee;  
+    background-color: #fff;  
     position: relative;
 }
 
@@ -75,10 +76,10 @@
 {
     width: calc(100% - 8px);
     padding: 4px;
-    border-bottom: 1px solid #333;
     margin: 0;   
     position: relative;
-    background-color: #aaccaa;
+    background-color: #000;
+    color: #fff;
 }
 
 .PlayerPostControls
@@ -87,13 +88,13 @@
     height: 230px;
     padding: 0;
     margin: 0;   
-    background-color: #eee;
+    background-color: #fff;
     position: relative;
 }
 
 .PostTypeControlContainer
 {   
-    width: 590px;
+    width: calc(100% - 264px);
     margin: 0;
     float: left;
 }
@@ -102,63 +103,63 @@
 {
     display: block;
     float: left;
-    margin: 0 5px 0 0;
+    margin: 0 2px 0 0;
 }
 
 .ToggleButtonEnabled, .ToggleButtonDisabled
 {
     display: block;
-    width: 180px;
-    border-radius: 12px;
+    width: 140px;
     cursor: pointer;
     text-align: center;
-    font-size: 20px;
-    height: 30px;
-    line-height: 30px;
-    margin: 0 5px 0 0;
+    font-size: 16px;
+    height: 24px;
+    line-height: 24px;
+    margin: 0 2px 0 0;
+    border-radius: 4px;
     float: left;
 }
 
 .ToggleButtonEnabled
 {
     border: 2px solid #fff;
-    background-color: #333;
+    background-color: #000;
     color: #fff;   
-    text-shadow: -1px 1px 8px #eee, 1px -1px 8px #eee;
 }
 
 .ToggleButtonDisabled
 {
-    border: 2px solid #bbb;
-    background-color: #ddd;   
-    color: #bbb;
+    border: 2px solid #000;
+    background-color: #111;   
+    color: #666;
 }
 
 .PostAsContainer
 {
-    width: 332px;
+    width: 264px;
     padding: 0;
-    margin: 2px 0 0 0;
+    margin: 3px 0 0 0;
     float: right;   
-    font-size: 18px;  
+    font-size: 14px;  
 }
 
 .PostAsDropDown
 {
-    width: 250px;
-    padding: 2px;
+    width: 200px;
+    padding: 1px 2px;
     margin: 0;   
     font-family: Tahoma, Arial, Sans-Serif;
-    font-size: 18px;
-    margin: 1px 4px;
+    font-size: 14px;
+    margin: 0 4px;
     float: left;
+    color: #000;
 }
 
 .PostAs
 {
     display: block;
     float: left;
-    margin: 4px;
+    margin: 1px 4px 0 0;
 }
 
 
@@ -208,9 +209,8 @@
     text-align: center;
     padding: 0;
     margin: 0;
-    float: left;   
-    
-    background-color: #ddd;
+    float: left;
+    border-radius: 50%;
 }
 
 .PlayerCharacterPortrait
@@ -219,7 +219,8 @@
     margin: 5px auto;
     width: 150px;
     height: 150px;
-    border: 1px solid #333;
+    border-radius: 50%;
+    box-shadow: 5px 5px 15px #333;
 }
 
 .EditCharacterSheetButton
@@ -240,11 +241,8 @@
 .PlayerPostTextBox
 {
     width: calc(100% - 50px);
-    max-width: calc(100% - 50px) !important;
-    min-width: calc(100% - 50px) !important;
     height: 150px;
-    min-height: 150px !important;
-    max-height: 150px !important;
+    max-height: 150px;
     font-family: Tahoma, Arial, Sans-Serif;
     font-size: 14px;
     padding: 4px;
@@ -266,7 +264,6 @@
     margin: 0;
     padding: 9px 9px 10px 9px;
     text-align: right;
-    border-top: 1px solid #333;
 }
 
 .Overlay
@@ -324,7 +321,7 @@
 
 .Post
 {
-    width: 930px;
+    width: calc(100% - 20px);
     padding: 0 5px 5px 0;
     margin: 5px 0;
     position: relative;   
@@ -333,26 +330,23 @@
 
 .InCharacterPost
 {
-    width: 900px;
+    width: calc(100% - 1px);
     margin: 0 0 0 1px;
-    border: 2px solid #6666ff;   
-    border-top: 5px solid #6666ff;   
     background: #fff url(/content/images/roleplayforum/post_strip.jpg) repeat-y scroll top left;
     clear: both;   
     box-shadow: 5px 5px 5px #888888;
     position: relative;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
 .InCharacterPost .PostHeader
 {
-    width: 880px;
-    padding: 0 10px 4px 10px;
-    border-bottom: #6666ff;
-    background-color: #6666ff;
+    width: calc(100% - 20px);
+    padding: 8px 10px 4px 10px;
+    background-color: #111;
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .InCharacterPost .PostCharacter
@@ -392,7 +386,6 @@
 {
     width: 100px;
     height: 100px;
-    border: 1px solid #333;
     margin: 0 auto;
     padding: 0;
     display: block;   
@@ -402,13 +395,13 @@
 {    
     display: block;
     font-size: 10px;
-    margin: 5px 0 0 0;       
+    margin: 10px 0 0 0;       
     text-align: center;
 }
 
 .InCharacterPost .PostContent
 {
-    width: 720px;
+    width: calc(100% - 179px);
     padding: 10px 20px 40px 30px;
     margin: 0;
     float: right;
@@ -418,7 +411,7 @@
 
 .InCharacterPost .PrivateMessageRecipients
 {
-    width: 700px;
+    width: calc(100% - 197px);
     padding: 9px;
     border: 1px solid #999;
     background-color: #fff;
@@ -430,7 +423,7 @@
 
 .InCharacterPost .PostEditControls
 {
-    width: 700px;
+    width: calc(100% - 197px);
     height: 25px;
     margin: 0;
     padding: 0;
@@ -456,25 +449,22 @@
 
 .GmInCharacterPost
 {
-    width: 900px;
+    width: calc(100% - 1px);
     margin: 0 0 0 1px;
-    border: 2px solid #ff6666;   
-    border-top: 5px solid #ff6666;       
     background: #fff url(/content/images/roleplayforum/post_strip.jpg) repeat-y scroll top left;
     box-shadow: 5px 5px 5px #888888;
     position: relative;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
 .GmInCharacterPost .PostHeader
 {
-    width: 880px;
-    padding: 0 10px 4px 10px;
-    border-bottom: #ff6666;
-    background-color: #ff6666;
+    width: calc(100% - 20px);
+    padding: 8px 10px 4px 10px;
+    background-color: #990000;
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .GmInCharacterPost .PostInfo
@@ -485,14 +475,13 @@
     background-color: #eee;
     float: left;
     font-size: 14px;
-    color: #333;  
+    color: #111;  
 }
 
 .GmInCharacterPost .CharacterPicture
 {
     width: 100px;
     height: 100px;
-    border: 1px solid #333;
     margin: 0 auto;
     padding: 0;
     display: block;   
@@ -501,7 +490,10 @@
 .CharacterPicture img
 {
     display: block;
-    width: 100%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 15px #333;
     margin: 0;
     padding: 0;
 }
@@ -510,24 +502,24 @@
 {    
     display: block;
     font-size: 10px;
-    margin: 5px 0 0 0;       
+    margin: 10px 0 0 0;       
     text-align: center;  
 }
 
 
 .GmInCharacterPost .PostContent
 {
-    width: 720px;
+    width: calc(100% - 179px);
     padding: 10px 20px 40px 30px;
     margin: 0;
     float: right;
     font-size: 14px;   
-    color: #333;
+    color: #111;
 }
 
 .GmInCharacterPost .PrivateMessageRecipients
 {
-    width: 700px;
+    width: calc(100% - 197px);
     padding: 9px;
     border: 1px solid #999;
     background-color: #fff;
@@ -539,7 +531,7 @@
 
 .GmInCharacterPost .PostEditControls
 {
-    width: 700px;
+    width: calc(100% - 197px);
     height: 25px;
     margin: 0;
     padding: 0;
@@ -587,24 +579,24 @@
 
 .OutOfCharacterPost
 {
-    width: 850px;
+    width: calc(100% - 51px);
+    max-width: 850px;
     margin: 0 0 0 21px;
-    border: 1px solid #cccc33;   
     background: #ffffaa;
     box-shadow: 5px 5px 5px #888888;
     position: relative;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
 .OutOfCharacterPost .PostHeader
 {
-    width: 830px;
-    padding: 4px 10px;
+    width: calc(100% - 20px);
+    padding: 8px 10px 4px 10px;
     color: #333;
     background-color: #eaea99;
-    border-bottom: 1px solid #cccc33;
     font-size: 16px;
+    font-weight: bold;
 }
 
 .OutOfCharacterPost .PostCharacter
@@ -620,7 +612,7 @@
 
 .OutOfCharacterPost .PostContent
 {
-    width: 790px;
+    width: calc(100% - 60px);
     padding: 10px 30px 40px 30px;
     margin: 0;
     float: right;
@@ -630,7 +622,7 @@
 
 .OutOfCharacterPost .PrivateMessageRecipients
 {
-    width: 770px;
+    width: calc(100% - 80px);
     padding: 9px;
     border: 1px solid #999;
     background-color: #fff;
@@ -641,7 +633,7 @@
 
 .OutOfCharacterPost .PostEditControls
 {
-    width: 700px;
+    width: calc(100% - 197px);
     margin: 0;
     padding: 0;
     position: absolute;
@@ -678,23 +670,23 @@
 
 .DiceRollPost
 {
-    width: 850px;
+    width: calc(100% - 51px);
+    max-width: 850px;
     margin: 0 0 0 21px;
-    border: 1px solid #6666cc;   
     background: #ccccff;
     box-shadow: 5px 5px 5px #888888;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
 .DiceRollPost .PostHeader
 {
-    width: 830px;
-    padding: 4px 10px;
-    color: #333;
+    width: calc(100% - 20px);
+    padding: 8px 10px 4px 10px;
+    color: #111;
     background-color: #bbbbea;
-    border-bottom: 1px solid #6666cc;
     font-size: 16px;
+    font-weight: bold;
 }
 
 .DiceRollPost .PostCharacter
@@ -710,7 +702,7 @@
 
 .DiceRollPost .PostContent
 {
-    width: 680px;
+    width: calc(100% - 170px);
     height: 75px;
     padding: 10px 20px 15px 150px;
     background: url(/content/images/roleplayforum/dice_roll.jpg) no-repeat scroll top left;
@@ -1002,12 +994,11 @@
 .DiceRollButtonContainer
 {
     width: calc(100% - 249px);
-    padding: 9px 10px 10px 9px;
+    padding: 10px 10px 10px 9px;
     position: absolute;
     text-align: right;
     bottom: 0;
     right: 0; 
-    border-top: 1px solid #333;  
 }
 
 .PrivacyTitle
