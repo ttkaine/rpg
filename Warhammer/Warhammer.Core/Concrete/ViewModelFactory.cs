@@ -118,7 +118,7 @@ namespace Warhammer.Core.Concrete
 	    public CharacterViewModel GetCharacterForCurrentUser(int characterId)
 	    {
 			PlayerViewModel currentPlayer = GetPlayerForCurrentUser();
-		    Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && p.PlayerId == currentPlayer.ID);
+		    Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == currentPlayer.ID || (p.Player == null && currentPlayer.IsGM)));
 
 			if (character != null)
 			{
@@ -174,6 +174,10 @@ namespace Warhammer.Core.Concrete
 				if (player.IsGM)
 				{
 					viewModels.Add(new CharacterViewModel() { ID = 0, Name = "GM" });
+					foreach (Person character in session.Npcs)
+					{
+						viewModels.Add(GetCharacterViewModel(character));
+					}
 				}
 				foreach (Person character in session.PlayerCharacters)
 				{
@@ -193,7 +197,7 @@ namespace Warhammer.Core.Concrete
 			{
 				SessionViewModel viewModel = new SessionViewModel();
 				viewModel.Description = session.Description;
-				viewModel.IsClosed = false; // TODO: Add status to DB
+				viewModel.IsClosed = session.IsClosed;
 				viewModel.StartDate = session.DateTime.GetValueOrDefault();
 				viewModel.Title = session.FullName;
 				viewModel.GmId = GetGmId();

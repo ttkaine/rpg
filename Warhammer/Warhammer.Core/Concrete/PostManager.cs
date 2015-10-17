@@ -60,7 +60,7 @@ namespace Warhammer.Core.Concrete
 		{
 			Player player = GetCurrentPlayer();
 			Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-			Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && p.PlayerId == player.Id);
+			Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == player.Id || (p.PlayerId == null && player.IsGm)));
 
 			if (player == null)
 			{
@@ -115,7 +115,7 @@ namespace Warhammer.Core.Concrete
 		{
 			Player player = GetCurrentPlayer();
 			Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-			Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && p.PlayerId == player.Id);
+			Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == player.Id || (p.PlayerId == null && player.IsGm)));
 
 			if (player == null)
 			{
