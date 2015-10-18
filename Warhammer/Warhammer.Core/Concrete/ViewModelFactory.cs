@@ -118,7 +118,7 @@ namespace Warhammer.Core.Concrete
 	    public CharacterViewModel GetCharacterForCurrentUser(int characterId)
 	    {
 			PlayerViewModel currentPlayer = GetPlayerForCurrentUser();
-		    Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == currentPlayer.ID || (p.Player == null && currentPlayer.IsGM)));
+		    Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == currentPlayer.ID || (p.PlayerId == null && currentPlayer.IsGM)));
 
 			if (character != null)
 			{
@@ -170,18 +170,15 @@ namespace Warhammer.Core.Concrete
 
 			List<CharacterViewModel> viewModels = new List<CharacterViewModel>();
 			if (player != null && session != null)
-			{			
+			{
 				if (player.IsGM)
 				{
-					viewModels.Add(new CharacterViewModel() { ID = 0, Name = "GM" });
-					foreach (Person character in session.Npcs)
-					{
-						viewModels.Add(GetCharacterViewModel(character));
-					}
+					viewModels.Add(new CharacterViewModel() {ID = 0, Name = "GM"});
+					viewModels.AddRange(session.Npcs.Select(GetCharacterViewModel));
 				}
-				foreach (Person character in session.PlayerCharacters)
+				else
 				{
-					viewModels.Add(GetCharacterViewModel(character));
+					viewModels.AddRange(from character in session.PlayerCharacters where character.PlayerId == player.ID select GetCharacterViewModel(character));
 				}
 			}
 
@@ -199,7 +196,7 @@ namespace Warhammer.Core.Concrete
 				viewModel.Description = session.Description;
 				viewModel.IsClosed = session.IsClosed;
 				viewModel.StartDate = session.DateTime.GetValueOrDefault();
-				viewModel.Title = session.FullName;
+				viewModel.Title = session.ShortName;
 				viewModel.GmId = GetGmId();
 
 				return viewModel;

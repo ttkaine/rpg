@@ -70,7 +70,7 @@
             <div class="Clear"></div>
         </div><!-- EditRecipientsPopup -->   
 
-        <div id="editCharacterSheetPopup" class="EditCharacterSheetPopup" style="display:none;">
+        <@*div id="editCharacterSheetPopup" class="EditCharacterSheetPopup" style="display:none;">
             <div class="PopupHeader">
                 <span class="EditCharacterSheetPopupTitle">Edit Character Sheet</span>
                 <span class="PopupClose" onclick="cancelEditCharacterSheet();"></span>
@@ -88,7 +88,7 @@
                 <input id="btnCancelEditCharacterSheet" class="PopupButton" type="button" value="CANCEL" onclick="cancelEditCharacterSheet();" />
             </div>
             <div class="Clear"></div>
-        </div><!-- EditCharacterSheetPopup -->   
+        </div><!-- EditCharacterSheetPopup --> *@  
     </div>
 
     <div id="divSessionContent" class="SessionContent">
@@ -111,23 +111,31 @@
             </div>
             <div class="Clear"></div>
         </div><!-- SessionHeader -->
+        <input type="checkbox" id="chkDeviceToggle" style="display:none;" />
+        <label for="chkDeviceToggle" class="DeviceToggleButton"></label>
         <div id="divPostContainer" class="PostContainer">
-
-
-
 
         </div><!-- PostContainer -->
         <div id="divPlayerControls" class="PlayerControls">
 			<div class="PlayerControlsHeader">
                 <div id="divPostTypeControlContainer" class="PostTypeControlContainer">
                     <span class="PostTypeSpan">
-                        <div class="ToggleButtonEnabled" id="divInCharacterButton" checked="checked" onclick="selectedTabChanged(1);">In Character</div>
+                        <div class="ToggleButtonEnabled" id="divInCharacterButton" checked="checked" onclick="selectedTabChanged(1);">
+                            <span class="WideText">In Character</span>
+                            <span class="NarrowText">IC</span>
+                        </div>
                     </span>
                     <span class="PostTypeSpan">
-                        <div class="ToggleButtonDisabled" id="divOutOfCharacterButton" checked="unchecked" onclick="selectedTabChanged(2);">Out Of Character</div>
+                        <div class="ToggleButtonDisabled" id="divOutOfCharacterButton" checked="unchecked" onclick="selectedTabChanged(2);">
+                            <span class="WideText">Out Of Character</span>
+                            <span class="NarrowText">OOC</span>
+                        </div>
                     </span>
                     <span class="PostTypeSpan">
-                        <div class="ToggleButtonDisabled" id="divDiceRollButton" checked="unchecked" onclick="selectedTabChanged(3);">Dice Roll</div>
+                        <div class="ToggleButtonDisabled" id="divDiceRollButton" checked="unchecked" onclick="selectedTabChanged(3);">
+                            <span class="WideText">Dice Roll</span>
+                            <span class="NarrowText">Dice</span>
+                        </div>
                     </span>
                     <div class="Clear"></div>
                 </div><!-- OocControlContainer -->
@@ -234,7 +242,7 @@
         </div><!-- PlayerControls -->
     </div><!-- SessionContent -->
 
-    <div id="CharacterPopOver" class="CharacterPopOver" style="opacity:0;left:-650px;" shown="false">
+    @*<div id="CharacterPopOver" class="CharacterPopOver" style="opacity:0;left:-650px;" shown="false">
         <div class="PopOverHeader">
             <span id="CharacterPopOverName" class="CharacterPopOverName"></span>
             <span class="PopOverClose" onclick="closeCharacterPopOver();"></span>
@@ -253,7 +261,7 @@
                 <div id="CharacterPopOverSheet" class="CharacterSheetContainer" style="display:none;"></div>
             </div>
         </div>
-    </div><!-- CharacterPopOver -->
+    </div><!-- CharacterPopOver -->*@
 
     <div id="preLoadImages" style="display:none;">
         <img src="@Url.Content("~/Content/Images/RoleplayForum/controlclose.jpg")" />

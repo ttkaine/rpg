@@ -78,7 +78,7 @@ namespace Warhammer.Core.Concrete
 			{
 				return PostResult.InvalidCharacter;
 			}
-			if (!CharacterIsInSession(session, characterId))
+			if (!CharacterIsInSession(session, characterId) && !isOoc)
 			{
 				return PostResult.CharacterNotInCampaign;
 			}

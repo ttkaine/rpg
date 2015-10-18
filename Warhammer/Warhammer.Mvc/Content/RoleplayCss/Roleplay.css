@@ -1,11 +1,15 @@
 ﻿
+body
+{
+    overflow: hidden;
+}
+
 #roleplayContent 
 {
     width: 100%;
     margin: 60px auto 0 auto;
     padding: 0;
     opacity: 0.8;
-    min-width: 460px;
 }
 
 #roleplayContent div
@@ -23,7 +27,8 @@
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    box-shadow: 5px 5px 15px #333
+    box-shadow: 5px 5px 15px #333;
+    position: relative;
 }
 
 .SessionHeader
@@ -195,7 +200,6 @@
 
 .PlayerPrivacyContainer
 {
-    width: 700px;
     padding: 0;
     margin: 0;
     float: left;  
@@ -981,9 +985,7 @@
 {
     width: 566px;
     max-width: 564px !important;
-    min-width: 564px !important;
     height: 363px;   
-    min-height: 363px !important;
     max-height: 363px !important;
     margin: 0;
     font-family: Tahoma, Arial, Sans-Serif;
@@ -1223,4 +1225,379 @@
 
 .DisplayCharacterSheet
 {
+}
+
+.DeviceToggleButton
+{
+    display: none;
+}
+
+.NarrowText
+{
+    display: none;
+}
+
+
+@media (max-width: 770px)
+{
+    .body-content
+    {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .SessionContent
+    {
+        margin: 0;
+        border-radius: 0;
+        min-width: 320px;
+    }
+
+    .SessionHeader
+    {
+        height: 32px;
+        padding-top: 4px;
+        padding-bottom: 2px;
+    }
+
+    #roleplayContent
+    {
+        margin-top: 50px;
+    }
+
+    #divPlayerControls
+    {
+        display: none;
+    }
+
+    #divPostContainer
+    {
+        height: calc(100vh - 93px);
+    }
+
+    .SessionHeader .SessionTitle
+    {
+        width: calc(100% - 130px);
+        text-overflow: ellipsis;
+        text-wrap: none;
+        height: 32px;
+        line-height: 32px;
+        font-size: 15px;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .SessionHeader .OocToggleContainer
+    {
+        width: 80px;
+        font-size: 12px;
+        line-height: 32px;
+        height: 32px;
+        margin: 0 45px 0 0;
+    }
+
+    .DeviceToggleButton
+    {
+        display: block;
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        top: 4px;
+        right: 12px;
+        background: url(/content/images/roleplayforum/write-comment.png) no-repeat scroll center center;
+        cursor: pointer;
+    }
+
+    #chkDeviceToggle:checked ~ .DeviceToggleButton
+    {
+        background: url(/content/images/roleplayforum/view-messages.png) no-repeat scroll center center;
+    }
+
+    #chkDeviceToggle:checked ~ #divPostContainer
+    {
+        display: none;
+    }
+
+    #chkDeviceToggle:checked ~ #divPlayerControls
+    {
+        display: block;
+    }
+
+    .PostAsContainer
+    {
+        width: calc(100% - 20px);
+        float: none;
+        margin: 0 auto;
+        padding: 5px 0 0 0;
+    }
+
+    .PostTypeControlContainer
+    {
+        width: calc(100% - 20px);
+        float: none;
+        margin: 0 auto;
+    }
+
+    .PlayerControlsHeader
+    {
+        height: 55px;
+        padding-top: 0;
+    }
+
+    .PostTypeControlContainer:after, .PostAsContainer:after
+    {
+        display: block;
+        clear: both;
+        content: " ";
+    }
+
+    .PlayerPostControls, .PlayerDiceControls
+    {
+        height: calc(100vh - 147px);
+    }
+
+    .PlayerTextPostControls
+    {
+        position: static;
+    }
+
+    .PlayerPostControls
+    {
+        position: relative;
+    }
+
+    .PlayerCharacterControls
+    {
+        display: none;
+    }
+
+    .PlayerTextControl
+    {
+        width: 100%;
+    }
+
+    .TextPostButtonContainer
+    {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+
+    .PlayerPostTextBox
+    {
+        width: calc(100% - 10px);
+        height: 150px;
+        max-height: 150px;
+        transition: all 0.2s linear;
+    }
+
+    .PlayerDiceControls
+    {
+        background: #ccccff;
+        padding: 0 10px;
+        width: calc(100% - 20px);
+    }
+
+    .DiceControlsRow
+    {
+        width: 100%;
+        float: none;
+        margin: 15px 0;
+        font-size: 14px;
+    }
+
+    .DiceRollButtonContainer
+    {
+        width: auto;
+        margin: 0;
+        padding: 0;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .Post
+    {
+        width: calc(100% - 10px);
+    }
+
+    .InCharacterPost .PostHeader, .GmInCharacterPost .PostHeader, .OutOfCharacterPost .PostHeader, .DiceRollPost .PostHeader
+    {
+        font-size: 14px;
+        padding: 4px 8px 2px 8px;
+        width: calc(100% - 16px);
+    }
+
+    .InCharacterPost .PostInfo, .GmInCharacterPost .PostInfo
+    {
+        width: 70px;
+        padding: 5px;
+    }
+
+    .InCharacterPost .CharacterPicture, .GmInCharacterPost .CharacterPicture
+    {
+        width: 70px;
+        height: 70px;
+    }
+
+    .CharacterPicture img
+    {
+        width: 70px;
+        height: 70px;
+        border-radius: 35px;
+    }
+
+    .InCharacterPost, .GmInCharacterPost
+    {
+        background: #fff url("/content/images/roleplayforum/post_strip.jpg") repeat-y scroll -50px 0;
+    }
+
+    .InCharacterPost .PostContent, .GmInCharacterPost .PostContent
+    {
+        width: calc(100% - 100px);
+        padding: 10px 10px 35px 10px;
+    }
+
+    .InCharacterPost .PostEditControls, .GmInCharacterPost .PostEditControls, .OutOfCharacterPost .PostEditControls
+    {
+        width: 100%;
+    }
+
+    .OutOfCharacterPost, .DiceRollPost
+    {
+        width: calc(100% - 21px);
+        margin: 0 0 0 11px;
+    }
+
+    .OutOfCharacterPost .PostContent, .DiceRollPost .PostContent
+    {
+        width: calc(100% - 20px);
+        padding: 10px 10px 35px 10px;
+        background: none;
+    }
+
+    .PlayerPrivacyContainer
+    {
+        width: 100%;
+        margin: 0 0 5px 0;
+        font-size: 14px;
+    }    
+
+    .EditRecipientsPopup
+    {
+        width: calc(100% - 20px);
+        height: calc(100vh - 70px);
+        margin: 60px auto 0 auto;
+        max-width: 400px;
+    }
+
+    .EditPostPopup
+    {
+        width: calc(100% - 20px);
+        margin: 120px auto 0 auto;
+        max-width: 400px;
+        height: calc(100vh - 180px);
+    }
+
+    .EditRecipientsPopup .PopupHeader, .EditPostPopup .PopupHeader
+    {
+        width: calc(100% - 10px);
+    }
+
+    .AllRecipientsContainer
+    {
+        width: calc(100% - 20px);
+    }
+
+    .EditRecipientsPopup .PopupContent, .EditPostPopup .PopupContent
+    {
+        width: calc(100% - 20px);
+    }
+
+    .RecipientsOverlay
+    {
+        width: calc(100% - 20px);
+        height: calc(100% - 50px);
+    }
+
+    .RecipientsContainer
+    {
+        width: calc(100% - 20px);
+        height: calc(100vh - 250px);
+    }
+
+    .EditRecipientsPopup .PopupSubmit, .EditPostPopup .PopupSubmit
+    {
+        width: calc(100% - 20px);
+        transition: all 0.2s linear;
+    }
+    
+    .RecipientListItem
+    {
+        width: calc(100% - 10px);
+    }
+
+    .EditPostTextBox
+    {
+        width: calc(100% - 6px) !important;
+        max-width: calc(100% - 6px) !important;
+        height: 150px !important;
+        max-height: 150px !important;
+        overflow-y: scroll;
+        transition: all 0.2s linear;
+    }
+}
+
+@media (max-width: 500px)
+{
+    .WideText
+    {
+        display: none;
+    }
+
+    .NarrowText
+    {
+        display: inline;
+    }
+
+    .ToggleButtonEnabled, .ToggleButtonDisabled
+    {
+        width: 88px;
+    }
+
+    .PlayerPostTextBox:focus
+    {
+        transform: translateY(-90px);
+        height: 200px;
+        max-height: 200px;
+        box-shadow: 0 0 5px #fff;
+    }
+
+    .EditPostTextBox:focus
+    {
+        transform: translateY(-90px);
+        height: 200px !important;
+        max-height: 200px !important;
+        box-shadow: 0 0 5px #fff;
+    }
+
+    .EditPostTextBox:focus ~ .EditPostPopup .PopupSubmit
+    {
+        transform: translateY(-50px);
+    }
+
+    .PlayerPostButton
+    {
+        width: 100%;
+    }
+
+    .PrivacyTitle, .PrivacyControl, .Recipients, .EditPrivacyButton, .ClearPrivacyButton
+    {
+        font-size: 14px;
+    }
+
+    .Recipients
+    {
+        min-width: 145px;
+        padding-bottom: 4px;
+    }
 }

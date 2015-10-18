@@ -378,7 +378,8 @@ function postSubmitted(text)
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
     var scrollHeight = $("#divPostContainer").prop("scrollHeight");
-    var scrollToEnd = (scrollHeight - scrollTop == outerHeight);
+    //var scrollToEnd = (scrollHeight - scrollTop == outerHeight);
+    var scrollToEnd = true;
 
     $.ajax({
         type: "POST",
@@ -389,6 +390,7 @@ function postSubmitted(text)
         async: true,
         success: function (data)
         {
+            $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
             refreshInterval = setInterval(pageRefresh, 3000);
@@ -454,7 +456,8 @@ function postDiceRoll()
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
     var scrollHeight = $("#divPostContainer").prop("scrollHeight");
-    var scrollToEnd = (scrollHeight - scrollTop == outerHeight);
+    //var scrollToEnd = (scrollHeight - scrollTop == outerHeight);
+    var scrollToEnd = true;
 
     $.ajax({
         type: "POST",
@@ -465,6 +468,7 @@ function postDiceRoll()
         async: true,
         success: function (data)
         {
+            $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
             refreshInterval = setInterval(pageRefresh, 3000);
