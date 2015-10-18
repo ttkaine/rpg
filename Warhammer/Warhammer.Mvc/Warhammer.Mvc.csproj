@@ -215,6 +215,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\DbUpdateScripts\0000.sql" />
     <Content Include="Content\DbUpdateScripts\0001.sql" />
     <Content Include="Content\DbUpdateScripts\0002.sql" />
     <Content Include="Content\DbUpdateScripts\0003.sql" />
@@ -228,6 +229,7 @@
     <Content Include="Content\DbUpdateScripts\0011.sql" />
     <Content Include="Content\DbUpdateScripts\0012.sql" />
     <Content Include="Content\DbUpdateScripts\0013.sql" />
+    <Content Include="Content\DbUpdateScripts\15101801.sql" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
@@ -462,6 +464,8 @@
     <Content Include="Views\Shared\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\FavNpc.cshtml" />
     <Content Include="Views\Roleplay\Index.cshtml" />
+    <Content Include="Views\Admin\SetAsTextSession.cshtml" />
+    <Content Include="Views\Admin\CloseTextSession.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

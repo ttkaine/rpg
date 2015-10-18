@@ -574,7 +574,27 @@ namespace Warhammer.Core.Concrete
 		    return CurrentPlayer != null;
 	    }
 
-	    private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
+        public void CloseTextSession(int id)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
+            if (session != null)
+            {
+                session.IsClosed = true;
+                Save(session);
+            }
+        }
+
+        public void SetAsTextSession(int id)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
+            if (session != null)
+            {
+                session.IsTextSession = true;
+                Save(session);
+            }
+        }
+
+        private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>
             {

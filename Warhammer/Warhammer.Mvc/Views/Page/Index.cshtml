@@ -130,6 +130,11 @@
                 {
                     Session session = Model as Session;
 
+                    if (session.IsTextSession && !session.IsClosed)
+                    {
+                         @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+                    }
+                    
                     if (session.PlayerCharacters.Any())
                     {
                         <h3>Player Characters</h3>
@@ -262,6 +267,19 @@
                             @Html.ActionLink("Pin", "PinPage", "Admin", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
                         }
 
+                        if (Model is Session)
+                        {
+                            Session session = Model as Session;
+                            if (session.IsTextSession && !session.IsClosed)
+                            {
+                                @Html.ActionLink("Close", "CloseTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                            }
+                                                      
+                            if(!session.IsTextSession)
+                            {
+                                @Html.ActionLink("Set as TEXT session", "SetAsTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                            }
+                        }
 
                         if (Model is Person)
                         {
