@@ -86,6 +86,10 @@ namespace Warhammer.Core.Entities
                 });
                 double awardValue =
                     Awards.Where(a => a.Trophy.TypeId != (int) TrophyType.DefaultAward).Sum(a => a.Trophy.PointsValue);
+                if (PlayerId == null)
+                {
+                    awardValue = awardValue + Awards.Count;
+                }
                 if (awardValue > 0)
                 {
                     breakdown.Add(new ScoreBreakdown
