@@ -1,11 +1,11 @@
 
-UPDATE [dbo].[Trophy] SET [PointsValue] = 15 WHERE Id =  34 -- Favourite NPC award, First Class
-UPDATE [dbo].[Trophy] SET [PointsValue] = 10 WHERE Id =  35 -- Favourite NPC award, Second Class
+UPDATE [dbo].[Trophy] SET [PointsValue] = 10 WHERE Id =  34 -- Favourite NPC award, First Class
+UPDATE [dbo].[Trophy] SET [PointsValue] = 5 WHERE Id =  35 -- Favourite NPC award, Second Class
 UPDATE [dbo].[Trophy] SET [PointsValue] = 10 WHERE Id =  27 -- The Gaya Gross
 UPDATE [dbo].[Trophy] SET [PointsValue] = 10 WHERE Id =  4 -- The Lover's Award
 UPDATE [dbo].[Trophy] SET [PointsValue] = 5 WHERE Id =  2 -- The Victory Star
 UPDATE [dbo].[Trophy] SET [PointsValue] = 6 WHERE Id =  15 -- Angel Of Death
-UPDATE [dbo].[Trophy] SET [PointsValue] = 5 WHERE Id =  36 -- Favourite NPC award, Third Class
+UPDATE [dbo].[Trophy] SET [PointsValue] = 3 WHERE Id =  36 -- Favourite NPC award, Third Class
 UPDATE [dbo].[Trophy] SET [PointsValue] = 6 WHERE Id =  22 -- The Shield of Myrmidia
 UPDATE [dbo].[Trophy] SET [PointsValue] = 5 WHERE Id =  24 -- Sigmar's Blessing
 UPDATE [dbo].[Trophy] SET [PointsValue] = 4 WHERE Id =  26 -- The Sacrifice Award

@@ -87,7 +87,7 @@ namespace Warhammer.Core.Entities
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Awards",
-                    BaseValue = Awards.Sum(a => a.Trophy.PointsValue),
+                    BaseValue = Awards.Where(a => a.Trophy.TypeId != (int)TrophyType.DefaultAward).Sum(a => a.Trophy.PointsValue),
                     ActivityBonus = 0
                 });
                 breakdown.Add(new ScoreBreakdown
