@@ -84,12 +84,17 @@ namespace Warhammer.Core.Entities
                     BaseValue = relatedPages.Sum(l => l.BaseScore),
                     ActivityBonus = 0                  
                 });
-                breakdown.Add(new ScoreBreakdown
+                double awardValue =
+                    Awards.Where(a => a.Trophy.TypeId != (int) TrophyType.DefaultAward).Sum(a => a.Trophy.PointsValue);
+                if (awardValue > 0)
                 {
-                    Name = "Awards",
-                    BaseValue = Awards.Where(a => a.Trophy.TypeId != (int)TrophyType.DefaultAward).Sum(a => a.Trophy.PointsValue),
-                    ActivityBonus = 0
-                });
+                    breakdown.Add(new ScoreBreakdown
+                    {
+                        Name = "Awards",
+                        BaseValue = awardValue,
+                        ActivityBonus = 0
+                    });
+                }
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Image Bonus",
