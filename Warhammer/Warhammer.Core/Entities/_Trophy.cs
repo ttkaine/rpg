@@ -8,7 +8,7 @@
         FirstFavouriteNpc = 3,
         SecondFavouriteNpc = 4,
         ThirdFavouriteNpc = 5,
-        
+        LeadWeightAward = 6
 
     }
 
