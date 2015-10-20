@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -24,14 +25,16 @@ namespace Warhammer.Mvc.Controllers
     {
 		public IViewModelFactory ViewModelFactory { get; set; }
 		public IPostManager PostManager { get; set; }
+		public ILogGenerator LogGenerator { get; set; }
 		//public ICharacterManager CharacterManager { get; set; }
 
 
 
-        public RoleplayController(IAuthenticatedDataProvider data, IViewModelFactory viewModelFactory, IPostManager postManager) : base(data)
+        public RoleplayController(IAuthenticatedDataProvider data, IViewModelFactory viewModelFactory, IPostManager postManager, ILogGenerator logGenerator) : base(data)
         {
 	        ViewModelFactory = viewModelFactory;
 	        PostManager = postManager;
+	        LogGenerator = logGenerator;
 	        //CharacterManager = new CharacterManager(new DataAccess());
         }   
 		
@@ -640,5 +643,13 @@ namespace Warhammer.Mvc.Controllers
 			var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
 			return File(defaultImagePath, "image/jpeg");
 		}
+
+		//[OutputCache(Duration = 3600, VaryByParam = "sessionId", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+	    public FileContentResult TextLog(int id)
+	    {
+		    string textLog = LogGenerator.GenerateTextLog(id, false);
+
+			return File(Encoding.UTF8.GetBytes(textLog), "text/plain", string.Format("{0}.txt", "session_log"));
+	    }
 	}	
 }

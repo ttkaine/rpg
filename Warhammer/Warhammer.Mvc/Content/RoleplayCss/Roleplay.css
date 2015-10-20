@@ -1,7 +1,17 @@
 ﻿
 body
 {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
+}
+
+footer
+{
+    display: none !important;
 }
 
 #roleplayContent 
@@ -1237,6 +1247,18 @@ body
     display: none;
 }
 
+.TextPostBackground
+{    
+    background: #333;
+    z-index: 500000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 0;
+    transition: all 0.2s linear;
+}
+
 
 @media (max-width: 770px)
 {
@@ -1389,6 +1411,7 @@ body
         height: 150px;
         max-height: 150px;
         transition: all 0.2s linear;
+        z-index: 999999;
     }
 
     .PlayerDiceControls
@@ -1566,17 +1589,22 @@ body
 
     .PlayerPostTextBox:focus
     {
-        transform: translateY(-90px);
-        height: 200px;
-        max-height: 200px;
+        transform: translateY(-70px);
+        height: 180px;
+        max-height: 180px;
         box-shadow: 0 0 5px #fff;
+    }
+
+    .PlayerPostTextBox:focus ~ .TextPostBackground
+    {
+        height: 100vh;
     }
 
     .EditPostTextBox:focus
     {
-        transform: translateY(-90px);
-        height: 200px !important;
-        max-height: 200px !important;
+        transform: translateY(-70px);
+        height: 180px !important;
+        max-height: 180px !important;
         box-shadow: 0 0 5px #fff;
     }
 
