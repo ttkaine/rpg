@@ -644,12 +644,18 @@ namespace Warhammer.Mvc.Controllers
 			return File(defaultImagePath, "image/jpeg");
 		}
 
-		//[OutputCache(Duration = 3600, VaryByParam = "sessionId", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
 	    public FileContentResult TextLog(int id)
 	    {
 		    string textLog = LogGenerator.GenerateTextLog(id, false);
 
 			return File(Encoding.UTF8.GetBytes(textLog), "text/plain", string.Format("{0}.txt", "session_log"));
+	    }
+
+	    public ActionResult HtmlLog(int id)
+	    {
+		    ViewBag.LogHtml = LogGenerator.GenerateHtmlLog(id, false);
+
+		    return View();
 	    }
 	}	
 }

@@ -268,10 +268,9 @@
       <DependentUpon>jcrop.css</DependentUpon>
     </Content>
     <Content Include="Content\RoleplayCss\CharacterSheet.css" />
-    <Content Include="Content\RoleplayCss\LoginStyle.css" />
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
-    <Content Include="Content\RoleplayCss\SessionDownload.css" />
+    <Content Include="Content\RoleplayCss\SessionLog.css" />
     <Content Include="Content\theme.css">
       <DependentUpon>theme.less</DependentUpon>
     </Content>
@@ -468,6 +467,7 @@
     <Content Include="Views\Roleplay\Index.cshtml" />
     <Content Include="Views\Admin\SetAsTextSession.cshtml" />
     <Content Include="Views\Admin\CloseTextSession.cshtml" />
+    <Content Include="Views\Roleplay\HtmlLog.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

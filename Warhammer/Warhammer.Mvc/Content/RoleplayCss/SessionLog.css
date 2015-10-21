@@ -1,0 +1,55 @@
+﻿
+h4
+{
+    margin: 30px 0 5px 0;
+    font-weight: bold;
+}
+
+p
+{
+    margin-left: 10px;
+}
+
+.DiceRoll, .OocComment
+{
+    padding: 0;
+    font-size: 14px;
+    width: calc(100% - 20px);
+    max-width: 400px;
+    margin: 10px;
+    border-radius: 3px;
+}
+
+.DiceRoll
+{
+    background: #ccccff;
+    border: 1px solid #bbbbea;    
+}
+
+.OocComment
+{
+    background: #ffffaa;
+    border: 1px solid #eaea99;
+}
+
+.Title, .Content
+{
+    display: block;
+    width: 100%;
+    padding: 5px;
+}
+
+.Title
+{
+    font-weight: bold;
+}
+
+.DiceRoll .Title
+{
+    background: #bbbbea;
+}
+
+.OocComment .Title
+{
+    background: #eaea99;
+}

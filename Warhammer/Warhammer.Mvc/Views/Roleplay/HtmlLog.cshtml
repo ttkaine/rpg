@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "HtmlLog";
+}
+
+@section head
+{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/RoleplayCss/SessionLog.css")" />
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1>Log Test</h1>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="content-block">
+            <h2>Log Content</h2>
+            @Html.Raw(ViewBag.LogHtml)
+        </div>
+    </div>
+    <div class="side-bar">
+        <div class="content-block"></div>
+    </div>
+</div>
+
