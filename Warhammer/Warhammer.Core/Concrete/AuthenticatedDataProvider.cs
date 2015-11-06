@@ -594,6 +594,26 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Session> UpdatedTextSessions()
+        {
+           List<Session> pages =
+                _repository.Pages()
+                    .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
+
+            if (!CurrentPlayer.IsGm)
+            {
+                pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
+            }
+
+            pages =
+                pages.Where(
+                    p =>
+                        p.Posts.Any() &&
+                        p.Posts.OrderByDescending(ps => ps.DatePosted).FirstOrDefault().PlayerId != CurrentPlayer.Id).ToList();
+
+            return pages.ToList();
+        }
+
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>

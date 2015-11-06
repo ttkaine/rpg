@@ -16,7 +16,7 @@
         <div class="core-content">
             <div class="content-block">
 
-                @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any())
+                @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any() && !Model.UpdatedTextSessions.Any())
                 {
                     <div class="alert alert-warning">
                         <p>No Exciting updates for you at the moment...</p>
@@ -44,6 +44,17 @@
                                 @foreach (var page in Model.UpdatedPages)
                                 {
                                     <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                                }
+                            </ul>
+                        }
+                        @if (Model.UpdatedTextSessions.Any())
+                        {
+                            <h3>Updated Test Sessions</h3>
+                            <p class="note">These Text Sessions may be wanting a post...</p>
+                            <ul>
+                                @foreach (var page in Model.UpdatedTextSessions)
+                                {
+                                    <li>@Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-success btn-block" })</li>
                                 }
                             </ul>
                         }
