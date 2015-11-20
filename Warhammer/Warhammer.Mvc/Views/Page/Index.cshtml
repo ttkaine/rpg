@@ -132,9 +132,9 @@
 
                     if (session.IsTextSession && !session.IsClosed)
                     {
-                         @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+                        @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
                     }
-                    
+
                     if (session.PlayerCharacters.Any())
                     {
                         <h3>Player Characters</h3>

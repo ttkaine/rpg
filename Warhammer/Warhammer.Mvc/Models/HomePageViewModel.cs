@@ -21,5 +21,6 @@ namespace Warhammer.Mvc.Models
        public IOrderedEnumerable<Page> NewPages { get; set; }
        public IOrderedEnumerable<Page> UpdatedPages { get; set; }
        public List<Person> TopNpcs { get; set; }
+       public List<Session> UpdatedTextSessions { get; set; }
     }
 }

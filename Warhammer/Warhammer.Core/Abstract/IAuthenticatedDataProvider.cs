@@ -56,5 +56,6 @@ namespace Warhammer.Core.Abstract
 	    bool IsLoggedIn();
         void CloseTextSession(int id);
         void SetAsTextSession(int id);
+        List<Session> UpdatedTextSessions();
     }
 }
