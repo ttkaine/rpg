@@ -1412,6 +1412,7 @@ footer
         max-height: 150px;
         transition: all 0.2s linear;
         z-index: 999999;
+        position: relative;
     }
 
     .PlayerDiceControls

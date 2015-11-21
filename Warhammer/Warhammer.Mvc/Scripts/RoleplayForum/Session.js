@@ -362,7 +362,8 @@ function postSubmitted(text)
 {
     clearInterval(refreshInterval);
 
-    //var sessionId = queryString("id");
+    var cleanedText = text.replace(/"/g, '&quote;');
+
     var isOoc = $("#divOutOfCharacterButton").attr("class") == "ToggleButtonEnabled";
     var characterId = -1;
     if ($("#ddlPostAs option").size() > 0)
@@ -374,7 +375,7 @@ function postSubmitted(text)
     {
         recipientString = recipients.join(",");
     }
-    var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ', "lastPostId": ' + lastPostId + ', "isOoc": ' + isOoc + ', "text": "' + text + '", "lastUpdateTime": "' + lastUpdateTime + '", "recipientString": "' + recipientString + '" }';
+    var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ', "lastPostId": ' + lastPostId + ', "isOoc": ' + isOoc + ', "text": "' + cleanedText + '", "lastUpdateTime": "' + lastUpdateTime + '", "recipientString": "' + recipientString + '" }';
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
     var scrollHeight = $("#divPostContainer").prop("scrollHeight");
@@ -650,8 +651,10 @@ function editedPostSubmitted(postId, text)
 {
     clearInterval(refreshInterval);
 
+    var cleanedText = text.replace(/"/g, '&quote;');
+
     //var sessionId = queryString("id");
-    var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "text": "' + text + '", "lastUpdateTime": "' + lastUpdateTime + '" }';
+    var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "text": "' + cleanedText + '", "lastUpdateTime": "' + lastUpdateTime + '" }';
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
     var scrollHeight = $("#divPostContainer").prop("scrollHeight");
