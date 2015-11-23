@@ -13,5 +13,6 @@ namespace Warhammer.Core.Abstract
 		bool DeletePostForUser(int postId);
 		PostResult EditTextPostForUser(int postId, string text);
 		bool RevertPostForUser(int postId);
+	    bool SetTurnOverForUser(int sessionId);
 	}
 }

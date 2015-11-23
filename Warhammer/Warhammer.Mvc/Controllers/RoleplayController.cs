@@ -174,6 +174,8 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
+
+
 		public JsonResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
 		{
 			DateTime lastUpdate;
