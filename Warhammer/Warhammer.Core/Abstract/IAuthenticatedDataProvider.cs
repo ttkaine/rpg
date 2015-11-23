@@ -57,6 +57,7 @@ namespace Warhammer.Core.Abstract
         void CloseTextSession(int id);
         void SetAsTextSession(int id);
         List<Session> UpdatedTextSessions();
+        List<Session> TextSessionsWhereItisMyTurn();
         void EnsurePostOrders(int sessionId);
     }
 }

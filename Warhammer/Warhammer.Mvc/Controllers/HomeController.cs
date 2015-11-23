@@ -25,6 +25,7 @@ namespace Warhammer.Mvc.Controllers
                 NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
+                MyTurnTextSessions = DataProvider.TextSessionsWhereItisMyTurn(),
                 RecentChanges = DataProvider.RecentPages().ToList(),
                 MyStuff = DataProvider.MyStuff().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),

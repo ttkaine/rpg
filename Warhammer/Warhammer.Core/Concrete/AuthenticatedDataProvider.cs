@@ -11,11 +11,13 @@ namespace Warhammer.Core.Concrete
     {
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
+        private readonly IViewModelFactory _factory;
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IViewModelFactory factory)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
+            _factory = factory;
         }
 
         public Player CurrentPlayer
@@ -612,6 +614,15 @@ namespace Warhammer.Core.Concrete
                         p.Posts.OrderByDescending(ps => ps.DatePosted).FirstOrDefault().PlayerId != CurrentPlayer.Id).ToList();
 
             return pages.ToList();
+        }
+
+        public List<Session> TextSessionsWhereItisMyTurn()
+        {
+            List<Session> pages =
+                 _repository.Pages()
+                     .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && !p.IsPrivate).ToList();
+
+            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id).ToList();
         }
 
         public void EnsurePostOrders(int sessionId)

@@ -16,7 +16,7 @@
         <div class="core-content">
             <div class="content-block">
 
-                @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any() && !Model.UpdatedTextSessions.Any())
+                @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any() && !Model.UpdatedTextSessions.Any() && !Model.MyTurnTextSessions.Any())
                 {
                     <div class="alert alert-warning">
                         <p>No Exciting updates for you at the moment...</p>
@@ -50,11 +50,22 @@
                         @if (Model.UpdatedTextSessions.Any())
                         {
                             <h3>Updated TEXT Sessions</h3>
+                            <p class="note">These Text Sessions have been updated since you last posted</p>
+                            <ul>
+                                @foreach (var page in Model.UpdatedTextSessions)
+                                {
+                                    <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-default btn-block" })</li>
+                                }
+                            </ul>
+                        }
+                        @if (Model.MyTurnTextSessions.Any())
+                        {
+                            <h3>TEXT Sessions where it is YOUR turn</h3>
                             <p class="note">These Text Sessions may be wanting a post...</p>
                             <ul>
                                 @foreach (var page in Model.UpdatedTextSessions)
                                 {
-                                    <li>@Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-success btn-block" })</li>
+                                    <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-success btn-block" })</li>
                                 }
                             </ul>
                         }
