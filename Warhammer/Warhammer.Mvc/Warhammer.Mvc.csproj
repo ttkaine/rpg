@@ -230,6 +230,7 @@
     <Content Include="Content\DbUpdateScripts\0012.sql" />
     <Content Include="Content\DbUpdateScripts\0013.sql" />
     <Content Include="Content\DbUpdateScripts\15101801.sql" />
+    <Content Include="Content\DbUpdateScripts\15112301.sql" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
@@ -472,6 +473,9 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Web.PIRATE.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.WADE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -508,6 +512,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MURRAY|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PIRATE|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
