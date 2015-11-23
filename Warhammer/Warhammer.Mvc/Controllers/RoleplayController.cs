@@ -184,6 +184,7 @@ namespace Warhammer.Mvc.Controllers
 			{
 				text = StripTagsFromString(text);
 				text = text.Replace("\n", "{CR}");
+				text = text.Replace("&quote;", "\"");
 
 				PostResult result = PostManager.CreateTextPostForUser(sessionId, characterId, isOoc, text, recipientString);
 				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
@@ -426,6 +427,7 @@ namespace Warhammer.Mvc.Controllers
 			{
 				text = StripTagsFromString(text);
 				text = text.Replace("\n", "{CR}");
+				text = text.Replace("&quote;", "\"");
 
 				PostResult result = PostManager.EditTextPostForUser(postId, text);
 				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
