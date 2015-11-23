@@ -614,6 +614,23 @@ namespace Warhammer.Core.Concrete
             return pages.ToList();
         }
 
+        public void EnsurePostOrders(int sessionId)
+        {
+            Session session = GetPage(sessionId) as Session;
+            if (session != null)
+            {
+                List<int> playerIds = session.PlayerCharacters.Where(p => p.PlayerId.HasValue).Select(p => p.PlayerId.Value).ToList();
+                foreach (int playerId in playerIds)
+                {
+                    if (session.PostOrders.All(s => s.PlayerId != playerId))
+                    {
+                        session.PostOrders.Add(new PostOrder { SessionId = sessionId, PlayerId = playerId, LastTurnEnded = DateTime.Now });
+                        _repository.Save(session);
+                    }
+                }
+            }
+        }
+
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>

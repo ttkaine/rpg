@@ -207,7 +207,6 @@ namespace Warhammer.Core.Concrete
 
         private int GetCurrentPlayerId(Session session)
         {
-
             if (!session.IsGmTurn)
             { 
                 PostOrder order = session.PostOrders.OrderBy(p => p.LastTurnEnded).FirstOrDefault();

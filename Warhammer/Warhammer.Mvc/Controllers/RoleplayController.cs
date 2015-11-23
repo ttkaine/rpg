@@ -50,6 +50,7 @@ namespace Warhammer.Mvc.Controllers
 					Session session = page as Session;
 					if (session != null && session.IsTextSession && !session.IsClosed)
 					{
+					    DataProvider.EnsurePostOrders(session.Id);
 						ViewBag.SessionId = session.Id;
 
 						return View();
