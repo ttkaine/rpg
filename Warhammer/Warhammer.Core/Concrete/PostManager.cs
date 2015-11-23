@@ -311,10 +311,22 @@ namespace Warhammer.Core.Concrete
 	            if (order != null)
 	            {
 	                order.LastTurnEnded = DateTime.Now;
-	                _repository.Save(session);
-	                return true;
+	                
+	                
 	            }
-	        }
+
+	            if (player.IsGm)
+	            {
+	                session.IsGmTurn = false;
+	            }
+	            else
+	            {
+	                session.IsGmTurn = true;
+	            }
+
+                _repository.Save(session);
+                return true;
+            }
 	        return false;
 	    }
 	}
