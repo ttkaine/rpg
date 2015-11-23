@@ -198,14 +198,28 @@ namespace Warhammer.Core.Concrete
 				viewModel.StartDate = session.DateTime.GetValueOrDefault();
 				viewModel.Title = session.ShortName;
 				viewModel.GmId = GetGmId();
-
+			    viewModel.CurrentPlayerId = GetCurrentPlayerId(session);
 				return viewModel;
 			}
 
 			return null;
 	    }
 
-	    public List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId)
+        private int GetCurrentPlayerId(Session session)
+        {
+
+            if (!session.IsGmTurn)
+            { 
+                PostOrder order = session.PostOrders.OrderBy(p => p.LastTurnEnded).FirstOrDefault();
+                if (order != null)
+                {
+                    return order.PlayerId;
+                }
+            }
+            return GetGmId();
+        }
+
+        public List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId)
 	    {
 			bool playerIsGm;
 			int playerId;
