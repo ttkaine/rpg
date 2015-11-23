@@ -18,14 +18,18 @@ namespace Warhammer.Core.Entities
         {
             this.SessionLogs = new HashSet<SessionLog>();
             this.Posts = new HashSet<Post>();
+            this.PostOrders = new HashSet<PostOrder>();
         }
     
         public Nullable<System.DateTime> DateTime { get; set; }
         public Nullable<int> Length { get; set; }
         public bool IsClosed { get; set; }
         public bool IsTextSession { get; set; }
+        public bool IsPrivate { get; set; }
+        public bool IsGmTurn { get; set; }
     
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<PostOrder> PostOrders { get; set; }
     }
 }

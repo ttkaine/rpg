@@ -126,6 +126,15 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="PostOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionId" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="LastTurnEnded" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Session">
           <Key>
             <PropertyRef Name="Id" />
@@ -135,6 +144,8 @@
           <Property Name="Length" Type="int" />
           <Property Name="IsClosed" Type="bit" Nullable="false" />
           <Property Name="IsTextSession" Type="bit" Nullable="false" />
+          <Property Name="IsPrivate" Type="bit" Nullable="false" />
+          <Property Name="IsGmTurn" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SessionLog">
           <Key>
@@ -372,6 +383,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PostOrder_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PostOrder" Type="Self.PostOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostOrder">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostOrder_Session">
+          <End Role="Session" Type="Self.Session" Multiplicity="1" />
+          <End Role="PostOrder" Type="Self.PostOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostOrder">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Session_Page">
           <End Role="Page" Type="Self.Page" Multiplicity="1" />
           <End Role="Session" Type="Self.Session" Multiplicity="0..1" />
@@ -431,6 +466,7 @@
           <EntitySet Name="Place" EntityType="Self.Place" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
@@ -505,6 +541,14 @@
           <AssociationSet Name="FK_Post_Session" Association="Self.FK_Post_Session">
             <End Role="Session" EntitySet="Session" />
             <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostOrder_Player" Association="Self.FK_PostOrder_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PostOrder" EntitySet="PostOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostOrder_Session" Association="Self.FK_PostOrder_Session">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="PostOrder" EntitySet="PostOrder" />
           </AssociationSet>
           <AssociationSet Name="FK_Session_Page" Association="Self.FK_Session_Page">
             <End Role="Page" EntitySet="Page" />
@@ -603,6 +647,15 @@
           <AssociationSet Name="FK_Post_Session" Association="WarhammerModel.FK_Post_Session">
             <End Role="Session" EntitySet="Pages" />
             <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <EntitySet Name="PostOrders" EntityType="WarhammerModel.PostOrder" />
+          <AssociationSet Name="FK_PostOrder_Player" Association="WarhammerModel.FK_PostOrder_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="PostOrder" EntitySet="PostOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostOrder_Session" Association="WarhammerModel.FK_PostOrder_Session">
+            <End Role="Session" EntitySet="Pages" />
+            <End Role="PostOrder" EntitySet="PostOrders" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
@@ -712,6 +765,7 @@
           <NavigationProperty Name="People" Relationship="WarhammerModel.FK_Person_Player" FromRole="Player" ToRole="Person" />
           <Property Name="IsGm" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Player" FromRole="Player" ToRole="Post" />
+          <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
         </EntityType>
         <EntityType Name="Session" BaseType="WarhammerModel.Page">
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -720,6 +774,9 @@
           <Property Name="IsClosed" Type="Boolean" Nullable="false" />
           <Property Name="IsTextSession" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Session" FromRole="Session" ToRole="Post" />
+          <Property Name="IsPrivate" Type="Boolean" Nullable="false" />
+          <Property Name="IsGmTurn" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="Session" ToRole="PostOrder" />
         </EntityType>
         <EntityType Name="SessionLog" BaseType="WarhammerModel.Page">
           <Property Name="PersonId" Type="Int32" />
@@ -962,6 +1019,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PostOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="LastTurnEnded" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="PostOrder" ToRole="Player" />
+          <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="PostOrder" ToRole="Session" />
+        </EntityType>
+        <Association Name="FK_PostOrder_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.PostOrder" Role="PostOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostOrder">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostOrder_Session">
+          <End Type="WarhammerModel.Session" Role="Session" Multiplicity="1" />
+          <End Type="WarhammerModel.PostOrder" Role="PostOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PostOrder">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1040,6 +1132,8 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="IsGmTurn" ColumnName="IsGmTurn" />
+                <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
                 <ScalarProperty Name="IsTextSession" ColumnName="IsTextSession" />
                 <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1117,6 +1211,16 @@
                 <ScalarProperty Name="OriginalContent" ColumnName="OriginalContent" />
                 <ScalarProperty Name="PostType" ColumnName="PostType" />
                 <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostOrders">
+            <EntityTypeMapping TypeName="WarhammerModel.PostOrder">
+              <MappingFragment StoreEntitySet="PostOrder">
+                <ScalarProperty Name="LastTurnEnded" ColumnName="LastTurnEnded" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

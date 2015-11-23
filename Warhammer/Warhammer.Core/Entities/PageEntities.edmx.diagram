@@ -38,6 +38,9 @@
         <EntityTypeShape EntityType="WarhammerModel.Post" Width="1.5" PointX="10.5" PointY="13.75" />
         <AssociationConnector Association="WarhammerModel.FK_Post_Player" />
         <AssociationConnector Association="WarhammerModel.FK_Post_Session" />
+        <EntityTypeShape EntityType="WarhammerModel.PostOrder" Width="1.5" PointX="7.5" PointY="20.5" />
+        <AssociationConnector Association="WarhammerModel.FK_PostOrder_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_PostOrder_Session" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

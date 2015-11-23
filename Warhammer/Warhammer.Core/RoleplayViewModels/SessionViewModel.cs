@@ -13,6 +13,7 @@ namespace Warhammer.Core.RoleplayViewModels
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public bool IsClosed { get; set; }
+        public int CurrentPlayerId { get; set; }
 		public DateTime StartDate { get; set; }
 
 		public SessionViewModel()

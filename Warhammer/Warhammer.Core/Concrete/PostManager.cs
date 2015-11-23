@@ -300,5 +300,22 @@ namespace Warhammer.Core.Concrete
 
 			return false;	
 		}
+
+	    public bool SetTurnOverForUser(int sessionId)
+	    {
+            Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            Player player = GetCurrentPlayer();
+	        if (session != null)
+	        {
+	            PostOrder order = session.PostOrders.FirstOrDefault(p => p.PlayerId == player.Id);
+	            if (order != null)
+	            {
+	                order.LastTurnEnded = DateTime.Now;
+	                _repository.Save(session);
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
 	}
 }

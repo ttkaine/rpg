@@ -50,6 +50,7 @@ namespace Warhammer.Mvc.Controllers
 					Session session = page as Session;
 					if (session != null && session.IsTextSession && !session.IsClosed)
 					{
+					    DataProvider.EnsurePostOrders(session.Id);
 						ViewBag.SessionId = session.Id;
 
 						return View();
@@ -172,6 +173,8 @@ namespace Warhammer.Mvc.Controllers
 				throw new Exception("Session timeout");
 			}
 		}
+
+
 
 		public JsonResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
 		{
