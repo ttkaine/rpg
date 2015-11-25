@@ -600,7 +600,9 @@ namespace Warhammer.Core.Concrete
         {
            List<Session> pages =
                 _repository.Pages()
-                    .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && !p.IsPrivate).ToList();
+					.OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
+
+	        pages = pages.Where(p => !p.IsPrivate || p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
 
             if (!CurrentPlayer.IsGm)
             {
@@ -620,12 +622,21 @@ namespace Warhammer.Core.Concrete
         {
             List<Session> pages =
                  _repository.Pages()
-                     .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && !p.IsPrivate).ToList();
+					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
 
             return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id).ToList();
         }
 
-        public void EnsurePostOrders(int sessionId)
+	    public List<Session> TextSessionsContainingMyCharacters()
+	    {
+			List<Session> pages =
+				 _repository.Pages()
+					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList(); 
+
+		    return pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id || CurrentPlayer.IsGm)).ToList();
+	    }
+
+	    public void EnsurePostOrders(int sessionId)
         {
             Session session = GetPage(sessionId) as Session;
             if (session != null)

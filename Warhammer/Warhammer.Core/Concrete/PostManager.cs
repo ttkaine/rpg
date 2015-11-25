@@ -107,6 +107,7 @@ namespace Warhammer.Core.Concrete
 			};
 
 			Repo.Save(post);
+			SetTurnOverForUser(sessionId);
 
 			return PostResult.Success;
 		}
@@ -311,8 +312,6 @@ namespace Warhammer.Core.Concrete
 	            if (order != null)
 	            {
 	                order.LastTurnEnded = DateTime.Now;
-	                
-	                
 	            }
 
 	            if (player.IsGm)

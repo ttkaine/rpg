@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using Warhammer.Core;
@@ -50,10 +51,18 @@ namespace Warhammer.Mvc.Controllers
 					Session session = page as Session;
 					if (session != null && session.IsTextSession && !session.IsClosed)
 					{
-					    DataProvider.EnsurePostOrders(session.Id);
-						ViewBag.SessionId = session.Id;
+						List<Session> sessionsForCurrentPlayer = DataProvider.TextSessionsContainingMyCharacters();
+						if (session.IsPrivate && sessionsForCurrentPlayer.All(s => s.Id != session.Id))
+						{
+							return RedirectToAction("Index", "Page", new {id = id});
+						}
+						else
+						{
+							DataProvider.EnsurePostOrders(session.Id);
+							ViewBag.SessionId = session.Id;
 
-						return View();
+							return View();							
+						}
 					}
 				}
 			}

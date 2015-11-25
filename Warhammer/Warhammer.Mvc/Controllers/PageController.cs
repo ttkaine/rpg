@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.UI;
 using Warhammer.Core.Abstract;
+using Warhammer.Core.Entities;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
@@ -37,6 +39,12 @@ namespace Warhammer.Mvc.Controllers
                     {
                         page.Description = _linkGenerator.CreoleLinksToHtml(page.Description);
                     }
+
+	                if (page is Session)
+	                {
+		                List<Session> mySessions = DataProvider.TextSessionsContainingMyCharacters();
+		                ViewBag.IAmInThisSession = mySessions.Any(s => s.Id == page.Id);
+	                }
 
                     return View(page);
                 }

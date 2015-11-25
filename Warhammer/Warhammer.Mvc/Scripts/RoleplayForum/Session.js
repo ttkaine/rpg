@@ -342,7 +342,7 @@ function btnPost_Click()
 
 function txtPost_keyPress(event)
 {
-    if (event != null)
+    /*if (event != null)
     {
         if (event.type == 'keypress' && event.keyCode == 13 && !event.shiftKey)
         {
@@ -355,7 +355,7 @@ function txtPost_keyPress(event)
 
             event.preventDefault();
         }
-    }
+    }*/
 }
 
 function postSubmitted(text)

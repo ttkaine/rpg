@@ -130,7 +130,7 @@
                 {
                     Session session = Model as Session;
 
-                    if (session.IsTextSession && !session.IsClosed && !session.IsPrivate)
+                    if (session.IsTextSession && !session.IsClosed && !(session.IsPrivate && !ViewBag.IAmInThisSession))
                     {
                         @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
                     }
