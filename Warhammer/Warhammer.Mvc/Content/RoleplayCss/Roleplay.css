@@ -915,7 +915,7 @@ footer
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 20000;  
+    z-index: 920000;  
 }
 
 .ModalOverlayBackground
@@ -925,7 +925,7 @@ footer
     height: 100%;
     background-color: #000;
     opacity: 0.5;
-    z-index: 21000;       
+    z-index: 921000;       
 }
 
 .EditPostPopup
@@ -933,7 +933,7 @@ footer
     position: absolute;
     width: 600px;
     height: 500px;
-    z-index: 25000;
+    z-index: 925000;
     background-color: #fff;
     border: 1px solid #333;
     box-shadow: 5px 5px 10px #333;   
@@ -1056,7 +1056,7 @@ footer
     position: absolute;
     width: 400px;
     height: 500px;
-    z-index: 25000;
+    z-index: 925000;
     background-color: #fff;
     border: 1px solid #333;
     box-shadow: 5px 5px 10px #333;   
@@ -1163,7 +1163,7 @@ footer
     position: absolute;
     width: 650px;
     height: 640px;
-    z-index: 25000;
+    z-index: 925000;
     background-color: #fff;
     border: 1px solid #333;
     box-shadow: 5px 5px 10px #333;   
@@ -1411,7 +1411,7 @@ footer
         height: 150px;
         max-height: 150px;
         transition: all 0.2s linear;
-        z-index: 999999;
+        z-index: 555000;
         position: relative;
     }
 
@@ -1568,6 +1568,8 @@ footer
         max-height: 150px !important;
         overflow-y: scroll;
         transition: all 0.2s linear;
+        position: relative;
+        z-index: 555000;
     }
 }
 
@@ -1590,20 +1592,20 @@ footer
 
     .PlayerPostTextBox:focus
     {
-        transform: translateY(-70px);
+        transform: translateY(-100px);
         height: 180px;
         max-height: 180px;
         box-shadow: 0 0 5px #fff;
     }
 
-    .PlayerPostTextBox:focus ~ .TextPostBackground
+    .PlayerPostTextBox:focus ~ .TextPostBackground, .EditPostTextBox:focus ~ .TextPostBackground
     {
         height: 100vh;
     }
 
     .EditPostTextBox:focus
     {
-        transform: translateY(-70px);
+        transform: translateY(-110px);
         height: 180px !important;
         max-height: 180px !important;
         box-shadow: 0 0 5px #fff;
