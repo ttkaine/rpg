@@ -12,7 +12,9 @@
     <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
     <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
     <link href="http://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet" type="text/css">
-    
+
+    @Html.Action("OverrideCss", "Home")
+
     @if (ViewBag.EditMode)
     {
 

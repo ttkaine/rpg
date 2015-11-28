@@ -15,6 +15,18 @@ namespace Warhammer.Mvc.Controllers
 {
     public class HomeController : BaseController
     {
+        private string SiteName
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["SiteName"] != null)
+                {
+                    return ConfigurationManager.AppSettings["SiteName"];
+                }
+                return "Warhammer";
+            }
+        }
+
         public HomeController(IAuthenticatedDataProvider data) : base(data)
         {
         }
@@ -23,7 +35,7 @@ namespace Warhammer.Mvc.Controllers
         {
             HomePageViewModel model = new HomePageViewModel
             {
-                SiteName = ConfigurationManager.AppSettings["SiteName"], 
+                SiteName = SiteName, 
                 NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
@@ -190,6 +202,16 @@ namespace Warhammer.Mvc.Controllers
             ModelState.Clear();
             var favModel = MyFavNpcModel();
             return PartialView("FavouriteNpcs", favModel);
+        }
+
+
+        public ActionResult OverrideCss()
+        {
+            if (SiteName == "Pirates!")
+            {
+                return PartialView();
+            }
+            return null;
         }
     }
 }

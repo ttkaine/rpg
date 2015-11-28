@@ -237,6 +237,7 @@
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\no-image.jpg" />
+    <Content Include="Content\Images\pirate_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
     <Content Include="Content\Images\RoleplayForum\dice_control.jpg" />
@@ -268,6 +269,7 @@
     <Content Include="Content\Less\jcrop.min.css">
       <DependentUpon>jcrop.css</DependentUpon>
     </Content>
+    <Content Include="Content\Pirate.css" />
     <Content Include="Content\RoleplayCss\CharacterSheet.css" />
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
@@ -469,6 +471,7 @@
     <Content Include="Views\Admin\SetAsTextSession.cshtml" />
     <Content Include="Views\Admin\CloseTextSession.cshtml" />
     <Content Include="Views\Roleplay\HtmlLog.cshtml" />
+    <Content Include="Views\Home\OverrideCss.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
