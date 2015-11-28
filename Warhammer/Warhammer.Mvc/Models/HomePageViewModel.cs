@@ -23,5 +23,6 @@ namespace Warhammer.Mvc.Models
        public List<Person> TopNpcs { get; set; }
        public List<Session> UpdatedTextSessions { get; set; }
        public List<Session> MyTurnTextSessions { get; set; }
+        public string SiteName { get; set; }
     }
 }

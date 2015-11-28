@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -22,6 +23,7 @@ namespace Warhammer.Mvc.Controllers
         {
             HomePageViewModel model = new HomePageViewModel
             {
+                SiteName = ConfigurationManager.AppSettings["SiteName"], 
                 NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
