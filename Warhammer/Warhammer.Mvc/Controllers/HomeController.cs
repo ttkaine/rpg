@@ -204,7 +204,7 @@ namespace Warhammer.Mvc.Controllers
             return PartialView("FavouriteNpcs", favModel);
         }
 
-
+        [AllowAnonymous]
         public ActionResult OverrideCss()
         {
             if (SiteName == "Pirates!")
