@@ -6,6 +6,7 @@ var selectedTab;
 var recipients;
 var sessionId;
 var rootPath;
+var initialPostComplete;
 
 function setupPage(id)
 {
@@ -14,6 +15,7 @@ function setupPage(id)
     sessionId = id;
     lastPostId = 0;
     lastUpdateTime = "01 Jan 2000 00:00:00";
+    initialPostComplete = false;
     selectedTab = 1;
     recipients = new Array();
 
@@ -26,6 +28,19 @@ function setupPage(id)
 
     $("#divOverlay").attr("style", "display:none;");
     refreshInterval = setInterval(pageRefresh, 3000);
+
+    checkNotificationPermission();
+}
+
+function checkNotificationPermission()
+{
+    if ("Notification" in window)
+    {
+        if (Notification.permission != "granted" && Notification.permission != "denied")
+        {
+            Notification.requestPermission();
+        }
+    }
 }
 
 function setupDiceDropDowns()
@@ -180,6 +195,25 @@ function setSessionTitle()
     });
 }
 
+function generateNotification(message)
+{
+    if ("Notification" in window)
+    {
+        if (Notification.permission === "granted" && initialPostComplete && !document.hasFocus())
+        {
+            var title = $("#divSessionTitle").html();
+            var options = {
+                //title: $("#divSessionTitle").html(),
+                body: message,
+                icon: "/content/images/roleplayforum/notify-icon.jpg"
+            };
+
+            var notification = new Notification(title, options);
+            setTimeout(notification.close.bind(notification), 10000);
+        }
+    }
+}
+
 function handleNewPosts(jsonData, scrollToEnd)
 {
     if (!jsonData.IsError)
@@ -208,6 +242,8 @@ function handleNewPosts(jsonData, scrollToEnd)
                     itemsAdded++;
                 }
             }
+
+            generateNotification("New posts have been added to the session.");
         }
 
         if (jsonData.EditedCount > 0)
@@ -217,6 +253,8 @@ function handleNewPosts(jsonData, scrollToEnd)
                 $("#" + jsonData.EditedPosts[i].ID).parent().replaceWith(jsonData.EditedPosts[i].Content);
                 $("#cover" + jsonData.EditedPosts[i].ID).attr("style", "display:none;");
             }
+
+            generateNotification("One or more posts have been edited.");
         }
 
         if (jsonData.DeletedCount > 0)
@@ -231,6 +269,8 @@ function handleNewPosts(jsonData, scrollToEnd)
                     });
                 }
             }
+
+            generateNotification("One or more posts have been deleted.");
         }
 
         lastUpdateTime = jsonData.LastUpdate;
@@ -245,6 +285,8 @@ function handleNewPosts(jsonData, scrollToEnd)
     {
         alert(jsonData.ErrorMessage);
     }
+
+    initialPostComplete = true;
 }
 
 function addNewPosts(doAsync)

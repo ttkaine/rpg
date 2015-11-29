@@ -63,7 +63,7 @@
                             <h3>TEXT Sessions where it is YOUR turn</h3>
                             <p class="note">These Text Sessions may be wanting a post...</p>
                             <ul>
-                                @foreach (var page in Model.UpdatedTextSessions)
+                                @foreach (var page in Model.MyTurnTextSessions)
                                 {
                                     <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-success btn-block" })</li>
                                 }
