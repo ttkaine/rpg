@@ -246,6 +246,7 @@
     <Content Include="Content\Images\RoleplayForum\display_lock_tile.jpg" />
     <Content Include="Content\Images\RoleplayForum\gm.jpg" />
     <Content Include="Content\Images\RoleplayForum\main_loading.gif" />
+    <Content Include="Content\Images\RoleplayForum\notify-icon.jpg" />
     <Content Include="Content\Images\RoleplayForum\post_strip.jpg" />
     <Content Include="Content\Images\RoleplayForum\trait_checked.png" />
     <Content Include="Content\Images\RoleplayForum\trait_unchecked.png" />

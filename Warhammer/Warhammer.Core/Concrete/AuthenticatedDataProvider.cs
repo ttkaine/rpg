@@ -602,12 +602,11 @@ namespace Warhammer.Core.Concrete
                 _repository.Pages()
 					.OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
 
-	        pages = pages.Where(p => !p.IsPrivate || p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
-
-            if (!CurrentPlayer.IsGm)
-            {
-                pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
-            }
+	        if (!CurrentPlayer.IsGm)
+			{
+				//pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
+				pages = pages.Where(p => !p.IsPrivate || p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
+			}
 
             pages =
                 pages.Where(
@@ -624,7 +623,7 @@ namespace Warhammer.Core.Concrete
                  _repository.Pages()
 					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
 
-            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id).ToList();
+            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayer.IsGm)).ToList();
         }
 
 	    public List<Session> TextSessionsContainingMyCharacters()
