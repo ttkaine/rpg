@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Warhammer.Core.Abstract;
+using Warhammer.Core.Entities;
 
 namespace Warhammer.Mvc.Controllers
 {
@@ -23,6 +24,9 @@ namespace Warhammer.Mvc.Controllers
             _data = data;
         }
 
-        
+        protected Player CurrentPlayer
+        {
+            get { return _data.MyPlayer(); }
+        }
     }
 }

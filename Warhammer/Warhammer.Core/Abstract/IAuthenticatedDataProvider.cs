@@ -60,5 +60,8 @@ namespace Warhammer.Core.Abstract
         List<Session> TextSessionsWhereItisMyTurn();
 		List<Session> TextSessionsContainingMyCharacters();
         void EnsurePostOrders(int sessionId);
+        List<Comment> RecentComments();
+        Player MyPlayer();
+        void DeleteComment(int commentId);
     }
 }

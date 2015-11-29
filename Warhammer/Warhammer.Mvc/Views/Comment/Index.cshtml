@@ -1,0 +1,42 @@
+﻿@model Warhammer.Mvc.Models.CommentListViewModel
+
+<div id="comments">
+    <h3>Comments</h3>
+    <hr/>
+    <ul>
+        @Html.DisplayFor(c => Model.Comments)
+    </ul>
+
+    @if (Model.ShowCommentAddPanel)
+    {
+        using (Ajax.BeginForm("PostComment", "Comment", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments"}))
+        {
+            <div class="row">
+                @Html.HiddenFor(m => m.PageId)
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SelectedPerson, new {@class = "col-md-12 control-label"})
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.SelectedPerson, Model.PostAs, string.Format("Myself ({0})", Model.PlayerName), new {@class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.SelectedPerson, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AddedComment, new {@class = "col-md-12 control-label"})
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(m => m.AddedComment, new {@class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.AddedComment, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-6">
+                        <input type="submit" value="Comment" class="btn btn-block btn-success"/>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</div>

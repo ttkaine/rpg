@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Content/theme.css",
+    "inputFile": "Content/theme.less"
+  },
+  {
+    "outputFile": "Content/WarhammerStyle.css",
+    "inputFile": "Content/WarhammerStyle.less"
+  }
+]

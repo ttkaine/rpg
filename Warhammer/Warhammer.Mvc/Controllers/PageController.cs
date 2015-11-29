@@ -130,6 +130,16 @@ namespace Warhammer.Mvc.Controllers
             return File(defaultImagePath, "image/jpeg"); 
         }
 
+        public ActionResult PageImage(int? id)
+        {
+            if (id.HasValue)
+            {
+                Page page = DataProvider.GetPage(id.Value);
+                return PartialView(page);
+            }
+            return null;
+        }
+
         public ActionResult ChangeImage(int? id)
         {
             if (id.HasValue)
