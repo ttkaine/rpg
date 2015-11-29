@@ -652,6 +652,25 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Comment> RecentComments()
+        {
+            return _repository.Comments().OrderByDescending(d => d.Created).Take(20).ToList();
+        }
+
+        public Player MyPlayer()
+        {
+            return _repository.Players().FirstOrDefault(p => p.UserName == _authenticatedUser.UserName);
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            Comment comment = _repository.Comments().FirstOrDefault(c => c.Id == commentId);
+            if (comment != null)
+            {
+                _repository.Delete(comment);
+            }
+        }
+
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>

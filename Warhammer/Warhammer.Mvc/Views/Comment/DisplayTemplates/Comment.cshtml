@@ -1,0 +1,32 @@
+﻿@model Warhammer.Core.Entities.Comment
+<li id="comment_@Model.Id" class="@(Model.IsPlayerComment ? "player-comment" : "character-comment")">
+    @if (!Model.IsPlayerComment)
+    {
+        <h4>@Model.Person.FullName</h4>
+        @Html.Action("PageImage", "Page", new {id = Model.PersonId})
+
+    }
+    else
+    {
+        <h4>@Model.Player.DisplayName</h4>
+    }
+    <div class="commentdetail">
+        @Html.Raw(Model.Description)
+    </div>
+        <p class="note pull-right">Posted on @Html.ActionLink(Model.Page.ShortName, "Index", new { id = Model.PageId }) on @Model.Created.ToLongDateString()</p>
+
+    @if (ViewBag.EditMode && User.IsInRole("Admin"))
+    {
+        using (Ajax.BeginForm("Delete", "Comment", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments" }))
+        {
+            <input id="commentId" name="commentId" hidden="" value="@Model.Id"/>
+            <input id="pageId" name="pageId" hidden="" value="@Model.PageId" />
+            <input id="postbutton" type="submit" value="Delete" class="btn btn-block btn-danger" />
+            <hr />
+
+        }
+    }
+
+    <div class="clearfix"></div>
+    <hr/>
+</li>

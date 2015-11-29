@@ -32,7 +32,7 @@
                 {
                     <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
                 }
-                
+
                 @if (Model is Person)
                 {
                     Person person = Model as Person;
@@ -51,6 +51,7 @@
                 </div>
                 <div class="profile-footer"><span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Last Modified: @Model.Modified</span></div>
             </div>
+
         </div>
         <div class="side-bar">
             <div class="content-block">
@@ -79,22 +80,22 @@
                             {
                                 <tr>
                                     <td>@scoreBreakdown.Name</td>
-                                    <td>@string.Format("{0:0.00}",scoreBreakdown.BaseValue)</td>
+                                    <td>@string.Format("{0:0.00}", scoreBreakdown.BaseValue)</td>
                                     <td>
                                         @if (scoreBreakdown.ActivityBonus > 0)
                                         {
                                             <text>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</text>
                                         }
-                                </td>
+                                    </td>
                                     <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
                                 </tr>
                             }
                             <tfoot>
                                 <tr>
                                     <td>Total</td>
-                                    <td>@string.Format("{0:0}",person.PermenentScore)</td>
-                                    <td>@string.Format("+ {0:0}",person.ActivityScore)</td>
-                                    <td>@string.Format("{0:0}",person.PointsValue)</td>                                  
+                                    <td>@string.Format("{0:0}", person.PermenentScore)</td>
+                                    <td>@string.Format("+ {0:0}", person.ActivityScore)</td>
+                                    <td>@string.Format("{0:0}", person.PointsValue)</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -274,8 +275,8 @@
                             {
                                 @Html.ActionLink("Close", "CloseTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
                             }
-                                                      
-                            if(!session.IsTextSession)
+
+                            if (!session.IsTextSession)
                             {
                                 @Html.ActionLink("Set as TEXT session", "SetAsTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
                             }
@@ -284,23 +285,23 @@
                         if (Model is Person)
                         {
                             Person person = Model as Person;
-                            
-                            @Html.ActionLink("Manage Awards", "ManageAwards", "Admin", new { id = Model.Id }, new { @class = "btn btn-success btn-block" }) 
-                             <hr/>
+
+                            @Html.ActionLink("Manage Awards", "ManageAwards", "Admin", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+                            <hr />
                             if (person.IsDead)
                             {
-                               @Html.ActionLink("Resurrect", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" }) 
+                                @Html.ActionLink("Resurrect", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
                             }
                             else
                             {
                                 @Html.ActionLink("Kill", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
                             }
-                            
+
                         }
 
-                        
-                        <hr/>
-                    
+
+                        <hr />
+
                         @Html.ActionLink("Delete", "DeletePage", "Admin", new { id = Model.Id }, new { @class = "btn btn-danger btn-block" })
 
                         <div class="clearfix"></div>
@@ -309,4 +310,10 @@
             </div>
         </div>
     }
+    <hr />
+    <div class="side-bar col-xs-offset-8">
+        <div class="content-block">
+            @Html.Action("Index", "Comment", new { id = Model.Id })
+        </div>
+    </div>
 </div>

@@ -54,7 +54,7 @@
                             <ul>
                                 @foreach (var page in Model.UpdatedTextSessions)
                                 {
-                                    <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-default btn-block" })</li>
+                                    <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new {id = page.Id}, new {@class = "btn btn-default btn-block"})</li>
                                 }
                             </ul>
                         }
@@ -65,7 +65,7 @@
                             <ul>
                                 @foreach (var page in Model.MyTurnTextSessions)
                                 {
-                                    <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new { id = page.Id }, new { @class = "btn btn-success btn-block" })</li>
+                                    <li>@Html.ActionLink(page.FullName, "Index", "Roleplay", new {id = page.Id}, new {@class = "btn btn-success btn-block"})</li>
                                 }
                             </ul>
                         }
@@ -76,10 +76,15 @@
                 <ul id="recentChangesList">
                     @foreach (var page in Model.RecentChanges)
                     {
-                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new { id = page.Id} )">@page.FullName <span class="tiny">@page.SignificantUpdate</span></a></li>
+                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny">@page.SignificantUpdate</span></a></li>
                     }
                 </ul>
 
+            </div>
+            <hr/>
+            <div class="content-block">
+                <h3>Recent Comments</h3>
+                @Html.Action("Index", "Comment")
             </div>
         </div>
 

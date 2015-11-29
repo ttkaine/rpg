@@ -146,6 +146,7 @@
     <Compile Include="Entities\Trophy.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_Page.cs" />
     <Compile Include="Entities\_Person.cs" />
     <Compile Include="Entities\_Place.cs" />

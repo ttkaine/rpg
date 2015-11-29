@@ -125,7 +125,18 @@ namespace Warhammer.Core.Concrete
 			_entities.SaveChanges();
 		}
 
-	    #endregion
+        public IQueryable<Comment> Comments()
+        {
+            return _entities.Comments;
+        }
+
+        public void Delete(Comment comment)
+        {
+            _entities.Comments.Remove(comment);
+            _entities.SaveChanges();
+        }
+
+        #endregion
 
         #region Save
 
