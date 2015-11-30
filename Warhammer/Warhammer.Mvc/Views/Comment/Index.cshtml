@@ -11,6 +11,7 @@
     {
         using (Ajax.BeginForm("PostComment", "Comment", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments"}))
         {
+            
             <div class="row">
                 @Html.HiddenFor(m => m.PageId)
 
@@ -29,7 +30,7 @@
                         @Html.ValidationMessageFor(m => m.AddedComment, "", new {@class = "text-danger"})
                     </div>
                 </div>
-
+                <hr />
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-6">
                         <input type="submit" value="Comment" class="btn btn-block btn-success"/>
