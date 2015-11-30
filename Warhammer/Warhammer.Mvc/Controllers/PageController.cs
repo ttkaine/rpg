@@ -54,9 +54,9 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Index(Page page, string saveAction)
+        public ActionResult Index(Page page)
         {
-            if (ModelState.IsValid && saveAction == "Save")
+            if (ModelState.IsValid)
             {
                 ClearPageCache(page.Id);
 

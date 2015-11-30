@@ -82,6 +82,11 @@
                 $("input[name='saveAction']").click(function() {
                     formmodified = 0;
                 });
+
+                $("#page-save").click(function () {
+                    formmodified = 0;
+                    document.forms['mainpageform'].submit();
+                });
             });
 
 
