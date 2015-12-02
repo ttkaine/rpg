@@ -47,5 +47,14 @@ namespace Warhammer.Core.Entities
         {
             get { return People.Where(p => p.PlayerId.HasValue); }
         }
+
+	    public DateTime LastPostTime
+	    {
+		    get
+		    {
+			    Post lastPost = Posts.OrderBy(p => p.LastEdited).FirstOrDefault();
+			    return lastPost != null ? lastPost.DatePosted : System.DateTime.MinValue;
+		    }
+	    }
     }
 }

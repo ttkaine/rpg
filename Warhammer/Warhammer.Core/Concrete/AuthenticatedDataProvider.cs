@@ -621,7 +621,8 @@ namespace Warhammer.Core.Concrete
         {
             List<Session> pages =
                  _repository.Pages()
-					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
+					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed)
+						.ToList();
 
             return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayer.IsGm)).ToList();
         }
