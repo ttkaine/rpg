@@ -605,7 +605,7 @@ namespace Warhammer.Core.Concrete
 	        if (!CurrentPlayer.IsGm)
 			{
 				//pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
-				pages = pages.Where(p => !p.IsPrivate || p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
+				pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
 			}
 
             pages =
@@ -614,7 +614,7 @@ namespace Warhammer.Core.Concrete
                         p.Posts.Any() &&
                         p.Posts.OrderByDescending(ps => ps.DatePosted).FirstOrDefault().PlayerId != CurrentPlayer.Id).ToList();
 
-            return pages.ToList();
+            return pages.OrderBy(p => p.LastPostTime).ToList();
         }
 
         public List<Session> TextSessionsWhereItisMyTurn()
@@ -624,16 +624,16 @@ namespace Warhammer.Core.Concrete
 					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed)
 						.ToList();
 
-            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayer.IsGm)).ToList();
+            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayer.IsGm)).OrderBy(p => p.LastPostTime).ToList();
         }
 
 	    public List<Session> TextSessionsContainingMyCharacters()
 	    {
 			List<Session> pages =
 				 _repository.Pages()
-					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList(); 
+					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
 
-		    return pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id || CurrentPlayer.IsGm)).ToList();
+			return pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id || CurrentPlayer.IsGm)).OrderBy(p => p.LastPostTime).ToList();
 	    }
 
 	    public void EnsurePostOrders(int sessionId)

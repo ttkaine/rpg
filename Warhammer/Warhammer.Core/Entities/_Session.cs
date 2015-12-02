@@ -52,7 +52,7 @@ namespace Warhammer.Core.Entities
 	    {
 		    get
 		    {
-			    Post lastPost = Posts.OrderBy(p => p.LastEdited).FirstOrDefault();
+			    Post lastPost = Posts.OrderByDescending(p => p.DatePosted).FirstOrDefault();
 			    return lastPost != null ? lastPost.DatePosted : System.DateTime.MinValue;
 		    }
 	    }
