@@ -17,6 +17,7 @@ using Warhammer.Core.RoleplayViewModels;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.HtmlBuilders;
 using Warhammer.Mvc.JsonObjects;
+using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
 
 namespace Warhammer.Mvc.Controllers
@@ -49,7 +50,7 @@ namespace Warhammer.Mvc.Controllers
 				if (page != null)
 				{
 					Session session = page as Session;
-					if (session != null && session.IsTextSession && !session.IsClosed)
+					if (session != null && session.IsTextSession)
 					{
 						List<Session> sessionsForCurrentPlayer = DataProvider.TextSessionsContainingMyCharacters();
 						if (session.IsPrivate && sessionsForCurrentPlayer.All(s => s.Id != session.Id))
@@ -58,10 +59,17 @@ namespace Warhammer.Mvc.Controllers
 						}
 						else
 						{
-							DataProvider.EnsurePostOrders(session.Id);
-							ViewBag.SessionId = session.Id;
+							if (session.IsClosed)
+							{
+								return RedirectToAction("HtmlLog", "Roleplay", new {id = id});
+							}
+							else
+							{
+								DataProvider.EnsurePostOrders(session.Id);
+								ViewBag.SessionId = session.Id;
 
-							return View();							
+								return View();
+							}
 						}
 					}
 				}
@@ -667,9 +675,24 @@ namespace Warhammer.Mvc.Controllers
 
 	    public ActionResult HtmlLog(int id)
 	    {
-		    ViewBag.LogHtml = LogGenerator.GenerateHtmlLog(id, false);
+			Page page = DataProvider.GetPage(id);
+		    if (page != null)
+		    {
+			    DataProvider.MarkAsSeen(page.Id);
 
-		    return View();
+			    if (page is Session)
+			    {
+					SessionTranscriptViewModel sessionTranscript = new SessionTranscriptViewModel();
+				    sessionTranscript.Id = page.Id;
+				    sessionTranscript.FullName = page.FullName;
+				    sessionTranscript.ShortName = page.ShortName;
+					sessionTranscript.Transcript = LogGenerator.GenerateHtmlLog(id, true);
+				
+					return View(sessionTranscript);
+				}
+		    }
+
+		    return RedirectToAction("Index", "Home");
 	    }
 	}	
 }

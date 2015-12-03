@@ -110,11 +110,11 @@ namespace Warhammer.Core.Concrete
 					if (character != null)
 					{
 						output.Append(character.ShortName);
-						output.AppendLine(":</span>");
+						output.AppendLine("</span>");
 					}
 					else
 					{
-						output.AppendLine("GM:</span>");
+						output.AppendLine("GM</span>");
 					}
 					output.Append("<span class=\"Content\">");
 					output.Append(post.DieCount);
@@ -131,7 +131,7 @@ namespace Warhammer.Core.Concrete
 						output.Append("<div class=\"OocComment\">");
 						output.Append("<span class=\"Title\">OOC - ");
 						output.Append(post.Player.DisplayName);
-						output.AppendLine(":</span>");
+						output.AppendLine("</span>");
 						output.Append("<span class=\"Content\">");
 					}
 					else

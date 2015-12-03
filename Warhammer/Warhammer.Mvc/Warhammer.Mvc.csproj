@@ -215,6 +215,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
+    <Compile Include="Models\SessionTranscriptViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -5,17 +5,12 @@ h4
     font-weight: bold;
 }
 
-p
-{
-    margin-left: 10px;
-}
-
 .DiceRoll, .OocComment
 {
     padding: 0;
     font-size: 14px;
     width: calc(100% - 20px);
-    max-width: 400px;
+    
     margin: 10px;
     border-radius: 3px;
 }
@@ -36,7 +31,14 @@ p
 {
     display: block;
     width: 100%;
-    padding: 5px;
+    padding: 5px 10px;
+}
+
+.OocComment .Content
+{
+    display: block;
+    width: 100%;
+    padding: 10px 15px 0 10px;
 }
 
 .Title
@@ -52,4 +54,16 @@ p
 .OocComment .Title
 {
     background: #eaea99;
+}
+
+#sessionLogContainer
+{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#sessionLogContainer > p
+{
+    margin-left: 10px;
 }
