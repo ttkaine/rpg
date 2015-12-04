@@ -7123,6 +7123,11 @@ h4 {
   min-width: 100px;
 }
 div.commentdetail {
-  height: 100px;
   min-height: 100px;
+}
+.commentdetail p.note {
+  margin-top: 20px;
+  width: 100%;
+  right: 0;
+  margin-left: 20px;
 }
