@@ -63,6 +63,7 @@ namespace Warhammer.Mvc.Controllers
 							{
 								DataProvider.EnsurePostOrders(session.Id);
 								ViewBag.SessionId = session.Id;
+								ViewBag.Title = session.FullName;
 
 								return View();
 							}
