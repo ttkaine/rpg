@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Warhammer.Core.RoleplayViewModels
+﻿namespace Warhammer.Core.RoleplayViewModels
 {
 	public class TextPostViewModel : PostViewModel
 	{

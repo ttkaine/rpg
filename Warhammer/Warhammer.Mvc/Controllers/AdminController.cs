@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Models;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Warhammer.Core.Entities;
 using Warhammer.Core.RoleplayViewModels;
 
 namespace Warhammer.Core.Abstract

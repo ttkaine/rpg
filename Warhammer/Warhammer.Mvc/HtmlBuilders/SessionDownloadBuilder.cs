@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-//using EvoPdf.HtmlToPdf;
-using Warhammer.Core.Abstract;
+﻿//using EvoPdf.HtmlToPdf;
 
 //namespace Warhammer.Mvc.HtmlBuilders
 //{
