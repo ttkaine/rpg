@@ -6839,6 +6839,7 @@ div.session-container {
   padding-left: 15px;
   padding-right: 15px;
   font-size: 18px;
+  overflow: hidden;
 }
 @media (min-width: 992px) {
   .core-content {
@@ -7127,7 +7128,6 @@ div.commentdetail {
 }
 .commentdetail p.note {
   margin-top: 20px;
-  width: 100%;
   right: 0;
   margin-left: 20px;
 }

@@ -2,8 +2,8 @@
 <li id="comment_@Model.Id" class="@(Model.IsPlayerComment ? "player-comment" : "character-comment")">
     @if (!Model.IsPlayerComment)
     {
-        
-        @Html.Action("PageImage", "Page", new {id = Model.PersonId})
+
+        @Html.Action("PageImage", "Page", new { id = Model.PersonId })
         <h4>@Model.Person.FullName</h4>
     }
     else
@@ -12,17 +12,22 @@
     }
     <div class="commentdetail">
         @Html.Raw(Model.Description)
-        
-        <p class="note">Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null) on @Model.Created.ToLongDateString()</p>
+
+        <p class="note">
+            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null)
+            <br/>
+            @Model.Created.ToLongTimeString() @Model.Created.ToLongDateString()
+        </p>
+
     </div>
 
-        
+
 
     @if (ViewBag.EditMode && User.IsInRole("Admin"))
     {
         using (Ajax.BeginForm("Delete", "Comment", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments" }))
         {
-            <input id="commentId" name="commentId" hidden="" value="@Model.Id"/>
+            <input id="commentId" name="commentId" hidden="" value="@Model.Id" />
             <input id="pageId" name="pageId" hidden="" value="@Model.PageId" />
             <input id="postbutton" type="submit" value="Delete" class="btn btn-block btn-danger" />
             <hr />
@@ -31,5 +36,5 @@
     }
 
     <div class="clearfix"></div>
-    <hr/>
+    <hr />
 </li>
