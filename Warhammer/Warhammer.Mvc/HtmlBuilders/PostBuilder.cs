@@ -193,7 +193,9 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append(post.ID);
 			html.Append("\" class=\"PostContent\">");
 			html.Append(post.Content);
-			html.Append("</div><div class=\"Clear\"></div>");
+			html.Append("</div><span class=\"PostedDate\">");
+			html.Append(post.DatePosted);
+			html.Append("</span><div class=\"Clear\"></div>");
 			if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
 			{
 				html.Append("<div class=\"PostEditControls\">");

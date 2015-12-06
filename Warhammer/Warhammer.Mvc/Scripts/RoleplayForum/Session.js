@@ -29,6 +29,11 @@ function setupPage(id)
     $("#divOverlay").attr("style", "display:none;");
     refreshInterval = setInterval(pageRefresh, 3000);
 
+    $(window).focus(function()
+    {
+        document.title = document.title.replace("* ", "");
+    });
+
     checkNotificationPermission();
 }
 
@@ -197,19 +202,27 @@ function setSessionTitle()
 
 function generateNotification(message)
 {
-    if ("Notification" in window)
+    if (initialPostComplete && !document.hasFocus())
     {
-        if (Notification.permission === "granted" && initialPostComplete && !document.hasFocus())
+        if (document.title.substring(0, 2) != "* ")
         {
-            var title = $("#divSessionTitle").html();
-            var options = {
-                //title: $("#divSessionTitle").html(),
-                body: message,
-                icon: "/content/images/roleplayforum/notify-icon.jpg"
-            };
+            document.title = "* " + document.title;
+        }
 
-            var notification = new Notification(title, options);
-            setTimeout(notification.close.bind(notification), 10000);
+        if ("Notification" in window)
+        {
+            if (Notification.permission === "granted")
+            {
+                var title = $("#divSessionTitle").html();
+                var options = {
+                    //title: $("#divSessionTitle").html(),
+                    body: message,
+                    icon: "/content/images/roleplayforum/notify-icon.jpg"
+                };
+
+                var notification = new Notification(title, options);
+                setTimeout(notification.close.bind(notification), 10000);
+            }
         }
     }
 }
@@ -377,7 +390,7 @@ function btnPost_Click()
     var text = $("#txtPost").val().trim();
     if (text.length > 0)
     {
-        $("#txtPost").val("");
+        //$("#txtPost").val("");
         postSubmitted(text);
     }
 }
@@ -433,6 +446,7 @@ function postSubmitted(text)
         async: true,
         success: function (data)
         {
+            $("#txtPost").val("");
             $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
