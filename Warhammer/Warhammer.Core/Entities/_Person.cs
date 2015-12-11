@@ -74,8 +74,8 @@ namespace Warhammer.Core.Entities
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Session Logs",
-                    BaseValue = logs.Sum(l => l.BaseScore),
-                    ActivityBonus = SessionLogs.Sum(s => s.ActivityBonus)
+                    BaseValue = logs.Sum(l => l.Session.IsTextSession ? l.BaseScore / 2 : l.BaseScore),
+                    ActivityBonus = logs.Sum(s => s.Session.IsTextSession ? s.ActivityBonus / 2 : s.ActivityBonus)
                 });
                 breakdown.Add(new ScoreBreakdown
                 {

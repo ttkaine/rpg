@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Security.Policy;
+using System.Text;
+using System.Web.Mvc;
 using Warhammer.Core;
 using Warhammer.Core.RoleplayViewModels;
 
@@ -107,9 +109,11 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("<span class=\"PostPlayer\">");
 			html.Append(post.PlayerName);
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
-			html.Append("<img src=\"/Roleplay/Image/");
+			html.Append("<a onkeypress=\"window.open(this.href); return false;\" onclick=\"window.open(this.href); return false;\" href=\"/Page/Index/");
 			html.Append(post.CharacterId);
-			html.Append("\" />");
+			html.Append("\"><img src=\"/Roleplay/Image/");
+			html.Append(post.CharacterId);
+			html.Append("\" /></a>");
 			html.Append("</span><span class=\"PostedDate\">");
 			html.Append(post.DatePosted);
 			html.Append("</span><div class=\"Clear\"></div></div>");
@@ -270,9 +274,11 @@ namespace Warhammer.Mvc.HtmlBuilders
 			}
 			else
 			{
-				html.Append("<img src=\"/Roleplay/Image/");
+				html.Append("<a onkeypress=\"window.open(this.href); return false;\" onclick=\"window.open(this.href); return false;\" href=\"/Page/Index/");
 				html.Append(post.CharacterId);
-				html.Append("\" />");				
+				html.Append("\"><img src=\"/Roleplay/Image/");
+				html.Append(post.CharacterId);
+				html.Append("\" /></a>");			
 			}
 			html.Append("</span><span class=\"PostedDate\">");
 			html.Append(post.DatePosted);

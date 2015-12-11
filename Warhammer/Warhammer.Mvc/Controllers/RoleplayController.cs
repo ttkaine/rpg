@@ -679,14 +679,24 @@ namespace Warhammer.Mvc.Controllers
 
 			    if (page is Session)
 			    {
-					SessionTranscriptViewModel sessionTranscript = new SessionTranscriptViewModel();
-				    sessionTranscript.Id = page.Id;
-				    sessionTranscript.FullName = page.FullName;
-				    sessionTranscript.ShortName = page.ShortName;
-					sessionTranscript.Transcript = LogGenerator.GenerateHtmlLog(id, true);
-				
-					return View(sessionTranscript);
-				}
+				    Session session = (Session) page;
+					List<Session> sessionsForCurrentPlayer = DataProvider.TextSessionsContainingMyCharacters();
+				    if (session.IsPrivate && sessionsForCurrentPlayer.All(s => s.Id != session.Id))
+				    {
+					    return RedirectToAction("Index", "Page", new {id = id});
+				    }
+				    else
+				    {
+
+					    SessionTranscriptViewModel sessionTranscript = new SessionTranscriptViewModel();
+					    sessionTranscript.Id = page.Id;
+					    sessionTranscript.FullName = page.FullName;
+					    sessionTranscript.ShortName = page.ShortName;
+					    sessionTranscript.Transcript = LogGenerator.GenerateHtmlLog(id, true);
+
+					    return View(sessionTranscript);
+				    }
+			    }
 		    }
 
 		    return RedirectToAction("Index", "Home");
