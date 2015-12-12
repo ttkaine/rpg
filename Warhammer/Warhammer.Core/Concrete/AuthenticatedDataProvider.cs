@@ -703,13 +703,13 @@ namespace Warhammer.Core.Concrete
             {
                 if (people.First(p => p.Id == UpliftId).PlayerId == CurrentPlayer.Id)
                 {
-                    Uplift(people);
+                    people = Uplift(people);
                 }
             }
             return people;
         }
 
-        private void Uplift(List<Person> people)
+        private List<Person> Uplift(List<Person> people)
         {
             people.First(p => p.Id == UpliftId).InclueUplift = true;
             people.First(p => p.Id == UpliftId).UpliftFactor = 1.05;
@@ -719,6 +719,7 @@ namespace Warhammer.Core.Concrete
                 people.First(p => p.Id == UpliftId).UpliftFactor = people.First(p => p.Id == UpliftId).UpliftFactor + 0.05;
                 people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
             }
+            return people;
         }
 
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
