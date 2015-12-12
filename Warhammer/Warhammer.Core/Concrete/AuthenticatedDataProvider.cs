@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using Warhammer.Core.Abstract;
@@ -12,6 +13,40 @@ namespace Warhammer.Core.Concrete
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
         private readonly IViewModelFactory _factory;
+
+        private int UpliftId
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["UpliftId"] != null)
+                {
+                    int id;
+                    if (int.TryParse(ConfigurationManager.AppSettings["UpliftId"].ToString(), out id))
+                    {
+                        return id;
+                    }
+
+                }
+                return 0;
+            }
+        }
+
+        private int NailId
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["NailId"] != null)
+                {
+                    int id;
+                    if (int.TryParse(ConfigurationManager.AppSettings["NailId"].ToString(), out id))
+                    {
+                        return id;
+                    }
+
+                }
+                return 0;
+            }
+        }
 
         public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IViewModelFactory factory)
         {
@@ -670,6 +705,50 @@ namespace Warhammer.Core.Concrete
             {
                 _repository.Delete(comment);
             }
+        }
+
+        public List<Person> GetLeague()
+        {
+            List<Person> people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            people = ApplyUplift(people);
+            people = ApplyNail(people);
+            return people;
+        }
+
+        private List<Person> ApplyNail(List<Person> people)
+        {
+            if (NailId != 0 && people.FirstOrDefault(p => p.Id == NailId) != null)
+            {
+                people.First(p => p.Id == UpliftId).InclueUplift = true;
+                people.First(p => p.Id == UpliftId).UpliftFactor = 0;
+                people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            }
+            return people;
+        }
+
+        private List<Person> ApplyUplift(List<Person> people)
+        {
+            if (UpliftId != 0 && people.First().Id != UpliftId)
+            {
+                if (people.First(p => p.Id == UpliftId).PlayerId == CurrentPlayer.Id)
+                {
+                    people = Uplift(people);
+                }
+            }
+            return people;
+        }
+
+        private List<Person> Uplift(List<Person> people)
+        {
+            people.First(p => p.Id == UpliftId).InclueUplift = true;
+            people.First(p => p.Id == UpliftId).UpliftFactor = 1.05;
+            people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            while (people.First().Id != UpliftId)
+            {
+                people.First(p => p.Id == UpliftId).UpliftFactor = people.First(p => p.Id == UpliftId).UpliftFactor + 0.05;
+                people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            }
+            return people;
         }
 
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)

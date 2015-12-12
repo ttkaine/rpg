@@ -68,13 +68,13 @@ namespace Warhammer.Core.Entities
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Sessions",
-                    BaseValue = AddBonus ? sessions.Sum(l => l.BaseScore) * 2 : sessions.Sum(l => l.BaseScore),
+                    BaseValue = sessions.Sum(l => l.BaseScore),
                     ActivityBonus = sessions.Sum(s => s.ActivityBonus)
                 });
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Session Logs",
-                    BaseValue = AddBonus ? logs.Sum(l => l.BaseScore) * 2: logs.Sum(l => l.BaseScore),
+                    BaseValue = InclueUplift ? logs.Sum(l => l.BaseScore) * UpliftFactor : logs.Sum(l => l.BaseScore),
                     ActivityBonus = logs.Sum(s => s.ActivityBonus)
                 });
                 breakdown.Add(new ScoreBreakdown
@@ -83,7 +83,7 @@ namespace Warhammer.Core.Entities
                     BaseValue = relatedPages.Sum(l => l.BaseScore),
                     ActivityBonus = 0                  
                 });
-                double awardValue = Awards.Where(a => a.Trophy.TypeId != (int) TrophyType.DefaultAward).Sum(a => a.Trophy.PointsValue);
+                double awardValue = Awards.Sum(a => a.Trophy.PointsValue);
                 if (PlayerId == null)
                 {
                     awardValue = awardValue + Awards.Count;
@@ -132,6 +132,7 @@ namespace Warhammer.Core.Entities
             }
         }
 
-        public bool AddBonus { get; set; }
+        public bool InclueUplift { get; set; }
+        public double UpliftFactor { get; set; }
     }
 }

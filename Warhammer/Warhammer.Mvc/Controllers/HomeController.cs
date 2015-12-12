@@ -70,7 +70,7 @@ namespace Warhammer.Mvc.Controllers
  //       [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult CharacterLeague()
         {
-            List<Person> people = DataProvider.People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            List<Person> people = DataProvider.GetLeague();
 
             return View(people);
         }
