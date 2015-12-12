@@ -31,6 +31,23 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        private int NailId
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["NailId"] != null)
+                {
+                    int id;
+                    if (int.TryParse(ConfigurationManager.AppSettings["NailId"].ToString(), out id))
+                    {
+                        return id;
+                    }
+
+                }
+                return 0;
+            }
+        }
+
         public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IViewModelFactory factory)
         {
             _authenticatedUser = authenticatedUser;
@@ -694,6 +711,18 @@ namespace Warhammer.Core.Concrete
         {
             List<Person> people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
             people = ApplyUplift(people);
+            people = ApplyNail(people);
+            return people;
+        }
+
+        private List<Person> ApplyNail(List<Person> people)
+        {
+            if (NailId != 0 && people.FirstOrDefault(p => p.Id == NailId) != null)
+            {
+                people.First(p => p.Id == UpliftId).InclueUplift = true;
+                people.First(p => p.Id == UpliftId).UpliftFactor = 0;
+                people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            }
             return people;
         }
 
