@@ -72,16 +72,6 @@ namespace Warhammer.Mvc.Controllers
         {
             List<Person> people = DataProvider.People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
 
-            if (CurrentPlayer.UserName.ToLower() == "chris@sendingofeight.co.uk")
-            {
-                List<Person> chrisCharacters = people.Where(p => p.PlayerId == CurrentPlayer.Id).ToList();
-                foreach (Person chrisCharacter in chrisCharacters)
-                {
-                    chrisCharacter.AddBonus = true;
-                }
-                people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
-            }
-
             return View(people);
         }
 
