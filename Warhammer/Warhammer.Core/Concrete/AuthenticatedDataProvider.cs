@@ -672,6 +672,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Person> GetLeague()
+        {
+            return People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+        }
+
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
             List<int> favAwardId = new List<int>

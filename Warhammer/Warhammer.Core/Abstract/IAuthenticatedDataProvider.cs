@@ -62,5 +62,6 @@ namespace Warhammer.Core.Abstract
         List<Comment> RecentComments();
         Player MyPlayer();
         void DeleteComment(int commentId);
+        List<Person> GetLeague();
     }
 }
