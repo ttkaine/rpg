@@ -733,7 +733,7 @@ namespace Warhammer.Core.Concrete
 
         private List<Person> ApplyUplift(List<Person> people)
         {
-            if (UpliftId != 0 && people.First().Id != UpliftId)
+            if (UpliftId != 0 && people.First().Id != UpliftId && people.FirstOrDefault(p => p.Id == UpliftId) != null)
             {
                 if (people.First(p => p.Id == UpliftId).PlayerId == CurrentPlayer.Id)
                 {
