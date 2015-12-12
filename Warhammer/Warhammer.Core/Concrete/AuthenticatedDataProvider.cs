@@ -719,8 +719,8 @@ namespace Warhammer.Core.Concrete
         {
             if (NailId != 0 && people.FirstOrDefault(p => p.Id == NailId) != null)
             {
-                people.First(p => p.Id == UpliftId).InclueUplift = true;
-                people.First(p => p.Id == UpliftId).UpliftFactor = 0;
+                people.First(p => p.Id == NailId).InclueUplift = true;
+                people.First(p => p.Id == NailId).UpliftFactor = 0;
                 people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
             }
             return people;
