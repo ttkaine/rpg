@@ -68,14 +68,14 @@ namespace Warhammer.Core.Entities
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Sessions",
-                    BaseValue = sessions.Sum(l => l.BaseScore),
+                    BaseValue = AddBonus ? sessions.Sum(l => l.BaseScore) * 2 : sessions.Sum(l => l.BaseScore),
                     ActivityBonus = sessions.Sum(s => s.ActivityBonus)
                 });
                 breakdown.Add(new ScoreBreakdown
                 {
                     Name = "Session Logs",
-                    BaseValue = logs.Sum(l => l.Session.IsTextSession ? l.BaseScore / 2 : l.BaseScore),
-                    ActivityBonus = logs.Sum(s => s.Session.IsTextSession ? s.ActivityBonus / 2 : s.ActivityBonus)
+                    BaseValue = AddBonus ? logs.Sum(l => l.BaseScore) * 2: logs.Sum(l => l.BaseScore),
+                    ActivityBonus = logs.Sum(s => s.ActivityBonus)
                 });
                 breakdown.Add(new ScoreBreakdown
                 {
@@ -131,5 +131,7 @@ namespace Warhammer.Core.Entities
                     string.Join(",", reasons));
             }
         }
+
+        public bool AddBonus { get; set; }
     }
 }
