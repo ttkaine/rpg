@@ -674,7 +674,8 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> GetLeague()
         {
-            return People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            List<Person> people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            return people;
         }
 
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
