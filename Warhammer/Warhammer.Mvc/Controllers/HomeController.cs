@@ -44,6 +44,7 @@ namespace Warhammer.Mvc.Controllers
                 MyStuff = DataProvider.MyStuff().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 TopNpcs = DataProvider.TopNpcs(),
+                OtherPeople = DataProvider.OtherPCs(),
                 AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
             return View(model);

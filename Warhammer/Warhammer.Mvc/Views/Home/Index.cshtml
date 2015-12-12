@@ -110,6 +110,27 @@
                 </div>
                 <hr />
             }
+            @if (Model.OtherPeople.Any())
+            {
+                <div class="content-block">
+                    <h3>Other Player Characters</h3>
+
+                    <table class="table table-striped">
+                        <tbody class="list">
+                            @foreach (Person person in Model.OtherPeople)
+                            {
+                                <tr>
+                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                    <td class="name">@person.FullName</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+                <hr />
+            }
             @Html.Action("FavouriteNpcs")
 
             <div class="content-block">

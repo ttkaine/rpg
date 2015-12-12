@@ -709,10 +709,15 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> GetLeague()
         {
-            List<Person> people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            List<Person> people = People().Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
             people = ApplyUplift(people);
             people = ApplyNail(people);
             return people;
+        }
+
+        public List<Person> OtherPCs()
+        {
+            return _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id).ToList();
         }
 
         private List<Person> ApplyNail(List<Person> people)

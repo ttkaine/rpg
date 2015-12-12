@@ -63,5 +63,6 @@ namespace Warhammer.Core.Abstract
         Player MyPlayer();
         void DeleteComment(int commentId);
         List<Person> GetLeague();
+        List<Person> OtherPCs();
     }
 }

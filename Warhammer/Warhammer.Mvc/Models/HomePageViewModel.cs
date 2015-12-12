@@ -12,6 +12,7 @@ namespace Warhammer.Mvc.Models
             MyStuff = new List<Page>();
             MyPeople = new List<Person>();
             AllPeople = new List<Person>();
+            OtherPeople = new List<Person>();
         }
 
        public List<Page> RecentChanges { get; set; }
@@ -23,6 +24,7 @@ namespace Warhammer.Mvc.Models
        public List<Person> TopNpcs { get; set; }
        public List<Session> UpdatedTextSessions { get; set; }
        public List<Session> MyTurnTextSessions { get; set; }
-        public string SiteName { get; set; }
+       public string SiteName { get; set; }
+       public List<Person> OtherPeople { get; set; }
     }
 }
