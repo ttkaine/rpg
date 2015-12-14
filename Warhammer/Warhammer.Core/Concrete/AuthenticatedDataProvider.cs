@@ -666,7 +666,7 @@ namespace Warhammer.Core.Concrete
 	    {
 			List<Session> pages =
 				 _repository.Pages()
-					 .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
+					 .OfType<Session>().Where(p => p.IsTextSession).ToList();
 
 			return pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id || CurrentPlayer.IsGm)).OrderBy(p => p.LastPostTime).ToList();
 	    }
