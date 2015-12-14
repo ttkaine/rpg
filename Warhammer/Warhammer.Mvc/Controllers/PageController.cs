@@ -40,8 +40,7 @@ namespace Warhammer.Mvc.Controllers
 
 	                if (page is Session)
 	                {
-		                List<Session> mySessions = DataProvider.TextSessionsContainingMyCharacters();
-		                ViewBag.IAmInThisSession = mySessions.Any(s => s.Id == page.Id);
+		                ViewBag.IAmInThisSession = DataProvider.Sessions().Any(s => s.Id == page.Id);
 	                }
 
                     return View(page);
