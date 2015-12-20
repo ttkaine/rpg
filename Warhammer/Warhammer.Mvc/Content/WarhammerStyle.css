@@ -6785,6 +6785,10 @@ body {
     background-size: cover;
   }
 }
+#openSessionPanel img {
+  height: 20px;
+  width: 20px;
+}
 .content-wrapper {
   margin-left: -15px;
   margin-right: -15px;

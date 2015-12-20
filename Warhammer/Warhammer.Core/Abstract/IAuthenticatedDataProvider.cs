@@ -65,5 +65,8 @@ namespace Warhammer.Core.Abstract
         List<Person> GetLeague();
         List<Person> OtherPCs();
 	    Player PlayerToPostInSession(int sessionId);
+		List<Session> OpenTextSessions();
+		List<Session> MyOpenTextSessions();
+		List<Session> ModifiedTextSessions();
     }
 }
