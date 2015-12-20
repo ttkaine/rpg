@@ -105,12 +105,17 @@ namespace Warhammer.Core.Concrete
 
         public int AddPerson(string shortName, string longName, string description)
         {
+
             Person person = new Person
             {
                 ShortName = shortName,
                 FullName = longName,
                 Description = description,
             };
+            if (!CurrentPlayer.IsGm)
+            {
+                person.PlayerId = CurrentPlayer.Id;
+            }
             return Save(person);
         }
 
