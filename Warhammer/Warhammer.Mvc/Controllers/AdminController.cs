@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -24,9 +25,13 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult DbUpdate()
         {
+          //  string folder = Server.MapPath(Url.Content("~/Content/DbUpdateScripts/"));
+
             string folder = Server.MapPath(Url.Content("~/Content/DbUpdateScripts/"));
-            bool did = _databaseUpdate.PerformUpdates(folder);
-            return View(did);
+            string backupPath = ConfigurationManager.AppSettings["DatabaseBackupLocation"];
+            DatabaseUpdateResult result = _databaseUpdate.PerformUpdates(folder, backupPath);
+
+            return View(result);
         }
 
         public ActionResult EditTrophy(int? id)
