@@ -13,7 +13,7 @@ namespace Warhammer.Core.Concrete
     {
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
-        private readonly IViewModelFactory _factory;
+        private readonly IModelFactory _factory;
 
         private int UpliftId
         {
@@ -49,7 +49,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IViewModelFactory factory)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
@@ -730,6 +730,23 @@ namespace Warhammer.Core.Concrete
         public List<Person> OtherPCs()
         {
             return _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id).ToList();
+        }
+
+        public List<Session> OpenTextSessions()
+        {
+            return _repository.Pages().OfType<Session>().Where(s => s.IsTextSession && !s.IsClosed).ToList();
+        }
+
+        public List<Session> MyOpenTextSessions()
+        {
+            return
+                OpenTextSessions()
+                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayer.IsGm).ToList();
+        }
+
+        public List<Session> ModifiedTextSessions()
+        {
+            return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
         }
 
         private List<Person> ApplyNail(List<Person> people)

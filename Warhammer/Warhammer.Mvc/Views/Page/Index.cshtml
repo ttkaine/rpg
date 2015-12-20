@@ -119,7 +119,6 @@
             SessionLog log = Model as SessionLog;
             <ul>
                 <li>
-
                     <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image"/></a>
                     @Html.ActionLink(log.Session.FullName, "Index", new {id = log.Session.Id}) (@Html.ActionLink(log.Session.ShortName, "Index", new {id = log.Session.Id}))
 
