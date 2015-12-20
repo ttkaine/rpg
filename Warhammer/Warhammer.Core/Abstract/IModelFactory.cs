@@ -4,7 +4,7 @@ using Warhammer.Core.RoleplayViewModels;
 
 namespace Warhammer.Core.Abstract
 {
-    public interface IViewModelFactory
+    public interface IModelFactory
     {
 		PlayerViewModel GetPlayerForCurrentUser();
 		PlayerViewModel GetPlayer(int playerId);

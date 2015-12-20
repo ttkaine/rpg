@@ -1,0 +1,46 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Warhammer.Core.Abstract;
+using Warhammer.Core.Concrete;
+using Warhammer.Core.Entities;
+using Warhammer.Mvc.Abstract;
+using Warhammer.Mvc.Models;
+
+namespace Warhammer.Mvc.Concrete
+{
+    public class ViewModelFactory : IViewModelFactory
+    {
+        readonly IAuthenticatedDataProvider _data;
+
+        public ViewModelFactory(IAuthenticatedDataProvider data)
+        {
+            _data = data;
+        }
+
+        public ActiveTextSessionViewModel MakeActiveTextSessionViewModel()
+        {
+            ActiveTextSessionViewModel model = new ActiveTextSessionViewModel();
+
+            List<Session> myOpenTestSessions = _data.MyOpenTextSessions().OrderByDescending(s => s.LastPostTime).ToList();
+
+            foreach (Session myOpenTestSession in myOpenTestSessions)
+            {
+                OpenSessionViewModel sessionViewModel = new OpenSessionViewModel {Session = myOpenTestSession, Status = OpenSessionStatus.Stale };
+
+                if (_data.ModifiedTextSessions().Contains(myOpenTestSession))
+                {
+                    sessionViewModel.Status = OpenSessionStatus.Updated;
+                    sessionViewModel.IsUpdated = true;
+                }
+
+                if (_data.TextSessionsWhereItisMyTurn().Contains(myOpenTestSession))
+                {
+                    sessionViewModel.Status = OpenSessionStatus.MyTurn;
+                }
+                model.OpenSessions.Add(sessionViewModel);
+            }
+
+            return model;
+        }
+    }
+}

@@ -1,0 +1,91 @@
+﻿
+@using Warhammer.Mvc.Models
+@model ActiveTextSessionViewModel
+
+<div id="openSessionPanel">
+
+    @if (!Model.OpenSessions.Any())
+    {
+        <div class="alert alert-warning">
+            <p>You're not in any TEXT sessions at the moment...</p>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <p>Your open test sessions</p>
+            <ul>
+                @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.MyTurn))
+                {
+                    <li>
+                        <a class="btn btn-success btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                            @if (session.IsPrivate)
+                            {
+                                <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
+                            }
+                            @if (session.IsUpdated)
+                            {
+                                <img src="@Url.Content("~/Content/Images/update.png")" alt="Updated Since you last looked" title="Updated Since you last looked"/>
+                            }
+                            <span>@session.Session.FullName</span>
+                        </a>
+                    </li>
+                }
+
+                @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.Updated))
+                {
+
+                    <li>
+                        <a class="btn btn-default btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                            @if (session.IsPrivate)
+                            {
+                                <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
+                            }
+                            @if (session.IsUpdated)
+                            {
+                                <img src="@Url.Content("~/Content/Images/update.png")" alt="Updated Since you last looked" title="Updated Since you last looked"/>
+                            }
+                            <span>@session.Session.FullName</span>
+                        </a>
+                    </li>
+                }
+
+                @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.Stale))
+                {
+                    <li>
+                        <a class="btn btn-default btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                            @if (session.IsPrivate)
+                            {
+                                <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
+                            }
+                            @if (session.IsUpdated)
+                            {
+                                <img src="@Url.Content("~/Content/Images/update.png")" alt="Updated Since you last looked" title="Updated Since you last looked"/>
+                            }
+                            <span>@session.Session.FullName</span>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    }
+
+
+    @using (Ajax.BeginForm("ActiveTextSessions", "Home", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Get", UpdateTargetId = "openSessionPanel"}, new {id = "SessionAutoUpdate"}))
+    {
+        <input type="submit" style="display: none"/>
+    }
+
+
+
+</div>
+
+<script>
+        $(function () {
+            setTimeout(function() {
+                $('#SessionAutoUpdate').submit();
+            }, 60000);
+           // 
+        });
+</script>

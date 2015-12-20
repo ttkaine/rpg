@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
 
@@ -15,6 +16,8 @@ namespace Warhammer.Mvc.Controllers
 {
     public class HomeController : BaseController
     {
+        IViewModelFactory _factory;
+
         private string SiteName
         {
             get
@@ -27,8 +30,9 @@ namespace Warhammer.Mvc.Controllers
             }
         }
 
-        public HomeController(IAuthenticatedDataProvider data) : base(data)
+        public HomeController(IAuthenticatedDataProvider data, IViewModelFactory factory) : base(data)
         {
+            _factory = factory;
         }
 
         public ActionResult Index()
@@ -214,6 +218,13 @@ namespace Warhammer.Mvc.Controllers
                 return PartialView();
             }
             return null;
+        }
+
+        public ActionResult ActiveTextSessions()
+        {
+            ActiveTextSessionViewModel model = _factory.MakeActiveTextSessionViewModel();
+
+            return PartialView(model);
         }
     }
 }
