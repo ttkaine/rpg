@@ -1,15 +1,34 @@
-﻿
+﻿@model Warhammer.Core.Abstract.DatabaseUpdateResult
+
+@using Warhammer.Core.Entities
+
 @{
-    Layout = null;
-}
-@model bool
-@{
-    ViewBag.Title = "DbUpdate";
+    ViewBag.Title = "Database Update";
 }
 
-<h2>DbUpdate</h2>
-
-@if (Model)
+@if (!Model.Successful)
 {
-    <h1 id="result">Did</h1>
+    <h2>There has been an error of some kind. Abort.</h2>
+    foreach (string message in Model.ErrorMessages)
+    {
+        <p>@message</p>
+    }
 }
+
+<h2>Debug info</h2>
+@foreach (string debugMessage in Model.DebugMessages)
+{
+    <p>@debugMessage</p>
+}
+
+@if (Model.Successful)
+{
+    <h2>Database Update Done</h2>
+    <ul>
+        @foreach (ChangeLog version in Model.Versions)
+        {
+            <li>@version.Id (@version.DateTime.ToLongDateString())</li>
+        }
+    </ul>
+}
+

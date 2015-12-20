@@ -215,5 +215,17 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult ActiveTextSessions()
+        {
+            ActiveTextSessionViewModel model = new ActiveTextSessionViewModel
+            {
+
+                UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
+                MyTurnTextSessions = DataProvider.TextSessionsWhereItisMyTurn()
+            };
+
+            return PartialView(model);
+        }
     }
 }
