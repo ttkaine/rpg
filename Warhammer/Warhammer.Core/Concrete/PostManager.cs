@@ -106,7 +106,10 @@ namespace Warhammer.Core.Concrete
 			};
 
 			Repo.Save(post);
-			SetTurnOverForUser(sessionId);
+			if (!isOoc)
+			{
+				SetTurnOverForUser(sessionId);
+			}
 
 			return PostResult.Success;
 		}
