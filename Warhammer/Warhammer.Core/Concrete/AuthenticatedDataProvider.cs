@@ -8,6 +8,7 @@ using Warhammer.Core.Entities;
 
 namespace Warhammer.Core.Concrete
 {
+
     public class AuthenticatedDataProvider : IAuthenticatedDataProvider
     {
         private readonly IAuthenticatedUserProvider _authenticatedUser;
@@ -164,7 +165,13 @@ namespace Warhammer.Core.Concrete
         {
             string pageText = existingPage.RawText.ToLower();
 
-            foreach (Page page in _repository.Pages().Where(p => p.Id != existingPage.Id).ToList())
+            List<Page> pages =
+                _repository.Pages()
+                    .Where(p => !(p is Session) && !(p is SessionLog) && (p.Id != existingPage.Id))
+                    .ToList();
+            
+
+            foreach (Page page in pages)
             {
                 bool isFound = pageText.Contains(string.Format(" {0} ", page.ShortName.ToLower()));
 
