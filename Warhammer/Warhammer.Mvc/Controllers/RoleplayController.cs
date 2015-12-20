@@ -21,16 +21,16 @@ namespace Warhammer.Mvc.Controllers
 	//[Authorize]
     public class RoleplayController : BaseController
     {
-		public IViewModelFactory ViewModelFactory { get; set; }
+		public IModelFactory ModelFactory { get; set; }
 		public IPostManager PostManager { get; set; }
 		public ILogGenerator LogGenerator { get; set; }
 		//public ICharacterManager CharacterManager { get; set; }
 
 
 
-        public RoleplayController(IAuthenticatedDataProvider data, IViewModelFactory viewModelFactory, IPostManager postManager, ILogGenerator logGenerator) : base(data)
+        public RoleplayController(IAuthenticatedDataProvider data, IModelFactory modelFactory, IPostManager postManager, ILogGenerator logGenerator) : base(data)
         {
-	        ViewModelFactory = viewModelFactory;
+	        ModelFactory = modelFactory;
 	        PostManager = postManager;
 	        LogGenerator = logGenerator;
 	        //CharacterManager = new CharacterManager(new DataAccess());
@@ -109,7 +109,7 @@ namespace Warhammer.Mvc.Controllers
 			JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 			bool playerIsGm = false;
 			int playerId = -1;
-			List<PostViewModel> posts = ViewModelFactory.GetPostsForCurrentUserInSessionSinceLast(sessionId, lastPostId, out playerId, out playerIsGm);
+			List<PostViewModel> posts = ModelFactory.GetPostsForCurrentUserInSessionSinceLast(sessionId, lastPostId, out playerId, out playerIsGm);
 			posts = (from p in posts
 					 orderby p.ID ascending
 					 select p).ToList();
@@ -148,7 +148,7 @@ namespace Warhammer.Mvc.Controllers
 
 			if (lastPostId > 0)
 			{
-				List<PostViewModel> editedPosts = ViewModelFactory.GetEditedPostsForCurrentUserInSessionSinceLast(sessionId, lastUpdateTime);
+				List<PostViewModel> editedPosts = ModelFactory.GetEditedPostsForCurrentUserInSessionSinceLast(sessionId, lastUpdateTime);
 				if (editedPosts.Count > 0)
 				{
 					foreach (PostViewModel post in editedPosts)
@@ -165,9 +165,11 @@ namespace Warhammer.Mvc.Controllers
 					postCollection.EditedCount = postCollection.EditedPosts.Count;
 				}
 
-				postCollection.DeletedPosts = ViewModelFactory.GetDeletedPostIdsForCurrentUserInSessionSinceLast(sessionId, lastUpdateTime);
+				postCollection.DeletedPosts = ModelFactory.GetDeletedPostIdsForCurrentUserInSessionSinceLast(sessionId, lastUpdateTime);
 				postCollection.DeletedCount = postCollection.DeletedPosts.Count;
 			}
+
+            DataProvider.MarkAsSeen(sessionId);
 
 			return postCollection;
 		}
@@ -176,7 +178,7 @@ namespace Warhammer.Mvc.Controllers
 		{			
 			if (DataProvider.IsLoggedIn())
 			{
-				List<CharacterViewModel> characters = ViewModelFactory.GetCharactersForCurrentUserInSession(sessionId);
+				List<CharacterViewModel> characters = ModelFactory.GetCharactersForCurrentUserInSession(sessionId);
 				List<JsonCharacterListItem> characterListItems = new List<JsonCharacterListItem>();
 				foreach (CharacterViewModel character in characters)
 				{
@@ -356,7 +358,7 @@ namespace Warhammer.Mvc.Controllers
 
 		public  JsonResult GetCharacterDetails(int sessionId, int characterId)
 		{
-			CharacterViewModel character = ViewModelFactory.GetCharacter(characterId);
+			CharacterViewModel character = ModelFactory.GetCharacter(characterId);
 			JsonCharacterDetails jsonCharacter = new JsonCharacterDetails();
 			JavaScriptSerializer serializer = new JavaScriptSerializer();
 
@@ -373,8 +375,8 @@ namespace Warhammer.Mvc.Controllers
 				{
 					if (DataProvider.IsLoggedIn())
 					{
-						PlayerViewModel player = ViewModelFactory.GetPlayerForCurrentUser();
-						SessionViewModel session = ViewModelFactory.GetSession(sessionId);
+						PlayerViewModel player = ModelFactory.GetPlayerForCurrentUser();
+						SessionViewModel session = ModelFactory.GetSession(sessionId);
 
 						if (player != null && session != null)
 						{
@@ -405,7 +407,7 @@ namespace Warhammer.Mvc.Controllers
 
 		public JsonResult GetSessionTitle(int sessionId)
 		{
-			SessionViewModel session = ViewModelFactory.GetSession(sessionId);
+			SessionViewModel session = ModelFactory.GetSession(sessionId);
 
 			string title = "Session Title";
 			if (session != null)
@@ -584,7 +586,7 @@ namespace Warhammer.Mvc.Controllers
 			if (DataProvider.IsLoggedIn())
 			{
 				int gmId;
-				List<PlayerViewModel> players = ViewModelFactory.GetPlayersForSessionExcludingUser(sessionId, out gmId);
+				List<PlayerViewModel> players = ModelFactory.GetPlayersForSessionExcludingUser(sessionId, out gmId);
 
 				List<int> checkedIds = new List<int>();
 				string[] checkedIdItems = recipientString.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
@@ -621,7 +623,7 @@ namespace Warhammer.Mvc.Controllers
 		//{
 		//	if (DataProvider.IsLoggedIn())
 		//	{
-		//		CharacterViewModel character = ViewModelFactory.GetCharacterForCurrentUser(characterId);
+		//		CharacterViewModel character = ModelFactory.GetCharacterForCurrentUser(characterId);
 		//		JavaScriptSerializer serializer = new JavaScriptSerializer();
 
 		//		if (character != null)
@@ -663,7 +665,7 @@ namespace Warhammer.Mvc.Controllers
 		//{
 		//	if (DataProvider.IsLoggedIn())
 		//	{
-		//		CharacterViewModel character = ViewModelFactory.GetCharacterForCurrentUser(characterId);
+		//		CharacterViewModel character = ModelFactory.GetCharacterForCurrentUser(characterId);
 		//		JavaScriptSerializer serializer = new JavaScriptSerializer();
 
 		//		if (character != null)
@@ -687,7 +689,7 @@ namespace Warhammer.Mvc.Controllers
 		[OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
 		public ActionResult Image(int id)
 		{
-			CharacterViewModel character = ViewModelFactory.GetCharacter(id);
+			CharacterViewModel character = ModelFactory.GetCharacter(id);
 			var defaultDir = Server.MapPath("/Content/Images/RoleplayForum");
 
 			if (character != null)

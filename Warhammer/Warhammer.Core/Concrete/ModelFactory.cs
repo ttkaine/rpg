@@ -8,7 +8,7 @@ using Warhammer.Core.RoleplayViewModels;
 
 namespace Warhammer.Core.Concrete
 {
-    public class ViewModelFactory : IViewModelFactory
+    public class ModelFactory : IModelFactory
     {
 		//private bool PlayerIsGm(Player player)
 		//{
@@ -40,11 +40,11 @@ namespace Warhammer.Core.Concrete
 		    get { return _repository;  }
 	    }
 
-	    public ViewModelFactory()
+	    public ModelFactory()
 	    {		    
 	    }
 
-	    public ViewModelFactory(IAuthenticatedUserProvider userProvider, IRepository repository)
+	    public ModelFactory(IAuthenticatedUserProvider userProvider, IRepository repository)
 	    {
 		    _userProvider = userProvider;
 		    _repository = repository;

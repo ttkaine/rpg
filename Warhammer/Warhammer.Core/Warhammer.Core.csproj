@@ -83,7 +83,7 @@
     <Compile Include="Abstract\IImageProcessor.cs" />
     <Compile Include="Abstract\ILogGenerator.cs" />
     <Compile Include="Abstract\IPostManager.cs" />
-    <Compile Include="Abstract\IViewModelFactory.cs" />
+    <Compile Include="Abstract\IModelFactory.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
@@ -91,7 +91,7 @@
     <Compile Include="Concrete\InlineHtmlImage.cs" />
     <Compile Include="Concrete\LogGenerator.cs" />
     <Compile Include="Concrete\PostManager.cs" />
-    <Compile Include="Concrete\ViewModelFactory.cs" />
+    <Compile Include="Concrete\ModelFactory.cs" />
     <Compile Include="Concrete\Repository.cs" />
     <Compile Include="Entities\Award.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>

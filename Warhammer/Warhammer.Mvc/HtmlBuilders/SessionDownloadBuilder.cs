@@ -4,12 +4,12 @@
 //{
 //	public class SessionDownloadBuilder
 //	{
-//		private IViewModelFactory _viewModelFactory;
-//		public IViewModelFactory ViewModelFactory { get { return _viewModelFactory; } }
+//		private IModelFactory _viewModelFactory;
+//		public IModelFactory ModelFactory { get { return _viewModelFactory; } }
 
-//		public SessionDownloadBuilder(IViewModelFactory viewModelFactory)
+//		public SessionDownloadBuilder(IModelFactory ModelFactory)
 //		{
-//			_viewModelFactory = viewModelFactory;
+//			_viewModelFactory = ModelFactory;
 //		}
 
 //		/// <summary>
@@ -60,15 +60,15 @@
 
 //		public byte[] GeneratePdfDownloadForSession(Guid userId, int sessionId, string cssPath)
 //		{
-//			SessionViewModel session = ViewModelFactory.GetSessionForCurrentUser(userId, sessionId);
-//			List<PostViewModel> posts = ViewModelFactory.GetPostsForCurrentUserInSessionSinceLast(userId, sessionId, 0);
+//			SessionViewModel session = ModelFactory.GetSessionForCurrentUser(userId, sessionId);
+//			List<PostViewModel> posts = ModelFactory.GetPostsForCurrentUserInSessionSinceLast(userId, sessionId, 0);
 
 //			if (session != null)
 //			{
-//				CampaignViewModel campaign = ViewModelFactory.GetCampaign(session.CampaignId);
+//				CampaignViewModel campaign = ModelFactory.GetCampaign(session.CampaignId);
 //				if (campaign != null)
 //				{
-//					PlayerViewModel gm = ViewModelFactory.GetPlayer(campaign.GmId);
+//					PlayerViewModel gm = ModelFactory.GetPlayer(campaign.GmId);
 //					posts = (from p in posts
 //							 orderby p.ID ascending
 //							 select p).ToList();
