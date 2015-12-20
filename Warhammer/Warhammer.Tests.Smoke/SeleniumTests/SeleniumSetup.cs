@@ -84,7 +84,7 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
                 Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
                 Driver.Navigate().GoToUrl(Settings.UpdateUrl);
 
-                Wait.Until(ExpectedConditions.TitleContains("Log in"));
+                Wait.Until(ExpectedConditions.TitleContains("Identify yourself."));
 
                 IWebElement userNameField = Driver.FindElement(new ByIdOrName("Email"));
                 IWebElement passwordField = Driver.FindElement(new ByIdOrName("Password"));
