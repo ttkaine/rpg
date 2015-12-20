@@ -732,7 +732,7 @@ namespace Warhammer.Core.Concrete
             return _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id).ToList();
         }
 
-        private List<Person> ApplyNail(List<Person> people)
+	    private List<Person> ApplyNail(List<Person> people)
         {
             if (NailId != 0 && people.FirstOrDefault(p => p.Id == NailId) != null)
             {
@@ -802,5 +802,27 @@ namespace Warhammer.Core.Concrete
             }
             return 0;
         }
+
+		public Player PlayerToPostInSession(int sessionId)
+		{
+			Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+			if (session != null)
+			{
+				if (session.IsGmTurn)
+				{
+					return _repository.Players().FirstOrDefault(p => p.IsGm);
+				}
+				else
+				{
+					PostOrder postOrder = session.PostOrders.OrderBy(po => po.LastTurnEnded).FirstOrDefault();
+					return postOrder != null ? postOrder.Player : null;
+				}
+			}
+			else
+			{
+				return null;
+			}
+		}
+
     }
 }

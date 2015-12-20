@@ -114,6 +114,15 @@ namespace Warhammer.Mvc.Controllers
 					 orderby p.ID ascending
 					 select p).ToList();
 
+			Player player = DataProvider.PlayerToPostInSession(sessionId);
+			string name = "Nobody's";
+			if (player != null)
+			{
+				name = player.Id == CurrentPlayer.Id ? "YOUR" : player.DisplayName + "'s";
+			}
+
+			postCollection.PlayerTurnMessage = string.Format("It is currently {0} turn", name);
+			postCollection.IsCurrentPlayerTurn = (player != null && player.Id == CurrentPlayer.Id);
 
 			PostBuilder postBuilder = new PostBuilder();
 			if (posts.Count > 0)
@@ -188,8 +197,6 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-
-
 		public JsonResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
 		{
 			DateTime lastUpdate;
@@ -199,11 +206,24 @@ namespace Warhammer.Mvc.Controllers
 			}
 			if (DataProvider.IsLoggedIn())
 			{
-				text = StripTagsFromString(text);
-				text = text.Replace("\n", "{CR}");
-				text = text.Replace("&quote;", "\"");
+				PostResult result = PostResult.Success;
+				if (text.Trim().Length > 0)
+				{
+					text = StripTagsFromString(text);
+					text = text.Replace("\n", "{CR}");
+					text = text.Replace("&quote;", "\"");
 
-				PostResult result = PostManager.CreateTextPostForUser(sessionId, characterId, isOoc, text, recipientString);
+					result = PostManager.CreateTextPostForUser(sessionId, characterId, isOoc, text, recipientString);
+				}
+				else
+				{
+					Player playerToPost = DataProvider.PlayerToPostInSession(sessionId);
+					if (playerToPost != null && playerToPost.Id == CurrentPlayer.Id)
+					{
+						PostManager.SetTurnOverForUser(sessionId);
+					}
+				}
+
 				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 
 				if (result == PostResult.Success)
@@ -396,6 +416,25 @@ namespace Warhammer.Mvc.Controllers
 			JavaScriptSerializer serializer = new JavaScriptSerializer();
 			return Json(serializer.Serialize(title));
 		}
+
+	    public JsonResult GetCurrentPlayerToPost(int sessionId)
+	    {
+		    Player player = DataProvider.PlayerToPostInSession(sessionId);
+		    string name = "Nobody's";
+		    if (player != null)
+		    {
+			    name = player.Id == CurrentPlayer.Id ? "YOUR" : player.DisplayName + "'s";
+		    }
+		    
+		    var returnObject = new
+		    {
+				Message = string.Format("It is currently {0} turn", name),
+				IsCurrentPlayer = (player != null && player.Id == CurrentPlayer.Id)
+		    };
+
+			JavaScriptSerializer serializer = new JavaScriptSerializer();
+			return Json("[" + serializer.Serialize(returnObject) + "]");		    
+	    }
 
 		public JsonResult DeletePost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
 		{

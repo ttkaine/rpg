@@ -1267,6 +1267,29 @@ footer
     transition: all 0.2s linear;
 }
 
+.PlayerToPostContainer
+{
+    padding: 0;
+    margin: 0;
+    float: left;  
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+}
+
+.PlayerToPostContainer span
+{
+    display: block;
+    color: #fff;
+    background: #bb3333;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 22px;
+    height: 32px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+}
 
 @media (max-width: 770px)
 {
@@ -1514,6 +1537,12 @@ footer
         font-size: 14px;
     }    
 
+    .PlayerToPostContainer
+    {
+        max-width: 100%;
+        margin: 0 0 5px 0;
+    }
+
     .EditRecipientsPopup
     {
         width: calc(100% - 20px);
@@ -1578,6 +1607,11 @@ footer
         transition: all 0.2s linear;
         position: relative;
         z-index: 555000;
+    }
+
+    .PlayerPostButton
+    {
+        width: 100%;
     }
 }
 

@@ -38,7 +38,7 @@
             <div class="Clear"></div>
         </div><!-- EditPostPopup -->   
         
-        <div id="editRecipientsPopup" class="EditRecipientsPopup" style="display:none;">
+        @*<div id="editRecipientsPopup" class="EditRecipientsPopup" style="display:none;">
             <div class="PopupHeader">
                 <span class="EditRecipientsPopupTitle">Choose Recipients</span>
                 <span class="PopupClose" onclick="cancelEditRecipients();"></span>
@@ -60,7 +60,7 @@
                 <input id="btnCancelRecipients" class="PopupButton" type="button" value="CANCEL" onclick="cancelEditRecipients();" />
             </div>
             <div class="Clear"></div>
-        </div><!-- EditRecipientsPopup -->   
+        </div><!-- EditRecipientsPopup -->*@   
 
         <@*div id="editCharacterSheetPopup" class="EditCharacterSheetPopup" style="display:none;">
             <div class="PopupHeader">
@@ -153,7 +153,7 @@
                     </div>
                     <div class="Clear"></div>
                     <div class="TextPostButtonContainer">
-                        <div class="PlayerPrivacyContainer">
+                        @*<div class="PlayerPrivacyContainer">
                             <span class="PrivacyTitle">
                                 Send to:
                             </span>
@@ -166,8 +166,11 @@
                             <span class="PrivacyControl">
                                 <input id="btnClearRecipients" type="button" value="CLEAR" class="EditPrivacyButton" onclick="clearRecipients();" />
                             </span>
+                        </div>*@
+                        <div class="PlayerToPostContainer">
+                            <span id="playerToPost">Loading post order data...</span>
                         </div>
-                        <input id="btnPost" type="button" value="POST" class="PlayerPostButton" onclick="btnPost_Click();" />    
+                        <input id="btnPost" type="button" value="WAIT" class="PlayerPostButton" onclick="btnPost_Click();" />    
                     </div><!-- PostButtonContainer -->
                 </div><!-- PlayerTextPostControls -->
 

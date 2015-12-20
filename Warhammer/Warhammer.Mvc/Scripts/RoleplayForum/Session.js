@@ -7,10 +7,13 @@ var recipients;
 var sessionId;
 var rootPath;
 var initialPostComplete;
+var isMyTurn;
 
 function setupPage(id)
 {
     rootPath = getAjaxWebService();
+
+    isMyTurn = false;
 
     sessionId = id;
     lastPostId = 0;
@@ -18,6 +21,8 @@ function setupPage(id)
     initialPostComplete = false;
     selectedTab = 1;
     recipients = new Array();
+
+    updatePlayerToPost();
 
     setupDiceDropDowns();
     setSessionTitle();
@@ -338,6 +343,7 @@ function pageRefresh()
 {
     addNewPosts(true);
     toggleOoc(false);
+    updatePlayerToPost();
 }
 
 function setupCharacterDropDown()
@@ -388,11 +394,11 @@ function setupCharacterDropDown()
 function btnPost_Click()
 {
     var text = $("#txtPost").val().trim();
-    if (text.length > 0)
-    {
+    //if (text.length > 0)
+    //{
         //$("#txtPost").val("");
         postSubmitted(text);
-    }
+    //}
 }
 
 function txtPost_keyPress(event)
@@ -411,6 +417,8 @@ function txtPost_keyPress(event)
             event.preventDefault();
         }
     }*/
+
+    updateCurrentPlayerTurn();
 }
 
 function postSubmitted(text)
@@ -426,10 +434,11 @@ function postSubmitted(text)
         characterId = $("#ddlPostAs").val();
     }
     var recipientString = "";
-    if (recipients.length > 0)
-    {
-        recipientString = recipients.join(",");
-    }
+    //if (recipients.length > 0)
+    //{
+    //    recipientString = recipients.join(",");
+    //}
+    
     var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ', "lastPostId": ' + lastPostId + ', "isOoc": ' + isOoc + ', "text": "' + cleanedText + '", "lastUpdateTime": "' + lastUpdateTime + '", "recipientString": "' + recipientString + '" }';
     var outerHeight = $("#divPostContainer").outerHeight();
     var scrollTop = $("#divPostContainer").scrollTop();
@@ -450,6 +459,9 @@ function postSubmitted(text)
             $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
+            $("#playerToPost").html(jsonData.PlayerTurnMessage);
+            isMyTurn = jsonData.IsCurrentPlayerTurn;
+            updateCurrentPlayerTurn();
             refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -459,6 +471,63 @@ function postSubmitted(text)
         }
     });
 
+}
+
+function updateCurrentPlayerTurn()
+{
+    var text = $("#txtPost").val().trim();
+    if (isMyTurn)
+    {
+        if (text.length > 0)
+        {
+            $("#btnPost").val("POST");
+        }
+        else
+        {
+            $("#btnPost").val("SKIP");
+        }
+        $("#playerToPost").css("background", "#006600");
+    }
+    else
+    {
+        //if (text.length > 0)
+        //{
+            $("#btnPost").val("POST OUT OF TURN");
+        //}
+        //else
+        //{
+        //    $("#btnPost").val("SKIP");
+        //}
+        $("#playerToPost").css("background", "#bb3333");
+    }
+}
+
+function updatePlayerToPost()
+{
+    var parameters = '{"sessionId": ' + sessionId + ' }';
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: rootPath + "/GetCurrentPlayerToPost",
+        data: parameters,
+        dataType: "json",
+        async: true,
+        success: function (data)
+        {
+            var jsonData = eval(data)[0];
+
+            $("#playerToPost").html(jsonData.Message);
+            isMyTurn = jsonData.IsCurrentPlayer;
+            updateCurrentPlayerTurn();
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            $("#playerToPost").css("background", "#ff6666");
+            $("#playerToPost").html("Loading post order data...");
+            updateCurrentPlayerTurn();
+        }
+    });
 }
 
 function ddlRollType_Change()

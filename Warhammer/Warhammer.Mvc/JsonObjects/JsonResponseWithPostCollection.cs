@@ -18,6 +18,9 @@ namespace Warhammer.Mvc.JsonObjects
 		public List<JsonPost> EditedPosts { get; set; }
 		public List<int> DeletedPosts { get; set; }
 
+		public string PlayerTurnMessage { get; set; }
+		public bool IsCurrentPlayerTurn { get; set; }
+
 		public JsonResponseWithPostCollection()
 		{
 			Posts = new List<JsonPost>();
