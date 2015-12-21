@@ -72,7 +72,7 @@
     }
 
 
-    @using (Ajax.BeginForm("ActiveTextSessions", "Home", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Get", UpdateTargetId = "openSessionPanel"}, new {id = "SessionAutoUpdate"}))
+    @using (Ajax.BeginForm("ActiveTextSessions", "Home", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Get", UpdateTargetId = "openSessionPanel", OnSuccess = "generateNotification()" }, new {id = "SessionAutoUpdate"}))
     {
         <input type="submit" style="display: none"/>
     }
@@ -88,4 +88,29 @@
             }, 60000);
            // 
         });
+
+        function generateNotification() {
+            if (!document.hasFocus()) {
+                if (document.title.substring(0, 2) != "* ") {
+                    document.title = "* " + document.title;
+                }
+
+                if ("Notification" in window) {
+                    if (Notification.permission != "granted" && Notification.permission != "denied") {
+                        Notification.requestPermission();
+                    }
+                    if (Notification.permission === "granted") {
+                        var title = 'New Text Session Updates';
+                        var options = {
+                            //title: $("#divSessionTitle").html(),
+                            body: 'New Text Session Updates',
+                            icon: "/content/images/roleplayforum/notify-icon.jpg"
+                        };
+
+                        var notification = new Notification(title, options);
+                        setTimeout(notification.close.bind(notification), 10000);
+                    }
+                }
+            }
+        }
 </script>
