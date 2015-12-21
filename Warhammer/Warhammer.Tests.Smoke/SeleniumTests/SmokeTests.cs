@@ -13,7 +13,7 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
         public void HitHomePage()
         {
             Driver.Navigate().GoToUrl(Settings.BaseUrl);
-            Assert.IsTrue(Driver.PageSource.Contains("Warhammer"));
+            Assert.IsTrue(Driver.PageSource.Contains("Home"));
         }
 
         [Test]
