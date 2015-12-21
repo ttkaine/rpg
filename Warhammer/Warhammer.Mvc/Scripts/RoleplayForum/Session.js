@@ -23,6 +23,9 @@ function setupPage(id)
     recipients = new Array();
 
     updatePlayerToPost();
+    getRollTypeFromCookie();
+    getDiceTypeFromCookie();
+    toggleRollTypeDisplay();
 
     setupDiceDropDowns();
     setSessionTitle();
@@ -533,6 +536,18 @@ function updatePlayerToPost()
 }
 
 function ddlRollType_Change()
+{
+    toggleRollTypeDisplay();
+    setRollTypeCookie();
+}
+
+function ddlDieSize_Change()
+{
+    setDiceTypeCookie();
+}
+
+
+function toggleRollTypeDisplay()
 {
     var dicePool = $("#ddlRollType").val() == "1";
 
@@ -1149,4 +1164,47 @@ function activateCharacterTab(tab)
         $("#CharacterPopOverSheet").fadeIn(400);
         $("#CharacterPopOverDescription").attr("style", "display:none;");
     }
+}
+
+function getRollTypeFromCookie()
+{
+    var rollType = getCookie("rollType");
+    if (rollType.length > 0)
+    {
+        $("#ddlRollType").val(rollType);
+    }
+}
+
+function getDiceTypeFromCookie()
+{
+    var diceType = getCookie("diceType");
+    if (diceType.length > 0)
+    {
+        $("#ddlDieSize").val(diceType);
+    }
+}
+
+function setRollTypeCookie()
+{
+    var rollType = $("#ddlRollType").val();
+    document.cookie = "rollType=" + rollType + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
+}
+
+function setDiceTypeCookie()
+{
+    var diceType = $("#ddlDieSize").val();
+    document.cookie = "diceType=" + diceType + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
+}
+
+function getCookie(cname)
+{
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++)
+    {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
 }
