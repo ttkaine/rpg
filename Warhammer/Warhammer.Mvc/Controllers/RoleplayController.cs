@@ -700,7 +700,7 @@ namespace Warhammer.Mvc.Controllers
 				}
 			}
 
-			var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
+			var defaultImagePath = Path.Combine(defaultDir, "default_character.jpg");
 			return File(defaultImagePath, "image/jpeg");
 		}
 
