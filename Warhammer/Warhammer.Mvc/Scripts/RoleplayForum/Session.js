@@ -102,12 +102,14 @@ function selectedTabChanged(tab)
         $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
         $("#divDiceRollButton").attr("checked", "checked");
         $("#divPlayerDiceControls").attr("style", "display:block;");
+        $(".PlayerTextPostControls").attr("style", "display:none;");
     }
     else
     {
         $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
         $("#divDiceRollButton").attr("checked", "unchecked");
         $("#divPlayerDiceControls").attr("style", "display:none;");
+        $(".PlayerTextPostControls").attr("style", "display:block;");
     }
 
     if (selectedTab == 1 || selectedTab == 3)

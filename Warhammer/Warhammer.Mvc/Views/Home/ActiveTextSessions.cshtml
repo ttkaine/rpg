@@ -13,7 +13,7 @@
     else
     {
         <div class="alert alert-success">
-            <p>Your open test sessions</p>
+            <p>Your open text sessions</p>
             <ul>
                 @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.MyTurn))
                 {
