@@ -1,5 +1,7 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using Warhammer.Core;
+using Warhammer.Core.Entities;
 using Warhammer.Core.RoleplayViewModels;
 
 namespace Warhammer.Mvc.HtmlBuilders
@@ -123,8 +125,9 @@ namespace Warhammer.Mvc.HtmlBuilders
 			}			
 			html.Append("<div id=\"postContent");
 			html.Append(post.ID);
-			html.Append("\" class=\"PostContent\">");			
-			html.Append(post.Content);
+			html.Append("\" class=\"PostContent\">");
+			//html.Append(post.Content);
+			html.Append(ApplyPostFormatting(post.Content));
 			html.Append("</div><div class=\"Clear\"></div>");
 			if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
 			{
@@ -194,7 +197,8 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("<div id=\"postContent");
 			html.Append(post.ID);
 			html.Append("\" class=\"PostContent\">");
-			html.Append(post.Content);
+			//html.Append(post.Content);
+			html.Append(ApplyPostFormatting(post.Content));
 			html.Append("</div><span class=\"PostedDate\">");
 			html.Append(post.DatePosted);
 			html.Append("</span><div class=\"Clear\"></div>");
@@ -291,7 +295,8 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("<div id=\"postContent");
 			html.Append(post.ID);
 			html.Append("\" class=\"PostContent\">");
-			html.Append(post.Content);
+			//html.Append(post.Content);
+			html.Append(ApplyPostFormatting(post.Content));
 			html.Append("</div><div class=\"Clear\"></div>");
 			if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
 			{
@@ -420,6 +425,36 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("</div>");
 
 			return html.ToString();
+		}
+
+		private string ApplyPostFormatting(string postContent)
+		{
+			Regex bold = new Regex(@"\[b\](.*)\[/b\]");
+			Regex italic = new Regex(@"\[i\](.*)\[/i\]");
+
+			MatchCollection boldMatches = bold.Matches(postContent);
+			foreach (Match match in boldMatches)
+			{
+				if (match.Groups.Count > 1)
+				{
+					string content = match.Groups[1].Value.Replace("[b]", string.Empty).Replace("[/b]", string.Empty);
+					postContent = postContent.Replace(match.Value, string.Format("<strong>{0}</strong>", content));
+				}
+			}
+
+			MatchCollection italicMatches = italic.Matches(postContent);
+			foreach (Match match in italicMatches)
+			{
+				if (match.Groups.Count > 1)
+				{
+					string content = match.Groups[1].Value.Replace("[i]", string.Empty).Replace("[/i]", string.Empty);
+					postContent = postContent.Replace(match.Value, string.Format("<em>{0}</em>", content));
+				}
+			}
+
+			postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty);
+
+			return postContent;
 		}
 	}
 }
