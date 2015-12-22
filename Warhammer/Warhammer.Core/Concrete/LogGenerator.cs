@@ -73,7 +73,7 @@ namespace Warhammer.Core.Concrete
 							output.AppendLine("GM:");
 						}
 					}
-					if (post.IsRevised)
+					if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
 					{
 						output.AppendLine(post.RevisedContent.Replace("{CR}", "\r\n"));
 					}
@@ -148,7 +148,7 @@ namespace Warhammer.Core.Concrete
 						}
 					}
 					output.Append("<p>");
-					if (post.IsRevised)
+					if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
 					{
 						output.AppendLine(ApplyPostFormatting(post.RevisedContent.Replace("{CR}", "</p><p>")));
 					}

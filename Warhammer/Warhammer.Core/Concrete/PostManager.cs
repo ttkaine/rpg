@@ -304,7 +304,34 @@ namespace Warhammer.Core.Concrete
 			return false;	
 		}
 
-	    public bool SetTurnOverForUser(int sessionId)
+		public bool MarkPostOoc(int postId)
+		{
+			Player player = GetCurrentPlayer();
+			Post post = Repo.Posts().FirstOrDefault(p => p.Id == postId);
+
+			if (post != null && player != null)
+			{
+				Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == post.SessionId);
+				if (session != null)
+				{
+					if (!session.IsClosed)
+					{
+						if (player.IsGm || player.Id == post.PlayerId)
+						{
+							post.PostType = (int) PostType.OutOfCharacter;
+							post.IsRevised = true;
+							post.LastEdited = DateTime.Now;
+							Repo.Save(post);
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public bool SetTurnOverForUser(int sessionId)
 	    {
             Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             Player player = GetCurrentPlayer();

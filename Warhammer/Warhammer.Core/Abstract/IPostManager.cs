@@ -7,6 +7,7 @@
 		bool DeletePostForUser(int postId);
 		PostResult EditTextPostForUser(int postId, string text);
 		bool RevertPostForUser(int postId);
+		bool MarkPostOoc(int postId);
 	    bool SetTurnOverForUser(int sessionId);
 	}
 }

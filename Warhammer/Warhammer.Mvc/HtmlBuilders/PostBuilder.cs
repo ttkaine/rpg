@@ -135,6 +135,12 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 				if (playerIsGm)
 				{
+					html.Append("<input id=\"btnMakePostOoc");
+					html.Append(post.ID);
+					html.Append("\" type=\"button\" value=\"OOC\" class=\"PostEditButton\" onclick=\"makePostOoc(");
+					html.Append(post.ID);
+					html.Append(");\" />");
+
 					html.Append("<input id=\"btnDeletePost");
 					html.Append(post.ID);
 					html.Append("\" type=\"button\" value=\"DELETE\" class=\"PostEditButton\" onclick=\"deletePost(");
@@ -221,7 +227,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 				html.Append(post.ID);
 				html.Append(");\" />");
 
-				if (playerIsGm && post.IsRevised)
+				if (playerIsGm && post.IsRevised && post.CanRevert)
 				{
 					html.Append("<input id=\"btnRevertPost");
 					html.Append(post.ID);
@@ -304,6 +310,12 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 				if (playerIsGm)
 				{
+					html.Append("<input id=\"btnMakePostOoc");
+					html.Append(post.ID);
+					html.Append("\" type=\"button\" value=\"OOC\" class=\"PostEditButton\" onclick=\"makePostOoc(");
+					html.Append(post.ID);
+					html.Append(");\" />");
+
 					html.Append("<input id=\"btnDeletePost");
 					html.Append(post.ID);
 					html.Append("\" type=\"button\" value=\"DELETE\" class=\"PostEditButton\" onclick=\"deletePost(");

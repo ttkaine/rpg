@@ -690,6 +690,44 @@ function postDiceRoll()
 //    }
 //}
 
+function makePostOoc(postId)
+{
+    var result = confirm("Are you sure you want to set this post OOC?");
+
+    if (result == true)
+    {
+        clearInterval(refreshInterval);
+
+        //var sessionId = queryString("id");
+        var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
+        var outerHeight = $("#divPostContainer").outerHeight();
+        var scrollTop = $("#divPostContainer").scrollTop();
+        var scrollHeight = $("#divPostContainer").prop("scrollHeight");
+        var scrollToEnd = (scrollHeight - scrollTop == outerHeight);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: rootPath + "/MakePostOoc",
+            data: parameters,
+            dataType: "json",
+            async: true,
+            success: function (data)
+            {
+                var jsonData = eval(data)[0];
+                handleNewPosts(jsonData, scrollToEnd);
+                refreshInterval = setInterval(pageRefresh, 3000);
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert("Unable to set post OOC at this time.");
+                refreshInterval = setInterval(pageRefresh, 3000);
+            }
+        });
+    }
+
+}
+
 function deletePost(postId)
 {
     var result = confirm("Are you sure you want to delete this post?");

@@ -473,6 +473,41 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
+		public JsonResult MakePostOoc(int sessionId, int postId, int lastPostId, string lastUpdateTime)
+		{
+			DateTime lastUpdate;
+			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
+			{
+				lastUpdate = DateTime.MinValue;
+			}
+
+			if (DataProvider.IsLoggedIn())
+			{
+				bool markedOoc = PostManager.MarkPostOoc(postId);
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				if (!markedOoc)
+				{
+					postCollection.IsError = true;
+					postCollection.ErrorMessage = "Unable to set post OOC.";
+				}
+				else
+				{
+					postCollection = GetRecentPostsForSession(sessionId, lastPostId, lastUpdate);
+				}
+
+				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				return Json("[" + serializer.Serialize(postCollection) + "]");
+			}
+			else
+			{
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				postCollection.IsError = true;
+				postCollection.ErrorMessage = "Session timeout";
+				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				return Json("[" + serializer.Serialize(postCollection) + "]");
+			}
+		}
+
 		public JsonResult EditTextPost(int sessionId, int postId, int lastPostId, string text, string lastUpdateTime)
 		{
 			DateTime lastUpdate;

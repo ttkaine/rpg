@@ -27,6 +27,7 @@ namespace Warhammer.Core.Abstract
 		//SessionViewModel GetSessionForCurrentUser(int sessionId);
 		SessionViewModel GetSession(int sessionId);
 
+		PostViewModel GetPost(int postId, out int playerId, out bool playerIsGm);
 		List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId);
 		List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId, out int playerId, out bool playerIsGm);
 		List<PostViewModel> GetEditedPostsForCurrentUserInSessionSinceLast(int sessionId, DateTime lastUpdate);

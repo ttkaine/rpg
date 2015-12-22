@@ -204,7 +204,58 @@ namespace Warhammer.Core.Concrete
 			return null;
 	    }
 
-        private int GetCurrentPlayerId(Session session)
+		public PostViewModel GetPost(int postId, out int playerId, out bool playerIsGm)
+	    {
+			PlayerViewModel player = GetPlayerForCurrentUser();
+			Post post = Repo.Posts().FirstOrDefault(p => p.Id == postId);
+			int gmId = GetGmId();
+			playerId = player.ID;
+			playerIsGm = player.IsGM;
+
+		    if (post != null)
+		    {
+				List<int> playerIds = new List<int>();
+				StringBuilder names = new StringBuilder();
+				if (post.TargetPlayerIds != null)
+				{
+					playerIds.AddRange(GetIntsFromString(post.TargetPlayerIds));
+					foreach (int id in playerIds)
+					{
+						PlayerViewModel targetPlayer = GetPlayer(id);
+						if (targetPlayer != null)
+						{
+							if (names.Length > 0)
+							{
+								names.Append(", ");
+							}
+							names.Append(targetPlayer.Name);
+							if (targetPlayer.IsGM)
+							{
+								names.Append(" (GM)");
+							}
+						}
+					}
+				}
+				else
+				{
+					playerIds.Add(player.ID);
+				}
+
+				if (post.PlayerId == player.ID || playerIds.Contains(player.ID) || (player.ID == gmId && post.PostType == (int)PostType.DiceRoll))
+				{
+					PostViewModel viewModel = GetPostViewModelForPost(post, gmId);
+					if (viewModel != null)
+					{
+						viewModel.TargetPlayerNames = names.ToString();
+					}
+					return viewModel;
+				}			    
+		    }
+
+		    return null;
+	    }
+
+	    private int GetCurrentPlayerId(Session session)
         {
             if (!session.IsGmTurn)
             { 
@@ -327,7 +378,15 @@ namespace Warhammer.Core.Concrete
 				}
 				else
 				{
-					textViewModel.Content = post.RevisedContent.Replace("{CR}", "<br />");
+					if (!string.IsNullOrWhiteSpace(post.RevisedContent))
+					{
+						textViewModel.Content = post.RevisedContent.Replace("{CR}", "<br />");
+						textViewModel.CanRevert = true;
+					}
+					else
+					{
+						textViewModel.Content = post.OriginalContent.Replace("{CR}", "<br />");
+					}					
 					textViewModel.LastEdited = post.LastEdited.GetValueOrDefault().ToString("dd/MM/yyyy HH:mm:ss");
 					textViewModel.IsRevised = true;
 				}

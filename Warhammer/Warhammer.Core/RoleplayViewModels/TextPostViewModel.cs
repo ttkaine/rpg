@@ -5,6 +5,7 @@
 		public string Content { get; set; }
 		public bool IsOoc { get; set; }
 		public bool IsRevised { get; set; }
+		public bool CanRevert { get; set; }
 		public string LastEdited { get; set; }
 
 		public TextPostViewModel()
