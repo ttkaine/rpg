@@ -265,6 +265,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			//}		
 			html.Append("<span class=\"PostPlayer\">");
 			//html.Append(post.PlayerName);
+			//html.Append(" (GM)");
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
 			if (post.CharacterName == "GM")
 			{
