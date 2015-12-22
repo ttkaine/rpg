@@ -153,10 +153,12 @@ function toggleOoc(doSlide)
         if (doSlide)
         {
             $(".OutOfCharacterPost").parent().slideDown(800);
+            $(".DiceRollPost").parent().slideDown(800);
         }
         else
         {
             $(".OutOfCharacterPost").parent().attr("stlye", "display:block;");
+            $(".DiceRollPost").parent().attr("stlye", "display:block;");
         }
     }
     else
@@ -164,10 +166,12 @@ function toggleOoc(doSlide)
         if (doSlide)
         {
             $(".OutOfCharacterPost").parent().slideUp(800);
+            $(".DiceRollPost").parent().slideUp(800);
         }
         else
         {
             $(".OutOfCharacterPost").parent().attr("stlye", "display:none;");
+            $(".DiceRollPost").parent().attr("stlye", "display:none;");
         }
     }
 

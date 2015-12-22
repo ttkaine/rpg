@@ -105,7 +105,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			//	html.Append("');\"></span>");
 			//}
 			html.Append("<span class=\"PostPlayer\">");
-			html.Append(post.PlayerName);
+			//html.Append(post.PlayerName);
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
 			html.Append("<a onkeypress=\"window.open(this.href); return false;\" onclick=\"window.open(this.href); return false;\" href=\"/Page/Index/");
 			html.Append(post.CharacterId);
@@ -264,8 +264,8 @@ namespace Warhammer.Mvc.HtmlBuilders
 			//	html.Append("');\"></span>");
 			//}		
 			html.Append("<span class=\"PostPlayer\">");
-			html.Append(post.PlayerName);
-			html.Append(" (GM)</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
+			//html.Append(post.PlayerName);
+			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
 			if (post.CharacterName == "GM")
 			{
 				html.Append("<img src=\"/content/images/roleplayforum/gm.jpg\" />");
