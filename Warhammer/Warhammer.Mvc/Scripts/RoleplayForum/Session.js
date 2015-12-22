@@ -25,6 +25,7 @@ function setupPage(id)
     updatePlayerToPost();
     getRollTypeFromCookie();
     getDiceTypeFromCookie();
+    getRerollMaximumsFromCookie();
     toggleRollTypeDisplay();
 
     setupDiceDropDowns();
@@ -550,6 +551,10 @@ function ddlDieSize_Change()
     setDiceTypeCookie();
 }
 
+function chkReRolls_Click()
+{
+    setRerollMaximumsCookie();
+}
 
 function toggleRollTypeDisplay()
 {
@@ -1188,6 +1193,19 @@ function getDiceTypeFromCookie()
     }
 }
 
+function getRerollMaximumsFromCookie()
+{
+    var rerollMaximums = getCookie("rerollMaximums");
+    if (rerollMaximums == "true")
+    {
+        $("#chkReRolls").prop("checked", true);
+    }
+    else
+    {
+        $("#chkReRolls").prop("checked", false);
+    }
+}
+
 function setRollTypeCookie()
 {
     var rollType = $("#ddlRollType").val();
@@ -1198,6 +1216,12 @@ function setDiceTypeCookie()
 {
     var diceType = $("#ddlDieSize").val();
     document.cookie = "diceType=" + diceType + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
+}
+
+function setRerollMaximumsCookie()
+{
+    var rerollMaximums = $("#chkReRolls").is(":checked");
+    document.cookie = "rerollMaximums=" + rerollMaximums + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
 }
 
 function getCookie(cname)
