@@ -5,6 +5,16 @@ using System.Linq;
 
 namespace Warhammer.Core.Entities
 {
+    public enum StatNames
+    {
+        Combat = 1,
+        Action = 2,
+        Intellect = 3,
+        Work = 4,
+        Social = 5,
+        Self = 6
+    }
+
     public struct ScoreBreakdown
     {
         public string Name { get; set; }
