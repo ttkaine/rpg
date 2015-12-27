@@ -155,6 +155,15 @@
           <Property Name="PersonId" Type="int" />
           <Property Name="SessionId" Type="int" />
         </EntityType>
+        <EntityType Name="SiteFeature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Trophy">
           <Key>
             <PropertyRef Name="Id" />
@@ -469,6 +478,7 @@
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Award_Person" Association="Self.FK_Award_Person">
             <End Role="Person" EntitySet="Person" />
@@ -657,6 +667,7 @@
             <End Role="Session" EntitySet="Pages" />
             <End Role="PostOrder" EntitySet="PostOrders" />
           </AssociationSet>
+          <EntitySet Name="SiteFeatures" EntityType="WarhammerModel.SiteFeature" />
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1054,6 +1065,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SiteFeature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1223,6 +1243,16 @@
                 <ScalarProperty Name="LastTurnEnded" ColumnName="LastTurnEnded" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteFeatures">
+            <EntityTypeMapping TypeName="WarhammerModel.SiteFeature">
+              <MappingFragment StoreEntitySet="SiteFeature">
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

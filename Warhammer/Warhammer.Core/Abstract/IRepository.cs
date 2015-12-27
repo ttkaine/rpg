@@ -27,5 +27,7 @@ namespace Warhammer.Core.Abstract
 		void Delete(Post post);
         IQueryable<Comment> Comments();
         void Delete(Comment comment);
+        IQueryable<SiteFeature> SiteFeatures();
+        int Save(SiteFeature feature);
     }
 }

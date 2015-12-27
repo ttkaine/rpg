@@ -68,5 +68,8 @@ namespace Warhammer.Core.Abstract
 		List<Session> OpenTextSessions();
 		List<Session> MyOpenTextSessions();
 		List<Session> ModifiedTextSessions();
+        bool SiteHasFeature(string featureName);
+        void EnableFeature(string featureName);
+        void DisableFeature(string featureName);
     }
 }

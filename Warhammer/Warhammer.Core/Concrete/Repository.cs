@@ -136,6 +136,26 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public IQueryable<SiteFeature> SiteFeatures()
+        {
+            return _entities.SiteFeatures;
+        }
+
+        public int Save(SiteFeature feature)
+        {
+            if (feature.Id == 0)
+            {
+                _entities.SiteFeatures.Add(feature);
+            }
+            else
+            {
+                _entities.Entry(feature).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return feature.Id;
+        }
+
         #endregion
 
         #region Save

@@ -841,5 +841,39 @@ namespace Warhammer.Core.Concrete
 			return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
 		}
 
+        public bool SiteHasFeature(string featureName)
+        {
+            return _repository.SiteFeatures().Any(f => f.Name == featureName && f.IsEnabled);
+        }
+
+        public void EnableFeature(string featureName)
+        {
+            SiteFeature feature = _repository.SiteFeatures().FirstOrDefault(f => f.Name == featureName);
+
+            if (feature == null)
+            {
+                feature = new SiteFeature { Name = featureName, Description = featureName };
+            }
+
+            if (!feature.IsEnabled)
+            {
+                feature.IsEnabled = true;
+                _repository.Save(feature);
+            }
+        }
+
+        public void DisableFeature(string featureName)
+        {
+            SiteFeature feature = _repository.SiteFeatures().FirstOrDefault(f => f.Name == featureName);
+
+            if (feature != null)
+            {
+                if (feature.IsEnabled)
+                {
+                    feature.IsEnabled = false;
+                    _repository.Save(feature);
+                }
+            }
+        }
     }
 }

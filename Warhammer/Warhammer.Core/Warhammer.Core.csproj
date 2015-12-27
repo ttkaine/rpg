@@ -144,6 +144,9 @@
     <Compile Include="Entities\SessionLog.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\SiteFeature.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Trophy.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -153,6 +156,7 @@
     <Compile Include="Entities\_Place.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
+    <Compile Include="Entities\_SiteFeature.cs" />
     <Compile Include="Entities\_Trophy.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

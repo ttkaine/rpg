@@ -34,5 +34,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<Trophy> Trophies { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostOrder> PostOrders { get; set; }
+        public virtual DbSet<SiteFeature> SiteFeatures { get; set; }
     }
 }
