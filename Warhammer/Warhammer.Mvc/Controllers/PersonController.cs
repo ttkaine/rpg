@@ -16,5 +16,20 @@ namespace Warhammer.Mvc.Controllers
                 return RedirectToAction("Index", "Home");              
             }
         }
+
+        public ActionResult ViewStats(int personId)
+        {
+            
+        }
+
+        //public ActionResult EditStats(int personId)
+        //{
+
+        //}
+
+        //public ActionResult EditStats(int personId)
+        //{
+
+        //}
     }
 }
