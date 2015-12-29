@@ -13,8 +13,15 @@
           
             @if (Model.MaySpendXp && ViewBag.EditMode)
             {
-                <p>Add a role for @(Model.NextXpSpend)xp</p>
-                @Html.TextBoxFor(m => m.AddedRole)
+                <p>Add a role for 5 XP</p>
+                if (Model.CanBuyRole)
+                {
+                    @Html.TextBoxFor(m => m.AddedRole)
+                }
+                else
+                {
+                    <p>You can't afford this.</p>
+                }
             }
         </div>
         <div class="alert alert-warning">
@@ -22,8 +29,15 @@
             @Html.Raw(string.Join("<br />", Model.Descriptors))
             @if (Model.MaySpendXp && ViewBag.EditMode)
             {
-                <p>Add a Descriptor for @(Model.NextXpSpend)xp</p>
-                @Html.TextBoxFor(m => m.AddedDescriptor1)
+                <p>Add a Descriptor for @(Model.DescriptorCost) XP</p>
+                if (Model.CanBuyDescriptor)
+                {
+                   @Html.TextBoxFor(m => m.AddedDescriptor1)
+                }
+                else
+                {
+                    <p>You can't afford this.</p>
+                }
             }
         </div>
             <h4>Statistics</h4>
@@ -53,9 +67,17 @@
                             <td>
                                 @if (Model.MaySpendXp && ViewBag.EditMode)
                                 {
-                                    <text>+1 (Cost: @(Model.NextXpSpend)xp)</text>
+                                    if (Model.CanBuyStat)
+                                    {
+                                        <span class="success">+1 (Cost: @(Model.NextXpSpend) XP)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="error">+1 (Cost: @(Model.NextXpSpend) XP)</span>
+                                    }
                                 }
                             </td>
+
                         </tr>
                     }
                 </tbody>

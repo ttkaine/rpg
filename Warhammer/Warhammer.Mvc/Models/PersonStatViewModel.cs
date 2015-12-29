@@ -19,12 +19,16 @@ namespace Warhammer.Mvc.Models
 
         public bool MaySpendXp { get; set; }
 
+        public bool CanBuyDescriptor { get; set; }
+        public bool CanBuyStat { get; set; }
+        public bool CanBuyRole { get; set; }
+
         [Display(Name = "Stats (Total: 18)")]
         public Dictionary<StatName, int> Stats { get; set; }
 
         public int NextXpSpend
         {
-            get { return Stats.Sum(s => s.Value) + Descriptors.Count + Roles.Count - 21; }
+            get { return Stats.Sum(s => s.Value) - 17; }
         }
 
         public int CurrentXp { get; set; }
@@ -50,16 +54,12 @@ namespace Warhammer.Mvc.Models
             }
         }
 
-        public bool ShowXpSpend
-        {
-            get { return NextXpSpend <= CurrentXp && StatsCreated; }
-        }
-
         public List<string> Roles { get; set; }
         [Required]
         [Display(Name = "Role")]
         public string AddedRole { get; set; }
 
         public int PersonId { get; set; }
+        public int DescriptorCost { get; set; }
     }
 }

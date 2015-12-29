@@ -88,8 +88,13 @@ namespace Warhammer.Mvc.Concrete
                 }
             }
             model.CurrentXp = person.CurrentXp;
+            model.CanBuyStat = model.CurrentXp >= model.NextXpSpend;
+            model.CanBuyRole = model.CurrentXp >= 5;
+            model.DescriptorCost = (int)(Math.Floor(model.Descriptors.Count * 0.5) + 2);
+            model.CanBuyDescriptor = model.CurrentXp >= model.DescriptorCost;
 
-            model.MaySpendXp = !person.IsDead && model.CurrentXp >= model.NextXpSpend && model.StatsCreated;
+            model.MaySpendXp = !person.IsDead && model.StatsCreated && 
+                model.CanBuyStat || model.CanBuyRole || model.CanBuyDescriptor;
 
             return model;
 
