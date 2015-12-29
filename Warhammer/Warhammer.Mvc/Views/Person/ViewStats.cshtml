@@ -1,0 +1,76 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.PersonStatViewModel
+
+<div id="charStatsPanel" class="well-sm">
+
+    @if (Model.StatsCreated && !Model.Posted)
+    {
+        <h3>Character Profile</h3>
+        <div class="alert alert-success">
+            <h4>Roles</h4>
+           
+                @Html.Raw(string.Join("<br />", Model.Roles))
+          
+            @if (Model.MaySpendXp && ViewBag.EditMode)
+            {
+                <p>Add a role for @(Model.NextXpSpend)xp</p>
+                @Html.TextBoxFor(m => m.AddedRole)
+            }
+        </div>
+        <div class="alert alert-warning">
+            <h4>Descriptors</h4>
+            @Html.Raw(string.Join("<br />", Model.Descriptors))
+            @if (Model.MaySpendXp && ViewBag.EditMode)
+            {
+                <p>Add a Descriptor for @(Model.NextXpSpend)xp</p>
+                @Html.TextBoxFor(m => m.AddedDescriptor1)
+            }
+        </div>
+            <h4>Statistics</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>
+                            Statistic
+                        </td>
+                        <th>
+                            Current Score
+                        </th>
+                        <td>
+                            @if (Model.MaySpendXp && ViewBag.EditMode)
+                {
+                                <text>Advance</text>
+                            }
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
+                {
+                        <tr>
+                            <td>@keyValuePair.Key</td>
+                            <td>@keyValuePair.Value</td>
+                            <td>
+                                @if (Model.MaySpendXp && ViewBag.EditMode)
+                                {
+                                    <text>+1 (Cost: @(Model.NextXpSpend)xp)</text>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
+            else
+            {
+            if (ViewBag.EditMode)
+            {
+            @Html.EditorFor(m => Model)
+            }
+            else
+            {
+            <h3>No Statistics Yet.</h3>
+            <p>You can go to edit mode to set your stats.</p>
+            }
+            }
+        </div>

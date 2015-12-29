@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Concrete;
@@ -10,6 +11,7 @@ namespace Warhammer.Mvc.Concrete
 {
     public class ViewModelFactory : IViewModelFactory
     {
+        private const char Seperator = '¬';
         readonly IAuthenticatedDataProvider _data;
 
         public ViewModelFactory(IAuthenticatedDataProvider data)
@@ -41,6 +43,61 @@ namespace Warhammer.Mvc.Concrete
             }
 
             return model;
+        }
+
+        public PersonStatViewModel MakeStatModel(Person person)
+        {
+            PersonStatViewModel model = new PersonStatViewModel {PersonId = person.Id};
+
+
+            foreach (PersonStat personStat in person.PersonStats)
+            {
+                model.Stats.Add((StatName)personStat.StatId, personStat.CurrentValue);
+            }
+
+            foreach (int statId in Enum.GetValues(typeof(StatName)))
+            {
+                StatName stat = (StatName) statId;
+                if (!model.Stats.ContainsKey(stat))
+                {
+                    model.Stats.Add(stat, 0);
+                }
+            }
+            if (person.Descriptors != null)
+            {
+                string[] descriptors = person.Descriptors.Split(Seperator);
+
+                foreach (string descriptor in descriptors)
+                {
+                    if (!string.IsNullOrWhiteSpace(descriptor) && !model.Descriptors.Contains(descriptor))
+                    {
+                        model.Descriptors.Add(descriptor);
+                    }
+                }
+            }
+            if (person.Roles != null)
+            {
+                string[] roles = person.Roles.Split(Seperator);
+
+                foreach (string role in roles)
+                {
+                    if (!string.IsNullOrWhiteSpace(role) && !model.Roles.Contains(role))
+                    {
+                        model.Roles.Add(role);
+                    }
+                }
+            }
+            model.CurrentXp = person.CurrentXp;
+
+            model.MaySpendXp = !person.IsDead && model.CurrentXp >= model.NextXpSpend && model.StatsCreated;
+
+            return model;
+
+        }
+
+        public string Combine(List<string> list)
+        {
+            return string.Join(Seperator.ToString(), list);
         }
     }
 }

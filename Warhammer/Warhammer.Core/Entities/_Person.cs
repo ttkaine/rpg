@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Warhammer.Core.Entities
 {
-    public enum StatNames
+    public enum StatName
     {
         Combat = 1,
         Action = 2,

@@ -71,5 +71,7 @@ namespace Warhammer.Core.Abstract
         bool SiteHasFeature(string featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);
+        Person GetPerson(int personId);
+        void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, string descriptors);
     }
 }
