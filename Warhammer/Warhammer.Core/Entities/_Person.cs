@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,9 +72,12 @@ namespace Warhammer.Core.Entities
 
         public bool AddRole(string roleName, bool free = false)
         {
-            if (CanBuyRole)
+            if (CanBuyRole || free)
             {
-                CurrentXp = CurrentXp - RoleCost;
+                if (!free)
+                {
+                    CurrentXp = CurrentXp - RoleCost;
+                }
                 if (string.IsNullOrWhiteSpace(Roles))
                 {
                     Roles = roleName;
@@ -89,9 +93,12 @@ namespace Warhammer.Core.Entities
 
         public bool AddDescriptor(string descriptor, bool free = false)
         {
-            if (CanBuyDescriptor)
+            if (CanBuyDescriptor || free)
             {
-                CurrentXp = CurrentXp - DescriptorCost;
+                if (!free)
+                {
+                    CurrentXp = CurrentXp - DescriptorCost;
+                }
                 if (string.IsNullOrWhiteSpace(descriptor))
                 {
                     Descriptors = descriptor;
@@ -109,16 +116,14 @@ namespace Warhammer.Core.Entities
         {
             if (CanBuyStat)
             {
-
                 PersonStat stat = PersonStats.FirstOrDefault(s => s.StatId == (int) statName);
                 if (stat != null)
                 {
+                    CurrentXp = CurrentXp - StatCost;
                     stat.CurrentValue++;
                     stat.XpSpent = stat.XpSpent + StatCost;
-                    CurrentXp = CurrentXp - StatCost;
                     return true;
                 }
-
             }
             return false;
         }

@@ -677,6 +677,33 @@ namespace Warhammer.Core.Concrete
             {
                 session.IsClosed = true;
                 Save(session);
+
+                if (SiteHasFeature("SimpleStats"))
+                {
+                    ApplyXpForSession(session);
+                }
+
+            }
+        }
+
+        private void ApplyXpForSession(Session session)
+        {
+            List<Person> people = People().ToList();
+            foreach (Person person in people)
+            {
+                if (!person.IsDead)
+                {
+                    person.CurrentXp++;
+                    if (session.People.Contains(person))
+                    {
+                        person.CurrentXp++;
+                    }
+                    if (session.Posts.Any(p => p.CharacterId == person.Id))
+                    {
+                        person.CurrentXp++;
+                    }
+                    Save(person);
+                }
             }
         }
 
