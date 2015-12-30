@@ -768,9 +768,18 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> GetLeague()
         {
-            List<Person> people = People().Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
-            people = ApplyUplift(people);
-            people = ApplyNail(people);
+            List<Person> people;
+            if (SiteHasFeature("Public Leauge"))
+            {
+                people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+            }
+            else
+            {
+                people = People().Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+                people = ApplyUplift(people);
+                people = ApplyNail(people);
+            }
+         
             return people;
         }
 
