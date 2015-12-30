@@ -31,26 +31,31 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Stats, new { @class = "col-md-12 control-label" })
+        @Html.LabelFor(m => m.Stats, new {@class = "col-md-12 control-label"})
         <div class="col-md-10">
 
-            <div class="row">
-                @{
-                    int i = 0;
-                    foreach (var item in Model.Stats)
-                    {
-                        <input type="hidden" name="Stats[@i].Key" value="@item.Key" />
-                        <label class="col-md-6">@item.Key</label>
-                        <input class="col-md-6" name="Stats[@i].Value" value="@item.Value" />
-                        i++;
-                    }
-                }
-            </div>
 
+            @{
+                int i = 0;
+                foreach (var item in Model.Stats)
+                {
+                    <div class="row">
+                        <input type="hidden" name="Stats[@i].Key" value="@item.Key"/>
+                        <label class="col-md-6">@item.Key</label>
+                        <input class="col-md-4" name="Stats[@i].Value" value="@item.Value"/>
+                        @{
+                            i++;
+                        }
+                    </div>
+                }
+            }
         </div>
 
-        <input type="submit" value="Set Stats" class="btn btn-block btn-success" />
 
 
     </div>
-                    }
+    <div class="form-group">
+        <input type="submit" value="Set Stats" class="btn btn-block btn-success" />
+    </div>
+
+                            }

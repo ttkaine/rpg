@@ -53,7 +53,7 @@ namespace Warhammer.Core.Entities
             get
             {
                 List<string> temp = new List<string>();
-                if (Roles != null)
+                if (Descriptors != null)
                 {
                     string[] descriptors = Descriptors.Split(Seperator);
 

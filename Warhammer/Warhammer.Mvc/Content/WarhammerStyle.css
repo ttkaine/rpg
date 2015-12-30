@@ -6789,6 +6789,9 @@ body {
 #stattable .label-info {
   font-size: larger;
 }
+.form-group {
+  margin-bottom: 20px;
+}
 #openSessionPanel img {
   height: 20px;
   width: 20px;
