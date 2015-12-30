@@ -26,5 +26,6 @@ namespace Warhammer.Mvc.Models
        public List<Session> MyTurnTextSessions { get; set; }
        public string SiteName { get; set; }
        public List<Person> OtherPeople { get; set; }
+        public List<Person> NpcWithXp { get; set; }
     }
 }

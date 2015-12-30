@@ -79,5 +79,6 @@ namespace Warhammer.Core.Abstract
         void AddXp(int personId, int xpValue);
         bool CheckStatPermissions(int personId);
         bool CheckStatSummaryPermissions();
+        List<Person> NpcWithXp();
     }
 }

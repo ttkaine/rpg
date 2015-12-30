@@ -18,7 +18,7 @@ namespace Warhammer.Mvc.Models
         public bool Posted { get; set; }
 
         public bool MaySpendXp { get; set; }
-
+        public int XpSpent { get; set; }
         public bool CanBuyDescriptor { get; set; }
         public bool CanBuyStat { get; set; }
         public bool CanBuyRole { get; set; }

@@ -616,6 +616,12 @@ namespace Warhammer.Core.Concrete
             return true;
         }
 
+        public List<Person> NpcWithXp()
+        {
+            List<Person> people = AllNpcs().ToList();
+            return people.Where(p => p.CanBuyStat && p.Stats.Sum(s => s.Value) > 10).OrderByDescending(p => p.CurrentXp).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

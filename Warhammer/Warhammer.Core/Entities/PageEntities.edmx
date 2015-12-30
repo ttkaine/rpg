@@ -77,6 +77,7 @@
           <Property Name="Roles" Type="nvarchar(max)" />
           <Property Name="Descriptors" Type="nvarchar(max)" />
           <Property Name="CurrentXp" Type="int" Nullable="false" />
+          <Property Name="XpSpent" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -792,6 +793,7 @@
           <Property Name="Descriptors" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CurrentXp" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonStats" Relationship="WarhammerModel.FK_PersonStat_Person" FromRole="Person" ToRole="PersonStat" />
+          <Property Name="XpSpent" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -1206,6 +1208,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="XpSpent" ColumnName="XpSpent" />
                 <ScalarProperty Name="CurrentXp" ColumnName="CurrentXp" />
                 <ScalarProperty Name="Descriptors" ColumnName="Descriptors" />
                 <ScalarProperty Name="Roles" ColumnName="Roles" />

@@ -59,7 +59,7 @@ namespace Warhammer.Mvc.Concrete
             model.CanBuyRole = person.CanBuyRole;
             model.DescriptorCost = person.DescriptorCost;
             model.CanBuyDescriptor = person.CanBuyDescriptor;
-
+            model.XpSpent = person.XpSpent;
             model.MaySpendXp = !person.IsDead && model.StatsCreated;
 
             return model;

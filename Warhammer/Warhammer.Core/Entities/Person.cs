@@ -30,6 +30,7 @@ namespace Warhammer.Core.Entities
         public string Roles { get; set; }
         public string Descriptors { get; set; }
         public int CurrentXp { get; set; }
+        public int XpSpent { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }

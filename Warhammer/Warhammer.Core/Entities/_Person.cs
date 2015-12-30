@@ -77,6 +77,7 @@ namespace Warhammer.Core.Entities
                 if (!free)
                 {
                     CurrentXp = CurrentXp - RoleCost;
+                    XpSpent = XpSpent + RoleCost;
                 }
                 if (string.IsNullOrWhiteSpace(Roles))
                 {
@@ -98,6 +99,7 @@ namespace Warhammer.Core.Entities
                 if (!free)
                 {
                     CurrentXp = CurrentXp - DescriptorCost;
+                    XpSpent = XpSpent + DescriptorCost;
                 }
                 if (string.IsNullOrWhiteSpace(descriptor))
                 {
@@ -120,8 +122,9 @@ namespace Warhammer.Core.Entities
                 if (stat != null)
                 {
                     CurrentXp = CurrentXp - StatCost;
-                    stat.CurrentValue++;
+                    XpSpent = XpSpent + StatCost;
                     stat.XpSpent = stat.XpSpent + StatCost;
+                    stat.CurrentValue++;
                     return true;
                 }
             }
