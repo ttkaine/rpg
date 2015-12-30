@@ -26,6 +26,159 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
+        private const char Seperator = '¬';
+        public List<string> RoleNames
+        {
+            get
+            {
+                List<string> temp = new List<string>();
+                if (Roles != null)
+                {
+                    string[] roles = Roles.Split(Seperator);
+
+                    foreach (string role in roles)
+                    {
+                        if (!string.IsNullOrWhiteSpace(role) && !temp.Contains(role))
+                        {
+                            temp.Add(role);
+                        }
+                    }
+                }
+                return temp;
+            }
+        }
+
+        public List<string> DescriptorNames
+        {
+            get
+            {
+                List<string> temp = new List<string>();
+                if (Roles != null)
+                {
+                    string[] descriptors = Descriptors.Split(Seperator);
+
+                    foreach (string descriptor in descriptors)
+                    {
+                        if (!string.IsNullOrWhiteSpace(descriptor) && !temp.Contains(descriptor))
+                        {
+                            temp.Add(descriptor);
+                        }
+                    }
+                }
+                return temp;
+            }
+        }
+
+        public bool AddRole(string roleName, bool free = false)
+        {
+            if (CanBuyRole)
+            {
+                CurrentXp = CurrentXp - RoleCost;
+                if (string.IsNullOrWhiteSpace(Roles))
+                {
+                    Roles = roleName;
+                }
+                else
+                {
+                    Roles = Roles + Seperator + roleName;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddDescriptor(string descriptor, bool free = false)
+        {
+            if (CanBuyDescriptor)
+            {
+                CurrentXp = CurrentXp - DescriptorCost;
+                if (string.IsNullOrWhiteSpace(descriptor))
+                {
+                    Descriptors = descriptor;
+                }
+                else
+                {
+                    Descriptors = Descriptors + Seperator + descriptor;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public bool BuyStatIncrease(StatName statName)
+        {
+            if (CanBuyStat)
+            {
+
+                PersonStat stat = PersonStats.FirstOrDefault(s => s.StatId == (int) statName);
+                if (stat != null)
+                {
+                    stat.CurrentValue++;
+                    stat.XpSpent = stat.XpSpent + StatCost;
+                    CurrentXp = CurrentXp - StatCost;
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        public Dictionary<StatName, int> Stats
+        {
+            get
+            {
+                Dictionary < StatName, int> temp = new Dictionary<StatName, int>();
+                foreach (PersonStat personStat in PersonStats)
+                {
+                    temp.Add((StatName)personStat.StatId, personStat.CurrentValue);
+                }
+
+                foreach (int statId in Enum.GetValues(typeof(StatName)))
+                {
+                    StatName stat = (StatName)statId;
+                    if (!temp.ContainsKey(stat))
+                    {
+                        temp.Add(stat, 0);
+                    }
+                }
+
+                return temp;
+            }
+        }
+
+        public bool CanBuyStat
+        {
+            get { return CurrentXp >= StatCost; }
+        }
+        public bool CanBuyRole
+        {
+            get { return CurrentXp >= RoleCost; }
+        }
+        public bool CanBuyDescriptor
+        {
+            get { return CurrentXp >= DescriptorCost; }
+        }
+        public int RoleCost
+        {
+            get
+            {
+                return RoleNames.Count * 3 + 2;
+            }
+        }
+
+        public int DescriptorCost
+        {
+            get
+            {
+                return (int)(Math.Floor(DescriptorNames.Count * 2.5) - 4);
+            }
+        }
+
+        public int StatCost
+        {
+          get { return Stats.Sum(s => s.Value) - 17; }
+        }
+
         public IEnumerable<Session> Sessions
         {
             get { return Related.OfType<Session>(); }
@@ -144,5 +297,7 @@ namespace Warhammer.Core.Entities
 
         public bool InclueUplift { get; set; }
         public double UpliftFactor { get; set; }
+
+
     }
 }

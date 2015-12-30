@@ -535,13 +535,18 @@ namespace Warhammer.Core.Concrete
             return person;
         }
 
-        public void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, string descriptors)
+        public void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, List<string> descriptors)
         {
             Person person = GetPerson(personId);
             if (person.PersonStats.Count == 0)
             {
                 person.Roles = addedRole;
-                person.Descriptors = descriptors;
+
+                foreach (string descriptor in descriptors)
+                {
+                    person.AddDescriptor(descriptor, true);
+                }
+
                 foreach (KeyValuePair<StatName, int> keyValuePair in stats)
                 {
                     PersonStat stat = new PersonStat();
@@ -554,6 +559,27 @@ namespace Warhammer.Core.Concrete
                 }
                 Save(person);
             }
+        }
+
+        public void AddRoleToPerson(int personId, string role)
+        {
+            Person person = GetPerson(personId);
+            person.AddRole(role);
+            Save(person);
+        }
+
+        public void AddDescriptorToPerson(int personId, string descriptor)
+        {
+            Person person = GetPerson(personId);
+            person.AddDescriptor(descriptor);
+            Save(person);
+        }
+
+        public void BuyStatIncrease(int personId, StatName statName)
+        {
+            Person person = GetPerson(personId);
+            person.BuyStatIncrease(statName);
+            Save(person);
         }
 
         public void RemoveAward(int personId, int awardId)

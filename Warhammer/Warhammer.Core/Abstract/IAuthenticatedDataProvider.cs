@@ -72,6 +72,9 @@ namespace Warhammer.Core.Abstract
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);
         Person GetPerson(int personId);
-        void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, string descriptors);
+        void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, List<string> descriptors);
+        void AddRoleToPerson(int personId, string role);
+        void AddDescriptorToPerson(int personId, string descriptor);
+        void BuyStatIncrease(int personId, StatName statName);
     }
 }

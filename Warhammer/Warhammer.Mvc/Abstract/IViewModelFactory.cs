@@ -8,6 +8,5 @@ namespace Warhammer.Mvc.Abstract
     {
         ActiveTextSessionViewModel MakeActiveTextSessionViewModel();
         PersonStatViewModel MakeStatModel(Person person);
-        string Combine(List<string> list);
     }
 }

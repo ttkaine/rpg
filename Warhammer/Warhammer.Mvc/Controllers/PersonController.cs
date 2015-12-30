@@ -34,12 +34,18 @@ namespace Warhammer.Mvc.Controllers
 
 
             
+            var model = GetCleanModel(personId);
+            return PartialView(model);
+        }
+
+        private PersonStatViewModel GetCleanModel(int personId)
+        {
             Person person = DataProvider.GetPerson(personId);
             PersonStatViewModel model = _factory.MakeStatModel(person);
             ModelState.Remove("Posted");
             ModelState.Clear();
             model.Posted = false;
-            return PartialView(model);
+            return model;
         }
 
         //public ActionResult EditStats(int personId)
@@ -72,24 +78,52 @@ namespace Warhammer.Mvc.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    string descriptors =
-                        _factory.Combine(new List<string>
+                    List<string> descriptors =
+                       new List<string>
                         {
                             postedStats.AddedDescriptor1,
                             postedStats.AddedDescriptor2,
                             postedStats.AddedDescriptor3
-                        });
+                        };
                     DataProvider.SetStats(postedStats.PersonId, postedStats.Stats, postedStats.AddedRole, descriptors);
 
-                    Person person = DataProvider.GetPerson(postedStats.PersonId);
-                    PersonStatViewModel model = _factory.MakeStatModel(person);
-                    ModelState.Clear();
-                    ModelState.Remove("Posted");
+                    var model = GetCleanModel(postedStats.PersonId);
                     return PartialView("ViewStats", model);
                 }
 
             }
             return PartialView("ViewStats", postedStats);
+        }
+
+        [HttpPost]
+        public ActionResult AddRole(int personId, string role)
+        {
+            if (!string.IsNullOrWhiteSpace(role))
+            {
+                DataProvider.AddRoleToPerson(personId, role);
+            }
+            var model = GetCleanModel(personId);
+            return PartialView("ViewStats", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddDescriptor(int personId, string descriptor)
+        {
+            if (!string.IsNullOrWhiteSpace(descriptor))
+            {
+                DataProvider.AddDescriptorToPerson(personId, descriptor);
+            }
+            var model = GetCleanModel(personId);
+            return PartialView("ViewStats", model);
+        }
+
+        [HttpPost]
+        public ActionResult BuyStatIncrease(int personId, int statId)
+        {
+            StatName statName = (StatName) statId;
+            DataProvider.BuyStatIncrease(personId, statName);
+            var model = GetCleanModel(personId);
+            return PartialView("ViewStats", model);
         }
     }
 }

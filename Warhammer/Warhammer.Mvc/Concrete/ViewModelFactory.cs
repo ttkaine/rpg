@@ -11,7 +11,7 @@ namespace Warhammer.Mvc.Concrete
 {
     public class ViewModelFactory : IViewModelFactory
     {
-        private const char Seperator = '¬';
+
         readonly IAuthenticatedDataProvider _data;
 
         public ViewModelFactory(IAuthenticatedDataProvider data)
@@ -47,62 +47,23 @@ namespace Warhammer.Mvc.Concrete
 
         public PersonStatViewModel MakeStatModel(Person person)
         {
-            PersonStatViewModel model = new PersonStatViewModel {PersonId = person.Id};
+            PersonStatViewModel model = new PersonStatViewModel {PersonId = person.Id, CharacterName = person.ShortName };
 
-
-            foreach (PersonStat personStat in person.PersonStats)
-            {
-                model.Stats.Add((StatName)personStat.StatId, personStat.CurrentValue);
-            }
-
-            foreach (int statId in Enum.GetValues(typeof(StatName)))
-            {
-                StatName stat = (StatName) statId;
-                if (!model.Stats.ContainsKey(stat))
-                {
-                    model.Stats.Add(stat, 0);
-                }
-            }
-            if (person.Descriptors != null)
-            {
-                string[] descriptors = person.Descriptors.Split(Seperator);
-
-                foreach (string descriptor in descriptors)
-                {
-                    if (!string.IsNullOrWhiteSpace(descriptor) && !model.Descriptors.Contains(descriptor))
-                    {
-                        model.Descriptors.Add(descriptor);
-                    }
-                }
-            }
-            if (person.Roles != null)
-            {
-                string[] roles = person.Roles.Split(Seperator);
-
-                foreach (string role in roles)
-                {
-                    if (!string.IsNullOrWhiteSpace(role) && !model.Roles.Contains(role))
-                    {
-                        model.Roles.Add(role);
-                    }
-                }
-            }
+            model.Stats = person.Stats;
+            model.Descriptors = person.DescriptorNames;
+            model.Roles = person.RoleNames;
             model.CurrentXp = person.CurrentXp;
-            model.CanBuyStat = model.CurrentXp >= model.NextXpSpend;
-            model.CanBuyRole = model.CurrentXp >= 5;
-            model.DescriptorCost = (int)(Math.Floor(model.Descriptors.Count * 0.5) + 2);
-            model.CanBuyDescriptor = model.CurrentXp >= model.DescriptorCost;
+            model.StatCost = person.StatCost;
+            model.CanBuyStat = person.CanBuyStat;
+            model.RoleCost = person.RoleCost;
+            model.CanBuyRole = person.CanBuyRole;
+            model.DescriptorCost = person.DescriptorCost;
+            model.CanBuyDescriptor = person.CanBuyDescriptor;
 
-            model.MaySpendXp = !person.IsDead && model.StatsCreated && 
-                model.CanBuyStat || model.CanBuyRole || model.CanBuyDescriptor;
+            model.MaySpendXp = !person.IsDead && model.StatsCreated;
 
             return model;
 
-        }
-
-        public string Combine(List<string> list)
-        {
-            return string.Join(Seperator.ToString(), list);
         }
     }
 }

@@ -22,14 +22,15 @@ namespace Warhammer.Mvc.Models
         public bool CanBuyDescriptor { get; set; }
         public bool CanBuyStat { get; set; }
         public bool CanBuyRole { get; set; }
+        public int StatCost { get; set; }
 
         [Display(Name = "Stats (Total: 18)")]
         public Dictionary<StatName, int> Stats { get; set; }
 
-        public int NextXpSpend
-        {
-            get { return Stats.Sum(s => s.Value) - 17; }
-        }
+        //public int NextXpSpend
+        //{
+           
+        //}
 
         public int CurrentXp { get; set; }
         public List<string> Descriptors { get; set; }
@@ -61,5 +62,7 @@ namespace Warhammer.Mvc.Models
 
         public int PersonId { get; set; }
         public int DescriptorCost { get; set; }
+        public string CharacterName { get; set; }
+        public int RoleCost { get; set; }
     }
 }
