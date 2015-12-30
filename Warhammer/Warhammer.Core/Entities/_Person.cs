@@ -252,10 +252,35 @@ namespace Warhammer.Core.Entities
                     ActivityBonus = 0                  
                 });
                 double awardValue = Awards.Sum(a => a.Trophy.PointsValue);
-                if (PlayerId == null)
+
+                if (Stats != null && Stats.Any())
                 {
-                    awardValue = awardValue + Awards.Count;
+                    breakdown.Add(new ScoreBreakdown
+                    {
+                        Name = "Stats Value",
+                        BaseValue = (Stats.Sum(l => l.Value)/6.0),
+                        ActivityBonus = 0
+                    });
                 }
+                if (RoleNames != null && RoleNames.Count > 1)
+                {
+                    breakdown.Add(new ScoreBreakdown
+                    {
+                        Name = "Role Bonus",
+                        BaseValue = (RoleNames.Count - 1),
+                        ActivityBonus = 0
+                    });
+                }
+                if (DescriptorNames != null && DescriptorNames.Count > 3)
+                {
+                    breakdown.Add(new ScoreBreakdown
+                    {
+                        Name = "Descriptor Bonus",
+                        BaseValue = (DescriptorNames.Count) * 0.25,
+                        ActivityBonus = 0
+                    });
+                }
+
                 if (awardValue != 0)
                 {
                     breakdown.Add(new ScoreBreakdown

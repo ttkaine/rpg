@@ -6785,6 +6785,7 @@ body {
     background-size: cover;
   }
 }
+#statTotal,
 #xptotal,
 #stattable .label-info {
   font-size: larger;

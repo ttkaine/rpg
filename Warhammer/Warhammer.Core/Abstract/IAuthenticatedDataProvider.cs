@@ -78,5 +78,6 @@ namespace Warhammer.Core.Abstract
         void BuyStatIncrease(int personId, StatName statName);
         void AddXp(int personId, int xpValue);
         bool CheckStatPermissions(int personId);
+        bool CheckStatSummaryPermissions();
     }
 }

@@ -1,0 +1,31 @@
+﻿
+@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.PersonStatViewModel
+
+<div id="charStatsPanel" class="well-sm">
+
+    @if (Model.StatsCreated)
+    {
+        <div class="alert alert-success">
+            <h3>Character Profile</h3>
+        </div>
+        <div class="alert alert-success">
+            <h4>Roles</h4>
+            @foreach (string role in Model.Roles)
+                {
+                <h3><span class="label label-pill label-success">@role</span></h3>
+            }
+        </div>
+            <div class="alert alert-warning">
+                <h4>Descriptors</h4>
+                @foreach (string desc in Model.Descriptors)
+                {
+                    <h4><span class="label label-warning">@desc</span></h4>
+                }
+            </div>
+
+            <div class="alert alert-info">
+                <h4>Statistics Total: <span id="statTotal" class="label label-info">@Model.Stats.Sum(s => s.Value)</span></h4>
+            </div>
+    }
+</div>

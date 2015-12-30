@@ -607,6 +607,15 @@ namespace Warhammer.Core.Concrete
             return true;
         }
 
+        public bool CheckStatSummaryPermissions()
+        {
+            if (!SiteHasFeature("SimpleStats"))
+            {
+                return false;
+            }
+            return true;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

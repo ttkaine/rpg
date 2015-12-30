@@ -29,11 +29,21 @@ namespace Warhammer.Mvc.Controllers
         {
             if (!DataProvider.CheckStatPermissions(personId))
             {
-                return null;
+                return ViewStatsSummary(personId);
             }
 
             var model = GetCleanModel(personId);
             return PartialView(model);
+        }
+
+        private ActionResult ViewStatsSummary(int personId)
+        {
+            if (!DataProvider.CheckStatSummaryPermissions())
+            {
+                return null;
+            }
+            var model = GetCleanModel(personId);
+            return PartialView("StatSummary",model);
         }
 
         private PersonStatViewModel GetCleanModel(int personId)

@@ -70,61 +70,64 @@
                     }
                 }
             </div>
-            <h4>Statistics</h4>
+
+        <div class="alert alert-info">
+            <h4>Statistics Total: <span id="statTotal" class="label label-info">@Model.Stats.Sum(s => s.Value)</span></h4>
             <table id="stattable" class="table table-striped">
                 <thead>
+                <tr>
+                    <td>
+                        Statistic
+                    </td>
+                    <th>
+                        Current Score
+                    </th>
+                    <td>
+                        @if (Model.MaySpendXp && ViewBag.EditMode)
+                        {
+                            <text>Advance</text>
+                        }
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
+                {
                     <tr>
+                        <td>@keyValuePair.Key</td>
                         <td>
-                            Statistic
+                            <span class="label label-info">@keyValuePair.Value</span>
                         </td>
-                        <th>
-                            Current Score
-                        </th>
                         <td>
                             @if (Model.MaySpendXp && ViewBag.EditMode)
                             {
-                                <text>Advance</text>
-                            }
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
-                {
-                        <tr>
-                            <td>@keyValuePair.Key</td>
-                            <td>
-                                <span class="label label-info">@keyValuePair.Value</span>
-                            </td>
-                            <td>
-                                @if (Model.MaySpendXp && ViewBag.EditMode)
+                                if (Model.CanBuyStat)
                                 {
-                                    if (Model.CanBuyStat)
+                                    using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
                                     {
-                                        using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
-                                        {
-                                            @Html.ValidationSummary("", new { @class = "text-danger" })
-                                            @Html.HiddenFor(m => m.PersonId)
-                                            <input value="@((int)keyValuePair.Key)" name="StatId" type="hidden" />
-                                            <input type="submit" value="+1 (@Model.StatCost XP)" class="btn btn-block btn-success" />
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span>Next Level @Model.StatCost XP. @Model.CharacterName can't afford this</span>
+                                        @Html.ValidationSummary("", new {@class = "text-danger"})
+                                        @Html.HiddenFor(m => m.PersonId)
+                                        <input value="@((int) keyValuePair.Key)" name="StatId" type="hidden"/>
+                                        <input type="submit" value="+1 (@Model.StatCost XP)" class="btn btn-block btn-success"/>
                                     }
                                 }
-                            </td>
+                                else
+                                {
+                                    <span>Next Level @Model.StatCost XP. @Model.CharacterName can't afford this</span>
+                                }
+                            }
+                        </td>
 
-                        </tr>
-                    }
+                    </tr>
+                }
                 </tbody>
             </table>
-            }
-            else
-            {
-            if (ViewBag.EditMode)
-            {
+        </div>
+}
+else
+{
+    if (ViewBag.EditMode)
+    {
             @Html.EditorFor(m => Model)
             }
             else
