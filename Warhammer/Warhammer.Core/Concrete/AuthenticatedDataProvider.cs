@@ -582,6 +582,31 @@ namespace Warhammer.Core.Concrete
             Save(person);
         }
 
+        public void AddXp(int personId, int xpValue)
+        {
+            Person person = GetPerson(personId);
+            person.CurrentXp = person.CurrentXp + xpValue;
+            Save(person);
+        }
+
+        public bool CheckStatPermissions(int personId)
+        {
+            if (!SiteHasFeature("SimpleStats"))
+            {
+                return false;
+            }
+
+            if (!CurrentPlayer.IsGm)
+            {
+                Person person = GetPerson(personId);
+                if (person.PlayerId != CurrentPlayer.Id)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

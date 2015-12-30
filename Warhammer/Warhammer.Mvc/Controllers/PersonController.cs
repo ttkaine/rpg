@@ -27,13 +27,11 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ViewStats(int personId)
         {
-            if (!DataProvider.SiteHasFeature("SimpleStats"))
+            if (!DataProvider.CheckStatPermissions(personId))
             {
                 return null;
             }
 
-
-            
             var model = GetCleanModel(personId);
             return PartialView(model);
         }
@@ -122,6 +120,19 @@ namespace Warhammer.Mvc.Controllers
         {
             StatName statName = (StatName) statId;
             DataProvider.BuyStatIncrease(personId, statName);
+            var model = GetCleanModel(personId);
+            return PartialView("ViewStats", model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult GiveXp(int personId, string xp)
+        {
+            int xpValue;
+            if (int.TryParse(xp, out xpValue))
+            {
+                DataProvider.AddXp(personId, xpValue);
+            }
             var model = GetCleanModel(personId);
             return PartialView("ViewStats", model);
         }

@@ -76,5 +76,7 @@ namespace Warhammer.Core.Abstract
         void AddRoleToPerson(int personId, string role);
         void AddDescriptorToPerson(int personId, string descriptor);
         void BuyStatIncrease(int personId, StatName statName);
+        void AddXp(int personId, int xpValue);
+        bool CheckStatPermissions(int personId);
     }
 }

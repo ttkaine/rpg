@@ -8,6 +8,16 @@
         <div class="alert alert-success">
             <h3>Character Profile</h3>
             <h4>Experience Points: <span id="xptotal" class="label label-success">@Model.CurrentXp</span></h4>
+
+            @if (User.IsInRole("Admin") && ViewBag.EditMode)
+            {
+                using (Ajax.BeginForm("GiveXp", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                {
+                    @Html.HiddenFor(m => m.PersonId)
+                    @Html.TextBox("xp")
+                    <input type="submit" value="Add XP" class="btn btn-block btn-info" />
+                }
+            }
         </div>
             <div class="alert alert-success">
                 <h4>Roles</h4>
