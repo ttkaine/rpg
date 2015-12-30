@@ -67,6 +67,7 @@
 
             if (User.IsInRole("Admin"))
             {
+                @Html.Action("ViewStats", "Person", new { personId = person.Id })
                 <h1>Points Value: @person.PointsValue</h1>
                 <table class="table table-striped">
                     <thead>

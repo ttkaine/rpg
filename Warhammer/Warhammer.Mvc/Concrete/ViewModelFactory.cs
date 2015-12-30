@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Concrete;
@@ -10,6 +11,7 @@ namespace Warhammer.Mvc.Concrete
 {
     public class ViewModelFactory : IViewModelFactory
     {
+
         readonly IAuthenticatedDataProvider _data;
 
         public ViewModelFactory(IAuthenticatedDataProvider data)
@@ -41,6 +43,27 @@ namespace Warhammer.Mvc.Concrete
             }
 
             return model;
+        }
+
+        public PersonStatViewModel MakeStatModel(Person person)
+        {
+            PersonStatViewModel model = new PersonStatViewModel {PersonId = person.Id, CharacterName = person.ShortName };
+
+            model.Stats = person.Stats;
+            model.Descriptors = person.DescriptorNames;
+            model.Roles = person.RoleNames;
+            model.CurrentXp = person.CurrentXp;
+            model.StatCost = person.StatCost;
+            model.CanBuyStat = person.CanBuyStat;
+            model.RoleCost = person.RoleCost;
+            model.CanBuyRole = person.CanBuyRole;
+            model.DescriptorCost = person.DescriptorCost;
+            model.CanBuyDescriptor = person.CanBuyDescriptor;
+
+            model.MaySpendXp = !person.IsDead && model.StatsCreated;
+
+            return model;
+
         }
     }
 }

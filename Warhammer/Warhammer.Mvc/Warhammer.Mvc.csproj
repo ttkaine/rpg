@@ -217,6 +217,7 @@
     <Compile Include="Models\ManageAwardsViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
+    <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -239,6 +240,9 @@
     <Content Include="Content\DbUpdateScripts\0013.sql" />
     <Content Include="Content\DbUpdateScripts\15101801.sql" />
     <Content Include="Content\DbUpdateScripts\15112301.sql" />
+    <Content Include="Content\DbUpdateScripts\15122701.sql" />
+    <Content Include="Content\DbUpdateScripts\15122702.sql" />
+    <Content Include="Content\DbUpdateScripts\15122703.sql" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
@@ -493,6 +497,8 @@
     <Content Include="Views\Comment\DisplayTemplates\Comment.cshtml" />
     <Content Include="Views\Page\PageImage.cshtml" />
     <Content Include="Views\Home\ActiveTextSessions.cshtml" />
+    <Content Include="Views\Person\ViewStats.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\PersonStatViewModel.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

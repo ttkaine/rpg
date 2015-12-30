@@ -529,10 +529,57 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        private Person GetPerson(int personId)
+        public Person GetPerson(int personId)
         {
             Person person = _repository.People().FirstOrDefault(p => p.Id == personId);
             return person;
+        }
+
+        public void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, List<string> descriptors)
+        {
+            Person person = GetPerson(personId);
+            if (person.PersonStats.Count == 0)
+            {
+                person.Roles = addedRole;
+
+                foreach (string descriptor in descriptors)
+                {
+                    person.AddDescriptor(descriptor, true);
+                }
+
+                foreach (KeyValuePair<StatName, int> keyValuePair in stats)
+                {
+                    PersonStat stat = new PersonStat();
+                    stat.CurrentValue = keyValuePair.Value;
+                    stat.InitialValue = keyValuePair.Value;
+                    stat.PersonId = personId;
+                    stat.StatId = (int) keyValuePair.Key;
+                    stat.XpSpent = 0;
+                    person.PersonStats.Add(stat);
+                }
+                Save(person);
+            }
+        }
+
+        public void AddRoleToPerson(int personId, string role)
+        {
+            Person person = GetPerson(personId);
+            person.AddRole(role);
+            Save(person);
+        }
+
+        public void AddDescriptorToPerson(int personId, string descriptor)
+        {
+            Person person = GetPerson(personId);
+            person.AddDescriptor(descriptor);
+            Save(person);
+        }
+
+        public void BuyStatIncrease(int personId, StatName statName)
+        {
+            Person person = GetPerson(personId);
+            person.BuyStatIncrease(statName);
+            Save(person);
         }
 
         public void RemoveAward(int personId, int awardId)

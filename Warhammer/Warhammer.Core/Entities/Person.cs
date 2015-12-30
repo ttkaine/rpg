@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
             this.Awards = new HashSet<Award>();
             this.PersonComments = new HashSet<Comment>();
             this.SessionLogs = new HashSet<SessionLog>();
+            this.PersonStats = new HashSet<PersonStat>();
         }
     
         public bool IsDead { get; set; }
@@ -26,10 +27,14 @@ namespace Warhammer.Core.Entities
         public Nullable<int> PlayerId { get; set; }
         public string CauseOfDeath { get; set; }
         public bool IsInMainParty { get; set; }
+        public string Roles { get; set; }
+        public string Descriptors { get; set; }
+        public int CurrentXp { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }
         public virtual Player Player { get; set; }
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
+        public virtual ICollection<PersonStat> PersonStats { get; set; }
     }
 }

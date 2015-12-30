@@ -1,0 +1,56 @@
+﻿@model Warhammer.Mvc.Models.PersonStatViewModel
+
+@using (Ajax.BeginForm("SetStats", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+{
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.PersonId)
+    <input type="hidden" value="true" name="Posted" id="Posted"/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddedRole, new { @class = "col-md-12 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.AddedRole, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddedDescriptor1, new {@class = "col-md-12 control-label"})
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.AddedDescriptor1, new {@class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddedDescriptor2, new {@class = "col-md-12 control-label"})
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.AddedDescriptor2, new {@class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddedDescriptor3, new { @class = "col-md-12 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.AddedDescriptor3, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Stats, new { @class = "col-md-12 control-label" })
+        <div class="col-md-10">
+
+            <div class="row">
+                @{
+                    int i = 0;
+                    foreach (var item in Model.Stats)
+                    {
+                        <input type="hidden" name="Stats[@i].Key" value="@item.Key" />
+                        <label class="col-md-6">@item.Key</label>
+                        <input class="col-md-6" name="Stats[@i].Value" value="@item.Value" />
+                        i++;
+                    }
+                }
+            </div>
+
+        </div>
+
+        <input type="submit" value="Set Stats" class="btn btn-block btn-success" />
+
+
+    </div>
+                    }

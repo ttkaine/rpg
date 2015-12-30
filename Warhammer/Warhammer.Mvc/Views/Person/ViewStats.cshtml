@@ -1,0 +1,126 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.PersonStatViewModel
+
+<div id="charStatsPanel" class="well-sm">
+
+    @if (Model.StatsCreated && !Model.Posted)
+    {
+        <div class="alert alert-success">
+            <h3>Character Profile</h3>
+            <h4>Current Experience Points: <span id="xptotal" class="label label-success">@Model.CurrentXp</span></h4>
+        </div>
+            <div class="alert alert-success">
+                <h4>Roles</h4>
+                @foreach (string role in Model.Roles)
+                {
+                    <h3><span class="label label-pill label-success">@role</span></h3>
+                }
+
+                @if (Model.MaySpendXp && ViewBag.EditMode)
+                {
+                    <p>Add a role for @Model.RoleCost XP</p>
+                    if (Model.CanBuyRole)
+                    {
+                        using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                        {
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(m => m.PersonId)
+                            @Html.TextBox("Role")
+                            <input type="submit" value="Add Role (@Model.RoleCost XP)" class="btn btn-block btn-success" />
+                        }
+                    }
+                    else
+                    {
+                        <p>@Model.CharacterName can't afford this.</p>
+                    }
+                }
+            </div>
+            <div class="alert alert-warning">
+                <h4>Descriptors</h4>
+                @foreach (string desc in Model.Descriptors)
+                {
+                    <h4><span class="label label-warning">@desc</span></h4>
+                }
+                @if (Model.MaySpendXp && ViewBag.EditMode)
+                {
+                    <p>Add a Descriptor for @(Model.DescriptorCost) XP</p>
+                    if (Model.CanBuyDescriptor)
+                    {
+                        using (Ajax.BeginForm("AddDescriptor", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                        {
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(m => m.PersonId)
+                            @Html.TextBox("Descriptor")
+                            <input type="submit" value="Add Descriptor (@Model.DescriptorCost XP)" class="btn btn-block btn-success" />
+                        }
+                    }
+                    else
+                    {
+                        <p>@Model.CharacterName can't afford this.</p>
+                    }
+                }
+            </div>
+            <h4>Statistics</h4>
+            <table id="stattable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>
+                            Statistic
+                        </td>
+                        <th>
+                            Current Score
+                        </th>
+                        <td>
+                            @if (Model.MaySpendXp && ViewBag.EditMode)
+                            {
+                                <text>Advance</text>
+                            }
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
+                {
+                        <tr>
+                            <td>@keyValuePair.Key</td>
+                            <td>
+                                <span class="label label-info">@keyValuePair.Value</span>
+                            </td>
+                            <td>
+                                @if (Model.MaySpendXp && ViewBag.EditMode)
+                                {
+                                    if (Model.CanBuyStat)
+                                    {
+                                        using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                                        {
+                                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                                            @Html.HiddenFor(m => m.PersonId)
+                                            <input value="@((int)keyValuePair.Key)" name="StatId" type="hidden" />
+                                            <input type="submit" value="+1 (@Model.StatCost XP)" class="btn btn-block btn-success" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="error">@Model.CharacterName can't afford this</span>
+                                    }
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
+            else
+            {
+            if (ViewBag.EditMode)
+            {
+            @Html.EditorFor(m => Model)
+            }
+            else
+            {
+            <h3>No Statistics Yet.</h3>
+            <p>You can go to edit mode to set your stats.</p>
+            }
+            }
+        </div>
