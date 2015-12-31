@@ -939,7 +939,7 @@ namespace Warhammer.Core.Concrete
 				{
 					PostOrder postOrder = session.PostOrders.OrderBy(po => po.LastTurnEnded).FirstOrDefault();
                     
-					return postOrder != null ? postOrder.Player : _repository.Players().FirstOrDefault(p => p.IsGm);
+					return postOrder != null ? postOrder.Player : null;
 				}
 			}
 			else
