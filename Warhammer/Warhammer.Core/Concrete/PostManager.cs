@@ -198,7 +198,7 @@ namespace Warhammer.Core.Concrete
 				RollValues = rollValues.ToString(),
 				RollType = (int)rollType,
 				SessionId = session.Id,
-				TargetPlayerIds = targetPlayerIds,
+				TargetPlayerIds = null,
 				LastEdited = null
 			};
 
