@@ -44,6 +44,8 @@
         <EntityTypeShape EntityType="WarhammerModel.SiteFeature" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="WarhammerModel.PersonStat" Width="1.5" PointX="8.25" PointY="2.25" />
         <AssociationConnector Association="WarhammerModel.FK_PersonStat_Person" />
+        <EntityTypeShape EntityType="WarhammerModel.UserSetting" Width="1.5" PointX="3" PointY="14.625" />
+        <AssociationConnector Association="WarhammerModel.FK_UserSetting_Player" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

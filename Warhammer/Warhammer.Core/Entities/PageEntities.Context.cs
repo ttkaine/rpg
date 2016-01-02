@@ -36,5 +36,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<PostOrder> PostOrders { get; set; }
         public virtual DbSet<SiteFeature> SiteFeatures { get; set; }
         public virtual DbSet<PersonStat> PersonStats { get; set; }
+        public virtual DbSet<UserSetting> UserSettings { get; set; }
     }
 }

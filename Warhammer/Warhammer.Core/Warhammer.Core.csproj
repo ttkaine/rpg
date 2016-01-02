@@ -153,14 +153,19 @@
     <Compile Include="Entities\Trophy.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\UserSetting.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_Page.cs" />
     <Compile Include="Entities\_Person.cs" />
     <Compile Include="Entities\_Place.cs" />
+    <Compile Include="Entities\_Player.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
     <Compile Include="Entities\_SiteFeature.cs" />
     <Compile Include="Entities\_Trophy.cs" />
+    <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />

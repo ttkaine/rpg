@@ -191,6 +191,16 @@
           <Property Name="PointsValue" Type="int" Nullable="false" />
           <Property Name="TypeId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="SettingId" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" />
+        </EntityType>
         <Association Name="FK_Award_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="Award" Type="Self.Award" Multiplicity="*" />
@@ -491,6 +501,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserSetting_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="UserSetting" Type="Self.UserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSetting">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="WarhammerModelStoreContainer">
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
@@ -508,6 +530,7 @@
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSetting" EntityType="Self.UserSetting" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Award_Person" Association="Self.FK_Award_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="Award" EntitySet="Award" />
@@ -608,6 +631,10 @@
             <End Role="Session" EntitySet="Session" />
             <End Role="SessionLog" EntitySet="SessionLog" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserSetting_Player" Association="Self.FK_UserSetting_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="UserSetting" EntitySet="UserSetting" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -704,6 +731,11 @@
           <AssociationSet Name="FK_PersonStat_Person" Association="WarhammerModel.FK_PersonStat_Person">
             <End Role="Person" EntitySet="Pages" />
             <End Role="PersonStat" EntitySet="PersonStats" />
+          </AssociationSet>
+          <EntitySet Name="UserSettings" EntityType="WarhammerModel.UserSetting" />
+          <AssociationSet Name="FK_UserSetting_Player" Association="WarhammerModel.FK_UserSetting_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="UserSetting" EntitySet="UserSettings" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
@@ -819,6 +851,7 @@
           <Property Name="IsGm" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Player" FromRole="Player" ToRole="Post" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
+          <NavigationProperty Name="UserSettings" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="Player" ToRole="UserSetting" />
         </EntityType>
         <EntityType Name="Session" BaseType="WarhammerModel.Page">
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -1140,6 +1173,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="SettingId" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="UserSetting" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK_UserSetting_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.UserSetting" Role="UserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSetting">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1335,6 +1391,17 @@
                 <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSettings">
+            <EntityTypeMapping TypeName="WarhammerModel.UserSetting">
+              <MappingFragment StoreEntitySet="UserSetting">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
