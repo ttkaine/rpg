@@ -503,6 +503,7 @@
     <Content Include="Views\Person\ViewStats.cshtml" />
     <Content Include="Views\Person\EditorTemplates\PersonStatViewModel.cshtml" />
     <Content Include="Views\Person\StatSummary.cshtml" />
+    <None Include="Views\Home\Menu.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -227,5 +227,13 @@ namespace Warhammer.Mvc.Controllers
 
             return PartialView(model);
         }
+
+        public ActionResult Menu()
+        {
+
+
+
+            return PartialView();
+        }
     }
 }

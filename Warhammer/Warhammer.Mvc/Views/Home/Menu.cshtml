@@ -1,0 +1,73 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Request != null && Request.Url != null)
+                    {
+                        if (ViewBag.EditMode)
+                        {
+                            <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create", new { returnUrl = Request.Url.AbsoluteUri }, null)</li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink("New Person", "Person", "Create")</li>
+                                            <li>@Html.ActionLink("New Session", "GameSession", "Create")</li>
+                                            <li>@Html.ActionLink("New Session Log", "SessionLog", "Create")</li>
+                                            <li>@Html.ActionLink("Place / Location", "Place", "Create")</li>
+                                            <li>@Html.ActionLink("Page", "Page", "Create")</li>
+                                        </ul>
+                                    </li>
+                        }
+                        else
+                        {
+                            if (User.Identity.Name.ToLower().StartsWith("guest"))
+                            {
+                                <li>Guest Mode</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("Switch to Edit Mode", "EditMode", "Create", new { returnUrl = Request.Url.AbsoluteUri }, null)</li>
+                            }
+                        }
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Useful Pages<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://www.gitzmansgallery.com/shdmotwow-full.html" target="">Map of the World</a></li>
+                                <li>@Html.ActionLink("The Trophy Cabinet", "Trophies", "Home")</li>
+                                <li>@Html.ActionLink("Sessions", "Sessions", "Home")</li>
+                                @Html.Action("PinnedItems", "Home")
+                            </ul>
+                        </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <li>@Html.ActionLink("Browse...", "People", "Home")</li>
+
+                                        }
+                                        <li>@Html.ActionLink("Character League", "CharacterLeague", "Home")</li>
+                                        <li>@Html.ActionLink("Graveyard", "Graveyard", "Home")</li>
+                                        <li><a href="@Url.Content("~/Content/Documents/character_sheet.docx")">Download Character Sheet</a></li>
+                                    </ul>
+                                </li>
+
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+}
+
