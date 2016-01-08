@@ -74,6 +74,9 @@ namespace Warhammer.Tests.Smoke
                     case TestSettingType.Pirate:
                         settingsLocation = ConfigurationManager.AppSettings.Get("PirateSettingsLocation");
                         break;
+                    case TestSettingType.Space:
+                        settingsLocation = ConfigurationManager.AppSettings.Get("SpacePirateSettingsLocation");
+                        break;
                 }
 
                 string fileContent = File.ReadAllText(settingsLocation);
