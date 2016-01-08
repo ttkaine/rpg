@@ -47,6 +47,12 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
             _settingsType = TestSettingType.Pirate;
         }
 
+        [Conditional("Space")]
+        private void SetSpaceSettings()
+        {
+            _settingsType = TestSettingType.Space;
+        }
+
         private WebDriverWait _wait;
 
         public WebDriverWait Wait
@@ -73,6 +79,7 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
                 SetTestSettings();
                 SetLiveSettings();
                 SetPirateSettings();
+                SetSpaceSettings();
                 Settings = new TestSettings();
                 Assert.IsTrue(Settings.LoadSettings(_settingsType),
                     "We're not going to get far if we can't even load our settings file...  The expected location of the Settings file is in the App.Config for the test project, you may need to create this file and put some settings into it - it's not in Sauce Control. ZONE:" + _settingsType);

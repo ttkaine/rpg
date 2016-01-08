@@ -1,3 +1,7 @@
-﻿
-<link href="@Url.Content("~/Content/pirate.css")" rel="stylesheet" />
+﻿@model string
+<link href="@Url.Content("~/Content/" + Model + ".css")" rel="stylesheet" />
 
+@if (Model.ToLower() == "space")
+{
+    <link href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css'>
+}

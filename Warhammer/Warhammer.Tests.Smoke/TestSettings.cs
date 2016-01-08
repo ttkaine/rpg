@@ -11,7 +11,8 @@ namespace Warhammer.Tests.Smoke
         Ci,
         Test,
         Live,
-        Pirate
+        Pirate,
+        Space
     }
 
     public class TestSettings
