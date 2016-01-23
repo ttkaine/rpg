@@ -11,7 +11,8 @@ namespace Warhammer.Tests.Smoke
         Ci,
         Test,
         Live,
-        Pirate
+        Pirate,
+        Space
     }
 
     public class TestSettings
@@ -72,6 +73,9 @@ namespace Warhammer.Tests.Smoke
                         break;
                     case TestSettingType.Pirate:
                         settingsLocation = ConfigurationManager.AppSettings.Get("PirateSettingsLocation");
+                        break;
+                    case TestSettingType.Space:
+                        settingsLocation = ConfigurationManager.AppSettings.Get("SpacePirateSettingsLocation");
                         break;
                 }
 

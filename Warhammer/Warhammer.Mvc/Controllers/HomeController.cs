@@ -216,7 +216,11 @@ namespace Warhammer.Mvc.Controllers
         {
             if (SiteName == "Pirates!")
             {
-                return PartialView();
+                return PartialView("OverrideCss", "pirate");
+            }
+            if (SiteName == "Space Pirates!")
+            {
+                return PartialView("OverrideCss", "space");
             }
             return null;
         }

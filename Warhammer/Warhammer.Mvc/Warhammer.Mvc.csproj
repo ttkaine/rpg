@@ -268,6 +268,7 @@
     <Content Include="Content\Images\RoleplayForum\view-messages.png" />
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
+    <Content Include="Content\Images\space_background.jpg" />
     <Content Include="Content\Images\update.png" />
     <Content Include="Content\Less\Bootstrap\mixins\border-radius.css">
       <DependentUpon>border-radius.less</DependentUpon>
@@ -292,6 +293,7 @@
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
     <Content Include="Content\RoleplayCss\SessionLog.css" />
+    <Content Include="Content\space.css" />
     <Content Include="Content\theme.css">
       <DependentUpon>theme.less</DependentUpon>
     </Content>
@@ -511,6 +513,9 @@
     <None Include="Web.PIRATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.SPACE.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.WADE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -556,6 +561,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PIRATE|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPACE|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>

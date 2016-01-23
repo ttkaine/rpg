@@ -1,0 +1,55 @@
+﻿body {
+    background: url('images/space_background.jpg') no-repeat center center fixed;
+    background-size: cover;
+
+}
+
+.header-block h1 {
+    font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+}
+
+.content-block h2 {
+    font-family: 'Orbitron', sans-serif;
+  color: #000;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+}
+
+.content-block h2.page-content-heading 
+{
+    font-family: 'Orbitron', sans-serif;
+}
+
+.navbar {
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+@media screen and (max-width: 1700px) {
+
+    body {
+        background: url('images/space_background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+}
+
+@media screen and (max-width: 850px) {
+
+    body {
+        background: url('images/space_background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+}
+
+.core-content,
+.banner-content,
+.main-content,
+.side-bar
+{
+    opacity: 0.9;
+}
+
+#roleplayContent {
+   opacity: 0.95!important; 
+}
