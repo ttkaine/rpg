@@ -18,7 +18,10 @@
                 @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.MyTurn))
                 {
                     <li>
-                        <a class="btn btn-success btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                        <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = session.Session.Id})">
+                            <img src="@Url.Content("~/Content/Images/home.png")" alt="Session Page" title="Session Page" />
+                        </a>
+                        <a class="btn btn-success btn-main" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
                             @if (session.IsPrivate)
                             {
                                 <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
@@ -36,7 +39,10 @@
                 {
 
                     <li>
-                        <a class="btn btn-default btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                        <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = session.Session.Id})">
+                            <img src="@Url.Content("~/Content/Images/home.png")" alt="Session Page" title="Session Page" />
+                        </a>
+                        <a class="btn btn-default btn-main" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
                             @if (session.IsPrivate)
                             {
                                 <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
@@ -53,7 +59,10 @@
                 @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.Stale))
                 {
                     <li>
-                        <a class="btn btn-default btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                        <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = session.Session.Id})">
+                            <img src="@Url.Content("~/Content/Images/home.png")" alt="Session Page" title="Session Page" />
+                        </a>
+                        <a class="btn btn-default btn-main" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
                             @if (session.IsPrivate)
                             {
                                 <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>

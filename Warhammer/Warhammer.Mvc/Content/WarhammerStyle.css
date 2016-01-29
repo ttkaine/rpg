@@ -6955,6 +6955,12 @@ footer {
 .content-block h2.page-content-heading {
   font: 600 36px 'Great Vibes', Helvetica, sans-serif;
 }
+.btn-mini {
+  width: 20%;
+}
+.btn-main {
+  width: 75%;
+}
 .mini-profile-image,
 .profile-image {
   float: right;
@@ -7132,7 +7138,7 @@ h4 {
 .comments {
   font-size: small;
 }
-.btn {
+.btn-no-small {
   min-width: 100px;
 }
 div.commentdetail {
