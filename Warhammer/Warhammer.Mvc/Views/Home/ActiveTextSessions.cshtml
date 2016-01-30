@@ -15,45 +15,13 @@
         <div class="alert alert-success">
             <p>Your open text sessions</p>
             <ul>
-                @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.MyTurn))
+                @foreach (OpenSessionViewModel session in Model.OpenSessions)
                 {
                     <li>
-                        <a class="btn btn-success btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
-                            @if (session.IsPrivate)
-                            {
-                                <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
-                            }
-                            @if (session.IsUpdated)
-                            {
-                                <img src="@Url.Content("~/Content/Images/update.png")" alt="Updated Since you last looked" title="Updated Since you last looked"/>
-                            }
-                            <span>@session.Session.FullName</span>
+                        <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = session.Session.Id})">
+                            <img src="@Url.Content("~/Content/Images/home.png")" alt="Session Page" title="Session Page" />
                         </a>
-                    </li>
-                }
-
-                @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.Updated))
-                {
-
-                    <li>
-                        <a class="btn btn-default btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
-                            @if (session.IsPrivate)
-                            {
-                                <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>
-                            }
-                            @if (session.IsUpdated)
-                            {
-                                <img src="@Url.Content("~/Content/Images/update.png")" alt="Updated Since you last looked" title="Updated Since you last looked"/>
-                            }
-                            <span>@session.Session.FullName</span>
-                        </a>
-                    </li>
-                }
-
-                @foreach (OpenSessionViewModel session in Model.OpenSessions.Where(s => s.Status == OpenSessionStatus.Stale))
-                {
-                    <li>
-                        <a class="btn btn-default btn-block" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
+                        <a class="btn @session.CssClass btn-main" href="@Url.Action("Index", "Roleplay", new {id = session.Session.Id})">
                             @if (session.IsPrivate)
                             {
                                 <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>

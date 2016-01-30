@@ -251,6 +251,7 @@
     <Content Include="Content\Images\bg-small.jpg" />
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
+    <Content Include="Content\Images\home.png" />
     <Content Include="Content\Images\lock.png" />
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Images\pirate_background.jpg" />

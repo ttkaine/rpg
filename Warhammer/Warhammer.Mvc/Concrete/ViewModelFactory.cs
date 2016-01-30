@@ -23,7 +23,7 @@ namespace Warhammer.Mvc.Concrete
         {
             ActiveTextSessionViewModel model = new ActiveTextSessionViewModel();
 
-            List<Session> myOpenTestSessions = _data.MyOpenTextSessions().OrderByDescending(s => s.LastPostTime).ToList();
+            List<Session> myOpenTestSessions = _data.MyOpenTextSessions().OrderByDescending(s => s.DateTime).ToList();
 
             foreach (Session myOpenTestSession in myOpenTestSessions)
             {
