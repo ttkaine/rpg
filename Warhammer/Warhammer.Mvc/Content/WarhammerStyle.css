@@ -7050,6 +7050,9 @@ footer {
 .tiny {
   font-size: 11.2px;
 }
+#openSessionPanel li {
+  margin-bottom: 5px;
+}
 select {
   max-width: 100%;
 }
