@@ -1,4 +1,6 @@
-﻿namespace Warhammer.Core.Entities
+﻿using System;
+
+namespace Warhammer.Core.Entities
 {
 
     public enum Setting
@@ -12,5 +14,10 @@
 
     public partial class UserSetting
     {
+        public Setting Setting
+        {
+            get { return (Setting) SettingId; }
+            set { SettingId = (int)value; }
+        }
     }
 }

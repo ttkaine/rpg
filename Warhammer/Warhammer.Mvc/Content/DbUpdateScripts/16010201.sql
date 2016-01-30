@@ -32,16 +32,57 @@ ALTER TABLE dbo.UserSetting ADD CONSTRAINT
 	) ON UPDATE  NO ACTION 
 	 ON DELETE  NO ACTION 
 
-INSERT INTO [dbo].[SiteFeature]
-           ([Name]
-           ,[Description]
-           ,[IsEnabled])
+	
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
      VALUES
            ('UserSettings'
-           ,'Show the User Settings Page.'
+           ,'User Settings area for users to set things the way they like them'
            ,0)
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('CharacterLeague'
+           ,'Show the character league page'
+           ,1)		   
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('Graveyard'
+           ,'include a graveyard page'
+           ,1)	
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('CharacterSheet'
+           ,'show the warhammer character sheet'
+           ,1)	
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('WarhammerMap'
+           ,'show the warhammer map'
+           ,1)	
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('TrophyCabinet'
+           ,'include the trophy cabinet page'
+           ,1)	
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('SessionPage'
+           ,'include a list of sessions page'
+           ,1)	
+
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('PublicLeague'
+           ,'make the league public all over'
+           ,0)	
+
 		   
 		    
-INSERT INTO dbo.ChangeLog (Id, DateTime, Comment) VALUES (16010201,GetDate(),'User Settings Feature');
+INSERT INTO dbo.ChangeLog (Id, DateTime, Comment) VALUES (16010201,GetDate(),'Adding User SEttings tables and additional Feature settings');
 
 END

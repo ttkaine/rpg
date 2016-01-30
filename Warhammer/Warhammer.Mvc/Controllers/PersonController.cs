@@ -73,7 +73,7 @@ namespace Warhammer.Mvc.Controllers
         [HttpPost]
         public ActionResult SetStats(PersonStatViewModel postedStats)
         {
-            if (!DataProvider.SiteHasFeature("SimpleStats"))
+            if (!DataProvider.SiteHasFeature(Feature.SimpleStats))
             {
                 return null;
             }

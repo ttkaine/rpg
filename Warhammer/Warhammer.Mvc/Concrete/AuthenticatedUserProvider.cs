@@ -30,11 +30,15 @@ namespace Warhammer.Mvc.Concrete
                     return null;
             }
         }
-        public ICollection<string> Roles
+        public bool IsAdmin
         {
             get
             {
-                return new Collection<string>();
+                var context = HttpContext.Current;
+                if (context != null && context.User != null && context.User.Identity != null)
+                    return HttpContext.Current.User.IsInRole("Admin");
+                else
+                    return false;
             }
         }
     }

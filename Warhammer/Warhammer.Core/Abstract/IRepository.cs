@@ -29,5 +29,6 @@ namespace Warhammer.Core.Abstract
         void Delete(Comment comment);
         IQueryable<SiteFeature> SiteFeatures();
         int Save(SiteFeature feature);
+        IQueryable<UserSetting> UserSettings();
     }
 }

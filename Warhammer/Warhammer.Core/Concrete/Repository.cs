@@ -156,6 +156,11 @@ namespace Warhammer.Core.Concrete
             return feature.Id;
         }
 
+        public IQueryable<UserSetting> UserSettings()
+        {
+            return _entities.UserSettings;
+        }
+
         #endregion
 
         #region Save

@@ -97,19 +97,22 @@
        
     @RenderSection("head", required: false)
 </head>
-    <body>
-        @Html.Action("Menu", "Home")
-        <div class="container body-content">
-            @RenderBody()
-           @if (User.Identity.IsAuthenticated)
-           {
-               <footer>
-                   <p>&copy; @DateTime.Now.Year</p>
-               </footer>
-           }
-        </div>
+<body>
+@if (User.Identity.IsAuthenticated)
+{
+    @Html.Action("Menu", "Home")
+}
+<div class="container body-content">
+    @RenderBody()
+    @if (User.Identity.IsAuthenticated)
+    {
+        <footer>
+            <p>&copy; @DateTime.Now.Year</p>
+        </footer>
+    }
+</div>
 
-        @RenderSection("scripts", required: false)
-   
-    </body>
+@RenderSection("scripts", required: false)
+
+</body>
 </html>

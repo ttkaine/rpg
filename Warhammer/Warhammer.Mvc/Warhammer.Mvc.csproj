@@ -216,6 +216,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageAwardsViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
@@ -269,7 +270,9 @@
     <Content Include="Content\Images\RoleplayForum\view-messages.png" />
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
+    <Content Include="Content\Images\Settings.png" />
     <Content Include="Content\Images\space_background.jpg" />
+    <Content Include="Content\Images\Trophy.png" />
     <Content Include="Content\Images\update.png" />
     <Content Include="Content\Less\Bootstrap\mixins\border-radius.css">
       <DependentUpon>border-radius.less</DependentUpon>
@@ -506,6 +509,7 @@
     <Content Include="Views\Person\ViewStats.cshtml" />
     <Content Include="Views\Person\EditorTemplates\PersonStatViewModel.cshtml" />
     <Content Include="Views\Person\StatSummary.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\MenuItemViewModel.cshtml" />
     <None Include="Views\Home\Menu.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
