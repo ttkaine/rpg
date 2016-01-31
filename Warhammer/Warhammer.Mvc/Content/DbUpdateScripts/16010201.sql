@@ -81,7 +81,19 @@ INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
            ,'make the league public all over'
            ,0)	
 
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('ImmediateEmailer'
+           ,'Send Email Immediately when somethings happens'
+           ,0)	
 		   
+INSERT INTO [dbo].[SiteFeature] ([Name] ,[Description] ,[IsEnabled])
+     VALUES
+           ('NightlyEmailer'
+           ,'Send email overnight on a schedule'
+           ,0)	
+		   
+		   		   		   
 		    
 INSERT INTO dbo.ChangeLog (Id, DateTime, Comment) VALUES (16010201,GetDate(),'Adding User SEttings tables and additional Feature settings');
 
