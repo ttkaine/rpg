@@ -514,7 +514,7 @@
     <Content Include="Views\Home\DisplayTemplates\MenuItemViewModel.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\UserSettingsSectionViewModel.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\UserSettingViewModel.cshtml" />
-    <None Include="Views\Home\Menu.cshtml" />
+    <Content Include="Views\Home\Menu.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\SettingsSection.cshtml" />
     <None Include="Web.MURRAY.config">
