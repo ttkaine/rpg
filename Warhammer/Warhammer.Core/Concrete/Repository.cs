@@ -161,6 +161,11 @@ namespace Warhammer.Core.Concrete
             return _entities.UserSettings;
         }
 
+        public IQueryable<Setting> Settings()
+        {
+            return _entities.Settings;
+        }
+
         #endregion
 
         #region Save

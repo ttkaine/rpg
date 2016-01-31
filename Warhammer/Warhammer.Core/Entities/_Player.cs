@@ -6,7 +6,7 @@ namespace Warhammer.Core.Entities
     {
         public bool SettingIsEnabled(Setting setting)
         {
-            return UserSettings.Any(s => s.Enabled && s.SettingId == (int) setting);
+            return UserSettings.Any(s => s.Enabled && s.SettingId == setting.Id);
         }
 
     }

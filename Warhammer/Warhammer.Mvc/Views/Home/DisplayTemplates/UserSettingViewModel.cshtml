@@ -1,0 +1,23 @@
+﻿@model Warhammer.Mvc.Models.UserSettingViewModel
+
+<tr>
+    <td>@Model.Name</td>
+    <td>@Model.Description</td>
+    <td>
+            @using (Ajax.BeginForm("SwitchSetting", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "UserSettingsPanel" }))
+            {
+                @Html.HiddenFor(m => m.SettingId)
+                if (Model.Enabled)
+                {
+                    <input type="submit" value="@Model.DisabledText" class="btn btn-default"/>
+                    <span class="btn btn-success">@Model.EnabledText</span>
+                }
+                else
+                {
+                    <span class="btn btn-danger">@Model.DisabledText</span>
+                    <input type="submit" value="@Model.EnabledText" class="btn btn-default" />
+                }
+            }
+        
+    </td>
+</tr>

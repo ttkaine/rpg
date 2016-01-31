@@ -12,19 +12,16 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Place : Page
+    public partial class AspNetRole
     {
-        public Place()
+        public AspNetRole()
         {
-            this.Child = new HashSet<Place>();
-            this.Scenes = new HashSet<Scene>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public Nullable<int> IsWithin { get; set; }
-        public int PlaceType { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     
-        public virtual ICollection<Place> Child { get; set; }
-        public virtual Place Parent { get; set; }
-        public virtual ICollection<Scene> Scenes { get; set; }
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }

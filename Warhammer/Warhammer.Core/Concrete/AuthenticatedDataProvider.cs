@@ -672,6 +672,16 @@ namespace Warhammer.Core.Concrete
             return settings;
         }
 
+        public bool SettingIsEnabled(Setting setting)
+        {
+            return _repository.UserSettings().Any(s => s.Enabled && s.PlayerId == CurrentPlayer.Id && s.SettingId == setting.Id);
+        }
+
+        public List<Setting> SettingSection(int sectionId)
+        {
+            return _repository.Settings().Where(s => s.SectionId == sectionId).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

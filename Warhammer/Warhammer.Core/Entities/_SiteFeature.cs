@@ -15,7 +15,9 @@ namespace Warhammer.Core.Entities
         TrophyCabinet,
         SessionPage,
         PublicLeague,
-        AdminLeague
+        AdminLeague,
+        ImmediateEmailer,
+        NightlyEmailer
     }
 
     public partial class SiteFeature

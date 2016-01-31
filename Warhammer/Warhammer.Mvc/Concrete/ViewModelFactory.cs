@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
@@ -94,9 +95,60 @@ namespace Warhammer.Mvc.Concrete
                     Name = "",
                     AltText = "Settings",
                     Url = _urlHelper.Action("Settings", "Home"),
-                    IconUrl = _urlHelper.Content("~/Content/Images/Settings.png")
+                    IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
+                  //  IconCssClass = "badge"
                 });
             }
+
+            return model;
+        }
+
+        public UserSettingsViewModel MakeUserSettings()
+        {
+            UserSettingsViewModel model = new UserSettingsViewModel();
+
+            if (_data.SiteHasFeature(Feature.ImmediateEmailer) || _data.SiteHasFeature(Feature.NightlyEmailer))
+            {
+                model.SectionsIds.Add(SettingSection.EmailNotifications);
+            }
+
+
+            return model;
+
+        }
+
+        public UserSettingsSectionViewModel Make(List<Setting> settingSection)
+        {
+            UserSettingsSectionViewModel model = new UserSettingsSectionViewModel();
+            if (settingSection.Any())
+            {
+                model.SettingTitle = GetSettingTitle(settingSection.First().SettingSection);
+                model.Settings = settingSection.Select(Make).ToList();
+            }
+            return model;
+        }
+
+        private string GetSettingTitle(SettingSection section)
+        {
+            switch (section)
+            {
+                case SettingSection.EmailNotifications:
+                    return "Email Notification Settings";
+                default:
+                    return "UNKNONW SETTING SECTION TITLE";
+            }
+        }
+
+        private UserSettingViewModel Make(Setting setting)
+        {
+            UserSettingViewModel model = new UserSettingViewModel();
+
+            model.SettingId = setting.Id;
+            model.Name = setting.DisplayName;
+            model.Description = setting.Description;
+            model.Enabled = _data.SettingIsEnabled(setting);
+            model.EnabledText = setting.TrueText;
+            model.DisabledText = setting.FalseText;
 
             return model;
         }
@@ -109,8 +161,7 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Browse...",
-                    Url = _urlHelper.Action("People", "Home")
+                    Name = "Browse...", Url = _urlHelper.Action("People", "Home")
                 });
             }
 
@@ -119,8 +170,7 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Character League",
-                    Url = _urlHelper.Action("CharacterLeague", "Home")
+                    Name = "Character League", Url = _urlHelper.Action("CharacterLeague", "Home")
                 });
             }
 
@@ -128,8 +178,7 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Graveyard",
-                    Url = _urlHelper.Action("Graveyard", "Home")
+                    Name = "Graveyard", Url = _urlHelper.Action("Graveyard", "Home")
                 });
             }
 
@@ -137,13 +186,11 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Download Character Sheet",
-                    Url = _urlHelper.Content("~/Content/Documents/character_sheet.docx")
+                    Name = "Download Character Sheet", Url = _urlHelper.Content("~/Content/Documents/character_sheet.docx")
                 });
             }
 
             return items;
-
         }
 
         private List<MenuItemViewModel> MakeUsefulSubmenu()
@@ -154,8 +201,7 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Map of the World",
-                    Url = "http://www.gitzmansgallery.com/shdmotwow-full.html",
+                    Name = "Map of the World", Url = "http://www.gitzmansgallery.com/shdmotwow-full.html",
                 });
             }
 
@@ -163,9 +209,7 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Trophy Cabinet",
-                    Url = _urlHelper.Action("Trophies", "Home"),
-                    IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
+                    Name = "Trophy Cabinet", Url = _urlHelper.Action("Trophies", "Home"), IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
                 });
             }
 
@@ -173,15 +217,13 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Sessions",
-                    Url = _urlHelper.Action("Sessions", "Home"),
+                    Name = "Sessions", Url = _urlHelper.Action("Sessions", "Home"),
                 });
             }
 
             items.AddRange(_data.PinnedPages().Select(pinnedPage => new MenuItemViewModel
             {
-                Name = pinnedPage.FullName,
-                Url = _urlHelper.Action("Index", "Page", new { id = pinnedPage.Id })
+                Name = pinnedPage.FullName, Url = _urlHelper.Action("Index", "Page", new {id = pinnedPage.Id})
             }));
 
 

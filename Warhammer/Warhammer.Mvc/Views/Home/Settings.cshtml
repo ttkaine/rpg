@@ -1,0 +1,25 @@
+﻿@model Warhammer.Mvc.Models.UserSettingsViewModel
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">User Settings for @Model.User</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            @Html.DisplayFor(s => s.Sections)
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Set yourself some settings</h3>
+            <p>There are a few things you can configure about the way the site works. More may be added later. Check here for setting things the way you like them!</p>
+        </div>
+    </div>
+
+</div>

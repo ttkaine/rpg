@@ -35,5 +35,7 @@ namespace Warhammer.Mvc.Models
         public string IconUrl { get; set; }
         public List<MenuItemViewModel> SubMenu { get; set; }
         public string AltText { get; set; }
+        public string IconCssClass { get; set; }
+        public string CssClass { get; set; }
     }
 }

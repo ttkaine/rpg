@@ -5,6 +5,67 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="WarhammerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="Award">
           <Key>
             <PropertyRef Name="Id" />
@@ -150,6 +211,27 @@
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="LastTurnEnded" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Scene">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LeadCharacterId" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScenePost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SceneId" Type="int" Nullable="false" />
+          <Property Name="CharacterId" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="TextContent" Type="nvarchar(max)" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="EditedDateTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="Session">
           <Key>
             <PropertyRef Name="Id" />
@@ -169,6 +251,18 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="PersonId" Type="int" />
           <Property Name="SessionId" Type="int" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="250" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="TrueText" Type="nvarchar" MaxLength="50" />
+          <Property Name="FalseText" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="SiteFeature">
           <Key>
@@ -270,6 +364,62 @@
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="CreatedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -453,6 +603,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Scene_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Scene" Type="Self.Scene" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Scene" Type="Self.Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LeadCharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Place">
+          <End Role="Place" Type="Self.Place" Multiplicity="0..1" />
+          <End Role="Scene" Type="Self.Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="ScenePost" Type="Self.ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="ScenePost" Type="Self.ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Scene">
+          <End Role="Scene" Type="Self.Scene" Multiplicity="1" />
+          <End Role="ScenePost" Type="Self.ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scene">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="SceneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Session_Page">
           <End Role="Page" Type="Self.Page" Multiplicity="1" />
           <End Role="Session" Type="Self.Session" Multiplicity="0..1" />
@@ -513,7 +735,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserSetting_Setting">
+          <End Role="Setting" Type="Self.Setting" Multiplicity="1" />
+          <End Role="UserSetting" Type="Self.UserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Setting">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSetting">
+              <PropertyRef Name="SettingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="WarhammerModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
@@ -526,8 +766,11 @@
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scene" EntityType="Self.Scene" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScenePost" EntityType="Self.ScenePost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSetting" EntityType="Self.UserSetting" Schema="dbo" store:Type="Tables" />
@@ -554,6 +797,22 @@
           <AssociationSet Name="FK_Comment_Player" Association="Self.FK_Comment_Player">
             <End Role="Player" EntitySet="Player" />
             <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_Page_Person" Association="Self.FK_Page_Person">
             <End Role="Player" EntitySet="Player" />
@@ -615,6 +874,30 @@
             <End Role="Session" EntitySet="Session" />
             <End Role="PostOrder" EntitySet="PostOrder" />
           </AssociationSet>
+          <AssociationSet Name="FK_Scene_Page" Association="Self.FK_Scene_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Scene" EntitySet="Scene" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Person" Association="Self.FK_Scene_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Scene" EntitySet="Scene" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Place" Association="Self.FK_Scene_Place">
+            <End Role="Place" EntitySet="Place" />
+            <End Role="Scene" EntitySet="Scene" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Person" Association="Self.FK_ScenePost_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ScenePost" EntitySet="ScenePost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Player" Association="Self.FK_ScenePost_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="ScenePost" EntitySet="ScenePost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Scene" Association="Self.FK_ScenePost_Scene">
+            <End Role="Scene" EntitySet="Scene" />
+            <End Role="ScenePost" EntitySet="ScenePost" />
+          </AssociationSet>
           <AssociationSet Name="FK_Session_Page" Association="Self.FK_Session_Page">
             <End Role="Page" EntitySet="Page" />
             <End Role="Session" EntitySet="Session" />
@@ -633,6 +916,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_UserSetting_Player" Association="Self.FK_UserSetting_Player">
             <End Role="Player" EntitySet="Player" />
+            <End Role="UserSetting" EntitySet="UserSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSetting_Setting" Association="Self.FK_UserSetting_Setting">
+            <End Role="Setting" EntitySet="Setting" />
             <End Role="UserSetting" EntitySet="UserSetting" />
           </AssociationSet>
         </EntityContainer>
@@ -737,6 +1024,54 @@
             <End Role="Player" EntitySet="Players" />
             <End Role="UserSetting" EntitySet="UserSettings" />
           </AssociationSet>
+          <EntitySet Name="C__MigrationHistory" EntityType="WarhammerModel.C__MigrationHistory" />
+          <EntitySet Name="AspNetRoles" EntityType="WarhammerModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="WarhammerModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="WarhammerModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="WarhammerModel.AspNetUser" />
+          <EntitySet Name="Scenes" EntityType="WarhammerModel.Scene" />
+          <EntitySet Name="ScenePosts" EntityType="WarhammerModel.ScenePost" />
+          <EntitySet Name="Settings" EntityType="WarhammerModel.Setting" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Page" Association="WarhammerModel.FK_Scene_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="Scene" EntitySet="Scenes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Person" Association="WarhammerModel.FK_Scene_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="Scene" EntitySet="Scenes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Person" Association="WarhammerModel.FK_ScenePost_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="ScenePost" EntitySet="ScenePosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scene_Place" Association="WarhammerModel.FK_Scene_Place">
+            <End Role="Place" EntitySet="Pages" />
+            <End Role="Scene" EntitySet="Scenes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Player" Association="WarhammerModel.FK_ScenePost_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="ScenePost" EntitySet="ScenePosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenePost_Scene" Association="WarhammerModel.FK_ScenePost_Scene">
+            <End Role="Scene" EntitySet="Scenes" />
+            <End Role="ScenePost" EntitySet="ScenePosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSetting_Setting" Association="WarhammerModel.FK_UserSetting_Setting">
+            <End Role="Setting" EntitySet="Settings" />
+            <End Role="UserSetting" EntitySet="UserSettings" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="WarhammerModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -799,6 +1134,7 @@
           <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Page" FromRole="Page" ToRole="PageView" />
           <NavigationProperty Name="Related" Relationship="WarhammerModel.PersonAtSession" FromRole="Page" ToRole="Page1" />
           <NavigationProperty Name="Pages" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" />
+          <NavigationProperty Name="Scene" Relationship="WarhammerModel.FK_Scene_Page" FromRole="Page" ToRole="Scene" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -826,12 +1162,15 @@
           <Property Name="CurrentXp" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonStats" Relationship="WarhammerModel.FK_PersonStat_Person" FromRole="Person" ToRole="PersonStat" />
           <Property Name="XpSpent" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Scenes" Relationship="WarhammerModel.FK_Scene_Person" FromRole="Person" ToRole="Scene" />
+          <NavigationProperty Name="ScenePosts" Relationship="WarhammerModel.FK_ScenePost_Person" FromRole="Person" ToRole="ScenePost" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
           <Property Name="PlaceType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Child" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place" ToRole="Place1" />
           <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place1" ToRole="Place" />
+          <NavigationProperty Name="Scenes" Relationship="WarhammerModel.FK_Scene_Place" FromRole="Place" ToRole="Scene" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
@@ -852,6 +1191,7 @@
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Player" FromRole="Player" ToRole="Post" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
           <NavigationProperty Name="UserSettings" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="Player" ToRole="UserSetting" />
+          <NavigationProperty Name="ScenePosts" Relationship="WarhammerModel.FK_ScenePost_Player" FromRole="Player" ToRole="ScenePost" />
         </EntityType>
         <EntityType Name="Session" BaseType="WarhammerModel.Page">
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -1183,6 +1523,7 @@
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="UserSetting" ToRole="Player" />
+          <NavigationProperty Name="Setting" Relationship="WarhammerModel.FK_UserSetting_Setting" FromRole="UserSetting" ToRole="Setting" />
         </EntityType>
         <Association Name="FK_UserSetting_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -1195,6 +1536,222 @@
               <PropertyRef Name="PlayerId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="WarhammerModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="AspNetRoles" Relationship="WarhammerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="Scene">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LeadCharacterId" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_Scene_Page" FromRole="Scene" ToRole="Page" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Scene_Person" FromRole="Scene" ToRole="Person" />
+          <NavigationProperty Name="Place" Relationship="WarhammerModel.FK_Scene_Place" FromRole="Scene" ToRole="Place" />
+          <NavigationProperty Name="ScenePosts" Relationship="WarhammerModel.FK_ScenePost_Scene" FromRole="Scene" ToRole="ScenePost" />
+        </EntityType>
+        <EntityType Name="ScenePost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SceneId" Type="Int32" Nullable="false" />
+          <Property Name="CharacterId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="TextContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EditedDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ScenePost_Person" FromRole="ScenePost" ToRole="Person" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_ScenePost_Player" FromRole="ScenePost" ToRole="Player" />
+          <NavigationProperty Name="Scene" Relationship="WarhammerModel.FK_ScenePost_Scene" FromRole="ScenePost" ToRole="Scene" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrueText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FalseText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserSettings" Relationship="WarhammerModel.FK_UserSetting_Setting" FromRole="Setting" ToRole="UserSetting" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="WarhammerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="WarhammerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LeadCharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.ScenePost" Role="ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="CharacterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scene_Place">
+          <End Type="WarhammerModel.Place" Role="Place" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Scene">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.ScenePost" Role="ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenePost_Scene">
+          <End Type="WarhammerModel.Scene" Role="Scene" Multiplicity="1" />
+          <End Type="WarhammerModel.ScenePost" Role="ScenePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scene">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScenePost">
+              <PropertyRef Name="SceneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSetting_Setting">
+          <End Type="WarhammerModel.Setting" Role="Setting" Multiplicity="1" />
+          <End Type="WarhammerModel.UserSetting" Role="UserSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Setting">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSetting">
+              <PropertyRef Name="SettingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="WarhammerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="WarhammerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1406,6 +1963,105 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="WarhammerModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="WarhammerModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="WarhammerModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="WarhammerModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="WarhammerModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scenes">
+            <EntityTypeMapping TypeName="WarhammerModel.Scene">
+              <MappingFragment StoreEntitySet="Scene">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LeadCharacterId" ColumnName="LeadCharacterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScenePosts">
+            <EntityTypeMapping TypeName="WarhammerModel.ScenePost">
+              <MappingFragment StoreEntitySet="ScenePost">
+                <ScalarProperty Name="EditedDateTime" ColumnName="EditedDateTime" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="TextContent" ColumnName="TextContent" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="CharacterId" ColumnName="CharacterId" />
+                <ScalarProperty Name="SceneId" ColumnName="SceneId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="WarhammerModel.Setting">
+              <MappingFragment StoreEntitySet="Setting">
+                <ScalarProperty Name="FalseText" ColumnName="FalseText" />
+                <ScalarProperty Name="TrueText" ColumnName="TrueText" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="WarhammerModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -239,8 +239,16 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Settings()
         {
-            List<UserSetting> settings = DataProvider.UserSettings();
-            return View(settings);
+            UserSettingsViewModel model = ModelFactory.MakeUserSettings();
+            return View(model);
+
         }
+
+        public ActionResult SettingsSection(int sectionId)
+        {
+            UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));
+            return View(model);
+        }
+
     }
 }

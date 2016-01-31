@@ -12,19 +12,18 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Place : Page
+    public partial class ScenePost
     {
-        public Place()
-        {
-            this.Child = new HashSet<Place>();
-            this.Scenes = new HashSet<Scene>();
-        }
+        public int Id { get; set; }
+        public int SceneId { get; set; }
+        public int CharacterId { get; set; }
+        public int PlayerId { get; set; }
+        public string TextContent { get; set; }
+        public System.DateTime DateTime { get; set; }
+        public Nullable<System.DateTime> EditedDateTime { get; set; }
     
-        public Nullable<int> IsWithin { get; set; }
-        public int PlaceType { get; set; }
-    
-        public virtual ICollection<Place> Child { get; set; }
-        public virtual Place Parent { get; set; }
-        public virtual ICollection<Scene> Scenes { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual Player Player { get; set; }
+        public virtual Scene Scene { get; set; }
     }
 }

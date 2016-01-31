@@ -21,5 +21,6 @@ namespace Warhammer.Core.Entities
         public string Data { get; set; }
     
         public virtual Player Player { get; set; }
+        public virtual Setting Setting { get; set; }
     }
 }

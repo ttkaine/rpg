@@ -12,19 +12,11 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Place : Page
+    public partial class C__MigrationHistory
     {
-        public Place()
-        {
-            this.Child = new HashSet<Place>();
-            this.Scenes = new HashSet<Scene>();
-        }
-    
-        public Nullable<int> IsWithin { get; set; }
-        public int PlaceType { get; set; }
-    
-        public virtual ICollection<Place> Child { get; set; }
-        public virtual Place Parent { get; set; }
-        public virtual ICollection<Scene> Scenes { get; set; }
+        public string MigrationId { get; set; }
+        public string ContextKey { get; set; }
+        public byte[] Model { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

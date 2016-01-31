@@ -46,6 +46,24 @@
         <AssociationConnector Association="WarhammerModel.FK_PersonStat_Person" />
         <EntityTypeShape EntityType="WarhammerModel.UserSetting" Width="1.5" PointX="3" PointY="14.625" />
         <AssociationConnector Association="WarhammerModel.FK_UserSetting_Player" />
+        <EntityTypeShape EntityType="WarhammerModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="WarhammerModel.AspNetRole" Width="1.5" PointX="10.75" PointY="2.5" />
+        <EntityTypeShape EntityType="WarhammerModel.AspNetUserClaim" Width="1.5" PointX="15.25" PointY="1" />
+        <EntityTypeShape EntityType="WarhammerModel.AspNetUserLogin" Width="1.5" PointX="15.25" PointY="3.75" />
+        <EntityTypeShape EntityType="WarhammerModel.AspNetUser" Width="1.5" PointX="13" PointY="1.375" />
+        <EntityTypeShape EntityType="WarhammerModel.Scene" Width="1.5" PointX="13.625" PointY="11.875" />
+        <EntityTypeShape EntityType="WarhammerModel.ScenePost" Width="1.5" PointX="15.875" PointY="10.5" />
+        <EntityTypeShape EntityType="WarhammerModel.Setting" Width="1.5" PointX="1.125" PointY="15.5" />
+        <AssociationConnector Association="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="WarhammerModel.FK_Scene_Page" />
+        <AssociationConnector Association="WarhammerModel.FK_Scene_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_ScenePost_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_Scene_Place" />
+        <AssociationConnector Association="WarhammerModel.FK_ScenePost_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_ScenePost_Scene" />
+        <AssociationConnector Association="WarhammerModel.FK_UserSetting_Setting" />
+        <AssociationConnector Association="WarhammerModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
