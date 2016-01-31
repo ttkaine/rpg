@@ -15,6 +15,6 @@ namespace Warhammer.Core.Abstract
     {
         bool UserIsAuthenticated { get; }
         string UserName { get; }
-        ICollection<string> Roles { get; } 
+        bool IsAdmin { get; } 
     }
 }

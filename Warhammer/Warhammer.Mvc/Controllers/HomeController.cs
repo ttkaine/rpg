@@ -16,8 +16,6 @@ namespace Warhammer.Mvc.Controllers
 {
     public class HomeController : BaseController
     {
-        IViewModelFactory _factory;
-
         private string SiteName
         {
             get
@@ -30,9 +28,8 @@ namespace Warhammer.Mvc.Controllers
             }
         }
 
-        public HomeController(IAuthenticatedDataProvider data, IViewModelFactory factory) : base(data)
+        public HomeController(IAuthenticatedDataProvider data) : base(data)
         {
-            _factory = factory;
         }
 
         public ActionResult Index()
@@ -83,7 +80,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Graveyard()
         {
-            List<Person> people = DataProvider.People().Where(p => p.IsDead).OrderBy(s => s.FullName).ToList();
+            List<Person> people = DataProvider.PeopleInGraveyard().ToList();
             return View(people);
         }
 
@@ -227,9 +224,38 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ActiveTextSessions()
         {
-            ActiveTextSessionViewModel model = _factory.MakeActiveTextSessionViewModel();
+            ActiveTextSessionViewModel model = ModelFactory.MakeActiveTextSessionViewModel();
 
             return PartialView(model);
+        }
+
+        public ActionResult Menu()
+        {
+            MenuViewModel model = ModelFactory.MakeMenu();
+
+
+            return PartialView(model);
+        }
+
+        public ActionResult Settings()
+        {
+            UserSettingsViewModel model = ModelFactory.MakeUserSettings();
+            return View(model);
+
+        }
+
+        public ActionResult SettingsSection(int sectionId)
+        {
+            UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult SwitchSetting(int settingId)
+        {
+            int sectionId = DataProvider.SwitchSetting(settingId);
+            UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));
+            return PartialView("SettingsSection", model);
         }
     }
 }

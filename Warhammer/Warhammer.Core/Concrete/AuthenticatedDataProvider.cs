@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using System.Transactions;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -591,7 +592,7 @@ namespace Warhammer.Core.Concrete
 
         public bool CheckStatPermissions(int personId)
         {
-            if (!SiteHasFeature("SimpleStats"))
+            if (!SiteHasFeature(Feature.SimpleStats))
             {
                 return false;
             }
@@ -609,7 +610,7 @@ namespace Warhammer.Core.Concrete
 
         public bool CheckStatSummaryPermissions()
         {
-            if (!SiteHasFeature("SimpleStats"))
+            if (!SiteHasFeature(Feature.SimpleStats))
             {
                 return false;
             }
@@ -620,6 +621,104 @@ namespace Warhammer.Core.Concrete
         {
             List<Person> people = AllNpcs().ToList();
             return people.Where(p => p.CanBuyStat && p.Stats.Sum(s => s.Value) > 10).OrderByDescending(p => p.CurrentXp).ToList();
+        }
+
+        public List<Person> PeopleInGraveyard()
+        {
+            return _repository.People().Where(p => p.IsDead).OrderBy(s => s.FullName).ToList();
+        }
+
+        public bool CurrentUserIsAdmin
+        {
+            get { return _authenticatedUser.IsAdmin; }
+        }
+
+        public bool ShowGraveyard
+        {
+            get
+            {
+                return SiteHasFeature(Feature.Graveyard) && _repository.People().Any(p => p.IsDead);
+            }
+        }
+
+        public bool ShowLeague
+        {
+            get
+            {
+                return SiteHasFeature(Feature.CharacterLeague) && _repository.People().Any();
+            }     
+        }
+
+        public bool ShowCharacterSheet
+        {
+            get { return SiteHasFeature(Feature.CharacterSheet); }
+        }
+
+        public List<UserSetting> UserSettings()
+        {
+            List<UserSetting> settings = _repository.UserSettings().Where(u => u.PlayerId == CurrentPlayer.Id).ToList();
+
+            foreach (int value in Enum.GetValues(typeof(Setting)))
+            {
+                if (settings.All(s => s.SettingId != value))
+                {
+                    settings.Add(new UserSetting
+                    {
+                        PlayerId = CurrentPlayer.Id,
+                        Enabled = false,
+                        SettingId = value
+                    });
+                }
+            }
+            return settings;
+        }
+
+        public bool SettingIsEnabled(Setting setting)
+        {
+            return _repository.UserSettings().Any(s => s.Enabled && s.PlayerId == CurrentPlayer.Id && s.SettingId == setting.Id);
+        }
+
+        public List<Setting> SettingSection(int sectionId)
+        {
+            return _repository.Settings().Where(s => s.SectionId == sectionId).ToList();
+        }
+
+        public int SwitchSetting(int settingId)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+
+                UserSetting setting =
+                    _repository.UserSettings()
+                        .FirstOrDefault(s => s.SettingId == settingId && s.PlayerId == CurrentPlayer.Id);
+                if (setting == null)
+                {
+                    setting = new UserSetting
+                    {
+                        PlayerId = CurrentPlayer.Id,
+                        SettingId = settingId
+                    };
+                }
+
+                setting.Enabled = !setting.Enabled;
+
+
+               _repository.Save(setting);
+
+               
+                transaction.Complete();
+            }
+
+            Setting settingDefinition = _repository.Settings().FirstOrDefault(s => s.Id == settingId);
+            if (settingDefinition != null)
+                {
+                    return settingDefinition.SectionId;
+                }
+                else
+                {
+                    return 0;
+                }
+
         }
 
         public void RemoveAward(int personId, int awardId)
@@ -718,7 +817,7 @@ namespace Warhammer.Core.Concrete
                 session.IsClosed = true;
                 Save(session);
 
-                if (SiteHasFeature("SimpleStats"))
+                if (SiteHasFeature(Feature.SimpleStats))
                 {
                     ApplyXpForSession(session);
                 }
@@ -835,18 +934,25 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> GetLeague()
         {
-            List<Person> people;
-            if (SiteHasFeature("Public Leauge"))
+            List<Person> people = new List<Person>();
+            if (SiteHasFeature(Feature.CharacterLeague))
             {
-                people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
-            }
+                if (SiteHasFeature(Feature.PublicLeague) || SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin)
+                {
+                    people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+                }
             else
-            {
-                people = People().Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
-                people = ApplyUplift(people);
-                people = ApplyNail(people);
+                {
+                    people =
+                        People()
+                            .Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id)
+                            .OrderByDescending(s => s.PointsValue)
+                            .ThenByDescending(s => s.Modified)
+                            .ToList();
+                    people = ApplyUplift(people);
+                    people = ApplyNail(people);
+                }
             }
-         
             return people;
         }
 
@@ -965,8 +1071,9 @@ namespace Warhammer.Core.Concrete
 			return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
 		}
 
-        public bool SiteHasFeature(string featureName)
+        public bool SiteHasFeature(Feature feature)
         {
+            string featureName = feature.ToString();
             return _repository.SiteFeatures().Any(f => f.Name == featureName && f.IsEnabled);
         }
 

@@ -1,0 +1,39 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.UserSettingsViewModel
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">User Settings for @Model.User</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+           @if (Model.SectionsIds.Any())
+           {
+               foreach (SettingSection settingSection in Model.SectionsIds)
+               {
+                 @Html.Action("SettingsSection", new { sectionId = settingSection })
+               }
+           }
+           else
+           {
+               <div class="alert alert-warning">
+                   <h3>There are no Settings to Set.</h3>
+                   <p>Sorry - you don't have access to any settings. I guess I probably shouldn't have shown you the button, eh?</p>
+               </div>
+           }
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Set yourself some settings</h3>
+            <p>There are a few things you can configure about the way the site works. More may be added later. Check here for setting things the way you like them!</p>
+        </div>
+    </div>
+
+</div>

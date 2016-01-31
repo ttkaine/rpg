@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
-using Warhammer.Core.Concrete;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
@@ -11,12 +11,13 @@ namespace Warhammer.Mvc.Concrete
 {
     public class ViewModelFactory : IViewModelFactory
     {
-
         readonly IAuthenticatedDataProvider _data;
+        private readonly UrlHelper _urlHelper;
 
-        public ViewModelFactory(IAuthenticatedDataProvider data)
+        public ViewModelFactory(UrlHelper urlHelper, IAuthenticatedDataProvider data)
         {
             _data = data;
+            _urlHelper = urlHelper;
         }
 
         public ActiveTextSessionViewModel MakeActiveTextSessionViewModel()
@@ -64,6 +65,177 @@ namespace Warhammer.Mvc.Concrete
 
             return model;
 
+        }
+
+        public MenuViewModel MakeMenu()
+        {
+            MenuViewModel model = new MenuViewModel();
+
+            List<MenuItemViewModel> usefulSubMenu = MakeUsefulSubmenu();
+            List<MenuItemViewModel> peopleSubMenu = MakePeopleSubmenu();
+
+            model.LeftMenu.Add(new MenuItemViewModel
+            {
+                Name = "Useful Pages",
+                Url = "#",
+                SubMenu = usefulSubMenu
+            });
+
+            model.LeftMenu.Add(new MenuItemViewModel
+            {
+                Name = "People",
+                Url = "#",
+                SubMenu = peopleSubMenu
+            });
+
+            if (_data.SiteHasFeature(Feature.UserSettings))
+            {
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Settings",
+                    Url = _urlHelper.Action("Settings", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
+                  //  IconCssClass = "badge"
+                });
+            }
+
+            return model;
+        }
+
+        public UserSettingsViewModel MakeUserSettings()
+        {
+            UserSettingsViewModel model = new UserSettingsViewModel();
+
+            if (_data.SiteHasFeature(Feature.ImmediateEmailer))
+            {
+                model.SectionsIds.Add(SettingSection.EmailNotifications);
+            }
+            if (_data.SiteHasFeature(Feature.NightlyEmailer))
+            {
+                model.SectionsIds.Add(SettingSection.DailySummaryEmails);
+            }
+
+
+            return model;
+
+        }
+
+        public UserSettingsSectionViewModel Make(List<Setting> settingSection)
+        {
+            UserSettingsSectionViewModel model = new UserSettingsSectionViewModel();
+            if (settingSection.Any())
+            {
+                model.SectionId =  settingSection.First().SectionId;
+                model.SettingTitle = GetSettingTitle(settingSection.First().SettingSection);
+                model.Settings = settingSection.Select(Make).ToList();
+            }
+            return model;
+        }
+
+        private string GetSettingTitle(SettingSection section)
+        {
+            switch (section)
+            {
+                case SettingSection.EmailNotifications:
+                    return "Email Notification Settings";
+                case SettingSection.DailySummaryEmails:
+                    return "Summary Emails";
+                default:
+                    return "UNKNONW SETTING SECTION TITLE";
+            }
+        }
+
+        private UserSettingViewModel Make(Setting setting)
+        {
+            UserSettingViewModel model = new UserSettingViewModel();
+
+            model.SettingId = setting.Id;
+            model.SectionId = setting.SectionId;
+            model.Name = setting.DisplayName;
+            model.Description = setting.Description;
+            model.Enabled = _data.SettingIsEnabled(setting);
+            model.EnabledText = setting.TrueText;
+            model.DisabledText = setting.FalseText;
+
+            return model;
+        }
+
+        private List<MenuItemViewModel> MakePeopleSubmenu()
+        {
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+
+            if (_data.CurrentUserIsAdmin)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Browse...", Url = _urlHelper.Action("People", "Home")
+                });
+            }
+
+
+            if (_data.ShowLeague)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Character League", Url = _urlHelper.Action("CharacterLeague", "Home")
+                });
+            }
+
+            if (_data.ShowGraveyard)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Graveyard", Url = _urlHelper.Action("Graveyard", "Home")
+                });
+            }
+
+            if (_data.ShowCharacterSheet)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Download Character Sheet", Url = _urlHelper.Content("~/Content/Documents/character_sheet.docx")
+                });
+            }
+
+            return items;
+        }
+
+        private List<MenuItemViewModel> MakeUsefulSubmenu()
+        {
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+
+            if (_data.SiteHasFeature(Feature.WarhammerMap))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Map of the World", Url = "http://www.gitzmansgallery.com/shdmotwow-full.html",
+                });
+            }
+
+            if (_data.SiteHasFeature(Feature.TrophyCabinet))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Trophy Cabinet", Url = _urlHelper.Action("Trophies", "Home"), IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
+                });
+            }
+
+            if (_data.SiteHasFeature(Feature.SessionPage))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Sessions", Url = _urlHelper.Action("Sessions", "Home"),
+                });
+            }
+
+            items.AddRange(_data.PinnedPages().Select(pinnedPage => new MenuItemViewModel
+            {
+                Name = pinnedPage.FullName, Url = _urlHelper.Action("Index", "Page", new {id = pinnedPage.Id})
+            }));
+
+
+            return items;
         }
     }
 }

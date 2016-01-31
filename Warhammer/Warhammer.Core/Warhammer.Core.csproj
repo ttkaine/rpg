@@ -79,6 +79,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -102,6 +103,18 @@
     <Compile Include="Concrete\PostManager.cs" />
     <Compile Include="Concrete\ModelFactory.cs" />
     <Compile Include="Concrete\Repository.cs" />
+    <Compile Include="Entities\AspNetRole.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AspNetUser.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AspNetUserClaim.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AspNetUserLogin.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Award.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -109,6 +122,9 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Comment.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\C__MigrationHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Page.cs">
@@ -150,10 +166,19 @@
     <Compile Include="Entities\PostOrder.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Scene.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ScenePost.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Session.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SessionLog.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Setting.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SiteFeature.cs">
@@ -162,14 +187,20 @@
     <Compile Include="Entities\Trophy.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\UserSetting.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_Page.cs" />
     <Compile Include="Entities\_Person.cs" />
     <Compile Include="Entities\_Place.cs" />
+    <Compile Include="Entities\_Player.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
+    <Compile Include="Entities\_Setting.cs" />
     <Compile Include="Entities\_SiteFeature.cs" />
     <Compile Include="Entities\_Trophy.cs" />
+    <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />

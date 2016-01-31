@@ -1,0 +1,58 @@
+﻿@model Warhammer.Mvc.Models.MenuViewModel
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Request != null && Request.Url != null)
+                    {
+                        if (ViewBag.EditMode)
+                        {
+                            <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create", new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("New Person", "Person", "Create")</li>
+                                    <li>@Html.ActionLink("New Session", "GameSession", "Create")</li>
+                                    <li>@Html.ActionLink("New Session Log", "SessionLog", "Create")</li>
+                                    <li>@Html.ActionLink("Place / Location", "Place", "Create")</li>
+                                    <li>@Html.ActionLink("Page", "Page", "Create")</li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            if (User.Identity.Name.ToLower().StartsWith("guest"))
+                            {
+                                <li>Guest Mode</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("Switch to Edit Mode", "EditMode", "Create", new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
+                            }
+                        }
+
+                        @Html.DisplayFor(m => m.LeftMenu)
+
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @Html.DisplayFor(m => m.RightMenu)
+
+                    @Html.Partial("_LoginPartial")
+                </ul>
+</div>
+        </div>
+    </div>
+}
+

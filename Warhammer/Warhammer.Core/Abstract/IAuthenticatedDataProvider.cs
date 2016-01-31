@@ -68,7 +68,7 @@ namespace Warhammer.Core.Abstract
 		List<Session> OpenTextSessions();
 		List<Session> MyOpenTextSessions();
 		List<Session> ModifiedTextSessions();
-        bool SiteHasFeature(string featureName);
+        bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);
         Person GetPerson(int personId);
@@ -80,5 +80,14 @@ namespace Warhammer.Core.Abstract
         bool CheckStatPermissions(int personId);
         bool CheckStatSummaryPermissions();
         List<Person> NpcWithXp();
+        List<Person> PeopleInGraveyard();
+        bool CurrentUserIsAdmin { get; }
+        bool ShowGraveyard { get;  }
+        bool ShowLeague { get; }
+        bool ShowCharacterSheet { get; }
+        List<UserSetting> UserSettings();
+        bool SettingIsEnabled(Setting setting);
+        List<Setting> SettingSection(int sectionId);
+        int SwitchSetting(int settingId);
     }
 }

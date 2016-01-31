@@ -8,5 +8,8 @@ namespace Warhammer.Mvc.Abstract
     {
         ActiveTextSessionViewModel MakeActiveTextSessionViewModel();
         PersonStatViewModel MakeStatModel(Person person);
+        MenuViewModel MakeMenu();
+        UserSettingsViewModel MakeUserSettings();
+        UserSettingsSectionViewModel Make(List<Setting> settingSection);
     }
 }

@@ -1,0 +1,36 @@
+﻿@model Warhammer.Mvc.Models.UserSettingViewModel
+
+<tr>
+    <td>@Model.Name</td>
+    <td>@Model.Description</td>
+
+    @if (Model.Enabled)
+    {
+       <td>
+            @using (Ajax.BeginForm("SwitchSetting", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "setting_" + Model.SectionId }))
+            {
+                <input type="hidden" value="@Model.SettingId" name="settingId" />
+                <input type="submit" value="@Model.DisabledText" class="btn btn-default btn-block" />
+            }
+        </td>
+        <td>
+            <span class="btn btn-success  btn-block">@Model.EnabledText</span>
+        </td>
+    }
+    else
+    {
+
+        <td>
+            <span class="btn btn-danger  btn-block">@Model.DisabledText</span>
+        </td>
+            <td>
+                @using (Ajax.BeginForm("SwitchSetting", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "setting_" + Model.SectionId }))
+                {
+                    <input type="hidden" value="@Model.SettingId" name="settingId" />
+                    <input type="submit" value="@Model.EnabledText" class="btn btn-default  btn-block" />
+                }
+            </td>
+    }
+
+</tr>
+
