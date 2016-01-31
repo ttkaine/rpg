@@ -1,4 +1,5 @@
-﻿@model Warhammer.Mvc.Models.UserSettingsViewModel
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.UserSettingsViewModel
 <div class="content-wrapper">
 
     @Html.Hidden("personId", 1)
@@ -10,8 +11,21 @@
     </div>
 
     <div class="main-content">
-        <div class="content-block session-block">
-            @Html.DisplayFor(s => s.Sections)
+        <div class="content-block">
+           @if (Model.SectionsIds.Any())
+           {
+               foreach (SettingSection settingSection in Model.SectionsIds)
+               {
+                 @Html.Action("SettingsSection", new { sectionId = settingSection })
+               }
+           }
+           else
+           {
+               <div class="alert alert-warning">
+                   <h3>There are no Settings to Set.</h3>
+                   <p>Sorry - you don't have access to any settings. I guess I probably shouldn't have shown you the button, eh?</p>
+               </div>
+           }
         </div>
     </div>
 

@@ -107,9 +107,13 @@ namespace Warhammer.Mvc.Concrete
         {
             UserSettingsViewModel model = new UserSettingsViewModel();
 
-            if (_data.SiteHasFeature(Feature.ImmediateEmailer) || _data.SiteHasFeature(Feature.NightlyEmailer))
+            if (_data.SiteHasFeature(Feature.ImmediateEmailer))
             {
                 model.SectionsIds.Add(SettingSection.EmailNotifications);
+            }
+            if (_data.SiteHasFeature(Feature.NightlyEmailer))
+            {
+                model.SectionsIds.Add(SettingSection.DailySummaryEmails);
             }
 
 
@@ -122,6 +126,7 @@ namespace Warhammer.Mvc.Concrete
             UserSettingsSectionViewModel model = new UserSettingsSectionViewModel();
             if (settingSection.Any())
             {
+                model.SectionId =  settingSection.First().SectionId;
                 model.SettingTitle = GetSettingTitle(settingSection.First().SettingSection);
                 model.Settings = settingSection.Select(Make).ToList();
             }
@@ -134,6 +139,8 @@ namespace Warhammer.Mvc.Concrete
             {
                 case SettingSection.EmailNotifications:
                     return "Email Notification Settings";
+                case SettingSection.DailySummaryEmails:
+                    return "Summary Emails";
                 default:
                     return "UNKNONW SETTING SECTION TITLE";
             }
@@ -144,6 +151,7 @@ namespace Warhammer.Mvc.Concrete
             UserSettingViewModel model = new UserSettingViewModel();
 
             model.SettingId = setting.Id;
+            model.SectionId = setting.SectionId;
             model.Name = setting.DisplayName;
             model.Description = setting.Description;
             model.Enabled = _data.SettingIsEnabled(setting);

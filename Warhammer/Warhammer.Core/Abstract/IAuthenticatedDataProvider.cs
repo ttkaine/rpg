@@ -88,5 +88,6 @@ namespace Warhammer.Core.Abstract
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         List<Setting> SettingSection(int sectionId);
+        int SwitchSetting(int settingId);
     }
 }

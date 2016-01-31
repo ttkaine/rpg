@@ -3,21 +3,34 @@
 <tr>
     <td>@Model.Name</td>
     <td>@Model.Description</td>
-    <td>
-            @using (Ajax.BeginForm("SwitchSetting", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "UserSettingsPanel" }))
+
+    @if (Model.Enabled)
+    {
+       <td>
+            @using (Ajax.BeginForm("SwitchSetting", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "setting_" + Model.SectionId }))
             {
-                @Html.HiddenFor(m => m.SettingId)
-                if (Model.Enabled)
-                {
-                    <input type="submit" value="@Model.DisabledText" class="btn btn-default"/>
-                    <span class="btn btn-success">@Model.EnabledText</span>
-                }
-                else
-                {
-                    <span class="btn btn-danger">@Model.DisabledText</span>
-                    <input type="submit" value="@Model.EnabledText" class="btn btn-default" />
-                }
+                <input type="hidden" value="@Model.SettingId" name="settingId" />
+                <input type="submit" value="@Model.DisabledText" class="btn btn-default btn-block" />
             }
-        
-    </td>
+        </td>
+        <td>
+            <span class="btn btn-success  btn-block">@Model.EnabledText</span>
+        </td>
+    }
+    else
+    {
+
+        <td>
+            <span class="btn btn-danger  btn-block">@Model.DisabledText</span>
+        </td>
+            <td>
+                @using (Ajax.BeginForm("SwitchSetting", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "setting_" + Model.SectionId }))
+                {
+                    <input type="hidden" value="@Model.SettingId" name="settingId" />
+                    <input type="submit" value="@Model.EnabledText" class="btn btn-default  btn-block" />
+                }
+            </td>
+    }
+
 </tr>
+

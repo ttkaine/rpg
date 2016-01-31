@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using System.Transactions;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -680,6 +681,44 @@ namespace Warhammer.Core.Concrete
         public List<Setting> SettingSection(int sectionId)
         {
             return _repository.Settings().Where(s => s.SectionId == sectionId).ToList();
+        }
+
+        public int SwitchSetting(int settingId)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+
+                UserSetting setting =
+                    _repository.UserSettings()
+                        .FirstOrDefault(s => s.SettingId == settingId && s.PlayerId == CurrentPlayer.Id);
+                if (setting == null)
+                {
+                    setting = new UserSetting
+                    {
+                        PlayerId = CurrentPlayer.Id,
+                        SettingId = settingId
+                    };
+                }
+
+                setting.Enabled = !setting.Enabled;
+
+
+               _repository.Save(setting);
+
+               
+                transaction.Complete();
+            }
+
+            Setting settingDefinition = _repository.Settings().FirstOrDefault(s => s.Id == settingId);
+            if (settingDefinition != null)
+                {
+                    return settingDefinition.SectionId;
+                }
+                else
+                {
+                    return 0;
+                }
+
         }
 
         public void RemoveAward(int personId, int awardId)

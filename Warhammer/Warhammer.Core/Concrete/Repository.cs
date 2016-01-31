@@ -166,6 +166,21 @@ namespace Warhammer.Core.Concrete
             return _entities.Settings;
         }
 
+        public int Save(UserSetting setting)
+        {
+            if (setting.Id == 0)
+            {
+                _entities.UserSettings.Add(setting);
+            }
+            else
+            {
+                _entities.Entry(setting).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return setting.Id;
+        }
+
         #endregion
 
         #region Save

@@ -247,8 +247,15 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult SettingsSection(int sectionId)
         {
             UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));
-            return View(model);
+            return PartialView(model);
         }
 
+        [HttpPost]
+        public ActionResult SwitchSetting(int settingId)
+        {
+            int sectionId = DataProvider.SwitchSetting(settingId);
+            UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));
+            return PartialView("SettingsSection", model);
+        }
     }
 }

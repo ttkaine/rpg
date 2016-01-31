@@ -23,6 +23,7 @@ namespace Warhammer.Mvc.Models
 
         public string SettingTitle { get; set; }
         public List<UserSettingViewModel> Settings { get; set; }
+        public int SectionId { get; set; }
     }
 
     public class UserSettingViewModel
@@ -33,5 +34,6 @@ namespace Warhammer.Mvc.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Enabled { get; set; }
+        public int SectionId { get; set; }
     }
 }

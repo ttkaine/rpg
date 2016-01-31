@@ -1,0 +1,31 @@
+﻿
+@using Warhammer.Mvc.Models
+@model UserSettingsSectionViewModel
+    
+@if (Model.Settings.Any())
+{
+    <div id="setting_@Model.SectionId" class="setting-section">
+        <h3>@Model.SettingTitle</h3>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                    <th style="min-width: 100px;"></th>
+                    <th style="min-width: 100px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.DisplayFor(m => m.Settings)
+            </tbody>
+
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <p>No Settings Available</p>
+    </div>
+}

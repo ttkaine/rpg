@@ -31,5 +31,6 @@ namespace Warhammer.Core.Abstract
         int Save(SiteFeature feature);
         IQueryable<UserSetting> UserSettings();
         IQueryable<Setting> Settings();
+        int Save(UserSetting setting);
     }
 }

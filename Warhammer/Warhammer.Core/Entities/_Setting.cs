@@ -3,7 +3,8 @@
 
     public enum SettingSection
     {
-        EmailNotifications = 1
+        EmailNotifications = 1,
+        DailySummaryEmails = 2
     }
 
 

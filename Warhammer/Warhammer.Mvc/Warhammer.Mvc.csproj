@@ -516,6 +516,7 @@
     <Content Include="Views\Home\DisplayTemplates\UserSettingViewModel.cshtml" />
     <None Include="Views\Home\Menu.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\SettingsSection.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
