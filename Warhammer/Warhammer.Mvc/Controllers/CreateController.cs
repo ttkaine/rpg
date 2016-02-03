@@ -42,11 +42,6 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (DataProvider.PageExists(page.ShortName))
-                {
-                    Page existingPage = DataProvider.GetPage(page.ShortName);
-                    return RedirectToAction("Index", "Page", new { id = existingPage.Id });
-                }
                 int personId = DataProvider.AddPage(page.ShortName, page.FullName, page.Description);
                 return RedirectToAction("Index", "Page", new {id = personId});
             }
@@ -64,11 +59,6 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (DataProvider.PageExists(page.ShortName))
-                {
-                    Page existingPage = DataProvider.GetPage(page.ShortName);
-                    return RedirectToAction("Index", "Page", new { id = existingPage.Id });
-                }
                 int pageId = DataProvider.AddPerson(page.ShortName, page.FullName, page.Description);
                 return RedirectToAction("Index", "Page", new { id = pageId });
             }
@@ -86,12 +76,6 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (DataProvider.PageExists(session.ShortName))
-                {
-                    Page existingPage = DataProvider.GetPage(session.ShortName);
-                    return RedirectToAction("Index", "Page", new { id = existingPage.Id });
-                }
-
                 if (!session.DateTime.HasValue)
                 {
                     session.DateTime = DateTime.Now;
@@ -100,7 +84,6 @@ namespace Warhammer.Mvc.Controllers
                     session.DateTime.Value);
                 return RedirectToAction("Index", "Page", new { id = sessionId });
             }
-
 
             return View(session);
         }
@@ -153,19 +136,11 @@ namespace Warhammer.Mvc.Controllers
         [HttpPost]
         public ActionResult SessionLog(CreateSessionLogViewModel model)
         {
-
             if (ModelState.IsValid)
             {
-                if (DataProvider.PageExists(model.Log.ShortName))
-                {
-                    Page existingPage = DataProvider.GetPage(model.Log.ShortName);
-                    return RedirectToAction("Index", "Page", new { id = existingPage.Id }); 
-                }
-
                int logId = DataProvider.AddSessionLog(model.SelectedSessionId, model.SelectedPersonId, model.Log.ShortName, model.Log.FullName,model.Log.Description);
                return RedirectToAction("Index", "Page", new { id = logId });
             }
-
 
             model.Person = new SelectList(DataProvider.People(), "Id", "ShortName");
             model.Session = new SelectList(DataProvider.Sessions(), "Id", "ShortName");
@@ -185,11 +160,6 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (DataProvider.PageExists(model.Place.ShortName))
-                {
-                    Page existingPage = DataProvider.GetPage(model.Place.ShortName);
-                    return RedirectToAction("Index", "Page", new { id = existingPage.Id });
-                }
                 int placeId = DataProvider.AddPlace(model.Place.ShortName, model.Place.ShortName, model.Place.Description, model.ParentId);
                 return RedirectToAction("Index", "Page", new { id = placeId });
             }

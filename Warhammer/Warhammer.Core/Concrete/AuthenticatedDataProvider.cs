@@ -239,12 +239,21 @@ namespace Warhammer.Core.Concrete
                 page.SignificantUpdateById = CurrentPlayer.Id;
             }
 
+            while (AnotherPageExistsWithThisName(page.ShortName, page.Id))
+            {
+                page.ShortName = page.ShortName + " - New";
+            }
             page.Modified = DateTime.Now;
             page.ModifedById = CurrentPlayer.Id;
 
 
 
             return _repository.Save(page);
+        }
+
+        private bool AnotherPageExistsWithThisName(string shortName, int id)
+        {
+            return _repository.Pages().Any(p => p.ShortName == shortName && p.Id != id);
         }
 
         public Page GetPage(int id)
