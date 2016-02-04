@@ -730,6 +730,19 @@ namespace Warhammer.Core.Concrete
 
         }
 
+        public void EditComment(int commentId, string content)
+        {       
+            Comment comment = _repository.Comments().FirstOrDefault(c => c.Id == commentId);
+            if (comment != null)
+            {
+                if (CurrentUserIsAdmin || comment.CreatedById == CurrentPlayer.Id)
+                {
+                    comment.Description = content;
+                    _repository.Save(comment);
+                }
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -937,7 +950,10 @@ namespace Warhammer.Core.Concrete
             Comment comment = _repository.Comments().FirstOrDefault(c => c.Id == commentId);
             if (comment != null)
             {
-                _repository.Delete(comment);
+                if (CurrentUserIsAdmin || comment.CreatedById == CurrentPlayer.Id)
+                {
+                    _repository.Delete(comment);
+                }
             }
         }
 

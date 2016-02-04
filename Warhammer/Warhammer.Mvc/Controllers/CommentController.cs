@@ -47,6 +47,15 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult EditComment(int? pageId, int commentId, string comment)
+        {
+            DataProvider.EditComment(commentId, comment);
+            ModelState.Clear();
+            CommentListViewModel fullModel = CommentListViewModel(pageId);
+            return PartialView("Index", fullModel);
+        }
+
+        [HttpPost]
     //    [ValidateInput(false)]
         public ActionResult PostComment(CommentListViewModel model)
         {
@@ -75,8 +84,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int commentId, int pageId)
+        public ActionResult Delete(int commentId, int? pageId)
         {
             DataProvider.DeleteComment(commentId);
             ModelState.Clear();

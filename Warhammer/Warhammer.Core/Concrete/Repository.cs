@@ -181,6 +181,21 @@ namespace Warhammer.Core.Concrete
             return setting.Id;
         }
 
+        public int Save(Comment comment)
+        {
+            if (comment.Id == 0)
+            {
+                _entities.Comments.Add(comment);
+            }
+            else
+            {
+                _entities.Entry(comment).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return comment.Id;
+        }
+
         #endregion
 
         #region Save

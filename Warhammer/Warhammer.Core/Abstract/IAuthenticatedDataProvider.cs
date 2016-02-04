@@ -89,5 +89,6 @@ namespace Warhammer.Core.Abstract
         bool SettingIsEnabled(Setting setting);
         List<Setting> SettingSection(int sectionId);
         int SwitchSetting(int settingId);
+        void EditComment(int commentId, string comment);
     }
 }

@@ -11,29 +11,44 @@
         <h4>@Model.Player.DisplayName</h4>
     }
     <div class="commentdetail">
-        @Html.Raw(Model.Description)
+
+        @if (ViewBag.EditMode && (User.IsInRole("Admin") || User.Identity.Name == Model.Player.UserName))
+        {
+            using (Ajax.BeginForm("EditComment", "Comment", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments" }))
+            {
+                <textarea name="comment" value="@Model.Id">@Html.Raw(Model.Description)</textarea>
+                <input name="commentId" hidden="" value="@Model.Id" />
+                if ((bool)ViewData["isPageView"])
+                {
+                    <input name="pageId" hidden="" value="@Model.PageId" />
+                }
+                <input id="postbutton" type="submit" value="Save Edits" class="btn btn-block btn-warning" />
+                <hr/>
+            }
+            using (Ajax.BeginForm("Delete", "Comment", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments" }))
+            {
+                <input name="commentId" hidden="" value="@Model.Id"/>
+                if ((bool)ViewData["isPageView"])
+                {
+                    <input name="pageId" hidden="" value="@Model.PageId"/>
+                }
+                <input id="postbutton" type="submit" value="Delete" class="btn btn-block btn-danger" />
+                    <hr />
+
+            }
+        }
+        else
+        {
+            @Html.Raw(Model.Description)
+        }
 
         <p class="note">
-            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null)
+            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new {id = Model.PageId}, null)
             <br/>
             @Model.Created.ToLongTimeString() @Model.Created.ToLongDateString()
         </p>
 
     </div>
-
-
-
-    @if (ViewBag.EditMode && User.IsInRole("Admin"))
-    {
-        using (Ajax.BeginForm("Delete", "Comment", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments" }))
-        {
-            <input id="commentId" name="commentId" hidden="" value="@Model.Id" />
-            <input id="pageId" name="pageId" hidden="" value="@Model.PageId" />
-            <input id="postbutton" type="submit" value="Delete" class="btn btn-block btn-danger" />
-            <hr />
-
-        }
-    }
 
     <div class="clearfix"></div>
     <hr />

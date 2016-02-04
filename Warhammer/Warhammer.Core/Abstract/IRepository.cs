@@ -32,5 +32,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<UserSetting> UserSettings();
         IQueryable<Setting> Settings();
         int Save(UserSetting setting);
+        int Save(Comment comment);
     }
 }

@@ -2,7 +2,7 @@
 
 <div id="comments">
     <ul>
-        @Html.DisplayFor(c => Model.Comments)
+        @Html.DisplayFor(c => Model.Comments, new { isPageView = Model.ShowCommentAddPanel })
     </ul>
 
     @if (Model.ShowCommentAddPanel)
