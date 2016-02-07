@@ -15,6 +15,7 @@ namespace Warhammer.Core.Concrete
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
+        private readonly IEmailHandler _email;
 
         private int UpliftId
         {
@@ -50,11 +51,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
+            _email = email;
         }
 
         public Player CurrentPlayer
@@ -118,7 +120,8 @@ namespace Warhammer.Core.Concrete
             {
                 person.PlayerId = CurrentPlayer.Id;
             }
-            return Save(person);
+            int pageId = Save(person);
+            return pageId;
         }
 
 
@@ -229,6 +232,7 @@ namespace Warhammer.Core.Concrete
 
         private int Save(Page page)
         {
+            bool isNew = false;
             Page existingPage = _repository.Pages().FirstOrDefault(p => p.Id == page.Id);
 
             if (existingPage == null)
@@ -237,6 +241,7 @@ namespace Warhammer.Core.Concrete
                 page.CreatedById = CurrentPlayer.Id;
                 page.SignificantUpdate = DateTime.Now;
                 page.SignificantUpdateById = CurrentPlayer.Id;
+                isNew = true;
             }
 
             while (AnotherPageExistsWithThisName(page.ShortName, page.Id))
@@ -248,8 +253,24 @@ namespace Warhammer.Core.Concrete
 
 
 
-            return _repository.Save(page);
+            int pageId = _repository.Save(page);
+
+            if (isNew)
+            {
+                NotifyAddPage(pageId);
+            }
+            else
+            {
+                if (page.SignificantUpdate >= DateTime.Now.AddSeconds(-5) && page.Created <= DateTime.Now.AddHours(-1))
+                {
+                    NotifyEditPage(pageId);
+                }
+            }
+
+            return pageId;
         }
+
+ 
 
         private bool AnotherPageExistsWithThisName(string shortName, int id)
         {
@@ -299,7 +320,55 @@ namespace Warhammer.Core.Concrete
                 FullName = fullName,
                 Description = description,
             };
-            return Save(person);
+            
+            int pageId =  Save(person);
+            return pageId;
+        }
+
+        private void NotifyAddPage(int pageId)
+        {
+            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewPage);
+            Page page = GetPage(pageId);
+            if (page != null && players.Any())
+            {
+                _email.NotifyNewPage(page, players);
+            }
+        }
+
+        private void NotifyAddComment(int pageId, string commenterName)
+        {
+            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewComment);
+            Page page = GetPage(pageId);
+            if (page != null && players.Any())
+            {
+                _email.NotifyNewComment(commenterName, page, players);
+            }
+        }
+
+        private void NotifyEditPage(int pageId)
+        {
+            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnUpdatePage);
+            Page page = GetPage(pageId);
+            if (page != null && players.Any())
+            {
+                _email.NotifyEditPage(page, players);
+            }
+        }
+
+        private List<Player> GetPlayersWithSetting(SettingNames settingName, bool includeSelf = false)
+        {
+            Setting setting = _repository.Settings().FirstOrDefault(s => s.Name == settingName.ToString());
+            if (setting != null)
+            {
+                var players =
+                    _repository.Players().Where(p => p.UserSettings.Any(s => s.Enabled && s.SettingId == setting.Id));
+                if (!includeSelf)
+                {
+                    players = players.Where(p => p.Id != CurrentPlayer.Id);
+                }
+                return players.ToList();
+            }
+            return new List<Player>();
         }
 
         public ICollection<Place> Places()
@@ -743,6 +812,24 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void NotifyTurn(int sessionId)
+        {
+            if (SiteHasFeature(Feature.ImmediateEmailer))
+            {
+                Player player = PlayerToPostInSession(sessionId);
+                Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+                if (player != null && session != null)
+                {
+                    Setting setting =
+                        _repository.Settings().FirstOrDefault(s => s.Name == SettingNames.SendEmailOnMyTurn.ToString());
+                    if (player.SettingIsEnabled(setting))
+                    {
+                        _email.NotifyPlayerTurn(session, player);
+                    }
+                }
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -1052,12 +1139,26 @@ namespace Warhammer.Core.Concrete
                 comment.PersonId = personId;
                 comment.CreatedById = CurrentPlayer.Id;
                 page.Comments.Add(comment);
-                return Save(page);
+                int updatedPageId = Save(page);
+
+                string commenterName = CurrentPlayer.DisplayName;
+                if (personId.HasValue)
+                {
+                    Person person = GetPerson(personId.Value);
+                    commenterName = person.FullName;
+                }
+
+
+                NotifyAddComment(pageId, commenterName);
+                return updatedPageId;
+
             }
             return 0;
         }
 
-		public Player PlayerToPostInSession(int sessionId)
+
+
+        public Player PlayerToPostInSession(int sessionId)
 		{
 			Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
 			if (session != null)

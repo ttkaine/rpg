@@ -90,5 +90,6 @@ namespace Warhammer.Core.Abstract
         List<Setting> SettingSection(int sectionId);
         int SwitchSetting(int settingId);
         void EditComment(int commentId, string comment);
+        void NotifyTurn(int sessionId);
     }
 }

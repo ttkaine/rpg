@@ -10,6 +10,9 @@ namespace Warhammer.Core.Concrete
 {
 	public class PostManager : IPostManager
 	{
+	    private readonly IEmailHandler _email;
+	    private readonly IAuthenticatedDataProvider _data;
+
 		private int GetGmId()
 		{
 			Player player = Repo.Players().FirstOrDefault(p => p.IsGm);
@@ -38,11 +41,13 @@ namespace Warhammer.Core.Concrete
 		private readonly DiceRoller _diceRoller;
 		private DiceRoller DiceRoller { get { return _diceRoller; } }
 
-		public PostManager(IRepository repository, IAuthenticatedUserProvider userProvider)
+		public PostManager(IRepository repository, IAuthenticatedUserProvider userProvider, IEmailHandler email, IAuthenticatedDataProvider data)
 		{
 			_repository = repository;
 			_userProvider = userProvider;
-			_diceRoller = DiceRoller.Instance;
+		    _email = email;
+		    _data = data;
+		    _diceRoller = DiceRoller.Instance;
 		}
 
 		private Player GetCurrentPlayer()
@@ -353,6 +358,8 @@ namespace Warhammer.Core.Concrete
 	            }
 
                 _repository.Save(session);
+
+	            _data.NotifyTurn(sessionId);
                 return true;
             }
 	        return false;

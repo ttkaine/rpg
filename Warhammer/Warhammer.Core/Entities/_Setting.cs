@@ -7,6 +7,14 @@
         DailySummaryEmails = 2
     }
 
+    public enum SettingNames
+    {
+        SendEmailOnMyTurn,
+        SendEmailOnNewPage,
+        SendEmailOnNewComment,
+        SendEmailOnUpdatePage,
+        SendDailySummaryEmail
+    }
 
     public partial class Setting
     {
