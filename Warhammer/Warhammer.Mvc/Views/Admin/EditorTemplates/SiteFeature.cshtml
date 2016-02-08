@@ -1,0 +1,38 @@
+﻿@model Warhammer.Core.Entities.SiteFeature
+
+<tr>
+    <td>@Model.Name</td>
+    <td>@Model.Description</td>
+
+    @if (Model.IsEnabled)
+    {
+        <td>
+            @using (Ajax.BeginForm("DisableFeature", "Admin", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "featureList" }))
+            {
+                <input type="hidden" value="@Model.Name" name="featureName" />
+                <input type="submit" value="OFF" class="btn btn-default btn-block" />
+            }
+        </td>
+        <td>
+            <span class="btn btn-success  btn-block">ON</span>
+        </td>
+    }
+    else
+    {
+
+        <td>
+            <span class="btn btn-danger  btn-block">OFF</span>
+        </td>
+        <td>
+            @using (Ajax.BeginForm("EnableFeature", "Admin", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "featureList" }))
+                {
+                    <input type="hidden" value="@Model.Name" name="featureName" />
+                    <input type="submit" value="ON" class="btn btn-default  btn-block" />
+                }
+        </td>
+    }
+
+</tr>
+
+
+

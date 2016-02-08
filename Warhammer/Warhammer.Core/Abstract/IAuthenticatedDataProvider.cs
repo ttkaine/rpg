@@ -91,5 +91,6 @@ namespace Warhammer.Core.Abstract
         int SwitchSetting(int settingId);
         void EditComment(int commentId, string comment);
         void NotifyTurn(int sessionId);
+        List<SiteFeature> AllFeatures();
     }
 }

@@ -517,6 +517,9 @@
     <Content Include="Views\Home\Menu.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\SettingsSection.cshtml" />
+    <Content Include="Views\Admin\Features.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\SiteFeature.cshtml" />
+    <Content Include="Views\Admin\FeatureList.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

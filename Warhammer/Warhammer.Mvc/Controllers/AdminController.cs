@@ -23,6 +23,7 @@ namespace Warhammer.Mvc.Controllers
             _imageProcessor = imageProcessor;
         }
 
+
         public ActionResult DbUpdate()
         {
           //  string folder = Server.MapPath(Url.Content("~/Content/DbUpdateScripts/"));
@@ -312,5 +313,32 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ViewResult Features()
+        {
+            
+            return View();
+        }
+
+        public ActionResult FeatureList()
+        {
+            List<SiteFeature> features = DataProvider.AllFeatures();
+            return PartialView(features);
+        }
+
+        [HttpPost]
+        public ActionResult DisableFeature(string featureName)
+        {
+            DataProvider.DisableFeature(featureName);
+            List<SiteFeature> features = DataProvider.AllFeatures();
+            return PartialView("FeatureList",features);
+        }
+
+        [HttpPost]
+        public ActionResult EnableFeature(string featureName)
+        {
+            DataProvider.EnableFeature(featureName);
+            List<SiteFeature> features = DataProvider.AllFeatures();
+            return PartialView("FeatureList", features);
+        }
     }
 }
