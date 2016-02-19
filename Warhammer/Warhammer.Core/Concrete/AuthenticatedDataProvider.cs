@@ -830,6 +830,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<SiteFeature> AllFeatures()
+        {
+            return _repository.SiteFeatures().ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

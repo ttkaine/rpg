@@ -100,6 +100,18 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            if (_data.CurrentUserIsAdmin)
+            {
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Features",
+                    Url = _urlHelper.Action("Features", "Admin"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/Features.png"),
+                    //  IconCssClass = "badge"
+                });
+            }
+
             return model;
         }
 

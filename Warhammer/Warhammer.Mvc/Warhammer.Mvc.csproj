@@ -252,6 +252,7 @@
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
+    <Content Include="Content\Images\features.png" />
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\home.png" />
@@ -517,6 +518,9 @@
     <Content Include="Views\Home\Menu.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\SettingsSection.cshtml" />
+    <Content Include="Views\Admin\Features.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\SiteFeature.cshtml" />
+    <Content Include="Views\Admin\FeatureList.cshtml" />
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
