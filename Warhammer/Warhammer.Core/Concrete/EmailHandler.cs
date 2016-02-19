@@ -119,12 +119,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void NotifyNewComment(string senderName, Page page, List<Player> players)
+        public void NotifyNewComment(string senderName, Page page, List<Player> players, string description)
         {
             foreach (Player player in players)
             {
                 string subject = string.Format("{0}! Ahoy! {1} commented on the page called '{2}'!", player.DisplayName, senderName, page.FullName);
-                string message = "If you want to know what the comment was you'll just have to go look, because I forgot already, okay?";
+                string message = string.Format("<b>{0}:</b>{1}", senderName, description);
                 NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
 
                 SmtpClient client = new SmtpClient(SMTPServer)

@@ -335,13 +335,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        private void NotifyAddComment(int pageId, string commenterName)
+        private void NotifyAddComment(int pageId, string commenterName, string description)
         {
             List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewComment);
             Page page = GetPage(pageId);
             if (page != null && players.Any())
             {
-                _email.NotifyNewComment(commenterName, page, players);
+                _email.NotifyNewComment(commenterName, page, players, description);
             }
         }
 
@@ -1149,7 +1149,7 @@ namespace Warhammer.Core.Concrete
                 }
 
 
-                NotifyAddComment(pageId, commenterName);
+                NotifyAddComment(pageId, commenterName, description);
                 return updatedPageId;
 
             }

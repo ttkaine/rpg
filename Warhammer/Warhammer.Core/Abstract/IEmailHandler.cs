@@ -8,6 +8,6 @@ namespace Warhammer.Core.Abstract
         void NotifyPlayerTurn(Session session, Player player);
         void NotifyNewPage(Page page, List<Player> players);
         void NotifyEditPage(Page page, List<Player> players);
-        void NotifyNewComment(string senderName, Page page, List<Player> players);
+        void NotifyNewComment(string commenterName, Page page, List<Player> players, string description);
     }
 }
