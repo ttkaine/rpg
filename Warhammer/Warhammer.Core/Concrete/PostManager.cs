@@ -57,7 +57,7 @@ namespace Warhammer.Core.Concrete
 
 		private bool CharacterIsInSession(Session session, int characterId)
 		{
-			return characterId == 0 || session.People.Where(p => p.Id == characterId).LongCount() > 0;
+			return characterId == 0 || characterId == -1 || session.People.Where(p => p.Id == characterId).LongCount() > 0;
 		}
 
 		public PostResult CreateTextPostForUser(int sessionId, int characterId, bool isOoc, string text, string recipientString)
@@ -70,7 +70,7 @@ namespace Warhammer.Core.Concrete
 			{
 				return PostResult.InvalidPlayer;
 			}
-			if (!isOoc && character == null && characterId != 0)
+			if (!isOoc && character == null && characterId != 0 && characterId != -1)
 			{
 				return PostResult.InvalidCharacter;
 			}
@@ -79,6 +79,10 @@ namespace Warhammer.Core.Concrete
 				return PostResult.InvalidSession;
 			}
 			if (!isOoc && characterId == 0 && !player.IsGm)
+			{
+				return PostResult.InvalidCharacter;
+			}
+			if (!isOoc && characterId == -1 && player.IsGm)
 			{
 				return PostResult.InvalidCharacter;
 			}

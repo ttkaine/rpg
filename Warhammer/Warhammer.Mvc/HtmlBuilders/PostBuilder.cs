@@ -109,11 +109,20 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append("<span class=\"PostPlayer\">");
 			//html.Append(post.PlayerName);
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
-			html.Append("<a onkeypress=\"window.open(this.href); return false;\" onclick=\"window.open(this.href); return false;\" href=\"/Page/Index/");
+			if (post.CharacterId > 0)
+			{
+				html.Append(
+					"<a onkeypress=\"window.open(this.href); return false;\" onclick=\"window.open(this.href); return false;\" href=\"/Page/Index/");
+				html.Append(post.CharacterId);
+				html.Append("\">");
+			}
+			html.Append("<img src=\"/Roleplay/Image/");
 			html.Append(post.CharacterId);
-			html.Append("\"><img src=\"/Roleplay/Image/");
-			html.Append(post.CharacterId);
-			html.Append("\" /></a>");
+			html.Append("\" />");
+			if (post.CharacterId > 0)
+			{
+				html.Append("</a>");
+			}
 			html.Append("</span><span class=\"PostedDate\">");
 			html.Append(post.DatePosted);
 			html.Append("</span><div class=\"Clear\"></div></div>");

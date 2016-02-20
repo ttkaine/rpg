@@ -178,6 +178,7 @@ namespace Warhammer.Core.Concrete
 				else
 				{
 					viewModels.AddRange(from character in session.PlayerCharacters where character.PlayerId == player.ID select GetCharacterViewModel(character));
+					viewModels.Add(new CharacterViewModel() { ID = -1, Name = "Environment" });
 				}
 			}
 
@@ -431,7 +432,7 @@ namespace Warhammer.Core.Concrete
 				}
 				else
 				{
-					viewModel.CharacterName = "Unknown";
+					viewModel.CharacterName = "Environment";
 				}
 			}
 
