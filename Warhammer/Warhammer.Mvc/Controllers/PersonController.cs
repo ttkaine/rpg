@@ -146,5 +146,19 @@ namespace Warhammer.Mvc.Controllers
             var model = GetCleanModel(personId);
             return PartialView("ViewStats", model);
         }
+
+        public ActionResult AwardHistory(int id)
+        {
+            Person person = DataProvider.GetPerson(id);
+            if (person != null)
+            {
+                List<Award> awards = person.Awards.OrderByDescending(a => a.AwardedOn).ToList();
+                if (awards.Any())
+                {
+                    return PartialView(awards);
+                }
+            }
+            return null;
+        }
     }
 }

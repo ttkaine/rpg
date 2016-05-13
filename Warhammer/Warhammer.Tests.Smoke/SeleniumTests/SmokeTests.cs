@@ -58,13 +58,13 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
         }
 
         [Test]
-        public void HitAllTheCharacters()
+        public void HitTopTenTheCharacters()
         {
             Driver.Navigate().GoToUrl(Settings.BaseUrl + "/Home/CharacterLeague");
             Wait.Until(ExpectedConditions.ElementExists(By.Id("characterLeagueList")));
             IWebElement list = Driver.FindElement(By.Id("characterLeagueList"));
 
-            List<string> linkIds = list.FindElements(By.TagName("a")).Select(l => l.GetAttribute("Id")).ToList();
+            List<string> linkIds = list.FindElements(By.TagName("a")).Select(l => l.GetAttribute("Id")).Take(10).ToList();
 
             foreach (string linkId in linkIds)
             {

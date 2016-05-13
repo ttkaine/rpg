@@ -7152,6 +7152,9 @@ div.commentdetail {
   right: 0;
   margin-left: 20px;
 }
+#awardHistory img {
+  margin-top: -8px;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

@@ -30,7 +30,7 @@
                 }
                 @if (Model is Person || Model.HasImage)
                 {
-                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200"/>
+                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
                 }
 
                 @if (Model is Person)
@@ -54,266 +54,271 @@
 
         </div>
     }
-        <div class="side-bar">
+    <div class="side-bar">
+
+        @Html.Action("AwardHistory", "Person", new { id = Model.Id })
         <div class="content-block">
-        <div id="saveControls" style="display: none">
-            <input id="page-save" type="button" name="saveAction" class="btn btn-success" value="Save"/>
-            @Html.ActionLink("Cancel", "Index", "Page", new {id = Model.Id}, new {@class = "btn btn-danger"})
-        </div>
+            <div id="saveControls" style="display: none">
+                <input id="page-save" type="button" name="saveAction" class="btn btn-success" value="Save" />
+                @Html.ActionLink("Cancel", "Index", "Page", new { id = Model.Id }, new { @class = "btn btn-danger" })
+            </div>
 
-        @if (Model is Person)
-        {
-            Person person = Model as Person;
-            @Html.Action("ViewStats", "Person", new { personId = person.Id })
-            if (User.IsInRole("Admin"))
+            @if (Model is Person)
             {
-                <h1>Points Value: @person.PointsValue</h1>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Base</th>
-                        <th>Activity Bonus</th>
-                        <th>Total</th>
-                    </tr>
-                    </thead>
-                    @foreach (ScoreBreakdown scoreBreakdown in person.ScoreBreakdown)
-                    {
-                        <tr>
-                            <td>@scoreBreakdown.Name</td>
-                            <td>@string.Format("{0:0.00}", scoreBreakdown.BaseValue)</td>
-                            <td>
-                                @if (scoreBreakdown.ActivityBonus > 0)
-                                {
-                                    <text>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</text>
-                                }
-                            </td>
-                            <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
-                        </tr>
-                    }
-                    <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td>@string.Format("{0:0}", person.PermenentScore)</td>
-                        <td>@string.Format("+ {0:0}", person.ActivityScore)</td>
-                        <td>@string.Format("{0:0}", person.PointsValue)</td>
-                    </tr>
-                    </tfoot>
-                </table>
-            }
-            if (person.SessionLogs.Any())
-            {
-                <h3>Session Logs</h3>
-                <ul>
-                    @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
-                    {
-                        <li>@Html.ActionLink(log.ShortName, "Index", new {id = log.Id})</li>
-                    }
-                </ul>
-                <div class="clearfix"></div>
-            }
-        }
 
-        @if (Model is SessionLog)
-        {
-            SessionLog log = Model as SessionLog;
-            <ul>
-                <li>
-                    <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image"/></a>
-                    @Html.ActionLink(log.Session.FullName, "Index", new {id = log.Session.Id}) (@Html.ActionLink(log.Session.ShortName, "Index", new {id = log.Session.Id}))
-
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        }
-
-        @if (Model is Session)
-        {
-            Session session = Model as Session;
-
-            if (session.IsTextSession && !(session.IsPrivate && !ViewBag.IAmInThisSession))
-            {
-                @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new {id = Model.Id}, new {@class = "btn btn-success btn-block"})
-            }
-
-            if (session.PlayerCharacters.Any())
-            {
-                <h3>Player Characters</h3>
-                <ul>
-                    @foreach (Person person in session.PlayerCharacters)
-                    {
-                        <li>
-                            <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a>
-                        </li>
-                    }
-                </ul>
-                <div class="clearfix"></div>
-            }
-
-            if (session.Npcs.Any())
-            {
-                <h3>NPCs</h3>
-                <ul>
-
-                    @foreach (Person person in session.Npcs)
-                    {
-                        <li>
-                            <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a>
-                        </li>
-                    }
-                </ul>
-                <div class="clearfix"></div>
-            }
-
-            if (session.SessionLogs.Any())
-            {
-                <h3>Session Logs</h3>
-                <ul>
-
-                    @foreach (SessionLog log in session.SessionLogs)
-                    {
-                        <li>
-                            <div class="profile-container">
-
-                                @Html.ActionLink(log.FullName, "Index", new {id = log.Id})
-                                by
-                                @Html.ActionLink(log.Person.FullName, "Index", new {id = log.Person.Id})
-                            </div>
-                        </li>
-                    }
-
-
-                </ul>
-                <div class="clearfix"></div>
-            }
-        }
-
-
-        @if (Model is Place)
-        {
-            Place place = Model as Place;
-            Place parent = place.Parent;
-            if (parent != null)
-            {
-                <h3>Is within</h3>
-                <ul>
-                    @while (parent != null)
-                    {
-                        <li>@Html.ActionLink(parent.FullName, "Index", new {id = parent.Id})</li>
-                        parent = parent.Parent;
-                    }
-                </ul>
-                <div class="clearfix"></div>
-            }
-            if (place.Child.Any())
-            {
-                <h3>Contains these places</h3>
-                <ul>
-                    @foreach (Place childPlace in place.Child)
-                    {
-                        <li>
-                            @Html.ActionLink(childPlace.FullName, "Index", new {id = childPlace.Id})
-                            @if (childPlace.Child.Any())
-                            {
-                                <ul>
-                                    @foreach (Place grandchildPlace in childPlace.Child)
-                                    {
-                                        <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new {id = grandchildPlace.Id})</li>
+                Person person = Model as Person;
+                @Html.Action("ViewStats", "Person", new { personId = person.Id })
+                if (User.IsInRole("Admin"))
+                {
+                    <h1>Points Value: @person.PointsValue</h1>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Base</th>
+                                <th>Activity Bonus</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        @foreach (ScoreBreakdown scoreBreakdown in person.ScoreBreakdown)
+                        {
+                            <tr>
+                                <td>@scoreBreakdown.Name</td>
+                                <td>@string.Format("{0:0.00}", scoreBreakdown.BaseValue)</td>
+                                <td>
+                                    @if (scoreBreakdown.ActivityBonus > 0)
+                        {
+                                        <text>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</text>
                                     }
-                                </ul>
-                            }
+                                </td>
+                                <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
+                            </tr>
+                        }
+                        <tfoot>
+                            <tr>
+                                <td>Total</td>
+                                <td>@string.Format("{0:0}", person.PermenentScore)</td>
+                                <td>@string.Format("+ {0:0}", person.ActivityScore)</td>
+                                <td>@string.Format("{0:0}", person.PointsValue)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
+                if (person.SessionLogs.Any())
+                {
+                    <h3>Session Logs</h3>
+                    <ul>
+                        @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
+                        {
+                            <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
+                        }
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+            }
 
-                        </li>
+            @if (Model is SessionLog)
+            {
+                SessionLog log = Model as SessionLog;
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
+                        @Html.ActionLink(log.Session.FullName, "Index", new { id = log.Session.Id }) (@Html.ActionLink(log.Session.ShortName, "Index", new { id = log.Session.Id }))
+
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            }
+
+            @if (Model is Session)
+            {
+                Session session = Model as Session;
+
+                if (session.IsTextSession && !(session.IsPrivate && !ViewBag.IAmInThisSession))
+                {
+                    @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+                }
+
+                if (session.PlayerCharacters.Any())
+                {
+                    <h3>Player Characters</h3>
+                    <ul>
+                        @foreach (Person person in session.PlayerCharacters)
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                            </li>
+                        }
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+
+                if (session.Npcs.Any())
+                {
+                    <h3>NPCs</h3>
+                    <ul>
+
+                        @foreach (Person person in session.Npcs)
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                            </li>
+                        }
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+
+                if (session.SessionLogs.Any())
+                {
+                    <h3>Session Logs</h3>
+                    <ul>
+
+                        @foreach (SessionLog log in session.SessionLogs)
+                        {
+                            <li>
+                                <div class="profile-container">
+
+                                    @Html.ActionLink(log.FullName, "Index", new { id = log.Id })
+                                    by
+                                    @Html.ActionLink(log.Person.FullName, "Index", new { id = log.Person.Id })
+                                </div>
+                            </li>
+                        }
+
+
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+            }
+
+
+            @if (Model is Place)
+            {
+                Place place = Model as Place;
+                Place parent = place.Parent;
+                if (parent != null)
+                {
+                    <h3>Is within</h3>
+                    <ul>
+                        @while (parent != null)
+                        {
+                            <li>@Html.ActionLink(parent.FullName, "Index", new { id = parent.Id })</li>
+                            parent = parent.Parent;
+                        }
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+                if (place.Child.Any())
+                {
+                    <h3>Contains these places</h3>
+                    <ul>
+                        @foreach (Place childPlace in place.Child)
+                        {
+                            <li>
+                                @Html.ActionLink(childPlace.FullName, "Index", new { id = childPlace.Id })
+                                @if (childPlace.Child.Any())
+                                {
+                                    <ul>
+                                        @foreach (Place grandchildPlace in childPlace.Child)
+                            {
+                                            <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new { id = grandchildPlace.Id })</li>
+                                        }
+                                    </ul>
+                                }
+
+                            </li>
+                        }
+                    </ul>
+                    <div class="clearfix"></div>
+                }
+            }
+
+
+            @if (Model.Related.Any())
+            {
+                <h3>Related</h3>
+                <ul>
+                    @foreach (Page page in Model.Related)
+                    {
+                        <li>@Html.ActionLink(page.ShortName, "Index", new { id = page.Id })</li>
                     }
                 </ul>
                 <div class="clearfix"></div>
             }
-        }
-
-
-        @if (Model.Related.Any())
-        {
-            <h3>Related</h3>
-            <ul>
-                @foreach (Page page in Model.Related)
-                {
-                    <li>@Html.ActionLink(page.ShortName, "Index", new {id = page.Id})</li>
-                }
-            </ul>
-            <div class="clearfix"></div>
-        }
-        @if (ViewBag.EditMode)
-        {
-            <h3>Actions</h3>
-            if (Model is Person)
+            @if (ViewBag.EditMode)
             {
-                @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new {personId = Model.Id}, new {@class = "btn btn-default btn-block"})
-            }
-
-            @Html.ActionLink("Change Image", "ChangeImage", new {id = Model.Id}, new {@class = "btn btn-default btn-block"})
-
-            @Html.ActionLink("Edit Links", "EditLinks", new {id = Model.Id}, new {@class = "btn btn-default btn-block"})
-
-            if (User.IsInRole("Admin"))
-            {
-                <div class="clearfix"></div>
-                <h3>Admin Funtions</h3>
-
-                if (Model.Pinned)
-                {
-                    @Html.ActionLink("Unpin", "PinPage", "Admin", new {id = Model.Id}, new {@class = "btn btn-default btn-block"})
-                }
-                else
-                {
-                    @Html.ActionLink("Pin", "PinPage", "Admin", new {id = Model.Id}, new {@class = "btn btn-default btn-block"})
-                }
-
-                if (Model is Session)
-                {
-                    Session session = Model as Session;
-                    if (session.IsTextSession && !session.IsClosed)
-                    {
-                        @Html.ActionLink("Close", "CloseTextSession", "Admin", new {id = Model.Id}, new {@class = "btn btn-warning btn-block"})
-                    }
-
-                    if (!session.IsTextSession)
-                    {
-                        @Html.ActionLink("Set as TEXT session", "SetAsTextSession", "Admin", new {id = Model.Id}, new {@class = "btn btn-warning btn-block"})
-                    }
-                }
-
+                <h3>Actions</h3>
                 if (Model is Person)
                 {
-                    Person person = Model as Person;
+                    @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new { personId = Model.Id }, new { @class = "btn btn-default btn-block" })
+                }
 
-                    @Html.ActionLink("Manage Awards", "ManageAwards", "Admin", new {id = Model.Id}, new {@class = "btn btn-success btn-block"})
-                    <hr/>
-                    if (person.IsDead)
+                @Html.ActionLink("Change Image", "ChangeImage", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+
+                @Html.ActionLink("Edit Links", "EditLinks", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+
+                if (User.IsInRole("Admin"))
+                {
+                    <div class="clearfix"></div>
+                    <h3>Admin Funtions</h3>
+
+                    if (Model.Pinned)
                     {
-                        @Html.ActionLink("Resurrect", "KillPerson", "Admin", new {id = Model.Id}, new {@class = "btn btn-warning btn-block"})
+                        @Html.ActionLink("Unpin", "PinPage", "Admin", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
                     }
                     else
                     {
-                        @Html.ActionLink("Kill", "KillPerson", "Admin", new {id = Model.Id}, new {@class = "btn btn-warning btn-block"})
+                        @Html.ActionLink("Pin", "PinPage", "Admin", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
                     }
 
+                    if (Model is Session)
+                    {
+                        Session session = Model as Session;
+                        if (session.IsTextSession && !session.IsClosed)
+                        {
+                            @Html.ActionLink("Close", "CloseTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                        }
+
+                        if (!session.IsTextSession)
+                        {
+                            @Html.ActionLink("Set as TEXT session", "SetAsTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                        }
+                    }
+
+                    if (Model is Person)
+                    {
+                        Person person = Model as Person;
+
+                        @Html.ActionLink("Manage Awards", "ManageAwards", "Admin", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+                        <hr />
+                        if (person.IsDead)
+                        {
+                            @Html.ActionLink("Resurrect", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Kill", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                        }
+
+                    }
+
+
+                    <hr />
+
+                    @Html.ActionLink("Delete", "DeletePage", "Admin", new { id = Model.Id }, new { @class = "btn btn-danger btn-block" })
+
+                    <div class="clearfix"></div>
                 }
-
-
-                <hr/>
-
-                @Html.ActionLink("Delete", "DeletePage", "Admin", new {id = Model.Id}, new {@class = "btn btn-danger btn-block"})
-
-                <div class="clearfix"></div>
             }
-        }
         </div>
-            <hr />
+
+
+        <hr />
         <div class="content-block">
             <h3>Comments</h3>
-            @Html.Action("Index", "Comment", new {id = Model.Id})
+            @Html.Action("Index", "Comment", new { id = Model.Id })
         </div>
-        </div>
-  
+    </div>
+
 
 </div>
