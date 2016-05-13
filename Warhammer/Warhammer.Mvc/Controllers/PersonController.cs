@@ -149,13 +149,16 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult AwardHistory(int id)
         {
-            Person person = DataProvider.GetPerson(id);
-            if (person != null)
+            if (DataProvider.SiteHasFeature(Feature.AwardHistory))
             {
-                List<Award> awards = person.Awards.OrderByDescending(a => a.AwardedOn).ToList();
-                if (awards.Any())
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
                 {
-                    return PartialView(awards);
+                    List<Award> awards = person.Awards.OrderByDescending(a => a.AwardedOn).ToList();
+                    if (awards.Any())
+                    {
+                        return PartialView(awards);
+                    }
                 }
             }
             return null;

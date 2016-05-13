@@ -835,6 +835,28 @@ namespace Warhammer.Core.Concrete
             return _repository.SiteFeatures().ToList();
         }
 
+        public void EnsureFeatures()
+        {
+            var allPossibleFeatures = Enum.GetNames(typeof (Feature)).ToList().Where(s => s != "Unknown");
+            foreach (string possibleFeature in allPossibleFeatures)
+            {
+                
+                SiteFeature existing = _repository.SiteFeatures().FirstOrDefault(f => f.Name == possibleFeature);
+                if (existing == null)
+                {
+                    SiteFeature toAdd = new SiteFeature
+                    {
+                        Description = possibleFeature,
+                        Feature = (Feature)Enum.Parse(typeof(Feature), possibleFeature),
+                        Name = possibleFeature,
+                        IsEnabled = false
+                    };
+                    _repository.Save(toAdd);
+                }
+
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

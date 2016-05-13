@@ -92,5 +92,6 @@ namespace Warhammer.Core.Abstract
         void EditComment(int commentId, string comment);
         void NotifyTurn(int sessionId);
         List<SiteFeature> AllFeatures();
+        void EnsureFeatures();
     }
 }

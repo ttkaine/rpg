@@ -315,7 +315,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ViewResult Features()
         {
-            
+            DataProvider.EnsureFeatures();   
             return View();
         }
 
