@@ -133,6 +133,12 @@ namespace Warhammer.Mvc.Controllers
                     return File(personPath, "image/jpeg");
                 }
 
+                if (page is Person)
+                {
+                    var personPath = Path.Combine(defaultDir, "page-person.png");
+                    return File(personPath, "image/jpeg");
+                }
+
                 if (page is SessionLog)
                 {
                     SessionLog log = page as SessionLog;

@@ -267,6 +267,7 @@
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Images\page-location.png" />
     <Content Include="Content\Images\page-page.png" />
+    <Content Include="Content\Images\page-person.png" />
     <Content Include="Content\Images\page-place.png" />
     <Content Include="Content\Images\page-session.png" />
     <Content Include="Content\Images\pirate_background.jpg" />
