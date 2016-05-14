@@ -105,7 +105,26 @@ namespace Warhammer.Core.Concrete
                 Description = description,
                 DateTime = date
             };
-            return Save(session);
+
+            Session previousNonTextSession =
+                _repository.Pages()
+                    .OfType<Session>()
+                    .OrderByDescending(s => s.DateTime)
+                    .FirstOrDefault(s => s.IsTextSession == false);
+
+
+            int id = Save(session);
+
+
+            if (previousNonTextSession != null)
+            {
+                foreach (Person person in previousNonTextSession.People)
+                {
+                    AddLink(person.Id, id);
+                }
+            }
+
+            return id;
         }
 
         public int AddPerson(string shortName, string longName, string description)
