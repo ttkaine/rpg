@@ -1,0 +1,16 @@
+﻿@using Warhammer.Core.Entities
+@using Page = System.Web.UI.Page
+
+<h3>Recent Activity</h3>
+
+
+<table class="table table-striped" id="recentActivity">
+    <tbody class="list">
+        <tr>
+            <td colspan="3">
+                <p class="note">This is the most recent stuff that's happend...</p>
+            </td>
+        </tr>
+          @Html.DisplayFor(m => Model)
+    </tbody>
+</table>

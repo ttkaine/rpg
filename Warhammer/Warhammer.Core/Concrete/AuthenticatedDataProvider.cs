@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
+using LinqKit;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -857,6 +858,37 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<object> RecentActivity()
+        {
+            List<Page> pages = RecentPages().ToList();
+            List<Award> awards = _repository.Awards().OrderByDescending(a => a.AwardedOn).Take(20).ToList();
+            List<Comment> comments = RecentComments();
+
+            Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
+
+            foreach (Page page in pages)
+            {
+                dateObject.Add(page.SignificantUpdate, page);
+            }
+
+            foreach (Award award in awards)
+            {
+                dateObject.Add(award.AwardedOn, award);
+            }
+
+            foreach (Comment comment in comments)
+            {
+                dateObject.Add(comment.Created, comment);
+            }
+
+            var list = dateObject.Keys.ToList();
+            list = list.OrderByDescending(l => l).ToList();
+
+            List<object> results = list.Take(20).Select(date => dateObject[date]).ToList();
+
+            return results;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -878,17 +910,36 @@ namespace Warhammer.Core.Concrete
 
         public List<Page> Search(string searchTerm)
         {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return  new List<Page>();
+            }
+
+            var filterPredicate = PredicateBuilder.True<Page>();
+            string[] terms = searchTerm.Split(' ');
+
+            foreach (string term in terms)
+            {
+                var termPredicate = PredicateBuilder.False<Page>();
+                string temp = term;
+                termPredicate = termPredicate.Or(p => p.ShortName.Contains(temp));
+                termPredicate = termPredicate.Or(p => p.FullName.Contains(temp));
+                termPredicate = termPredicate.Or(p => p.Description.Length < 10000 && p.Description.Contains(temp));
+                filterPredicate = filterPredicate.And(termPredicate.Expand());
+            }
+            var query = _repository.Pages();
+
+            query = query.AsExpandable().Where(filterPredicate.Expand());
+
             return
-                _repository.Pages()
-                    .Where(
-                        p =>
-                            p.ShortName.Contains(searchTerm) || p.FullName.Contains(searchTerm) ||
-                            p.Description.Contains(searchTerm))
-                    .OrderByDescending(p => p.ShortName == searchTerm)
+               query.OrderByDescending(p => p.ShortName == searchTerm)
                     .ThenByDescending(p => p.FullName == searchTerm)
                     .ThenByDescending(p => p.ShortName.StartsWith(searchTerm))
                     .ThenByDescending(p => p.FullName.StartsWith(searchTerm))
-                    .ThenByDescending(p => p.FullName).Take(20).ToList();
+                    .ThenByDescending(p => p.ShortName.Contains(searchTerm))
+                    .ThenByDescending(p => p.FullName.Contains(searchTerm))
+                    .ThenByDescending(p => p.FullName)
+                    .Take(10).ToList();
         }
 
         public bool PageExists(string shortName, string fullName)

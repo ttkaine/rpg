@@ -93,5 +93,6 @@ namespace Warhammer.Core.Abstract
         void NotifyTurn(int sessionId);
         List<SiteFeature> AllFeatures();
         void EnsureFeatures();
+        List<Object> RecentActivity();
     }
 }

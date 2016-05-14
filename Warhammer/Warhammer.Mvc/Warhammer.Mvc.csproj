@@ -42,6 +42,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
@@ -124,12 +132,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -184,6 +186,7 @@
     <Compile Include="Concrete\LinkGenerator.cs" />
     <Compile Include="Concrete\ViewModelFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
@@ -249,15 +252,23 @@
     <Content Include="Content\DbUpdateScripts\15123002.sql" />
     <Content Include="Content\DbUpdateScripts\16010201.sql" />
     <Content Include="Content\DbUpdateScripts\16013101.sql" />
+    <Content Include="Content\fate.css" />
+    <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
+    <Content Include="Content\Images\edited.png" />
+    <Content Include="Content\Images\fate_background.jpg" />
     <Content Include="Content\Images\features.png" />
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\home.png" />
     <Content Include="Content\Images\lock.png" />
     <Content Include="Content\Images\no-image.jpg" />
+    <Content Include="Content\Images\page-location.png" />
+    <Content Include="Content\Images\page-page.png" />
+    <Content Include="Content\Images\page-place.png" />
+    <Content Include="Content\Images\page-session.png" />
     <Content Include="Content\Images\pirate_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
@@ -524,6 +535,14 @@
     <Content Include="Views\Admin\FeatureList.cshtml" />
     <Content Include="Views\Person\AwardHistory.cshtml" />
     <Content Include="Views\Person\DisplayTemplates\Award.cshtml" />
+    <Content Include="Views\Activity\RecentActivity.cshtml" />
+    <Content Include="Views\Person\Award.cshtml" />
+    <Content Include="Views\Activity\DisplayTemplates\Award.cshtml" />
+    <Content Include="Views\Activity\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Activity\DisplayTemplates\Comment.cshtml" />
+    <None Include="Web.FATE.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -588,6 +607,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPACE|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FATE|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>

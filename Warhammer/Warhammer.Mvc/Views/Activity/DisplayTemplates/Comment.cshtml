@@ -1,0 +1,30 @@
+﻿
+@model Warhammer.Core.Entities.Comment
+
+<tr>
+    <td>
+        @if (!Model.IsPlayerComment)
+        {
+            @Html.Action("PageImage", "Page", new { id = Model.PersonId })
+        }
+        else
+        {
+            <h4>@Model.Player.DisplayName</h4>
+        }
+
+
+    </td>
+    <td colspan="2">
+        @Html.Raw(Model.Description)
+    </td>
+
+</tr>
+<tr>
+    <td colspan="3">
+        <p class="note">
+            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null)
+            <br />
+            @Model.Created.ToLongTimeString() @Model.Created.ToLongDateString()
+        </p>
+    </td>
+</tr>

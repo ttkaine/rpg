@@ -6,20 +6,27 @@
 
 <div id="homepage" class="content-wrapper">
 
-        <div class="banner-content">
-            <div class="header-block">
-                <h1 id="fullName">@Model.SiteName</h1>
-            </div>
-
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">@Model.SiteName</h1>
         </div>
 
-        <div class="core-content">
+    </div>
+
+    <div class="core-content">
+
+
+        <div class="content-block">
+            @Html.Action("Search", "Home")
+        </div>
+        <hr/>
             <div class="content-block">
+
 
                 @Html.Action("ActiveTextSessions")
 
                 @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any())
-                {
+            {
                     <div class="alert alert-warning">
                         <p>No Exciting Page updates for you at the moment...</p>
                     </div>
@@ -51,21 +58,18 @@
                         }
                     </div>
                 }
-                <h3>Recently Active Pages</h3>
-                <p class="note">These are pages that have recently been updated or created</p>
-                <ul id="recentChangesList">
-                    @foreach (var page in Model.RecentChanges)
-                    {
-                        <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )"><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny">@page.SignificantUpdate</span></a></li>
-                    }
-                </ul>
 
             </div>
-            <hr/>
+            <hr />
             <div class="content-block">
-                <h3>Recent Comments</h3>
-                @Html.Action("Index", "Comment")
+
+                @Html.Action("RecentActivity", "Activity")
+
             </div>
+
+
+
+
         </div>
 
     <div class="core-content">
@@ -88,7 +92,7 @@
                 </table>
 
             </div>
-                <hr />
+            <hr />
         }
         @if (Model.MyPeople.Any())
         {
@@ -97,19 +101,19 @@
 
                 <table class="table table-striped">
                     <tbody class="list">
-                    @foreach (Person person in Model.MyPeople)
-                    {
-                        <tr>
-                            <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a></td>
-                            <td class="name">@person.FullName</td>
-                        </tr>
+                        @foreach (Person person in Model.MyPeople)
+                        {
+                            <tr>
+                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td class="name">@person.FullName</td>
+                            </tr>
 
-                    }
+                        }
                     </tbody>
                 </table>
 
             </div>
-            <hr/>
+            <hr />
         }
         @if (Model.OtherPeople.Any())
         {
@@ -118,19 +122,19 @@
 
                 <table class="table table-striped">
                     <tbody class="list">
-                    @foreach (Person person in Model.OtherPeople)
-                    {
-                        <tr>
-                            <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a></td>
-                            <td class="name">@person.FullName</td>
-                        </tr>
+                        @foreach (Person person in Model.OtherPeople)
+                        {
+                            <tr>
+                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td class="name">@person.FullName</td>
+                            </tr>
 
-                    }
+                        }
                     </tbody>
                 </table>
 
             </div>
-            <hr/>
+            <hr />
         }
         @Html.Action("FavouriteNpcs")
 
@@ -142,39 +146,26 @@
 
                 <table class="table table-striped">
                     <tbody class="list">
-                    @foreach (Person person in Model.TopNpcs)
-                    {
-                        <tr>
-                            <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a></td>
-                            <td class="name">@person.FullName</td>
-                        </tr>
+                        @foreach (Person person in Model.TopNpcs)
+                        {
+                            <tr>
+                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td class="name">@person.FullName</td>
+                            </tr>
 
-                    }
+                        }
                     </tbody>
                 </table>
             }
         </div>
     </div>
 
-        <div class="core-content">
-            
-        @Html.Action("Search", "Home")
+    <div class="core-content">
 
-            <hr/>
-                <div class="content-block">
-                    <h3>My Stuff</h3>
-                    <p class="note">These are the pages you have created for easy editing of your latest stuffs!</p>
-                    <ul>
-                        @foreach (var page in Model.MyStuff)
-                        {
-                            <li class="@(Model.NewPages.Contains(page) ? "page-new" : "" )">
-                                <a href="@Url.Action("Index", "Page", new { id = page.Id} )">
-                                    @page.FullName @if (page.ShortName != page.FullName)
-                                                   {<span class="note">(@page.ShortName)</span>}
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
+        <div class="content-block">
+            <h3>Recent Comments</h3>
+            @Html.Action("Index", "Comment")
+        </div>
+
+    </div>
 </div>

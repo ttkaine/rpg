@@ -1,0 +1,30 @@
+﻿
+@model Warhammer.Core.Entities.Page
+
+@{
+    bool isUpdate = Model.SignificantUpdate != Model.Created;
+}
+
+<tr>
+    <td>
+        @Html.Action("PageImage", "Page", new {id = Model.Id})
+    </td>
+    <td colspan="2">
+        @if (isUpdate)
+        {
+            <span>Page Updated <br/> @Model.FullName</span>
+        }
+        else
+        {
+            <span>Page Added <br /> @Model.FullName</span>
+        }   
+    </td>
+
+</tr>
+<tr>
+    <td colspan="3">
+        <p class="note">
+            <span>@(isUpdate ? "Changed" : "Added") by @Model.ModifiedBy.DisplayName on @Model.SignificantUpdate.ToLongDateString() : @Model.SignificantUpdate.ToShortTimeString()</span>
+        </p>
+    </td>
+</tr>

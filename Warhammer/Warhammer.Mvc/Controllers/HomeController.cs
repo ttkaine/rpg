@@ -28,6 +28,18 @@ namespace Warhammer.Mvc.Controllers
             }
         }
 
+        private string CssOverride
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["CssOverride"] != null)
+                {
+                    return ConfigurationManager.AppSettings["CssOverride"];
+                }
+                return "";
+            }
+        }
+
         public HomeController(IAuthenticatedDataProvider data) : base(data)
         {
         }
@@ -39,15 +51,14 @@ namespace Warhammer.Mvc.Controllers
                 SiteName = SiteName, 
                 NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
-                UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
-                MyTurnTextSessions = DataProvider.TextSessionsWhereItisMyTurn(),
+           //     UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
+             //   MyTurnTextSessions = DataProvider.TextSessionsWhereItisMyTurn(),
                 RecentChanges = DataProvider.RecentPages().ToList(),
-                MyStuff = DataProvider.MyStuff().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 TopNpcs = DataProvider.TopNpcs(),
                 OtherPeople = DataProvider.OtherPCs(),
                 NpcWithXp = DataProvider.NpcWithXp(),
-                AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
+           //     AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
             return View(model);
         }
@@ -136,7 +147,7 @@ namespace Warhammer.Mvc.Controllers
         [HttpPost]
         public ActionResult Search(SearchModel model)
         {
-            if (String.IsNullOrWhiteSpace(model.SearchTerm))
+            if (string.IsNullOrWhiteSpace(model.SearchTerm))
             {
                 return Search();
             }
@@ -211,13 +222,10 @@ namespace Warhammer.Mvc.Controllers
         [AllowAnonymous]
         public ActionResult OverrideCss()
         {
-            if (SiteName == "Pirates!")
+
+            if (!string.IsNullOrWhiteSpace(CssOverride))
             {
-                return PartialView("OverrideCss", "pirate");
-            }
-            if (SiteName == "Space Pirates!")
-            {
-                return PartialView("OverrideCss", "space");
+                return PartialView("OverrideCss", CssOverride);
             }
             return null;
         }
@@ -257,5 +265,7 @@ namespace Warhammer.Mvc.Controllers
             UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));
             return PartialView("SettingsSection", model);
         }
+
+
     }
 }

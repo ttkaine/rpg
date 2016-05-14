@@ -120,10 +120,38 @@ namespace Warhammer.Mvc.Controllers
                 {
                     return File(page.ImageData, page.ImageMime);
                 }
+
+                if (page is Session)
+                {
+                    var personPath = Path.Combine(defaultDir, "page-session.png");
+                    return File(personPath, "image/jpeg");
+                }
+
+                if (page is Place)
+                {
+                    var personPath = Path.Combine(defaultDir, "page-place.png");
+                    return File(personPath, "image/jpeg");
+                }
+
+                if (page is SessionLog)
+                {
+                    SessionLog log = page as SessionLog;
+
+                    if (log.Person.ImageData != null && log.Person.ImageData.Length > 100 && !string.IsNullOrWhiteSpace(log.Person.ImageMime))
+                    {
+                        return File(log.Person.ImageData, log.Person.ImageMime);
+                    }
+
+                    var personPath = Path.Combine(defaultDir, "page-log.png");
+                    return File(personPath, "image/jpeg");
+                }
+
             }
 
-            var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
-            return File(defaultImagePath, "image/jpeg"); 
+
+
+            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
+            return File(defaultImagePath, "image/jpeg");
         }
 
         public ActionResult PageImage(int? id)
