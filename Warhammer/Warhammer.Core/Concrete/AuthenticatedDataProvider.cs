@@ -106,25 +106,30 @@ namespace Warhammer.Core.Concrete
                 DateTime = date
             };
 
-            Session previousSession =
-                _repository.Pages()
-                    .OfType<Session>()
-                    .OrderByDescending(s => s.DateTime)
-                    .FirstOrDefault(s => s.IsTextSession == false) ?? _repository.Pages()
+            Session previousSession = null;
+
+            if (SiteHasFeature(Feature.AutoPopulatePeopleInNewSessions))
+            {
+
+                previousSession =
+                    _repository.Pages()
                         .OfType<Session>()
                         .OrderByDescending(s => s.DateTime)
-                        .FirstOrDefault();
+                        .FirstOrDefault(s => s.IsTextSession == false) ?? _repository.Pages()
+                            .OfType<Session>()
+                            .OrderByDescending(s => s.DateTime)
+                            .FirstOrDefault();
+            }
 
             int id = Save(session);
 
-            if (previousSession != null)
+            if (SiteHasFeature(Feature.AutoPopulatePeopleInNewSessions) && previousSession != null)
             {
                 foreach (Person person in previousSession.People)
                 {
                     AddLink(person.Id, id);
                 }
             }
-
             return id;
         }
 

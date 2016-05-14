@@ -18,7 +18,8 @@ namespace Warhammer.Core.Entities
         AdminLeague,
         ImmediateEmailer,
         NightlyEmailer,
-        AwardHistory
+        AwardHistory,
+        AutoPopulatePeopleInNewSessions
     }
 
     public partial class SiteFeature
