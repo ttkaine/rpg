@@ -106,19 +106,20 @@ namespace Warhammer.Core.Concrete
                 DateTime = date
             };
 
-            Session previousNonTextSession =
+            Session previousSession =
                 _repository.Pages()
                     .OfType<Session>()
                     .OrderByDescending(s => s.DateTime)
-                    .FirstOrDefault(s => s.IsTextSession == false);
-
+                    .FirstOrDefault(s => s.IsTextSession == false) ?? _repository.Pages()
+                        .OfType<Session>()
+                        .OrderByDescending(s => s.DateTime)
+                        .FirstOrDefault();
 
             int id = Save(session);
 
-
-            if (previousNonTextSession != null)
+            if (previousSession != null)
             {
-                foreach (Person person in previousNonTextSession.People)
+                foreach (Person person in previousSession.People)
                 {
                     AddLink(person.Id, id);
                 }
