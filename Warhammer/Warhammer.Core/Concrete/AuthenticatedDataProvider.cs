@@ -931,6 +931,9 @@ namespace Warhammer.Core.Concrete
 
             query = query.AsExpandable().Where(filterPredicate.Expand());
 
+            string spacedTerm = " " + searchTerm + " ";
+            string startedTerm = " " + searchTerm;
+            string endedTerm = searchTerm + " ";
             return
                query.OrderByDescending(p => p.ShortName == searchTerm)
                     .ThenByDescending(p => p.FullName == searchTerm)
@@ -938,6 +941,9 @@ namespace Warhammer.Core.Concrete
                     .ThenByDescending(p => p.FullName.StartsWith(searchTerm))
                     .ThenByDescending(p => p.ShortName.Contains(searchTerm))
                     .ThenByDescending(p => p.FullName.Contains(searchTerm))
+                    .ThenByDescending(p => p.Description.Contains(spacedTerm))
+                    .ThenByDescending(p => p.Description.Contains(startedTerm))
+                    .ThenByDescending(p => p.Description.Contains(endedTerm))
                     .ThenByDescending(p => p.FullName)
                     .Take(10).ToList();
         }
