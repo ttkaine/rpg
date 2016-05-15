@@ -1,0 +1,14 @@
+﻿@model Warhammer.Core.Entities.Person
+    
+@Html.ActionLink("Manage Awards", "ManageAwards", "Admin", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+
+<hr/>
+
+@if (Model.IsDead)
+{
+    @Html.ActionLink("Resurrect", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+}
+else
+{
+    @Html.ActionLink("Kill", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+}

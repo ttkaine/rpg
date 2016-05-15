@@ -245,71 +245,10 @@
                 </ul>
                 <div class="clearfix"></div>
             }
-            @if (ViewBag.EditMode)
-            {
-                <h3>Actions</h3>
-                if (Model is Person)
-                {
-                    @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new { personId = Model.Id }, new { @class = "btn btn-default btn-block" })
-                }
 
-                @Html.ActionLink("Change Image", "ChangeImage", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+        @Html.Action("Index", "PageControls", new { id = Model.Id })
+        @Html.Action("Index", "AdminPageControls", new {id = Model.Id})
 
-                @Html.ActionLink("Edit Links", "EditLinks", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
-
-                if (User.IsInRole("Admin"))
-                {
-                    <div class="clearfix"></div>
-                    <h3>Admin Funtions</h3>
-
-                    if (Model.Pinned)
-                    {
-                        @Html.ActionLink("Unpin", "PinPage", "Admin", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Pin", "PinPage", "Admin", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
-                    }
-
-                    if (Model is Session)
-                    {
-                        Session session = Model as Session;
-                        if (session.IsTextSession && !session.IsClosed)
-                        {
-                            @Html.ActionLink("Close", "CloseTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
-                        }
-
-                        if (!session.IsTextSession)
-                        {
-                            @Html.ActionLink("Set as TEXT session", "SetAsTextSession", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
-                        }
-                    }
-
-                    if (Model is Person)
-                    {
-                        Person person = Model as Person;
-
-                        @Html.ActionLink("Manage Awards", "ManageAwards", "Admin", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
-                        <hr />
-                        if (person.IsDead)
-                        {
-                            @Html.ActionLink("Resurrect", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Kill", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
-                        }
-
-                    }
-
-
-                    <hr />
-
-                    @Html.ActionLink("Delete", "DeletePage", "Admin", new { id = Model.Id }, new { @class = "btn btn-danger btn-block" })
-
-                    <div class="clearfix"></div>
-                }
-            }
         </div>
 
 

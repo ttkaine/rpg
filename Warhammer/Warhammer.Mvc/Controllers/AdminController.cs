@@ -196,28 +196,6 @@ namespace Warhammer.Mvc.Controllers
         }
 
 
-        public ActionResult PinPage(int id)
-        {
-            Core.Entities.Page page = DataProvider.GetPage(id);
-            if (page == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                return View(page);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult PinPage(Core.Entities.Page page)
-        {
-            if (ModelState.IsValid)
-            {
-                DataProvider.PinPage(page.Id);
-            }
-            return RedirectToAction("Index", "Home");
-        }
 
 
         public ActionResult DeletePage(int id)
@@ -251,67 +229,9 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult CloseTextSession(int id)
-        {
-            Session page = DataProvider.GetPage(id) as Session;
-            if (page == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                return View(page);
-            }
-        }
 
-        [HttpPost]
-        public ActionResult CloseTextSession(Session session)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    DataProvider.CloseTextSession(session.Id);
-                }
-                catch (Exception ex)
-                {
-                    return View("DeleteError", ex);
-                }
 
-            }
-            return RedirectToAction("Index", "Home");
-        }
 
-        public ActionResult SetAsTextSession(int id)
-        {
-            Session page = DataProvider.GetPage(id) as Session;
-            if (page == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                return View(page);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult SetAsTextSession(Session session)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    DataProvider.SetAsTextSession(session.Id);
-                }
-                catch (Exception ex)
-                {
-                    return View("DeleteError", ex);
-                }
-
-            }
-            return RedirectToAction("Index", "Home");
-        }
 
         public ViewResult Features()
         {
@@ -340,5 +260,8 @@ namespace Warhammer.Mvc.Controllers
             List<SiteFeature> features = DataProvider.AllFeatures();
             return PartialView("FeatureList", features);
         }
+
+
+
     }
 }

@@ -1,0 +1,60 @@
+﻿
+@model Warhammer.Core.Entities.Session
+
+
+<hr />
+@if (Model.IsTextSession)
+{
+
+    if (Model.IsPrivate)
+    {
+        using (Ajax.BeginForm("ToggleSessionPrivicy", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+        {
+            <input type="hidden" value="@Model.Id" name="id" />
+                <input type="submit" value="Private" class="btn btn-danger btn-block" />
+        }
+    }
+    else
+    {
+        using (Ajax.BeginForm("ToggleSessionPrivicy", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+        {
+            <input type="hidden" value="@Model.Id" name="id" />
+            <input type="submit" value="Public" class="btn btn-success btn-block" />
+        }
+    }
+
+    using (Ajax.BeginForm("ToggleTextSession", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+    {
+        <input type="hidden" value="@Model.Id" name="id" />
+        <input type="submit" value="Set as NOT a TEXT Session" class="btn btn-info btn-block" />
+    }
+
+    <br/><br/>
+
+    if (Model.IsClosed)
+    {
+        using (Ajax.BeginForm("OpenCloseTextSession", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+        {
+            <input type="hidden" value="@Model.Id" name="id" />
+                <input type="submit" value="ReOpen!" class="btn btn-info btn-block" />
+        }
+    }
+    else
+    {
+        using (Ajax.BeginForm("OpenCloseTextSession", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+        {
+            <input type="hidden" value="@Model.Id" name="id" />
+            <input type="submit" value="CLOSE" class="btn btn-danger btn-block" />
+        }
+    }
+}
+
+
+else
+{
+    using (Ajax.BeginForm("ToggleTextSession", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+    {
+        <input type="hidden" value="@Model.Id" name="id" />
+        <input type="submit" value="Set as TEXT Session" class="btn btn-warning btn-block" />
+    }
+}

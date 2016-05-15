@@ -7155,3 +7155,6 @@ div.commentdetail {
 #awardHistory img {
   margin-top: -8px;
 }
+#adminPageControls input {
+  margin-top: 5px;
+}

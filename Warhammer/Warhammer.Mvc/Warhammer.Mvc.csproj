@@ -188,12 +188,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminPageControlsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\PageControlsController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\RoleplayController.cs" />
     <Compile Include="Global.asax.cs">
@@ -542,6 +544,14 @@
     <Content Include="Views\Activity\DisplayTemplates\Award.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\Comment.cshtml" />
+    <Content Include="Views\PageControls\Index.cshtml" />
+    <Content Include="Views\PageControls\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\PageControls\DisplayTemplates\Person.cshtml" />
+    <Content Include="Views\PageControls\DisplayTemplates\Session.cshtml" />
+    <Content Include="Views\AdminPageControls\Index.cshtml" />
+    <Content Include="Views\AdminPageControls\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\AdminPageControls\DisplayTemplates\Person.cshtml" />
+    <Content Include="Views\AdminPageControls\DisplayTemplates\Session.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

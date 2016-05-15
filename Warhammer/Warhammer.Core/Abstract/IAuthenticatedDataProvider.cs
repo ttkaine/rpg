@@ -53,8 +53,8 @@ namespace Warhammer.Core.Abstract
         List<Person> AllNpcs();
         void SetMyAward(int personId, TrophyType trophyType);
 	    bool IsLoggedIn();
-        void CloseTextSession(int id);
-        void SetAsTextSession(int id);
+        void OpenOrCloseTextSession(int id);
+        void ToggleSetAsTextSession(int id);
         List<Session> UpdatedTextSessions();
         List<Session> TextSessionsWhereItisMyTurn();
 		List<Session> TextSessionsContainingMyCharacters();
@@ -94,5 +94,6 @@ namespace Warhammer.Core.Abstract
         List<SiteFeature> AllFeatures();
         void EnsureFeatures();
         List<Object> RecentActivity();
+        void ToggleSessionPrivacy(int id);
     }
 }

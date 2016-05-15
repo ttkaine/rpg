@@ -1,0 +1,35 @@
+﻿@model Warhammer.Core.Entities.Page
+
+
+
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div id="adminPageControls">
+            <h3>Admin Actions</h3>
+
+            @if (Model.Pinned)
+            {
+                using (Ajax.BeginForm("PinPage", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+                {
+                  <input type="hidden" value="@Model.Id" name="id" />
+                   <input type="submit" value="Pinned!" class="btn btn-warning btn-block" />
+                }
+            }
+            else
+            {
+                using (Ajax.BeginForm("PinPage", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
+                {
+                  <input type="hidden" value="@Model.Id" name="id" />
+                   <input type="submit" value="Pin" class="btn btn-default btn-block" />
+                }
+            }
+
+            @Html.DisplayFor(m => Model)
+
+            <hr />
+            @Html.ActionLink("Delete", "DeletePage", "Admin", new { id = Model.Id }, new { @class = "btn btn-danger btn-block" })
+
+        </div>
+    }
+

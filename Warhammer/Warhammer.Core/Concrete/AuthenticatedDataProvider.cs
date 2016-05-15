@@ -914,6 +914,16 @@ namespace Warhammer.Core.Concrete
             return results;
         }
 
+        public void ToggleSessionPrivacy(int id)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
+            if (session != null)
+            {
+                session.IsPrivate = !session.IsPrivate;
+                Save(session);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -1027,19 +1037,18 @@ namespace Warhammer.Core.Concrete
 		    return CurrentPlayer != null;
 	    }
 
-        public void CloseTextSession(int id)
+        public void OpenOrCloseTextSession(int id)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
             if (session != null)
             {
-                session.IsClosed = true;
+                session.IsClosed = !session.IsClosed;
                 Save(session);
 
-                if (SiteHasFeature(Feature.SimpleStats))
+                if (SiteHasFeature(Feature.SimpleStats) && session.IsClosed)
                 {
                     ApplyXpForSession(session);
                 }
-
             }
         }
 
@@ -1064,12 +1073,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void SetAsTextSession(int id)
+        public void ToggleSetAsTextSession(int id)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
             if (session != null)
             {
-                session.IsTextSession = true;
+                session.IsTextSession = !session.IsTextSession;
                 Save(session);
             }
         }

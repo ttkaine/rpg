@@ -7155,6 +7155,9 @@ div.commentdetail {
 #awardHistory img {
   margin-top: -8px;
 }
+#adminPageControls input {
+  margin-top: 5px;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

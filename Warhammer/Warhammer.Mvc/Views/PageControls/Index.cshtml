@@ -1,0 +1,14 @@
+﻿@model Warhammer.Core.Entities.Page
+
+<div id="pageControls">
+
+    @Html.ActionLink("Change Image", "ChangeImage", "Page", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+
+    @Html.ActionLink("Edit Links", "EditLinks", "Page", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+
+    @Html.DisplayFor(m => Model)
+
+
+    <div class="clearfix"></div>
+
+</div>
