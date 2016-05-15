@@ -19,7 +19,8 @@ namespace Warhammer.Core.Entities
         ImmediateEmailer,
         NightlyEmailer,
         AwardHistory,
-        AutoPopulatePeopleInNewSessions
+        AutoPopulatePeopleInNewSessions,
+        ScoreHistory
     }
 
     public partial class SiteFeature

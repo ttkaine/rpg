@@ -25,7 +25,6 @@ namespace Warhammer.Core.Entities
             this.Posts = new HashSet<Post>();
             this.PostOrders = new HashSet<PostOrder>();
             this.UserSettings = new HashSet<UserSetting>();
-            this.ScenePosts = new HashSet<ScenePost>();
         }
     
         public int Id { get; set; }
@@ -44,6 +43,5 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<PostOrder> PostOrders { get; set; }
         public virtual ICollection<UserSetting> UserSettings { get; set; }
-        public virtual ICollection<ScenePost> ScenePosts { get; set; }
     }
 }

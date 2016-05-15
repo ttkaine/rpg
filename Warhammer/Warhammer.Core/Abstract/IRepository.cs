@@ -33,5 +33,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<Setting> Settings();
         int Save(UserSetting setting);
         int Save(Comment comment);
+        IQueryable<ScoreHistory> ScoreHistories();
+        int Save(ScoreHistory scoreHistory);
+        IQueryable<Person> PeopleForScoring();
     }
 }

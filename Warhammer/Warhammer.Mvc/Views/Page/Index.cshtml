@@ -20,13 +20,22 @@
             <div class="content-block">
                 @if (Model is Person)
                 {
+
+
                     Person person = Model as Person;
+
+
+
+
                     if (person.Awards.Any())
                     {
                         <ul class="awardBar awardBar-mini">
                             @Html.DisplayFor(m => person.OrderedAwards)
                         </ul>
                     }
+
+                    @Html.Action("ScoreHistory", "Person")
+
                 }
                 @if (Model is Person || Model.HasImage)
                 {

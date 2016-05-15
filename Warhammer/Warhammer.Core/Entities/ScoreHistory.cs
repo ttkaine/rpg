@@ -12,21 +12,14 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Scene
+    public partial class ScoreHistory
     {
-        public Scene()
-        {
-            this.ScenePosts = new HashSet<ScenePost>();
-        }
-    
         public int Id { get; set; }
-        public Nullable<int> LeadCharacterId { get; set; }
-        public Nullable<int> LocationId { get; set; }
         public System.DateTime DateTime { get; set; }
+        public int PersonId { get; set; }
+        public int ScoreTypeId { get; set; }
+        public decimal PointsValue { get; set; }
     
-        public virtual Page Page { get; set; }
         public virtual Person Person { get; set; }
-        public virtual Place Place { get; set; }
-        public virtual ICollection<ScenePost> ScenePosts { get; set; }
     }
 }

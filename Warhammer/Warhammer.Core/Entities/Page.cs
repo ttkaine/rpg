@@ -42,6 +42,5 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<PageView> PageViews { get; set; }
         public virtual ICollection<Page> Related { get; set; }
         public virtual ICollection<Page> Pages { get; set; }
-        public virtual Scene Scene { get; set; }
     }
 }

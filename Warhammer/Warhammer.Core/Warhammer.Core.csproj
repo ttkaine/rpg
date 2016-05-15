@@ -111,6 +111,7 @@
     <Compile Include="Abstract\IPostManager.cs" />
     <Compile Include="Abstract\IModelFactory.cs" />
     <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Abstract\IScoreCalculator.cs" />
     <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\EmailHandler.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Concrete\PostManager.cs" />
     <Compile Include="Concrete\ModelFactory.cs" />
     <Compile Include="Concrete\Repository.cs" />
+    <Compile Include="Concrete\ScoreCalculator.cs" />
     <Compile Include="Entities\AspNetRole.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -183,10 +185,7 @@
     <Compile Include="Entities\PostOrder.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Scene.cs">
-      <DependentUpon>PageEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ScenePost.cs">
+    <Compile Include="Entities\ScoreHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Session.cs">
@@ -212,6 +211,7 @@
     <Compile Include="Entities\_Person.cs" />
     <Compile Include="Entities\_Place.cs" />
     <Compile Include="Entities\_Player.cs" />
+    <Compile Include="Entities\_ScoreHistory.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
     <Compile Include="Entities\_Setting.cs" />

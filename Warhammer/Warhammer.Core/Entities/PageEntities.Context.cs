@@ -42,8 +42,7 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<Scene> Scenes { get; set; }
-        public virtual DbSet<ScenePost> ScenePosts { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
+        public virtual DbSet<ScoreHistory> ScoreHistories { get; set; }
     }
 }

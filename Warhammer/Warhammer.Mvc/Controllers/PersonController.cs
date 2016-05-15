@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
+using DotNet.Highcharts.Enums;
+using DotNet.Highcharts.Helpers;
+using DotNet.Highcharts.Options;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Abstract;
@@ -162,6 +167,93 @@ namespace Warhammer.Mvc.Controllers
                 }
             }
             return null;
+        }
+
+        public ActionResult ScoreHistory(int id)
+        {
+            return null;
+
+            if (DataProvider.SiteHasFeature(Feature.ScoreHistory))
+            {
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    List<ScoreHistory> scores = person.ScoreHistories.OrderByDescending(a => a.DateTime).ToList();
+                    if (scores.Any())
+                    {
+
+                        List<DateTime> dates = scores.Select(s => s.DateTime).ToList();
+                          dates = dates.Distinct().ToList();
+
+
+                        var vals = Enum.GetValues(typeof (ScoreType));
+
+
+                        List<int> types = vals.Cast<int>().ToList();
+
+                        types.Remove((int)ScoreType.Total);
+                        if (!DataProvider.SiteHasFeature(Feature.SimpleStats))
+                        {
+                            types.Remove((int) ScoreType.Roles);
+                            types.Remove((int)ScoreType.Descriptors);
+                            types.Remove((int)ScoreType.Stats);
+                        }
+
+
+                        List<Series> allSeries = new List<Series>();
+
+                        foreach (int type in types)
+                        {
+                            Series series = new Series();
+                            series.Name = ((ScoreType)type).ToString();
+
+                            decimal[] points = dates.Select(dateTime => scores.Where(s => s.DateTime == dateTime && s.ScoreTypeId == type).Sum(t => t.PointsValue)).ToArray();
+
+                            series.Data = new Data(points.Cast<object>().ToArray());
+
+                            allSeries.Add(series);
+                        }
+
+
+                        DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("Points History")
+                            
+                                .SetTitle(new Title { Text = "Points History " })
+                            .SetTooltip(new Tooltip
+                            {
+                                Shared = false,
+                                ValueSuffix = " Points"
+                            })
+                 .SetXAxis(new XAxis
+                 {
+                     Categories = dates.Select(d => d.ToShortDateString()).ToArray()
+                 })
+                 .SetPlotOptions(new PlotOptions
+                 {
+                     Area = new PlotOptionsArea
+                     {
+                         Stacking = Stackings.Normal,
+
+                         ConnectNulls = true,
+                         ConnectEnds = true,
+                         LineColor = Color.AliceBlue,
+                         LineWidth = 1,
+                         Marker = new PlotOptionsAreaMarker
+                         {
+                             Enabled = false
+                         }
+                         
+                     }
+                 })
+                 .SetSeries(allSeries.ToArray());
+
+                return PartialView(chart);
+
+                      //  return PartialView(scores);
+                    }
+                }
+            }
+            return null;
+
         }
     }
 }

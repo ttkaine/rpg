@@ -17,7 +17,6 @@ namespace Warhammer.Core.Entities
         public Place()
         {
             this.Child = new HashSet<Place>();
-            this.Scenes = new HashSet<Scene>();
         }
     
         public Nullable<int> IsWithin { get; set; }
@@ -25,6 +24,5 @@ namespace Warhammer.Core.Entities
     
         public virtual ICollection<Place> Child { get; set; }
         public virtual Place Parent { get; set; }
-        public virtual ICollection<Scene> Scenes { get; set; }
     }
 }

@@ -196,6 +196,35 @@ namespace Warhammer.Core.Concrete
             return comment.Id;
         }
 
+        public IQueryable<ScoreHistory> ScoreHistories()
+        {
+            return _entities.ScoreHistories;
+        }
+
+        public int Save(ScoreHistory scoreHistory)
+        {
+            if (scoreHistory.Id == 0)
+            {
+                _entities.ScoreHistories.Add(scoreHistory);
+            }
+            else
+            {
+                _entities.Entry(scoreHistory).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return scoreHistory.Id;
+        }
+
+        public IQueryable<Person> PeopleForScoring()
+        {
+            return _entities.Pages.OfType<Person>()
+                .Include("Related")
+                .Include("Awards")
+                .Include("Awards.Trophy")
+                .AsNoTracking();
+        }
+
         #endregion
 
         #region Save
