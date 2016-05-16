@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Warhammer.Core.Entities;
 
 namespace Warhammer.Core.Abstract
@@ -36,5 +37,7 @@ namespace Warhammer.Core.Abstract
         IQueryable<ScoreHistory> ScoreHistories();
         int Save(ScoreHistory scoreHistory);
         IQueryable<Person> PeopleForScoring();
+
+        void BulkInsert<T>( IList<T> list);
     }
 }

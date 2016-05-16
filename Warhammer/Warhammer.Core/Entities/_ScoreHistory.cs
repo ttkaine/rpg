@@ -3,15 +3,15 @@
     public enum ScoreType
     {
         Total = 0,
-        Sessions = 1,
-        Logs = 2,
+        Image = 1,
+        PageText = 2,
         Links = 3,
-        Awards = 4,
-        Image = 5,
-        PageText = 6,
+        Sessions = 4,
+        Logs = 5,
+        Awards = 6,
         Stats = 7,
-        Roles,
-        Descriptors
+        Roles = 8,
+        Descriptors = 9
     }
 
     public partial class ScoreHistory

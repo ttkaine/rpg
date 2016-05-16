@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Warhammer.Core.Entities
@@ -24,6 +25,20 @@ namespace Warhammer.Core.Entities
         public virtual double BaseScore
         {
             get { return 0.25; }
+        }
+
+        public int WordCount
+        {
+            get
+            {
+                string theContent = Description.Trim();
+                while (theContent.Contains("  "))
+                {
+                    theContent = theContent.Replace("  ", " ");
+                }
+                int words = theContent.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Count();
+                return words;
+            }
         }
 
         public double AgeInMonths

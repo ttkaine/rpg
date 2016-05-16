@@ -171,25 +171,21 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ScoreHistory(int id)
         {
-            return null;
-
             if (DataProvider.SiteHasFeature(Feature.ScoreHistory))
             {
                 Person person = DataProvider.GetPerson(id);
                 if (person != null)
                 {
-                    List<ScoreHistory> scores = person.ScoreHistories.OrderByDescending(a => a.DateTime).ToList();
+                    List<ScoreHistory> scores = person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
                     if (scores.Any())
                     {
 
                         List<DateTime> dates = scores.Select(s => s.DateTime).ToList();
                           dates = dates.Distinct().ToList();
 
-
                         var vals = Enum.GetValues(typeof (ScoreType));
 
-
-                        List<int> types = vals.Cast<int>().ToList();
+                        List<int> types = vals.Cast<int>().OrderByDescending(i => i).ToList();
 
                         types.Remove((int)ScoreType.Total);
                         if (!DataProvider.SiteHasFeature(Feature.SimpleStats))
@@ -215,9 +211,13 @@ namespace Warhammer.Mvc.Controllers
                         }
 
 
-                        DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("Points History")
-                            
-                                .SetTitle(new Title { Text = "Points History " })
+                        DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("Points_History")
+                           .InitChart(new Chart
+                           {
+                               DefaultSeriesType = ChartTypes.Area
+                           })
+                                .SetTitle(new Title { Text = "Points History" })
+                                
                             .SetTooltip(new Tooltip
                             {
                                 Shared = false,
@@ -225,12 +225,17 @@ namespace Warhammer.Mvc.Controllers
                             })
                  .SetXAxis(new XAxis
                  {
-                     Categories = dates.Select(d => d.ToShortDateString()).ToArray()
-                 })
+                     Categories = dates.Select(d => d.ToShortDateString()).ToArray(),
+                     Title = new XAxisTitle { Text = "Date" }
+                     }).SetYAxis(new YAxis
+                     {
+                         Title = new YAxisTitle {  Text = "Points" }
+                     })
                  .SetPlotOptions(new PlotOptions
                  {
                      Area = new PlotOptionsArea
                      {
+                         
                          Stacking = Stackings.Normal,
 
                          ConnectNulls = true,

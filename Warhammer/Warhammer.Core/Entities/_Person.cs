@@ -250,7 +250,12 @@ namespace Warhammer.Core.Entities
                     BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Links).Sum(s => s.PointsValue),
                     ActivityBonus = 0                  
                 });
-
+                breakdown.Add(new ScoreBreakdown
+                {
+                    Name = "Page Text",
+                    BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.PageText).Sum(s => s.PointsValue),
+                    ActivityBonus = 0
+                });
                 if (scores.Any(s => s.ScoreType == ScoreType.Stats && s.PointsValue > 0))
                 {
                     breakdown.Add(new ScoreBreakdown

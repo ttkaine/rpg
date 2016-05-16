@@ -10,7 +10,7 @@ namespace Warhammer.Core.Concrete
     public class ScoreCalculator : IScoreCalculator
     {
         readonly IRepository _repo;
-
+        private static readonly object _lock = new object();
         public ScoreCalculator(IRepository repo)
         {
             _repo = repo;
@@ -18,24 +18,29 @@ namespace Warhammer.Core.Concrete
 
         public void UpdateScoreHistories()
         {
-            DateTime lastCalculated = DateTime.Now.Date.AddDays(-1);
-
-            ScoreHistory mostRecent = _repo.ScoreHistories().OrderByDescending(d => d.DateTime).FirstOrDefault();
-            if (mostRecent != null)
+            lock (_lock)
             {
-                lastCalculated = mostRecent.DateTime;
-            }
+                DateTime lastCalculated = DateTime.Now.Date.AddDays(-1);
 
-            if (lastCalculated < DateTime.Now.Date)
-            {
-                lastCalculated = lastCalculated.AddDays(1);
-                List<ScoreHistory> scores = CalculateScores(lastCalculated);
-                foreach (ScoreHistory scoreHistory in scores)
+                ScoreHistory mostRecent = _repo.ScoreHistories().OrderByDescending(d => d.DateTime).FirstOrDefault();
+                if (mostRecent != null)
                 {
-                    _repo.Save(scoreHistory);
+                    lastCalculated = mostRecent.DateTime;
+                }
+
+                if (lastCalculated >= DateTime.Now.Date)
+                {
+                    return;
+                }
+
+
+                while (lastCalculated < DateTime.Now.Date)
+                {
+                    lastCalculated = lastCalculated.AddDays(1);
+                    List<ScoreHistory> scores = CalculateScores(lastCalculated);
+                    _repo.BulkInsert(scores);
                 }
             }
-
         }
 
         private List<ScoreHistory> CalculateScores(DateTime scoreDate)
@@ -74,6 +79,14 @@ namespace Warhammer.Core.Concrete
                 DateTime = scoreDate,
                 PersonId = person.Id,
                 PointsValue = (decimal)logs.Sum(l => l.BaseScore)
+            });
+
+            scoreHistories.Add(new ScoreHistory
+            {
+                ScoreType = ScoreType.PageText,
+                DateTime = scoreDate,
+                PersonId = person.Id,
+                PointsValue = person.WordCount / 500.0m
             });
 
             scoreHistories.Add(new ScoreHistory
