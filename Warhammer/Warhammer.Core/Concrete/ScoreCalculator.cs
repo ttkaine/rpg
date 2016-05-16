@@ -86,7 +86,7 @@ namespace Warhammer.Core.Concrete
                 ScoreType = ScoreType.PageText,
                 DateTime = scoreDate,
                 PersonId = person.Id,
-                PointsValue = person.WordCount / 500.0m
+                PointsValue = person.WordCount / 100.0m
             });
 
             scoreHistories.Add(new ScoreHistory
