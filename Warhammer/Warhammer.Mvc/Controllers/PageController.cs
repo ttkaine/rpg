@@ -39,8 +39,17 @@ namespace Warhammer.Mvc.Controllers
 
 	                if (page is Session)
 	                {
-		                ViewBag.IAmInThisSession = DataProvider.Sessions().Any(s => s.Id == page.Id);
-	                }
+                        Session session = page as Session;
+	                    ViewBag.ShowTextSessionLink = 
+                            session.IsTextSession 
+                            && (
+                                !session.IsPrivate 
+                                ||         
+                                session.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)
+                                ||
+                                CurrentPlayer.IsGm
+                               );
+                    }
 
                     return View(page);
                 }
