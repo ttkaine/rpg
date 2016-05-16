@@ -176,6 +176,14 @@ namespace Warhammer.Mvc.Controllers
                 Person person = DataProvider.GetPerson(id);
                 if (person != null)
                 {
+                    if (!DataProvider.SiteHasFeature(Feature.PublicLeague))
+                    {
+                        if (person.PlayerId.HasValue && person.PlayerId != CurrentPlayer.Id)
+                        {
+                            return null;
+                        }
+                    }
+
                     List<ScoreHistory> scores = person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
                     if (scores.Any())
                     {
