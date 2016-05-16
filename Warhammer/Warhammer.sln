@@ -25,6 +25,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		SPACE|Any CPU = SPACE|Any CPU
 		WADE|Any CPU = WADE|Any CPU
+		WarhammerFederer|Any CPU = WarhammerFederer|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -41,6 +42,8 @@ Global
 		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.SPACE|Any CPU.Build.0 = SPACE|Any CPU
 		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
 		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.WarhammerFederer|Any CPU.ActiveCfg = WarhammerFederer|Any CPU
+		{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}.WarhammerFederer|Any CPU.Build.0 = WarhammerFederer|Any CPU
 		{DE90938D-60C0-41A7-9459-66444B778518}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE90938D-60C0-41A7-9459-66444B778518}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE90938D-60C0-41A7-9459-66444B778518}.FATE|Any CPU.ActiveCfg = FATE|Any CPU
@@ -55,6 +58,8 @@ Global
 		{DE90938D-60C0-41A7-9459-66444B778518}.SPACE|Any CPU.Build.0 = SPACE|Any CPU
 		{DE90938D-60C0-41A7-9459-66444B778518}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
 		{DE90938D-60C0-41A7-9459-66444B778518}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.WarhammerFederer|Any CPU.ActiveCfg = WarhammerFederer|Any CPU
+		{DE90938D-60C0-41A7-9459-66444B778518}.WarhammerFederer|Any CPU.Build.0 = WarhammerFederer|Any CPU
 		{3A0F437D-D50F-45C1-81C2-817680099DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A0F437D-D50F-45C1-81C2-817680099DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A0F437D-D50F-45C1-81C2-817680099DF0}.FATE|Any CPU.ActiveCfg = FATE|Any CPU
@@ -69,6 +74,8 @@ Global
 		{3A0F437D-D50F-45C1-81C2-817680099DF0}.SPACE|Any CPU.Build.0 = SPACE|Any CPU
 		{3A0F437D-D50F-45C1-81C2-817680099DF0}.WADE|Any CPU.ActiveCfg = WADE|Any CPU
 		{3A0F437D-D50F-45C1-81C2-817680099DF0}.WADE|Any CPU.Build.0 = WADE|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.WarhammerFederer|Any CPU.ActiveCfg = WarhammerFederer|Any CPU
+		{3A0F437D-D50F-45C1-81C2-817680099DF0}.WarhammerFederer|Any CPU.Build.0 = WarhammerFederer|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,17 +33,18 @@ namespace Warhammer.Core.Concrete
                     return;
                 }
 
-                List<ScoreHistory> scores = new List<ScoreHistory>();
+
                 while (lastCalculated < DateTime.Now.Date)
                 {
+                    List<ScoreHistory> scores = new List<ScoreHistory>();
                     lastCalculated = lastCalculated.AddDays(1);
                     scores.AddRange(CalculateScores(lastCalculated));
+                    if (scores.Any())
+                    {
+                        _repo.BulkInsert(scores);
+                    }
+                }
 
-                }
-                if (scores.Any())
-                {
-                    _repo.BulkInsert(scores);
-                }
             }
         }
 

@@ -436,6 +436,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
     <None Include="Properties\PublishProfiles\FATE_FIILE.pubxml" />
+    <None Include="Properties\PublishProfiles\Warhammer_Federer_File.pubxml" />
     <None Include="Properties\PublishProfiles\WARHAMMER_MURRAY_FILE.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Highcharts-4.0.1\js\adapters\standalone-framework.js" />
@@ -608,6 +609,10 @@
     <None Include="Web.WADE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.WarhammerFederer.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -675,6 +680,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WarhammerFederer|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
