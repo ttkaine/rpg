@@ -17,7 +17,6 @@ namespace Warhammer.Core.Concrete
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
-        private readonly IScoreCalculator _scoreCalculator;
 
         private int UpliftId
         {
@@ -53,14 +52,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator scoreCalculator)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
-            _scoreCalculator = scoreCalculator;
-            _scoreCalculator.UpdateScoreHistories();
         }
 
         public Player CurrentPlayer

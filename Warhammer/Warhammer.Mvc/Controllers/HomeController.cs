@@ -16,6 +16,7 @@ namespace Warhammer.Mvc.Controllers
 {
     public class HomeController : BaseController
     {
+        private readonly IScoreCalculator _scoreCalculator;
         private string SiteName
         {
             get
@@ -40,8 +41,9 @@ namespace Warhammer.Mvc.Controllers
             }
         }
 
-        public HomeController(IAuthenticatedDataProvider data) : base(data)
+        public HomeController(IAuthenticatedDataProvider data, IScoreCalculator scoreCalculator) : base(data)
         {
+            _scoreCalculator = scoreCalculator;
         }
 
         public ActionResult Index()
@@ -222,6 +224,9 @@ namespace Warhammer.Mvc.Controllers
         [AllowAnonymous]
         public ActionResult OverrideCss()
         {
+            //this probably shouldn't be here - but, hey, I'll put it someplace better when I get round to it... okay?
+            _scoreCalculator.UpdateScoreHistories();
+
 
             if (!string.IsNullOrWhiteSpace(CssOverride))
             {

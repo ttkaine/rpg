@@ -434,6 +434,7 @@
     <Content Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
     <None Include="Properties\PublishProfiles\FATE_FIILE.pubxml" />
     <None Include="Properties\PublishProfiles\WARHAMMER_MURRAY_FILE.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
