@@ -60,8 +60,80 @@ namespace Warhammer.Core.Concrete
                         _repo.Save(person);
                     }
                 }
+            }
+        }
 
+        private void UpdateUserScores(Person person)
+        {
+            List<ScoreHistory> scores = new List<ScoreHistory>();
+            DateTime date = person.Created.Date;
+            if (date < DateTime.Today)
+            {
+                List<DateTime> populatedDates =
+                    _repo.ScoreHistories()
+                        .Where(s => s.PersonId == person.Id && s.DateTime > date)
+                        .Select(d => d.DateTime)
+                        .Distinct()
+                        .ToList();
 
+                while (date <= DateTime.Today)
+                {
+                    if (!populatedDates.Contains(date))
+                    {
+                        scores.AddRange(CalculateScoreForPerson(person, date));
+                    }
+                    date = date.AddDays(1);
+                }
+            }
+            if (scores.Any())
+            {
+                _repo.BulkInsert(scores);
+            }
+
+            ScoreHistory currentScore = _repo
+                .ScoreHistories()
+                .Where(s => s.DateTime == DateTime.Today)
+                .Where(s => s.ScoreTypeId == (int)ScoreType.Total)
+                .FirstOrDefault(s => s.PersonId == person.Id);
+
+            if (currentScore != null)
+            {
+                person.CurrentScore = currentScore.PointsValue;
+                _repo.Save(person);
+            }
+        }
+
+        public void UpdateUserScores(int id)
+        {
+            lock (_lock)
+            {
+                Person person = _repo.People().FirstOrDefault(p => p.Id == id);
+                if (person != null)
+                {
+                    UpdateUserScores(person);
+                }
+            }
+        }
+
+        public void ForceUpdateScoresForToday(int id)
+        {
+            lock (_lock)
+            {
+                Person person = _repo.People().FirstOrDefault(p => p.Id == id);
+                if (person != null)
+                {
+                    KillTodayScores(person.Id);
+                    UpdateUserScores(person);
+                }
+            }
+        }
+
+        private void KillTodayScores(int id)
+        {
+            List<ScoreHistory> scoreHistories = _repo.ScoreHistories().Where(p => p.PersonId == id && p.DateTime == DateTime.Today).ToList();
+            foreach (ScoreHistory scoreHistory in scoreHistories)
+            {
+                _repo.Delete(scoreHistory);
             }
         }
 

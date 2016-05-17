@@ -39,5 +39,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<Person> PeopleForScoring();
 
         void BulkInsert<T>( IList<T> list);
+        void Delete(ScoreHistory scoreHistory);
     }
 }

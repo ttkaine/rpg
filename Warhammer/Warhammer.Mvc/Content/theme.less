@@ -95,6 +95,7 @@ div.session-container{
     font-size: @font-size-large;
 }
 
+.leagueAwards ul,
 .awardBar ul,
 .session-block ul,
 .core-content ul,
@@ -117,22 +118,27 @@ div.session-container{
     white-space:nowrap;
 }
 
-#characterLeagueList .awardBar {
+#characterLeagueList .leagueAwards {
     margin: 0;
     margin-top: -8px;
 }
 
-#characterTable tr:nth-child(even){
+.leagueAwards li {
+        display: inline;
+  
+}
+
+/*#characterTable tr:nth-child(even){
 
    padding-bottom: 20px;
-}
-#characterTable tr:nth-child(odd)>td{
+}*/
+/*#characterTable tr:nth-child(odd)>td{
     box-shadow: #333333 0 -3px 0;
     }
 #characterTable tr:nth-child(even)>td{
        border-top: none;
        padding-bottom: 20px;
-    }
+    }*/
 
 .session-block ul{
     font-size: @font-size-small;
@@ -227,25 +233,25 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
 .score-box
 {
 
-    height: 30px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    height: 60px;
+    width: 60px;
+    min-height: 60px;
+    min-width: 60px;
+    border-radius: 30px;
     -moz-box-shadow: #333333 1px 1px 1px ;
     -webkit-box-shadow: #333333 1px 1px 1px ;
     box-shadow: #333333 1px 1px 1px ;
     text-align: center;
-    padding: 0 8px 5px ;
+    padding: 5px;
+    padding-top: 15px;
     background-color: blue;
-    margin-left: 10px;
-    margin-top: -4px;
     background-image: linear-gradient(#111155, #222299 40%, #6666EE);
     font-size: 18px;
     font-weight: 800;
     color: white;
     text-shadow: 1px 1px 1px #000;
     border: solid 2px #333;
-    border-top: none;
-    
+   
 }
 
 .score-box-bonus

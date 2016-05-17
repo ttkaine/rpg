@@ -63,7 +63,7 @@ namespace Warhammer.Core.Abstract
         List<Comment> RecentComments();
         Player MyPlayer();
         void DeleteComment(int commentId);
-        List<Person> GetLeague();
+        List<LeagueEntryViewModel> GetLeague();
         List<Person> OtherPCs();
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();

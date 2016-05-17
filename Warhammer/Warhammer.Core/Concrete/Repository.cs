@@ -259,6 +259,12 @@ namespace Warhammer.Core.Concrete
             BulkInsert<T>(connection, tableName, list);
         }
 
+        public void Delete(ScoreHistory scoreHistory)
+        {
+            _entities.ScoreHistories.Remove(scoreHistory);
+            _entities.SaveChanges();
+        }
+
         public void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

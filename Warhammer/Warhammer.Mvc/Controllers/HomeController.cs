@@ -94,10 +94,10 @@ namespace Warhammer.Mvc.Controllers
             return View(trophies);
         }
 
- //       [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult CharacterLeague()
         {
-            List<Person> people = DataProvider.GetLeague();
+            _scoreCalculator.UpdateScoreHistories();
+            List<LeagueEntryViewModel> people = DataProvider.GetLeague();
 
             return View(people);
         }
@@ -235,10 +235,6 @@ namespace Warhammer.Mvc.Controllers
         [AllowAnonymous]
         public ActionResult OverrideCss()
         {
-            //this probably shouldn't be here - but, hey, I'll put it someplace better when I get round to it... okay?
-            _scoreCalculator.UpdateScoreHistories();
-
-
             if (!string.IsNullOrWhiteSpace(CssOverride))
             {
                 return PartialView("OverrideCss", CssOverride);
@@ -246,6 +242,14 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        //this probably shouldn't be here - but, hey, I'll put it someplace better when I get round to it... okay?
+        [AllowAnonymous]
+        public ActionResult ScoreHisotry()
+        {
+            _scoreCalculator.UpdateScoreHistories();
+            return null;
+        }
+        
         public ActionResult ActiveTextSessions()
         {
             ActiveTextSessionViewModel model = ModelFactory.MakeActiveTextSessionViewModel();

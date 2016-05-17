@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Transactions;
 using LinqKit;
 using Warhammer.Core.Abstract;
@@ -18,6 +19,7 @@ namespace Warhammer.Core.Concrete
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
+        private readonly IScoreCalculator _scoreCalculator;
 
         private int UpliftId
         {
@@ -53,12 +55,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator scoreCalculator)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
+            _scoreCalculator = scoreCalculator;
         }
 
         public Player CurrentPlayer
@@ -324,6 +327,7 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<Session>().ToList();
         }
 
+        [Obsolete("This is going to load up all the people in the DB - we probably don't want to do that.")]
         public ICollection<Person> People()
         {
             return _repository.Pages().OfType<Person>().ToList();
@@ -928,6 +932,10 @@ namespace Warhammer.Core.Concrete
 
         public List<ScoreHistory> PersonScoreHistory(int id)
         {
+            if (!_repository.ScoreHistories().Any(s => s.PersonId == id && s.DateTime == DateTime.Today))
+            {
+                _scoreCalculator.UpdateUserScores(id);
+            }
             return _repository.ScoreHistories().Where(s => s.PersonId == id).OrderBy(a => a.DateTime).ToList();
         }
 
@@ -1183,28 +1191,37 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public List<Person> GetLeague()
+        public List<LeagueEntryViewModel> GetLeague()
         {
-            List<Person> people = new List<Person>();
+            List<LeagueEntryViewModel> entries = new List<LeagueEntryViewModel>();
             if (SiteHasFeature(Feature.CharacterLeague))
             {
-                if (SiteHasFeature(Feature.PublicLeague) || SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin)
+                var query = _repository.People().Where(p => p.CurrentScore > 0);
+
+                if (!SiteHasFeature(Feature.PublicLeague) && (!SiteHasFeature(Feature.AdminLeague) || CurrentUserIsAdmin))
                 {
-                    people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+                    query = query.Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id);
                 }
-            else
+
+                entries = query
+                        .OrderByDescending(s => s.CurrentScore)
+                        .ThenByDescending(s => s.Modified).
+                        Select(p => new LeagueEntryViewModel
+                        {
+
+                            PersonId = p.Id,
+                            Name = p.FullName,
+                            Score = p.CurrentScore,
+                            Awards = p.Awards.ToList()
+                        }).ToList();
+
+                entries = entries.Select((p, index) =>
                 {
-                    people =
-                        People()
-                            .Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id)
-                            .OrderByDescending(s => s.PointsValue)
-                            .ThenByDescending(s => s.Modified)
-                            .ToList();
-                    people = ApplyUplift(people);
-                    people = ApplyNail(people);
-                }
+                    p.Position = index + 1;
+                    return p;
+                }).ToList();
             }
-            return people;
+            return entries;
         }
 
         public List<Person> OtherPCs()

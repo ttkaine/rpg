@@ -16,12 +16,14 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IImageProcessor _imageProcessor;
         private readonly ILinkGenerator _linkGenerator;
+        private readonly IScoreCalculator _scoreCalculator;
         
         // GET: Page
-        public PageController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, ILinkGenerator linkGenerator) : base(data)
+        public PageController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, ILinkGenerator linkGenerator, IScoreCalculator scoreCalculator) : base(data)
         {
             _imageProcessor = imageProcessor;
             _linkGenerator = linkGenerator;
+            _scoreCalculator = scoreCalculator;
         }
 
         public ActionResult Index(int? id)
@@ -77,6 +79,7 @@ namespace Warhammer.Mvc.Controllers
                         DataProvider.ChangePicture(updatedPage.Id, imageData, "Image/Jpeg");
                     }
                 }
+                _scoreCalculator.ForceUpdateScoresForToday(updatedPage.Id);
                 return View(updatedPage);
             }
             return RedirectToAction("index", new { id = page.Id });
