@@ -95,5 +95,6 @@ namespace Warhammer.Core.Abstract
         void EnsureFeatures();
         List<Object> RecentActivity();
         void ToggleSessionPrivacy(int id);
+        List<ScoreHistory> PersonScoreHistory(int id);
     }
 }

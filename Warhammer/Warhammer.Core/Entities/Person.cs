@@ -20,7 +20,6 @@ namespace Warhammer.Core.Entities
             this.PersonComments = new HashSet<Comment>();
             this.SessionLogs = new HashSet<SessionLog>();
             this.PersonStats = new HashSet<PersonStat>();
-            this.ScoreHistories = new HashSet<ScoreHistory>();
         }
     
         public bool IsDead { get; set; }
@@ -39,6 +38,5 @@ namespace Warhammer.Core.Entities
         public virtual Player Player { get; set; }
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
         public virtual ICollection<PersonStat> PersonStats { get; set; }
-        public virtual ICollection<ScoreHistory> ScoreHistories { get; set; }
     }
 }

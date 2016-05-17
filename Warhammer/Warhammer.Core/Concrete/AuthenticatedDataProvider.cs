@@ -924,6 +924,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<ScoreHistory> PersonScoreHistory(int id)
+        {
+            return _repository.ScoreHistories().Where(s => s.PersonId == id).OrderBy(a => a.DateTime).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

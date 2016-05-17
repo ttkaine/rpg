@@ -1033,7 +1033,6 @@
           <Property Name="CurrentXp" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonStats" Relationship="WarhammerModel.FK_PersonStat_Person" FromRole="Person" ToRole="PersonStat" />
           <Property Name="XpSpent" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ScoreHistories" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="Person" ToRole="ScoreHistory" />
           <Property Name="CurrentScore" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">

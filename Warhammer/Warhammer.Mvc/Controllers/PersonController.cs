@@ -184,7 +184,7 @@ namespace Warhammer.Mvc.Controllers
                         }
                     }
 
-                    List<ScoreHistory> scores = person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
+                    List<ScoreHistory> scores = DataProvider.PersonScoreHistory(person.Id);//person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
                     if (scores.Any())
                     {
 
