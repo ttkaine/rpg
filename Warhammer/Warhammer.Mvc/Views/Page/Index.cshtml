@@ -80,38 +80,6 @@
                 if (User.IsInRole("Admin"))
                 {
                     <h1>Points Value: @person.PointsValue</h1>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Base</th>
-                                <th>Activity Bonus</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        @foreach (ScoreBreakdown scoreBreakdown in person.ScoreBreakdown)
-                        {
-                            <tr>
-                                <td>@scoreBreakdown.Name</td>
-                                <td>@string.Format("{0:0.00}", scoreBreakdown.BaseValue)</td>
-                                <td>
-                                    @if (scoreBreakdown.ActivityBonus > 0)
-                        {
-                                        <text>@string.Format("+ {0:0.00}", scoreBreakdown.ActivityBonus)</text>
-                                    }
-                                </td>
-                                <td>@string.Format("{0:0.00}", scoreBreakdown.Score)</td>
-                            </tr>
-                        }
-                        <tfoot>
-                            <tr>
-                                <td>Total</td>
-                                <td>@string.Format("{0:0}", person.PermenentScore)</td>
-                                <td>@string.Format("+ {0:0}", person.ActivityScore)</td>
-                                <td>@string.Format("{0:0}", person.PointsValue)</td>
-                            </tr>
-                        </tfoot>
-                    </table>
                 }
                 if (person.SessionLogs.Any())
                 {

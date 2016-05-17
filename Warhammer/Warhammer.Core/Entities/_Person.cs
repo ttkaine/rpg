@@ -192,114 +192,14 @@ namespace Warhammer.Core.Entities
             get { return Related.OfType<Session>(); }
         }
 
-        public override double ActivityBonus
-        {
-            get
-            {
-
-                double score = ScoreBreakdown.Sum(s => s.ActivityBonus);
-                return score;
-            }
-        }
-
         public IEnumerable<Award> OrderedAwards
         {
             get { return Awards.OrderBy(t => t.Trophy.TypeId == (int)TrophyType.DefaultAward).ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name).ThenBy(a => a.Id ); }
         }
 
-        public int ActivityScore
+        public int PointsValue
         {
-            get
-            {
-                return (int)Math.Floor(ActivityBonus);
-            }
-        }
-
-        public int PermenentScore
-        { 
-            get
-            {
-                double score = ScoreBreakdown.Sum(s => s.BaseValue);
-                return (int)Math.Ceiling(Math.Round(score, 1));
-            }
-        }
-
-
-        public List<ScoreBreakdown> ScoreBreakdown
-        {
-            get
-            {
-                List<ScoreHistory> scores = ScoreHistories.Where(s => s.DateTime == DateTime.Now.Date).ToList();
-              
-                List<ScoreBreakdown> breakdown = new List<ScoreBreakdown>();
-                breakdown.Add(new ScoreBreakdown
-                {
-                    Name = "Sessions",
-                    BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Sessions).Sum(s => s.PointsValue),
-                    ActivityBonus = 0//sessions.Sum(s => s.ActivityBonus)
-                });
-                breakdown.Add(new ScoreBreakdown
-                {
-                    Name = "Session Logs",
-                    BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Logs).Sum(s => s.PointsValue),
-                    ActivityBonus = 0//logs.Sum(s => s.ActivityBonus)
-                });
-                breakdown.Add(new ScoreBreakdown
-                {
-                    Name = "Related Pages",
-                    BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Links).Sum(s => s.PointsValue),
-                    ActivityBonus = 0                  
-                });
-                breakdown.Add(new ScoreBreakdown
-                {
-                    Name = "Page Text",
-                    BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.PageText).Sum(s => s.PointsValue),
-                    ActivityBonus = 0
-                });
-                if (scores.Any(s => s.ScoreType == ScoreType.Stats && s.PointsValue > 0))
-                {
-                    breakdown.Add(new ScoreBreakdown
-                    {
-                        Name = "Stats Value",
-                        BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Stats).Sum(s => s.PointsValue),
-                        ActivityBonus = 0
-                    });
-                    breakdown.Add(new ScoreBreakdown
-                    {
-                        Name = "Role Bonus",
-                        BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Roles).Sum(s => s.PointsValue),
-                        ActivityBonus = 0
-                    });
-                    breakdown.Add(new ScoreBreakdown
-                    {
-                        Name = "Descriptor Bonus",
-                        BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Descriptors).Sum(s => s.PointsValue),
-                        ActivityBonus = 0
-                    });
-                }
-                double awardValue = (double)scores.Where(s => s.ScoreType == ScoreType.Awards).Sum(s => s.PointsValue);
-                if (awardValue > 0)
-                {
-                    breakdown.Add(new ScoreBreakdown
-                    {
-                        Name = "Awards",
-                        BaseValue = awardValue,
-                        ActivityBonus = 0
-                    });
-                }
-                breakdown.Add(new ScoreBreakdown
-                {
-                    Name = "Image Bonus",
-                    BaseValue = (double)scores.Where(s => s.ScoreType == ScoreType.Image).Sum(s => s.PointsValue),
-                    ActivityBonus = 0
-                });
-                return breakdown;
-            }
-        } 
-
-        public override int PointsValue
-        {
-            get { return PermenentScore + ActivityScore; }
+            get { return (int)Math.Ceiling(CurrentScore); }
         }
 
         public string MiniSummary

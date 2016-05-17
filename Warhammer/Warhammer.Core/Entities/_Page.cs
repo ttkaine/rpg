@@ -9,19 +9,6 @@ namespace Warhammer.Core.Entities
     public partial class Page
     {
 
-        public virtual double ActivityBonus
-        {
-            get
-            {
-                double ageWithLag = AgeInDays - 7;
-                if (Created < DateTime.Now.AddMonths(-1))
-                {
-                    return 0;
-                }
-                return ageWithLag < 1 ? 1 : 1 / ageWithLag;
-            } 
-        }
-
         public virtual double BaseScore
         {
             get { return 0.25; }
@@ -72,11 +59,6 @@ namespace Warhammer.Core.Entities
         public bool HasImage
         {
             get { return ImageData != null && ImageData.Length > 50 && !string.IsNullOrWhiteSpace(ImageMime); }
-        }
-
-        public virtual int PointsValue
-        {
-            get { return (int) (BaseScore + ActivityBonus); }
         }
 
         public string GetSummary(int length)

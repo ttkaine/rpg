@@ -249,6 +249,7 @@
     <Content Include="Content\DbUpdateScripts\0011.sql" />
     <Content Include="Content\DbUpdateScripts\0012.sql" />
     <Content Include="Content\DbUpdateScripts\0013.sql" />
+    <Content Include="Content\DbUpdateScripts\16051701.sql" />
     <Content Include="Content\DbUpdateScripts\15101801.sql" />
     <Content Include="Content\DbUpdateScripts\15112301.sql" />
     <Content Include="Content\DbUpdateScripts\15122701.sql" />

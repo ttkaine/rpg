@@ -1006,8 +1006,13 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> TopNpcs()
         {
-            List<Person> people = People().Where(p => !p.PlayerId.HasValue).ToList();
-            return people.OrderByDescending(p => p.PointsValue).Take(5).ToList();
+            List<Person> people =
+                _repository.People()
+                    .Where(p => !p.PlayerId.HasValue)
+                    .OrderByDescending(p => p.CurrentScore)
+                    .Take(5)
+                    .ToList();
+            return people;
         }
 
         public List<Person> AllNpcs()
