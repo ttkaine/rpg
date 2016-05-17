@@ -7,6 +7,7 @@ using System.Transactions;
 using LinqKit;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
@@ -723,8 +724,9 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> NpcWithXp()
         {
-            List<Person> people = AllNpcs().ToList();
-            return people.Where(p => p.CanBuyStat && p.Stats.Sum(s => s.Value) > 10).OrderByDescending(p => p.CurrentXp).ToList();
+            return _repository.People().Where(p => !p.PlayerId.HasValue)
+                .Where(p => p.Stats.Sum(s => s.Value) > 10 && p.CurrentXp > 10)
+                .OrderByDescending(p => p.CurrentXp).ToList();
         }
 
         public List<Person> PeopleInGraveyard()
@@ -929,6 +931,15 @@ namespace Warhammer.Core.Concrete
             return _repository.ScoreHistories().Where(s => s.PersonId == id).OrderBy(a => a.DateTime).ToList();
         }
 
+        public List<PageListItemModel> NpcList()
+        {
+            return
+                _repository.People()
+                    .Where(p => !p.PlayerId.HasValue)
+                    .Select(p => new PageListItemModel {Id = p.Id, Fullname = p.FullName})
+                    .ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -944,7 +955,7 @@ namespace Warhammer.Core.Concrete
 
         public Person PersonWithMyAward(TrophyType awardType)
         {
-            return People().FirstOrDefault(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
+            return _repository.People().FirstOrDefault(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
                                                                   && a.Trophy.TypeId == (int) awardType));
         }
 

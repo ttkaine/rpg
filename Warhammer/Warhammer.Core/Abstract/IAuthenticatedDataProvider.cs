@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Abstract
 {
@@ -96,5 +97,6 @@ namespace Warhammer.Core.Abstract
         List<Object> RecentActivity();
         void ToggleSessionPrivacy(int id);
         List<ScoreHistory> PersonScoreHistory(int id);
+        List<PageListItemModel> NpcList();
     }
 }

@@ -13,6 +13,8 @@ namespace Warhammer.Mvc.Models
             MyPeople = new List<Person>();
             AllPeople = new List<Person>();
             OtherPeople = new List<Person>();
+            NpcWithXp = new List<Person>();
+            TopNpcs = new List<Person>();
         }
 
        public List<Page> RecentChanges { get; set; }

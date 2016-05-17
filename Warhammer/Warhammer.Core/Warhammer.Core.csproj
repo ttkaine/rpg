@@ -222,6 +222,7 @@
     <Compile Include="Entities\_Trophy.cs" />
     <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Models\PageListItemModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />
     <Compile Include="RoleplayViewModels\CharacterViewModel.cs" />

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
@@ -55,13 +56,23 @@ namespace Warhammer.Mvc.Controllers
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
            //     UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
              //   MyTurnTextSessions = DataProvider.TextSessionsWhereItisMyTurn(),
-                RecentChanges = DataProvider.RecentPages().ToList(),
+              //  RecentChanges = DataProvider.RecentPages().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
-                TopNpcs = DataProvider.TopNpcs(),
                 OtherPeople = DataProvider.OtherPCs(),
-                NpcWithXp = DataProvider.NpcWithXp(),
+              //  NpcWithXp = DataProvider.NpcWithXp(),
            //     AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
+
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            {
+                model.NpcWithXp = DataProvider.NpcWithXp();
+            }
+
+            if (DataProvider.SiteHasFeature(Feature.CharacterLeague))
+            {
+                model.TopNpcs = DataProvider.TopNpcs();
+            }
+
             return View(model);
         }
 
@@ -167,7 +178,7 @@ namespace Warhammer.Mvc.Controllers
 
         private MyFavNpcModel MyFavNpcModel()
         {
-            List<Person> npcs = DataProvider.AllNpcs().OrderBy(p => p.FullName).ToList();
+            List<PageListItemModel> npcs = DataProvider.NpcList();
             MyFavNpcModel model = new MyFavNpcModel
             {
                 First = DataProvider.PersonWithMyAward(TrophyType.FirstFavouriteNpc),
