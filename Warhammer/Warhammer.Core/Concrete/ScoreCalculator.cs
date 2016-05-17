@@ -45,6 +45,23 @@ namespace Warhammer.Core.Concrete
                     }
                 }
 
+                List<Person> people = _repo.People().ToList();
+                List<ScoreHistory> currentScores =
+                    _repo.ScoreHistories()
+                        .Where(s => s.DateTime == DateTime.Today && s.ScoreTypeId == (int) ScoreType.Total)
+                        .ToList();
+
+                foreach (Person person in people)
+                {
+                    ScoreHistory score = currentScores.FirstOrDefault(c => c.PersonId == person.Id);
+                    if (score != null)
+                    {
+                        person.CurrentScore = score.PointsValue;
+                        _repo.Save(person);
+                    }
+                }
+
+
             }
         }
 
