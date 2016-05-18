@@ -1190,12 +1190,12 @@ namespace Warhammer.Core.Concrete
             {
                 if (SiteHasFeature(Feature.PublicLeague) || SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin)
                 {
-                    people = People().OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+                    people = People().Where(p => p.CurrentScore > 0).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
                 }
             else
                 {
                     people =
-                        People()
+                        People().Where(p => p.CurrentScore > 0)
                             .Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id)
                             .OrderByDescending(s => s.PointsValue)
                             .ThenByDescending(s => s.Modified)
