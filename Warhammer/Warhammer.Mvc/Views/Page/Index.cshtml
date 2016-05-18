@@ -65,6 +65,7 @@
     }
     <div class="side-bar">
 
+        @Html.Action("Aspects", "Fate", new { id = Model.Id })
         @Html.Action("AwardHistory", "Person", new { id = Model.Id })
         <div class="content-block">
             <div id="saveControls" style="display: none">

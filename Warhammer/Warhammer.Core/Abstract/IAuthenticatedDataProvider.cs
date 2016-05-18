@@ -98,5 +98,7 @@ namespace Warhammer.Core.Abstract
         void ToggleSessionPrivacy(int id);
         List<ScoreHistory> PersonScoreHistory(int id);
         List<PageListItemModel> NpcList();
+        List<FateAspect> GetAspects(int id);
+        void SaveAspects(List<FateAspect> fateAspects);
     }
 }

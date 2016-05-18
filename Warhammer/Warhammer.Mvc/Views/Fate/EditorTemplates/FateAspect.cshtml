@@ -1,0 +1,16 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Core.Entities.FateAspect
+
+@Html.HiddenFor(m => Model.AspectType)
+@Html.HiddenFor(m => Model.PersonId)
+@Html.HiddenFor(m => Model.Id)
+
+<div class="panel panel-warning">
+    <div class="panel-heading">@((AspectType)Model.AspectType)</div>
+    <div class="panel-body">
+        @Html.EditorFor(m => Model.AspectName)
+        <hr/>
+        <p>Is Public:</p>
+        @Html.EditorFor(m => m.IsVisible)
+    </div>
+</div>

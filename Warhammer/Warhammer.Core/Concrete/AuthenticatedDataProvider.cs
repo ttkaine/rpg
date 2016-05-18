@@ -940,6 +940,29 @@ namespace Warhammer.Core.Concrete
                     .ToList();
         }
 
+        public List<FateAspect> GetAspects(int id)
+        {
+            return _repository.FateAspects().Where(a => a.PersonId == id).OrderBy(a => a.AspectType).ToList();
+        }
+
+        public void SaveAspects(List<FateAspect> fateAspects)
+        {
+            foreach (FateAspect fateAspect in fateAspects)
+            {
+                if (string.IsNullOrWhiteSpace(fateAspect.AspectName))
+                {
+                    _repository.Save(fateAspect);
+                }
+                else
+                {
+                    if (fateAspect.Id > 0)
+                    {
+                        _repository.Delete(fateAspect);
+                    }
+                }
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

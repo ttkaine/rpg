@@ -7158,3 +7158,7 @@ div.commentdetail {
 #adminPageControls input {
   margin-top: 5px;
 }
+.seenAsHidden {
+  border-style: dashed;
+  opacity: 0.7;
+}

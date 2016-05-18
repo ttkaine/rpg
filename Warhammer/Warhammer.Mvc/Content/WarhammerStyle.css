@@ -7158,6 +7158,10 @@ div.commentdetail {
 #adminPageControls input {
   margin-top: 5px;
 }
+.seenAsHidden {
+  border-style: dashed;
+  opacity: 0.7;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

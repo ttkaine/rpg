@@ -39,5 +39,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<Person> PeopleForScoring();
 
         void BulkInsert<T>( IList<T> list);
+        IQueryable<FateAspect> FateAspects();
+        int Save(FateAspect fateAspect);
+        void Delete(FateAspect fateAspect);
     }
 }

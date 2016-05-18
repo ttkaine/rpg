@@ -1,0 +1,24 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.FateAspectViewModel
+
+@if (Model.Aspect.IsVisible)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@((AspectType) Model.Aspect.AspectType)</div>
+        <div class="panel-body">
+            @Model.Aspect.AspectName
+        </div>
+    </div>
+}
+else
+{
+    if (Model.ShowHidden)
+    {
+        <div class="panel panel-info seenAsHidden">
+            <div class="panel-heading">@((AspectType)Model.Aspect.AspectType)</div>
+            <div class="panel-body">
+                @Model.Aspect.AspectName
+            </div>
+        </div>
+    }
+}

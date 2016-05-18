@@ -58,6 +58,12 @@
         <AssociationConnector Association="WarhammerModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="WarhammerModel.ScoreHistory" Width="1.5" PointX="8.25" PointY="23.625" />
         <AssociationConnector Association="WarhammerModel.FK_ScoreHistory_Person" />
+        <EntityTypeShape EntityType="WarhammerModel.FateAspect" Width="1.5" PointX="8.25" PointY="29.75" />
+        <EntityTypeShape EntityType="WarhammerModel.FateStat" Width="1.5" PointX="8.25" PointY="32.75" />
+        <EntityTypeShape EntityType="WarhammerModel.FateStunt" Width="1.5" PointX="8.25" PointY="26.875" />
+        <AssociationConnector Association="WarhammerModel.FK_FateAspect_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_FateStat_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_FateStunt_Person" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

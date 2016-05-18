@@ -1,0 +1,25 @@
+﻿@using System.Xml.Schema
+@model List<Warhammer.Mvc.Models.FateAspectViewModel>
+@if (Model.Any(m => m.ShowHidden || m.Aspect.IsVisible))
+{
+    <div id="fateAspects" class="content-block">
+
+        <h3>Aspects</h3>
+
+        @if (ViewBag.EditMode && Model.All(m => m.ShowHidden))
+        {
+            //form here
+            using (Ajax.BeginForm("Aspects", "Fate", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateAspects"}))
+            {
+                @Html.EditorFor(m => Model)
+                <input type="submit" value="Save" class="btn btn-default btn-block"/>
+            }
+        }
+        else
+        {
+            @Html.DisplayFor(m => Model)
+        }
+
+    </div>
+    <hr/>
+}
