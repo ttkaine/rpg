@@ -940,6 +940,71 @@ namespace Warhammer.Core.Concrete
                     .ToList();
         }
 
+        public List<FateAspect> GetAspects(int id)
+        {
+            return _repository.FateAspects().Where(a => a.PersonId == id).OrderBy(a => a.AspectType).ToList();
+        }
+
+        public void SaveAspects(List<FateAspect> fateAspects)
+        {
+            foreach (FateAspect fateAspect in fateAspects)
+            {
+                if (!string.IsNullOrWhiteSpace(fateAspect.AspectName))
+                {
+                    _repository.Save(fateAspect);
+                }
+                else
+                {
+                    if (fateAspect.Id > 0)
+                    {
+                        _repository.Delete(fateAspect);
+                    }
+                }
+            }
+        }
+
+        public List<FateStat> GetFateStats(int id)
+        {
+            return _repository.FateStats().Where(f => f.PersonId == id).OrderBy(f => f.StatType).ToList();
+        }
+
+        public void SaveFateStats(IEnumerable<FateStat> fateStats)
+        {
+            foreach (FateStat fateStat in fateStats)
+            {
+                _repository.Save(fateStat);
+            }
+        }
+
+        public List<FateStunt> GetStunts(int id)
+        {
+            return _repository.FateStunts().Where(s => s.PersonId == id).ToList();
+        }
+
+        public void SaveStunt(FateStunt stunt)
+        {
+            _repository.Save(stunt);
+        }
+
+        public void DeleteStunt(int stuntId)
+        {
+            FateStunt stunt = _repository.FateStunts().FirstOrDefault(s => s.Id == stuntId);
+            if (stunt != null)
+            {
+                _repository.Delete(stunt);
+            }
+        }
+
+        public void ToggleStuntVisibility(int stuntId)
+        {
+            FateStunt stunt = _repository.FateStunts().FirstOrDefault(s => s.Id == stuntId);
+            if (stunt != null)
+            {
+                stunt.IsVisible = !stunt.IsVisible;
+                _repository.Save(stunt);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

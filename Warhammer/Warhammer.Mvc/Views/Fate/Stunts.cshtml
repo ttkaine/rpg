@@ -1,0 +1,37 @@
+﻿
+@using System.Xml.Schema
+@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.FateStuntsViewModel
+@if (Model.StuntModels.Any(m => m.ShowHidden || m.Stunt.IsVisible) || ViewBag.EditMode)
+{
+    <div id="fateStunts" class="content-block">
+
+        <h3>Stunts</h3>
+
+        @if (ViewBag.EditMode && Model.CanEdit && Model.StuntModels.All(m => m.ShowHidden))
+        {
+            @Html.EditorFor(m => Model.StuntModels)
+            using (Ajax.BeginForm("AddStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+            {
+                <h4>Add New Stunt</h4>
+                             
+                <input type="hidden" name="personId" value="@Model.PersonId"/>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading"><input class="form-control" type="text" name="Title" placeholder="Title"></div>
+                    <div class="panel-body">
+                        <textarea  class="form-control" name="Description" placeholder="Description..."></textarea>
+                    </div>
+                    <input type="submit" value="+ Add" class="btn btn-block btn-success" />
+                </div>             
+            }
+        }
+        else
+        {
+            @Html.DisplayFor(m => Model.StuntModels)
+        }
+
+    </div>
+    <hr />
+}
+

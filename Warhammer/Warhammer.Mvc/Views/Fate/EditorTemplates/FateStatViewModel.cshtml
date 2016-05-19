@@ -1,0 +1,11 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.FateStatViewModel
+<td title="">
+    @Html.HiddenFor(m => Model.Stat.StatType)
+    @Html.HiddenFor(m => Model.Stat.PersonId)
+    @Html.HiddenFor(m => Model.Stat.Id)
+    @Html.DropDownList("Stat.StatValue", Model.Options)
+    <hr/>
+    <p>Is Public:</p>
+    @Html.EditorFor(m => m.Stat.IsVisible)
+</td>

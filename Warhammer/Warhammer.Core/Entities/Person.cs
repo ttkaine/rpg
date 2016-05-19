@@ -20,6 +20,9 @@ namespace Warhammer.Core.Entities
             this.PersonComments = new HashSet<Comment>();
             this.SessionLogs = new HashSet<SessionLog>();
             this.PersonStats = new HashSet<PersonStat>();
+            this.FateAspects = new HashSet<FateAspect>();
+            this.FateStats = new HashSet<FateStat>();
+            this.FateStunts = new HashSet<FateStunt>();
         }
     
         public bool IsDead { get; set; }
@@ -38,5 +41,8 @@ namespace Warhammer.Core.Entities
         public virtual Player Player { get; set; }
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
         public virtual ICollection<PersonStat> PersonStats { get; set; }
+        public virtual ICollection<FateAspect> FateAspects { get; set; }
+        public virtual ICollection<FateStat> FateStats { get; set; }
+        public virtual ICollection<FateStunt> FateStunts { get; set; }
     }
 }

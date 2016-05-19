@@ -103,31 +103,31 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
-	    public int Save(Post post)
-	    {
-			if (post.Id == 0)
-			{
-				_entities.Posts.Add(post);
-			}
-			else
-			{
-				_entities.Entry(post).State = EntityState.Modified;
-			}
-			_entities.SaveChanges();
+        public int Save(Post post)
+        {
+            if (post.Id == 0)
+            {
+                _entities.Posts.Add(post);
+            }
+            else
+            {
+                _entities.Entry(post).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
 
-			return post.Id;
-	    }
+            return post.Id;
+        }
 
-	    public IQueryable<Post> Posts()
-	    {
-			return _entities.Posts;
-	    }
+        public IQueryable<Post> Posts()
+        {
+            return _entities.Posts;
+        }
 
-	    public void Delete(Post post)
-	    {
-			_entities.Posts.Remove(post);
-			_entities.SaveChanges();
-		}
+        public void Delete(Post post)
+        {
+            _entities.Posts.Remove(post);
+            _entities.SaveChanges();
+        }
 
         public IQueryable<Comment> Comments()
         {
@@ -226,6 +226,11 @@ namespace Warhammer.Core.Concrete
                 .Include("Related")
                 .Include("Awards")
                 .Include("Awards.Trophy")
+                .Include("PersonStats")
+                .Include("FateAspects")
+                .Include("FateStats")
+                .Include("FateStunts")
+            
                 .AsNoTracking();
         }
 
@@ -255,11 +260,87 @@ namespace Warhammer.Core.Concrete
         public void BulkInsert<T>(IList<T> list)
         {
             string connection = _entities.Database.Connection.ConnectionString;
-            string tableName = typeof (T).Name;
+            string tableName = typeof(T).Name;
             BulkInsert<T>(connection, tableName, list);
         }
 
-        public void BulkInsert<T>(string connection, string tableName, IList<T> list)
+        public IQueryable<FateAspect> FateAspects()
+        {
+            return _entities.FateAspects;
+        }
+
+        public int Save(FateAspect fateAspect)
+        {
+
+            if (fateAspect.Id == 0)
+            {
+                _entities.FateAspects.Add(fateAspect);
+            }
+            else
+            {
+                _entities.Entry(fateAspect).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return fateAspect.Id;
+
+        }
+
+        public void Delete(FateAspect fateAspect)
+        {
+            _entities.FateAspects.Remove(fateAspect);
+            _entities.SaveChanges();
+        }
+
+        public IQueryable<FateStat> FateStats()
+        {
+            return _entities.FateStats;
+        }
+
+        public int Save(FateStat fateStat)
+        {
+
+            if (fateStat.Id == 0)
+            {
+                _entities.FateStats.Add(fateStat);
+            }
+            else
+            {
+                _entities.Entry(fateStat).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return fateStat.Id;
+        }
+
+        public IQueryable<FateStunt> FateStunts()
+        {
+            return _entities.FateStunts;
+        }
+
+        public int Save(FateStunt fateStunt)
+        {
+
+            if (fateStunt.Id == 0)
+            {
+                _entities.FateStunts.Add(fateStunt);
+            }
+            else
+            {
+                _entities.Entry(fateStunt).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return fateStunt.Id;
+        }
+
+        public void Delete(FateStunt fateStunt)
+        {
+            _entities.FateStunts.Remove(fateStunt);
+            _entities.SaveChanges();
+        }
+
+        private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))
             {

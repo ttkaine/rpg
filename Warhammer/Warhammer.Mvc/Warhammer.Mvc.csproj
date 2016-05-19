@@ -196,6 +196,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
+    <Compile Include="Controllers\FateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
@@ -221,6 +222,10 @@
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
+    <Compile Include="Models\FateAspectViewModel.cs" />
+    <Compile Include="Models\FateStatsViewModel.cs" />
+    <Compile Include="Models\FateStuntsViewModel.cs" />
+    <Compile Include="Models\FateStuntViewModel.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageAwardsViewModel.cs" />
@@ -260,6 +265,7 @@
     <Content Include="Content\DbUpdateScripts\16010201.sql" />
     <Content Include="Content\DbUpdateScripts\16013101.sql" />
     <Content Include="Content\DbUpdateScripts\16051601.sql" />
+    <Content Include="Content\DbUpdateScripts\16051801.sql" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
@@ -594,6 +600,16 @@
     <Content Include="Views\AdminPageControls\DisplayTemplates\Person.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Session.cshtml" />
     <Content Include="Views\Person\ScoreHistory.cshtml" />
+    <Content Include="Views\Fate\Aspects.cshtml" />
+    <Content Include="Views\Fate\DisplayTemplates\FateAspectViewModel.cshtml" />
+    <Content Include="Views\Fate\EditorTemplates\FateAspectViewModel.cshtml" />
+    <Content Include="Views\Fate\EditorTemplates\FateAspect.cshtml" />
+    <Content Include="Views\Fate\Stats.cshtml" />
+    <Content Include="Views\Fate\DisplayTemplates\FateStatViewModel.cshtml" />
+    <Content Include="Views\Fate\EditorTemplates\FateStatViewModel.cshtml" />
+    <Content Include="Views\Fate\Stunts.cshtml" />
+    <Content Include="Views\Fate\DisplayTemplates\FateStuntViewModel.cshtml" />
+    <Content Include="Views\Fate\EditorTemplates\FateStuntViewModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

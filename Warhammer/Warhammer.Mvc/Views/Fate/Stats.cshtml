@@ -1,0 +1,60 @@
+﻿
+@using System.Xml.Schema
+@using Warhammer.Core.Entities
+@model List<Warhammer.Mvc.Models.FateStatViewModel>
+@if ((!ViewBag.EditMode && Model.Any(m => m.ShowHidden || m.Stat.IsVisible)) || (ViewBag.EditMode && Model.All(m => m.CanEdit)))
+{
+    <div id="fateStats" class="banner-content">
+        <div class="fate-stat-block">
+                    @if (ViewBag.EditMode)
+                    {
+                        if (Model.All(m => m.CanEdit))
+                        {
+                            using (Ajax.BeginForm("Stats", "Fate", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStats"}))
+                            {
+                                <table class="table table-small">
+                                    <thead>
+                                    <tr>
+                                        @foreach (StatType header in Model.Select(s => (StatType) s.Stat.StatType))
+                                        {
+                                            <th>@header</th>
+                                        }
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        @Html.EditorFor(m => Model)
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+
+                                <input type="submit" value="Save" class="btn btn-default btn-block"/>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    @foreach (StatType header in Model.Select(s => (StatType)s.Stat.StatType))
+                                    {
+                                        <th>@header</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @Html.DisplayFor(m => Model)
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+
+                    }
+                </div>
+            </div>
+            <hr />
+            }

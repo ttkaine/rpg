@@ -1,0 +1,12 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.FateStatViewModel
+
+@if (Model.ShowHidden || Model.Stat.IsVisible)
+{
+    <td class="@(Model.Stat.IsVisible ? "" : "hiddenStat")" title="@Model.Stat.LongDisplayValue">@Model.Stat.ShortDisplayValue</td>
+}
+else
+{
+    <td title="Unkown">??</td>
+}
+
