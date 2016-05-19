@@ -1,0 +1,24 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.FateStuntViewModel
+
+@if (Model.Stunt.IsVisible)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@Model.Stunt.Title</div>
+        <div class="panel-body">
+            @Model.Stunt.Description
+        </div>
+    </div>
+}
+else
+{
+    if (Model.ShowHidden)
+    {
+        <div class="panel panel-info seenAsHidden">
+            <div class="panel-heading">@Model.Stunt.Title</div>
+            <div class="panel-body">
+                @Model.Stunt.Description
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,48 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.FateStuntViewModel
+
+
+    @if (Model.ShowHidden)
+    {
+        using (Ajax.BeginForm("EditStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+        {
+            <input type="hidden" name="PersonId" value="@Model.Stunt.PersonId" />
+            <input type="hidden" name="Id" value="@Model.Stunt.Id" />
+            <div class="panel panel-info">
+                <div class="panel-heading"><input class="form-control" type="text" name="Title" placeholder="Title" value="@Model.Stunt.Title"></div>
+                <div class="panel-body">
+                    <textarea class="form-control" name="Description" placeholder="Description...">@Model.Stunt.Description</textarea>
+                </div>
+                <input type="submit" value="Save" class="btn btn-block btn-success"/>
+            </div>
+        }
+
+        if (Model.Stunt.IsVisible)
+        {
+            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+            {
+                <input type="hidden" name="personId" value="@Model.Stunt.PersonId" />
+                <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
+                <input type="submit" value="Visible" class="btn btn-block btn-success" />
+            }
+        }
+        else
+        {
+            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+            {
+                <input type="hidden" name="personId" value="@Model.Stunt.PersonId" />
+                <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
+                <input type="submit" value="Hidden" class="btn btn-block btn-info" />
+            }
+        }
+
+        using (Ajax.BeginForm("DeleteStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+        {
+            <input type="hidden" name="personId" value="@Model.Stunt.PersonId"/>
+            <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
+            <input type="submit" value="Delete @Model.Stunt.Title" class="btn btn-block btn-danger" />
+
+        }
+    }
+
+

@@ -8,9 +8,9 @@
 <div class="panel panel-warning">
     <div class="panel-heading">@((AspectType)Model.AspectType)</div>
     <div class="panel-body">
-        @Html.EditorFor(m => Model.AspectName)
+        @Html.EditorFor(m => Model.AspectName, new { @class = "form-control"})
         <hr/>
         <p>Is Public:</p>
-        @Html.EditorFor(m => m.IsVisible)
+        @Html.EditorFor(m => m.IsVisible, new { @class = "form-control" })
     </div>
 </div>

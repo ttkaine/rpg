@@ -20,7 +20,8 @@ namespace Warhammer.Core.Entities
         NightlyEmailer,
         AwardHistory,
         AutoPopulatePeopleInNewSessions,
-        ScoreHistory
+        ScoreHistory,
+        FateStats
     }
 
     public partial class SiteFeature

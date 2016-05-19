@@ -949,7 +949,7 @@ namespace Warhammer.Core.Concrete
         {
             foreach (FateAspect fateAspect in fateAspects)
             {
-                if (string.IsNullOrWhiteSpace(fateAspect.AspectName))
+                if (!string.IsNullOrWhiteSpace(fateAspect.AspectName))
                 {
                     _repository.Save(fateAspect);
                 }
@@ -960,6 +960,48 @@ namespace Warhammer.Core.Concrete
                         _repository.Delete(fateAspect);
                     }
                 }
+            }
+        }
+
+        public List<FateStat> GetFateStats(int id)
+        {
+            return _repository.FateStats().Where(f => f.PersonId == id).OrderBy(f => f.StatType).ToList();
+        }
+
+        public void SaveFateStats(IEnumerable<FateStat> fateStats)
+        {
+            foreach (FateStat fateStat in fateStats)
+            {
+                _repository.Save(fateStat);
+            }
+        }
+
+        public List<FateStunt> GetStunts(int id)
+        {
+            return _repository.FateStunts().Where(s => s.PersonId == id).ToList();
+        }
+
+        public void SaveStunt(FateStunt stunt)
+        {
+            _repository.Save(stunt);
+        }
+
+        public void DeleteStunt(int stuntId)
+        {
+            FateStunt stunt = _repository.FateStunts().FirstOrDefault(s => s.Id == stuntId);
+            if (stunt != null)
+            {
+                _repository.Delete(stunt);
+            }
+        }
+
+        public void ToggleStuntVisibility(int stuntId)
+        {
+            FateStunt stunt = _repository.FateStunts().FirstOrDefault(s => s.Id == stuntId);
+            if (stunt != null)
+            {
+                stunt.IsVisible = !stunt.IsVisible;
+                _repository.Save(stunt);
             }
         }
 

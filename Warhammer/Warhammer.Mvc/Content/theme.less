@@ -146,6 +146,7 @@ div.session-container{
     margin-bottom: 20px;
 }
 
+.fate-stat-block,
 .header-block,
 .content-block {
     
@@ -166,6 +167,27 @@ div.session-container{
     margin: auto;
     text-align:center;
     background-color: black;
+}
+
+.fate-stat-block {
+    background-color: whitesmoke;
+    margin: auto;
+    text-align:center;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: large;
+}
+
+.fate-stat-block .table {
+    margin-bottom: 2px;
+}
+
+.fate-stat-block .table-small {
+    font-size: x-small;
+}
+
+.fate-stat-block .table th {
+    text-align: center;
 }
 
 footer{
@@ -462,4 +484,14 @@ margin-top: -8px
 {
     border-style: dashed;
     opacity: 0.7;
+}
+
+.hiddenStat 
+{
+    border: 1px dashed #aaaaaa;
+    background-color: @alert-info-bg
+}
+
+hr {
+    opacity: 0;
 }

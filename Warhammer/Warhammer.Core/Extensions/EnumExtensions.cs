@@ -14,11 +14,5 @@ namespace Warhammer.Core.Extensions
 
             return vals.Cast<int>().OrderByDescending(i => i).ToList();
         }
-        public static List<string> Names(this Enum e)
-        {
-            var vals = Enum.GetValues(e.GetType());
-
-            return vals.Cast<string>().OrderByDescending(i => i).ToList();
-        }
     }
 }

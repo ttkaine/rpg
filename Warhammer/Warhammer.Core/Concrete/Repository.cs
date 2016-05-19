@@ -287,7 +287,55 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
-        public void BulkInsert<T>(string connection, string tableName, IList<T> list)
+        public IQueryable<FateStat> FateStats()
+        {
+            return _entities.FateStats;
+        }
+
+        public int Save(FateStat fateStat)
+        {
+
+            if (fateStat.Id == 0)
+            {
+                _entities.FateStats.Add(fateStat);
+            }
+            else
+            {
+                _entities.Entry(fateStat).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return fateStat.Id;
+        }
+
+        public IQueryable<FateStunt> FateStunts()
+        {
+            return _entities.FateStunts;
+        }
+
+        public int Save(FateStunt fateStunt)
+        {
+
+            if (fateStunt.Id == 0)
+            {
+                _entities.FateStunts.Add(fateStunt);
+            }
+            else
+            {
+                _entities.Entry(fateStunt).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return fateStunt.Id;
+        }
+
+        public void Delete(FateStunt fateStunt)
+        {
+            _entities.FateStunts.Remove(fateStunt);
+            _entities.SaveChanges();
+        }
+
+        private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))
             {
