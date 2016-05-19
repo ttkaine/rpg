@@ -6,6 +6,7 @@ namespace Warhammer.Mvc.Models
     public class FateStatViewModel
     {
         public bool ShowHidden { get; set; }
+        public bool CanEdit { get; set; }
         public FateStat Stat { get; set; }
         public SelectList Options { get; set; } 
     }

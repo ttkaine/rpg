@@ -50,7 +50,6 @@ namespace Warhammer.Mvc.Controllers
                         {
                             AspectType = i,
                             PersonId = id,
-                            IsVisible = !CurrentPlayer.IsGm
                         },
                         ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
                     });
@@ -102,6 +101,7 @@ namespace Warhammer.Mvc.Controllers
 
                         int id = fateStatViewModel.Stat.PersonId;
                         List<FateStatViewModel> stats = GetFateStatsViewModel(id);
+                        ModelState.Clear();
                         return PartialView(stats);
                     }
                 }
@@ -123,7 +123,8 @@ namespace Warhammer.Mvc.Controllers
             {
                 Stat = f,
                 Options = new SelectList(values.Select(v => new { value = v, display = GetLevelDisplayName(v) }).ToList(), "value", "display"),
-                ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId,
+                CanEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
             }).ToList();
 
 
@@ -139,10 +140,11 @@ namespace Warhammer.Mvc.Controllers
                         {
                             StatType = i,
                             PersonId = id,
-                            IsVisible = !CurrentPlayer.IsGm
+                            IsVisible = IsEditMode && !CurrentPlayer.IsGm
                         },
                         Options = new SelectList(values.Select(v => new { value = v, display = GetLevelDisplayName(v) }).ToList(), "value", "display"),
-                        ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                        ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId,
+                        CanEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
                     });
                 }
             }

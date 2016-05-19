@@ -2,32 +2,35 @@
 @using System.Xml.Schema
 @using Warhammer.Core.Entities
 @model List<Warhammer.Mvc.Models.FateStatViewModel>
-@if (Model.Any(m => m.ShowHidden || m.Stat.IsVisible))
+@if ((!ViewBag.EditMode && Model.Any(m => m.ShowHidden || m.Stat.IsVisible)) || (ViewBag.EditMode && Model.All(m => m.CanEdit)))
 {
     <div id="fateStats" class="banner-content">
         <div class="fate-stat-block">
-                    @if (ViewBag.EditMode && Model.All(m => m.ShowHidden))
+                    @if (ViewBag.EditMode)
                     {
-                        using (Ajax.BeginForm("Stats", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStats" }))
+                        if (Model.All(m => m.CanEdit))
                         {
-                            <table class="table table-small">
-                                <thead>
+                            using (Ajax.BeginForm("Stats", "Fate", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStats"}))
+                            {
+                                <table class="table table-small">
+                                    <thead>
                                     <tr>
-                                        @foreach (StatType header in Model.Select(s => (StatType)s.Stat.StatType))
-                        {
+                                        @foreach (StatType header in Model.Select(s => (StatType) s.Stat.StatType))
+                                        {
                                             <th>@header</th>
                                         }
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
                                     <tr>
                                         @Html.EditorFor(m => Model)
                                     </tr>
-                                </tbody>
+                                    </tbody>
 
-                            </table>
+                                </table>
 
-                            <input type="submit" value="Save" class="btn btn-default btn-block" />
+                                <input type="submit" value="Save" class="btn btn-default btn-block"/>
+                            }
                         }
                     }
                     else
