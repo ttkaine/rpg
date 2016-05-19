@@ -140,14 +140,33 @@ namespace Warhammer.Core.Concrete
                     PointsValue = person.HasImage ? 1 : 0
                 });
 
+                decimal statScore = 0m;
+
+                if (person.FateAspects != null && person.FateAspects.Any())
+                {
+                    statScore += person.FateAspects.Count;
+                }
+                if (person.FateStunts != null && person.FateStunts.Any())
+                {
+                    statScore += person.FateStunts.Count;
+                }
+                if (person.FateStats != null && person.FateStats.Any())
+                {
+                    statScore += person.FateStats.Sum(s => s.StatValue);
+                }
+
                 if (person.Stats != null && person.Stats.Any())
                 {
-                    scoreHistories.Add(new ScoreHistory
+                    statScore += person.Stats.Sum(l => l.Value)/6.0m;
+                }
+                if(statScore > 0)
+                { 
+                scoreHistories.Add(new ScoreHistory
                     {
                         ScoreType = ScoreType.Stats,
                         DateTime = scoreDate,
                         PersonId = person.Id,
-                        PointsValue = person.Stats.Sum(l => l.Value)/6.0m
+                        PointsValue = statScore
                     });
                 }
                 else

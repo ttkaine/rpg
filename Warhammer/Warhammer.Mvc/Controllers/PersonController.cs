@@ -200,9 +200,12 @@ namespace Warhammer.Mvc.Controllers
                         {
                             types.Remove((int) ScoreType.Roles);
                             types.Remove((int)ScoreType.Descriptors);
+                            }
+
+                        if (!DataProvider.SiteHasFeature(Feature.SimpleStats) & !DataProvider.SiteHasFeature(Feature.FateStats))
+                        {
                             types.Remove((int)ScoreType.Stats);
                         }
-
 
                         List<Series> allSeries = new List<Series>();
 

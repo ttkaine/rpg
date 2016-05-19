@@ -226,6 +226,11 @@ namespace Warhammer.Core.Concrete
                 .Include("Related")
                 .Include("Awards")
                 .Include("Awards.Trophy")
+                .Include("PersonStats")
+                .Include("FateAspects")
+                .Include("FateStats")
+                .Include("FateStunts")
+            
                 .AsNoTracking();
         }
 
