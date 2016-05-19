@@ -14,6 +14,7 @@
 
     @using (Html.BeginForm("Index", "Page", FormMethod.Post, new { id = "mainpageform" }))
             {
+                <input type="submit" style="display: none" id="hiddenPageSubmit"/>
         @Html.HiddenFor(m => m.Id)
         <div class="banner-content">
             <div class="header-block">
@@ -69,179 +70,182 @@
                 </div>
     }
     <div class="side-bar">
-
-        @Html.Action("Aspects", "Fate", new { id = Model.Id })
-        @Html.Action("Stunts", "Fate", new { id = Model.Id })
-        @Html.Action("AwardHistory", "Person", new { id = Model.Id })
         <div class="content-block">
             <div id="saveControls" style="display: none">
                 <input id="page-save" type="button" name="saveAction" class="btn btn-success" value="Save" />
                 @Html.ActionLink("Cancel", "Index", "Page", new { id = Model.Id }, new { @class = "btn btn-danger" })
             </div>
+        </div>
 
-            @if (Model is Person)
+            @Html.Action("Aspects", "Fate", new { id = Model.Id })
+            @Html.Action("Stunts", "Fate", new { id = Model.Id })
+            @Html.Action("AwardHistory", "Person", new { id = Model.Id })
+            <div class="content-block">
+
+
+                @if (Model is Person)
             {
 
                 Person person = Model as Person;
-                @Html.Action("ViewStats", "Person", new { personId = person.Id })
-                if (User.IsInRole("Admin"))
-                {
-                    <h1>Points Value: @person.PointsValue</h1>
-                }
-                if (person.SessionLogs.Any())
-                {
-                    <h3>Session Logs</h3>
-                            <ul>
-                                @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
+                    @Html.Action("ViewStats", "Person", new { personId = person.Id })
+                    if (User.IsInRole("Admin"))
                     {
-                                    <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
-                                }
-                            </ul>
+                        <h1>Points Value: @person.PointsValue</h1>
+                    }
+                    if (person.SessionLogs.Any())
+                    {
+                        <h3>Session Logs</h3>
+                        <ul>
+                            @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
+                    {
+                                <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
+                            }
+                        </ul>
                             <div class="clearfix"></div>
+                    }
                 }
-            }
 
-            @if (Model is SessionLog)
+                @if (Model is SessionLog)
             {
                 SessionLog log = Model as SessionLog;
-                <ul>
-                    <li>
-                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
-                        @Html.ActionLink(log.Session.FullName, "Index", new { id = log.Session.Id }) (@Html.ActionLink(log.Session.ShortName, "Index", new { id = log.Session.Id }))
+                    <ul>
+                        <li>
+                            <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
+                            @Html.ActionLink(log.Session.FullName, "Index", new { id = log.Session.Id }) (@Html.ActionLink(log.Session.ShortName, "Index", new { id = log.Session.Id }))
 
-                    </li>
-                </ul>
-                        <div class="clearfix"></div>
-            }
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                }
 
-            @if (Model is Session)
+                @if (Model is Session)
             {
                 Session session = Model as Session;
 
                 if (ViewBag.ShowTextSessionLink)
                 {
-                    @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
-                }
+                        @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+                    }
 
-                if (session.PlayerCharacters.Any())
-                {
-                    <h3>Player Characters</h3>
-                            <ul>
-                                @foreach (Person person in session.PlayerCharacters)
+                    if (session.PlayerCharacters.Any())
                     {
-                                    <li>
-                                        <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
-                                    </li>
-                                }
-                            </ul>
-                            <div class="clearfix"></div>
-                }
-
-                if (session.Npcs.Any())
-                {
-                    <h3>NPCs</h3>
-                            <ul>
-
-                                @foreach (Person person in session.Npcs)
+                        <h3>Player Characters</h3>
+                        <ul>
+                            @foreach (Person person in session.PlayerCharacters)
                     {
-                                    <li>
-                                        <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
-                                    </li>
-                                }
-                            </ul>
+                                <li>
+                                    <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                </li>
+                            }
+                        </ul>
                             <div class="clearfix"></div>
-                }
+                    }
 
-                if (session.SessionLogs.Any())
-                {
-                    <h3>Session Logs</h3>
-                            <ul>
-
-                                @foreach (SessionLog log in session.SessionLogs)
+                    if (session.Npcs.Any())
                     {
-                                    <li>
-                                        <div class="profile-container">
+                        <h3>NPCs</h3>
+                        <ul>
 
-                                            @Html.ActionLink(log.FullName, "Index", new { id = log.Id })
-                                            by
-                                            @Html.ActionLink(log.Person.FullName, "Index", new { id = log.Person.Id })
-                                        </div>
-                                    </li>
-                                }
-
-
-                            </ul>
+                            @foreach (Person person in session.Npcs)
+                    {
+                                <li>
+                                    <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                </li>
+                            }
+                        </ul>
                             <div class="clearfix"></div>
+                    }
+
+                    if (session.SessionLogs.Any())
+                    {
+                        <h3>Session Logs</h3>
+                        <ul>
+
+                            @foreach (SessionLog log in session.SessionLogs)
+                    {
+                                <li>
+                                    <div class="profile-container">
+
+                                        @Html.ActionLink(log.FullName, "Index", new { id = log.Id })
+                                        by
+                                        @Html.ActionLink(log.Person.FullName, "Index", new { id = log.Person.Id })
+                                    </div>
+                                </li>
+                            }
+
+
+                        </ul>
+                            <div class="clearfix"></div>
+                    }
                 }
-            }
 
 
-            @if (Model is Place)
+                @if (Model is Place)
             {
                 Place place = Model as Place;
                 Place parent = place.Parent;
                 if (parent != null)
                 {
-                    <h3>Is within</h3>
-                            <ul>
-                                @while (parent != null)
-                    {
-                                    <li>@Html.ActionLink(parent.FullName, "Index", new { id = parent.Id })</li>
-                                    parent = parent.Parent;
-                                }
-                            </ul>
-                            <div class="clearfix"></div>
-                }
-                if (place.Child.Any())
-                {
-                    <h3>Contains these places</h3>
-                            <ul>
-                                @foreach (Place childPlace in place.Child)
-                    {
-                                    <li>
-                                        @Html.ActionLink(childPlace.FullName, "Index", new { id = childPlace.Id })
-                                        @if (childPlace.Child.Any())
-                                        {
-                                            <ul>
-                                                @foreach (Place grandchildPlace in childPlace.Child)
-                                                {
-                                                    <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new { id = grandchildPlace.Id })</li>
-                                                }
-                                            </ul>
-                                        }
-
-                                    </li>
-                                }
-                            </ul>
-                            <div class="clearfix"></div>
-                }
-            }
-
-
-            @if (Model.Related.Any())
-            {
-                <h3>Related</h3>
+                        <h3>Is within</h3>
                         <ul>
-                            @foreach (Page page in Model.Related)
-                {
-                                <li>@Html.ActionLink(page.ShortName, "Index", new { id = page.Id })</li>
+                            @while (parent != null)
+                    {
+                                <li>@Html.ActionLink(parent.FullName, "Index", new { id = parent.Id })</li>
+                                parent = parent.Parent;
                             }
                         </ul>
+                            <div class="clearfix"></div>
+                    }
+                    if (place.Child.Any())
+                    {
+                        <h3>Contains these places</h3>
+                        <ul>
+                            @foreach (Place childPlace in place.Child)
+                    {
+                                <li>
+                                    @Html.ActionLink(childPlace.FullName, "Index", new { id = childPlace.Id })
+                                    @if (childPlace.Child.Any())
+                                    {
+                                        <ul>
+                                            @foreach (Place grandchildPlace in childPlace.Child)
+                                            {
+                                                <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new { id = grandchildPlace.Id })</li>
+                                            }
+                                        </ul>
+                                    }
+
+                                </li>
+                            }
+                        </ul>
+                            <div class="clearfix"></div>
+                    }
+                }
+
+
+                @if (Model.Related.Any())
+            {
+                    <h3>Related</h3>
+                    <ul>
+                        @foreach (Page page in Model.Related)
+                {
+                            <li>@Html.ActionLink(page.ShortName, "Index", new { id = page.Id })</li>
+                        }
+                    </ul>
                         <div class="clearfix"></div>
-            }
+                }
 
-            @Html.Action("Index", "PageControls", new { id = Model.Id })
-            @Html.Action("Index", "AdminPageControls", new { id = Model.Id })
+                @Html.Action("Index", "PageControls", new { id = Model.Id })
+                @Html.Action("Index", "AdminPageControls", new { id = Model.Id })
 
+            </div>
+
+
+            <hr />
+            <div class="content-block">
+                <h3>Comments</h3>
+                @Html.Action("Index", "Comment", new { id = Model.Id })
+            </div>
         </div>
-
-
-        <hr />
-        <div class="content-block">
-            <h3>Comments</h3>
-            @Html.Action("Index", "Comment", new { id = Model.Id })
-        </div>
-    </div>
 
 
 </div>

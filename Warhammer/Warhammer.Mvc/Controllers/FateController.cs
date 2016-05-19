@@ -61,17 +61,20 @@ namespace Warhammer.Mvc.Controllers
         [HttpPost]
         public ActionResult Aspects(List<FateAspectViewModel> model)
         {
-            if (DataProvider.SiteHasFeature(Feature.FateStats))
+            if (model != null)
             {
-                if (model.Any())
+                if (DataProvider.SiteHasFeature(Feature.FateStats))
                 {
-                    FateAspectViewModel fateAspectViewModel = model.FirstOrDefault();
-                    if (fateAspectViewModel != null)
+                    if (model.Any())
                     {
-                        int id = fateAspectViewModel.Aspect.Id;
-                        DataProvider.SaveAspects(model.Select(m => m.Aspect).ToList());
-                        var aspects = FateAspectViewModels(id);
-                        return PartialView(aspects);
+                        FateAspectViewModel fateAspectViewModel = model.FirstOrDefault();
+                        if (fateAspectViewModel != null)
+                        {
+                            int id = fateAspectViewModel.Aspect.Id;
+                            DataProvider.SaveAspects(model.Select(m => m.Aspect).ToList());
+                            var aspects = FateAspectViewModels(id);
+                            return PartialView(aspects);
+                        }
                     }
                 }
             }
@@ -90,7 +93,7 @@ namespace Warhammer.Mvc.Controllers
         [HttpPost]
         public ActionResult Stats(List<FateStatViewModel> model)
         {
-            if (model.Any())
+            if (model != null && model.Any())
             {
                 if (DataProvider.SiteHasFeature(Feature.FateStats))
                 {

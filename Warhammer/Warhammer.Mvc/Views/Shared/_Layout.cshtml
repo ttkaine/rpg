@@ -85,7 +85,8 @@
 
                 $("#page-save").click(function () {
                     formmodified = 0;
-                    document.forms['mainpageform'].submit();
+                    $('#hiddenPageSubmit').click();
+                    //document.forms['mainpageform'].submit();
                 });
             });
 
