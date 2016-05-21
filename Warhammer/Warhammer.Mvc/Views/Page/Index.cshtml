@@ -125,7 +125,7 @@
         {
             Session session = Model as Session;
 
-            if (ViewBag.ShowTextSessionLink)
+            if (ViewBag.ShowTextSessionLink != null && ViewBag.ShowTextSessionLink)
             {
                 @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new {id = Model.Id}, new {@class = "btn btn-success btn-block"})
             }

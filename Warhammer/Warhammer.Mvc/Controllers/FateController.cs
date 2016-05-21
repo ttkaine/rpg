@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
@@ -20,19 +21,24 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Aspects(int id)
         {
-            if(DataProvider.SiteHasFeature(Feature.FateStats))
-            {
-                var aspects = FateAspectViewModels(id);
 
-                return PartialView(aspects);
+            if (DataProvider.SiteHasFeature(Feature.FateStats))
+            {
+                Person person = DataProvider.GetPerson(id);
+
+                if (person != null)
+                {
+                    var aspects = FateAspectViewModels(person);
+
+                    return PartialView(aspects);
+                }
             }
             return null;
         }
 
-        private List<FateAspectViewModel> FateAspectViewModels(int id)
+        private List<FateAspectViewModel> FateAspectViewModels(Person person)
         {
-            Person person = DataProvider.GetPerson(id);
-            List<FateAspectViewModel> aspects = DataProvider.GetAspects(id).Select(a => new FateAspectViewModel
+            List<FateAspectViewModel> aspects = DataProvider.GetAspects(person.Id).Select(a => new FateAspectViewModel
             {
                 Aspect = a,
                 ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
@@ -49,7 +55,7 @@ namespace Warhammer.Mvc.Controllers
                         Aspect = new FateAspect
                         {
                             AspectType = i,
-                            PersonId = id,
+                            PersonId = person.Id,
                         },
                         ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
                     });
@@ -72,8 +78,12 @@ namespace Warhammer.Mvc.Controllers
                         {
                             int id = fateAspectViewModel.Aspect.Id;
                             DataProvider.SaveAspects(model.Select(m => m.Aspect).ToList());
-                            var aspects = FateAspectViewModels(id);
-                            return PartialView(aspects);
+                            Person person = DataProvider.GetPerson(id);
+                            if (person != null)
+                            {
+                                var aspects = FateAspectViewModels(person);
+                                return PartialView(aspects);
+                            }
                         }
                     }
                 }
@@ -85,8 +95,12 @@ namespace Warhammer.Mvc.Controllers
         {
             if (DataProvider.SiteHasFeature(Feature.FateStats))
             {
-                List<FateStatViewModel> model = GetFateStatsViewModel(id);
-                return PartialView(model);
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    List<FateStatViewModel> model = GetFateStatsViewModel(person);
+                    return PartialView(model);
+                }
             }
             return null;
         }
@@ -103,9 +117,13 @@ namespace Warhammer.Mvc.Controllers
                         DataProvider.SaveFateStats(model.Select(s => s.Stat));
 
                         int id = fateStatViewModel.Stat.PersonId;
-                        List<FateStatViewModel> stats = GetFateStatsViewModel(id);
-                        ModelState.Clear();
-                        return PartialView(stats);
+                        Person person = DataProvider.GetPerson(id);
+                        if (person != null)
+                        {
+                            List<FateStatViewModel> stats = GetFateStatsViewModel(person);
+                            ModelState.Clear();
+                            return PartialView(stats);
+                        }
                     }
                 }
             }
@@ -114,13 +132,11 @@ namespace Warhammer.Mvc.Controllers
         }
 
 
-        private List<FateStatViewModel> GetFateStatsViewModel(int id)
+        private List<FateStatViewModel> GetFateStatsViewModel(Person person)
         {
-            Person person = DataProvider.GetPerson(id);
+            List<int> values = StatLevel.Average.Numbers();
 
-            List<int> values = StatLevel.Average.Numbers();        
-
-            List<FateStat> stats = DataProvider.GetFateStats(id);
+            List<FateStat> stats = DataProvider.GetFateStats(person.Id);
 
             List<FateStatViewModel> models = stats.Select(f => new FateStatViewModel
             {
@@ -142,7 +158,7 @@ namespace Warhammer.Mvc.Controllers
                         Stat = new FateStat
                         {
                             StatType = i,
-                            PersonId = id,
+                            PersonId = person.Id,
                             IsVisible = IsEditMode && !CurrentPlayer.IsGm
                         },
                         Options = new SelectList(values.Select(v => new { value = v, display = GetLevelDisplayName(v) }).ToList(), "value", "display"),
@@ -158,32 +174,34 @@ namespace Warhammer.Mvc.Controllers
 
         private string GetLevelDisplayName(int i)
         {
-                if (i >= 0)
-                {
-                    return string.Format($"+{i} {(StatLevel)i}");
-                }
-                else
-                {
-                    return string.Format($"{i} {(StatLevel)i}");
-                }
+            if (i >= 0)
+            {
+                return string.Format($"+{i} {(StatLevel)i}");
+            }
+            else
+            {
+                return string.Format($"{i} {(StatLevel)i}");
+            }
         }
 
         public ActionResult Stunts(int id)
         {
             if (DataProvider.SiteHasFeature(Feature.FateStats))
             {
-                var viewModel = FateStuntsViewModel(id);
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    var viewModel = FateStuntsViewModel(person);
 
-                return PartialView(viewModel);
+                    return PartialView(viewModel);
+                }
             }
             return null;
         }
 
-        private FateStuntsViewModel FateStuntsViewModel(int id)
+        private FateStuntsViewModel FateStuntsViewModel(Person person)
         {
-            Person person = DataProvider.GetPerson(id);
-
-            List<FateStunt> stunts = DataProvider.GetStunts(id);
+            List<FateStunt> stunts = DataProvider.GetStunts(person.Id);
             List<FateStuntViewModel> models = stunts.Select(s => new FateStuntViewModel
             {
                 Stunt = s,
@@ -192,7 +210,7 @@ namespace Warhammer.Mvc.Controllers
             FateStuntsViewModel viewModel = new FateStuntsViewModel
             {
                 StuntModels = models,
-                PersonId = id,
+                PersonId = person.Id,
                 CanEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
             };
             return viewModel;
@@ -205,9 +223,13 @@ namespace Warhammer.Mvc.Controllers
             {
                 stunt.IsVisible = !CurrentPlayer.IsGm;
                 DataProvider.SaveStunt(stunt);
-                var viewModel = FateStuntsViewModel(stunt.PersonId);
-                ModelState.Clear();
-                return PartialView("Stunts", viewModel);
+                Person person = DataProvider.GetPerson(stunt.PersonId);
+                if (person != null)
+                {
+                    var viewModel = FateStuntsViewModel(person);
+                    ModelState.Clear();
+                    return PartialView("Stunts", viewModel);
+                }
             }
             return null;
         }
@@ -218,9 +240,13 @@ namespace Warhammer.Mvc.Controllers
             if (ModelState.IsValid)
             {
                 DataProvider.SaveStunt(model);
-                var viewModel = FateStuntsViewModel(model.PersonId);
-                ModelState.Clear();
-                return PartialView("Stunts", viewModel);
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    var viewModel = FateStuntsViewModel(person);
+                    ModelState.Clear();
+                    return PartialView("Stunts", viewModel);
+                }
             }
             return null;
         }
@@ -229,9 +255,14 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult DeleteStunt(int stuntId, int personId)
         {
             DataProvider.DeleteStunt(stuntId);
-            var viewModel = FateStuntsViewModel(personId);
-            ModelState.Clear();
-            return PartialView("Stunts", viewModel);
+            Person person = DataProvider.GetPerson(personId);
+            if (person != null)
+            {
+                var viewModel = FateStuntsViewModel(person);
+                ModelState.Clear();
+                return PartialView("Stunts", viewModel);
+            }
+            return null;
         }
 
 
@@ -239,9 +270,14 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult ToggleStuntVisibility(int stuntId, int personId)
         {
             DataProvider.ToggleStuntVisibility(stuntId);
-            var viewModel = FateStuntsViewModel(personId);
-            ModelState.Clear();
-            return PartialView("Stunts", viewModel);
+            Person person = DataProvider.GetPerson(personId);
+            if (person != null)
+            {
+                var viewModel = FateStuntsViewModel(person);
+                ModelState.Clear();
+                return PartialView("Stunts", viewModel);
+            }
+            return null;
         }
     }
 }
