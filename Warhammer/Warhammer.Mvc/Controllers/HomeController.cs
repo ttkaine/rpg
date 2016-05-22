@@ -94,7 +94,14 @@ namespace Warhammer.Mvc.Controllers
             return View(trophies);
         }
 
- //       [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+        public ActionResult Trophy(int id)
+        {
+            Trophy trophy = DataProvider.GetTrophy(id);
+            return View(trophy);
+        }
+
+
+        //       [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
         public ActionResult CharacterLeague()
         {
             List<Person> people = DataProvider.GetLeague();

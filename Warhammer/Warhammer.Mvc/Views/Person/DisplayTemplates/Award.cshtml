@@ -1,8 +1,8 @@
 ﻿@model Warhammer.Core.Entities.Award
 <tr>
     <td>
-        <img src="@Url.Action("TrophyImage", "Home", new { id = Model.Trophy.Id }, null)" title="@Model.Trophy.Name @Model.Reason" alt="Picture of @Model.Trophy.Name" class="mini-trophy-image" />
-    </td>
+        <a href="@Url.Action("Trophy", "Home", new {id = Model.TrophyId})"> <img src="@Url.Action("TrophyImage", "Home", new {id = Model.Trophy.Id}, null)" title="@Model.Trophy.Name @Model.Reason" alt="Picture of @Model.Trophy.Name" class="mini-trophy-image"/></a>
+</td>
     <td class="name">
         @Model.Trophy.Name @Model.Reason
         <br />

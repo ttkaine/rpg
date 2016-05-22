@@ -26,7 +26,7 @@
                         {
                             <tr>
                                 <td style="display: none">@trophy.PointsValue</td>
-                                <td><img src="@Url.Action("TrophyImage", "Home", new { id = trophy.Id }, null)" title="@trophy.Name" alt="Picture of @trophy.Name" class="trophy-image" /></td>
+                                <td><a href="@Url.Action("Trophy", "Home", new { id = trophy.Id})"><img src="@Url.Action("TrophyImage", "Home", new { id = trophy.Id }, null)" title="@trophy.Name" alt="Picture of @trophy.Name" class="trophy-image" /></a></td>
                                 <td class="name">@trophy.Name</td>
                                 <td class="description">@Html.Raw(trophy.Description)</td>
                                 @if (User.IsInRole("Admin") && ViewBag.EditMode)

@@ -1,0 +1,59 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Core.Entities.Trophy
+@{
+    ViewBag.Title = @Model.Name;
+}
+
+
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">@Model.Name</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <a href="@Url.Action("Trophies")"><img class="profile-image" src="@Url.Action("TrophyImage", "Home", new {id = Model.Id})" title="@Model.Name" alt="Picture of @Model.Name" height="200" width="200" /></a>
+            <h2>@Model.Name</h2>
+            <p>@Model.Description</p>
+
+            <table class="table table-striped">
+
+                @foreach (Award award in Model.Awards.OrderByDescending(a => a.AwardedOn))
+                {
+                    <tr>
+                        <td><a href="@Url.Action("Index", "Page", new {id = award.PersonId})"><img src="@Url.Action("Image", "Page", new {id = award.PersonId}, null)" title="@award.Person.FullName" alt="Picture of @award.Person.FullName" class="mini-profile-image"/></a></td>
+                        <td>@award.Person.FullName</td>
+                        <td>
+                            @award.Reason
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>@Model.Name</h3>
+
+                @if (Model.Awards.Any())
+                {
+                    <p>Awarded @Model.Awards.Count time@(Model.Awards.Count > 1 ? "s" : "")</p>
+                    <p>First Awarded @Model.Awards.OrderBy(m => m.AwardedOn).First().AwardedOn.ToLongDateString()</p>
+                }
+                else
+                {
+                    <p>Never Awarded.</p>
+                }
+
+        </div>
+    </div>
+
+</div>
+
