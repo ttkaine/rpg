@@ -1005,6 +1005,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Award> GetLatestAwards(int count)
+        {
+            List<Award> awards = _repository.Awards().OrderByDescending(d => d.AwardedOn).Take(count).ToList();
+            return awards;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

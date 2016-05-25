@@ -611,6 +611,8 @@
     <Content Include="Views\Fate\DisplayTemplates\FateStuntViewModel.cshtml" />
     <Content Include="Views\Fate\EditorTemplates\FateStuntViewModel.cshtml" />
     <Content Include="Views\Home\Trophy.cshtml" />
+    <Content Include="Views\Home\AwardHistory.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\AwardItem.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

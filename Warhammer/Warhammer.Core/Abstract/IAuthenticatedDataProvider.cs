@@ -106,5 +106,6 @@ namespace Warhammer.Core.Abstract
         void SaveStunt(FateStunt stunt);
         void DeleteStunt(int stuntId);
         void ToggleStuntVisibility(int stuntId);
+        List<Award> GetLatestAwards(int count);
     }
 }

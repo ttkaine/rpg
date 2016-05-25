@@ -289,6 +289,18 @@ namespace Warhammer.Mvc.Controllers
             return PartialView("SettingsSection", model);
         }
 
+        public ActionResult AwardHistory()
+        {
+            if (DataProvider.SiteHasFeature(Feature.AwardHistory))
+            {
+                List<Award> awards = DataProvider.GetLatestAwards(35);
 
+                if (awards.Any())
+                {
+                    return PartialView(awards);
+                }
+            }
+            return null;
+        }
     }
 }

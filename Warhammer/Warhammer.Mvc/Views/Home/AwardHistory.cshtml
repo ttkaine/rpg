@@ -1,0 +1,16 @@
+﻿@using Warhammer.Core.Entities
+@model List<Warhammer.Core.Entities.Award>
+
+<hr />
+<div class="content-block" id="awardHistory">
+    <h3>Latest Awards</h3>
+    <table class="table">
+        <tbody class="list">
+        @foreach (Award award in Model)
+        {
+            @Html.DisplayFor(m => award, "AwardItem")
+        }
+
+        </tbody>
+    </table>
+</div>
