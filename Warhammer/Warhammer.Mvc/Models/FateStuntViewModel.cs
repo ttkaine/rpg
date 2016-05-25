@@ -6,5 +6,6 @@ namespace Warhammer.Mvc.Models
     {
         public FateStunt Stunt { get; set; } 
         public bool ShowHidden { get; set; }
+        public bool Delete { get; set; }
     }
 }

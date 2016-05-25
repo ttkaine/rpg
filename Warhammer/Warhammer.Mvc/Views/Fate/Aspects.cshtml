@@ -9,7 +9,7 @@
         @if (ViewBag.EditMode && Model.All(m => m.ShowHidden))
         {
             //form here
-            using (Ajax.BeginForm("Aspects", "Fate", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateAspects"}))
+            using (Ajax.BeginForm("Aspects", "Fate", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateAspects", OnComplete = "applyToggles()"}))
             {
                 @Html.EditorFor(m => Model)
                 <input type="submit" value="Save" class="btn btn-default btn-block"/>
@@ -22,4 +22,6 @@
 
     </div>
     <hr/>
+
+
 }

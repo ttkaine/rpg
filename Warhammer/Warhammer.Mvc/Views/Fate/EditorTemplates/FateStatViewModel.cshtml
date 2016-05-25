@@ -6,6 +6,5 @@
     @Html.HiddenFor(m => Model.Stat.Id)
     @Html.DropDownList("Stat.StatValue", Model.Options)
     <hr/>
-    <p>Is Public:</p>
-    @Html.EditorFor(m => m.Stat.IsVisible)
+    @Html.CheckBoxFor(m => m.Stat.IsVisible, new { data_toggle = "toggle", data_on = "Visible", data_off = "Hidden", data_offstyle = "info", data_onstyle = "warning" })
 </td>

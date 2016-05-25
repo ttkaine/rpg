@@ -10,8 +10,16 @@
 
         @if (ViewBag.EditMode && Model.CanEdit && Model.StuntModels.All(m => m.ShowHidden))
         {
-            @Html.EditorFor(m => Model.StuntModels)
-            using (Ajax.BeginForm("AddStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+            if (Model.StuntModels.Any())
+            {
+                using (Ajax.BeginForm("EditStunts", "Fate", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts", OnComplete = "applyToggles()"}))
+                {
+                    @Html.EditorFor(m => Model.StuntModels)
+                    <input type="submit" value="Save?" class="btn btn-success btn-block"/>
+                }
+            }
+
+            using (Ajax.BeginForm("AddStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts", OnComplete = "applyToggles()" }))
             {
                 <h4>Add New Stunt</h4>
                              
@@ -28,6 +36,7 @@
         }
         else
         {
+
             @Html.DisplayFor(m => Model.StuntModels)
         }
 

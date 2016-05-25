@@ -2,47 +2,22 @@
 @model Warhammer.Mvc.Models.FateStuntViewModel
 
 
-    @if (Model.ShowHidden)
-    {
-        using (Ajax.BeginForm("EditStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
-        {
-            <input type="hidden" name="PersonId" value="@Model.Stunt.PersonId" />
-            <input type="hidden" name="Id" value="@Model.Stunt.Id" />
-            <div class="panel panel-info">
-                <div class="panel-heading"><input class="form-control" type="text" name="Title" placeholder="Title" value="@Model.Stunt.Title"></div>
-                <div class="panel-body">
-                    <textarea class="form-control" name="Description" placeholder="Description...">@Model.Stunt.Description</textarea>
-                </div>
-                <input type="submit" value="Save" class="btn btn-block btn-success"/>
-            </div>
-        }
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            @Html.TextBoxFor(m => Model.Stunt.Title, new { @class = "form-control", placeholder = "Title" })
+        </div>
+        <div class="panel-body">
+            @Html.TextAreaFor(m => Model.Stunt.Description, new { @class = "form-control", placeholder = "Description..." })
+        </div>
 
-        if (Model.Stunt.IsVisible)
-        {
-            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
-            {
-                <input type="hidden" name="personId" value="@Model.Stunt.PersonId" />
-                <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
-                <input type="submit" value="Visible" class="btn btn-block btn-success" />
-            }
-        }
-        else
-        {
-            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
-            {
-                <input type="hidden" name="personId" value="@Model.Stunt.PersonId" />
-                <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
-                <input type="submit" value="Hidden" class="btn btn-block btn-info" />
-            }
-        }
+        @Html.HiddenFor(m => Model.Stunt.Id)
+        @Html.HiddenFor(m => Model.Stunt.PersonId)
+        <div class="panel-footer">
+            @Html.CheckBoxFor(m => Model.Stunt.IsVisible, new { data_toggle = "toggle", data_on = "Visible", data_off = "Hidden", data_offstyle = "info", data_onstyle = "warning" })
+            @Html.CheckBoxFor(m => Model.Delete, new { data_toggle = "toggle", data_on = "Delete", data_off = "Keep", data_offstyle = "default", data_onstyle = "danger" })
+        </div>
+    </div>
+    <hr />
 
-        using (Ajax.BeginForm("DeleteStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
-        {
-            <input type="hidden" name="personId" value="@Model.Stunt.PersonId"/>
-            <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
-            <input type="submit" value="Delete @Model.Stunt.Title" class="btn btn-block btn-danger" />
-
-        }
-    }
 
 

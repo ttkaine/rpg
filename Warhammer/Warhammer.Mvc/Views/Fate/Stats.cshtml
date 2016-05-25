@@ -10,7 +10,7 @@
                     {
                         if (Model.All(m => m.CanEdit))
                         {
-                            using (Ajax.BeginForm("Stats", "Fate", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStats"}))
+                            using (Ajax.BeginForm("Stats", "Fate", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStats", OnComplete = "applyToggles()" }))
                             {
                                 <table class="table table-small">
                                     <thead>
@@ -29,7 +29,7 @@
 
                                 </table>
 
-                                <input type="submit" value="Save" class="btn btn-default btn-block"/>
+                                <input type="submit" value="Save" class="btn btn-success btn-block"/>
                             }
                         }
                     }

@@ -235,47 +235,41 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditStunt(FateStunt model)
+        public ActionResult EditStunts(FateStuntsViewModel model)
         {
-            if (ModelState.IsValid)
+
+            if (ModelState.IsValid && model != null)
             {
-                DataProvider.SaveStunt(model);
-                Person person = DataProvider.GetPerson(model.PersonId);
-                if (person != null)
+                List<FateStuntViewModel> models = model.StuntModels;
+                if (models.Any())
                 {
-                    var viewModel = FateStuntsViewModel(person);
-                    ModelState.Clear();
-                    return PartialView("Stunts", viewModel);
+                    foreach (FateStuntViewModel fateStuntViewModel in models)
+                    {
+                        if (fateStuntViewModel.Delete)
+                        {
+                            DataProvider.DeleteStunt(fateStuntViewModel.Stunt.Id);
+                        }
+                        else
+                        {
+                            DataProvider.SaveStunt(fateStuntViewModel.Stunt);
+                        }
+                    }
+                    int personId = 0;
+                    var firstOrDefault = models.FirstOrDefault();
+                    if (firstOrDefault != null)
+                    {
+                        FateStunt stunt = firstOrDefault.Stunt;
+                        personId = stunt.PersonId;
+                    }
+
+                    Person person = DataProvider.GetPerson(personId);
+                    if (person != null)
+                    {
+                        var viewModel = FateStuntsViewModel(person);
+                        ModelState.Clear();
+                        return PartialView("Stunts", viewModel);
+                    }
                 }
-            }
-            return null;
-        }
-
-        [HttpPost]
-        public ActionResult DeleteStunt(int stuntId, int personId)
-        {
-            DataProvider.DeleteStunt(stuntId);
-            Person person = DataProvider.GetPerson(personId);
-            if (person != null)
-            {
-                var viewModel = FateStuntsViewModel(person);
-                ModelState.Clear();
-                return PartialView("Stunts", viewModel);
-            }
-            return null;
-        }
-
-
-        [HttpPost]
-        public ActionResult ToggleStuntVisibility(int stuntId, int personId)
-        {
-            DataProvider.ToggleStuntVisibility(stuntId);
-            Person person = DataProvider.GetPerson(personId);
-            if (person != null)
-            {
-                var viewModel = FateStuntsViewModel(person);
-                ModelState.Clear();
-                return PartialView("Stunts", viewModel);
             }
             return null;
         }

@@ -10,8 +10,7 @@
     <div class="panel-body">
         @Html.TextBoxFor(m => Model.AspectName, new { @class = "form-control"})
         <p>
-            Is Public:
-            @Html.EditorFor(m => m.IsVisible)
+            @Html.CheckBoxFor(m => m.IsVisible, new { data_toggle = "toggle", data_on = "Visible", data_off = "Hidden", data_offstyle = "info", data_onstyle = "warning" })
         </p>
     </div>
 </div>
