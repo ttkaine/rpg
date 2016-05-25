@@ -4,7 +4,7 @@
 
     @if (Model.ShowHidden)
     {
-        using (Ajax.BeginForm("EditStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+        using (Ajax.BeginForm("EditStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
         {
             <input type="hidden" name="PersonId" value="@Model.Stunt.PersonId" />
             <input type="hidden" name="Id" value="@Model.Stunt.Id" />
@@ -19,7 +19,7 @@
 
         if (Model.Stunt.IsVisible)
         {
-            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
             {
                 <input type="hidden" name="personId" value="@Model.Stunt.PersonId" />
                 <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
@@ -28,7 +28,7 @@
         }
         else
         {
-            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+            using (Ajax.BeginForm("ToggleStuntVisibility", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
             {
                 <input type="hidden" name="personId" value="@Model.Stunt.PersonId" />
                 <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />
@@ -36,7 +36,7 @@
             }
         }
 
-        using (Ajax.BeginForm("DeleteStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
+        using (Ajax.BeginForm("DeleteStunt", "Fate", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "fateStunts" }))
         {
             <input type="hidden" name="personId" value="@Model.Stunt.PersonId"/>
             <input type="hidden" name="stuntId" value="@Model.Stunt.Id" />

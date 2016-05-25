@@ -76,7 +76,7 @@ namespace Warhammer.Mvc.Controllers
                         FateAspectViewModel fateAspectViewModel = model.FirstOrDefault();
                         if (fateAspectViewModel != null)
                         {
-                            int id = fateAspectViewModel.Aspect.Id;
+                            int id = fateAspectViewModel.Aspect.PersonId;
                             DataProvider.SaveAspects(model.Select(m => m.Aspect).ToList());
                             Person person = DataProvider.GetPerson(id);
                             if (person != null)
