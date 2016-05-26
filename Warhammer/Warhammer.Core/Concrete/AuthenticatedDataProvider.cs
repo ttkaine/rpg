@@ -1011,6 +1011,12 @@ namespace Warhammer.Core.Concrete
             return awards;
         }
 
+        public List<ScoreHistory> GetCurrentScoresForPerson(int id)
+        {
+            return _repository.ScoreHistories().Where(s => s.PersonId == id).Where(a => a.DateTime == DateTime.Today).OrderBy(s => s.ScoreTypeId).ToList();
+
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

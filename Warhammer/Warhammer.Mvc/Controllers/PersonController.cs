@@ -169,7 +169,98 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
-        public ActionResult ScoreHistory(int id)
+        public ActionResult CurrentScorePie(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.CurrentScorePie))
+            {
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    if (!DataProvider.SiteHasFeature(Feature.PublicLeague))
+                    {
+                        if (person.PlayerId.HasValue && person.PlayerId != CurrentPlayer.Id)
+                        {
+                            return null;
+                        }
+                    }
+
+                    List<ScoreHistory> scores = DataProvider.GetCurrentScoresForPerson(person.Id);
+                        //person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
+                    if (scores.Any())
+                    {
+
+                        List<DateTime> dates = scores.Select(s => s.DateTime).ToList();
+                        dates = dates.Distinct().ToList();
+
+                        var vals = Enum.GetValues(typeof (ScoreType));
+
+                        List<int> types = vals.Cast<int>().OrderByDescending(i => i).ToList();
+
+                        types.Remove((int) ScoreType.Total);
+                        if (!DataProvider.SiteHasFeature(Feature.SimpleStats))
+                        {
+                            types.Remove((int) ScoreType.Roles);
+                            types.Remove((int) ScoreType.Descriptors);
+                        }
+
+                        if (!DataProvider.SiteHasFeature(Feature.SimpleStats) &
+                            !DataProvider.SiteHasFeature(Feature.FateStats))
+                        {
+                            types.Remove((int) ScoreType.Stats);
+                        }
+
+                        Series pieSeries = new Series();
+                        pieSeries.Name = "Current Score";
+
+                        if (scores == null)
+                        {
+                            return null;
+                        }
+                        pieSeries.Data = new Data(scores.Where(s => s.ScoreType != ScoreType.Total).Where(s => s.PointsValue > 0).Select(s => new {name = s.ScoreType.ToString(), y = s.PointsValue }).ToArray());
+
+                        DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("Points_Pie")
+                            .InitChart(new Chart
+                            {
+                                DefaultSeriesType = ChartTypes.Pie
+                            })
+                            .SetTitle(new Title {Text = "Points Breakdown"})
+
+                            .SetTooltip(new Tooltip
+                            {
+                                Shared = false,
+                                ValueSuffix = " Points"
+                            })
+                            .SetXAxis(new XAxis
+                            {
+                                Categories = dates.Select(d => d.ToShortDateString()).ToArray(),
+                                Title = new XAxisTitle {Text = "Type"}
+                            }).SetYAxis(new YAxis
+                            {
+                                Title = new YAxisTitle {Text = "Points"}
+                            })
+                            .SetPlotOptions(new PlotOptions
+                            {
+                                Pie = new PlotOptionsPie()
+                                { 
+                                  Colors = scores.Where(s => s.ScoreType != ScoreType.Total).Where(s => s.PointsValue > 0).Select(s => GetColorForScoreType(s.ScoreType)).ToArray(),
+                                  AllowPointSelect = true
+                                 
+                                }
+                            })
+                            .SetSeries(pieSeries);
+
+
+                        return PartialView("Chart", chart);
+
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public
+            ActionResult ScoreHistory(int id)
         {
             if (DataProvider.SiteHasFeature(Feature.ScoreHistory))
             {
@@ -262,7 +353,7 @@ namespace Warhammer.Mvc.Controllers
                  })
                  .SetSeries(allSeries.ToArray());
 
-                return PartialView(chart);
+                return PartialView("Chart", chart);
 
                       //  return PartialView(scores);
                     }
@@ -272,7 +363,7 @@ namespace Warhammer.Mvc.Controllers
 
         }
 
-        private Color? GetColorForScoreType(ScoreType scoreType)
+        private Color GetColorForScoreType(ScoreType scoreType)
         {
             Color baseColor = new Color();
             switch (scoreType)

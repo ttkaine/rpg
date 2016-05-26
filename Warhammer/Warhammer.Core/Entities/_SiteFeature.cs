@@ -21,7 +21,8 @@ namespace Warhammer.Core.Entities
         AwardHistory,
         AutoPopulatePeopleInNewSessions,
         ScoreHistory,
-        FateStats
+        FateStats,
+        CurrentScorePie
     }
 
     public partial class SiteFeature

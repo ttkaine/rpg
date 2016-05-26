@@ -107,5 +107,6 @@ namespace Warhammer.Core.Abstract
         void DeleteStunt(int stuntId);
         void ToggleStuntVisibility(int stuntId);
         List<Award> GetLatestAwards(int count);
+        List<ScoreHistory> GetCurrentScoresForPerson(int id);
     }
 }
