@@ -240,7 +240,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DbUpdateScripts\0000.sql" />
     <Content Include="Content\DbUpdateScripts\0001.sql" />
     <Content Include="Content\DbUpdateScripts\0002.sql" />
     <Content Include="Content\DbUpdateScripts\0003.sql" />

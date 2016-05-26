@@ -213,7 +213,7 @@ namespace Warhammer.Mvc.Controllers
                         {
                             Series series = new Series();
                             series.Name = ((ScoreType)type).ToString();
-
+                            series.Color = GetColorForScoreType((ScoreType) type);
                             decimal[] points = dates.Select(dateTime => scores.Where(s => s.DateTime == dateTime && s.ScoreTypeId == type).Sum(t => t.PointsValue)).ToArray();
 
                             series.Data = new Data(points.Cast<object>().ToArray());
@@ -270,6 +270,50 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
 
+        }
+
+        private Color? GetColorForScoreType(ScoreType scoreType)
+        {
+            Color baseColor = new Color();
+            switch (scoreType)
+            {
+                case ScoreType.Total:
+                    baseColor =  Color.Black;
+                    break;
+                case ScoreType.Image:
+                    baseColor = Color.BlueViolet;
+                    break;
+                case ScoreType.PageText:
+                    baseColor = Color.Blue;
+                    break;
+                case ScoreType.Links:
+                    baseColor = Color.DarkCyan;
+                    break;
+                case ScoreType.Sessions:
+                    baseColor = Color.Green;
+                    break;
+                case ScoreType.Logs:
+                    baseColor = Color.YellowGreen;
+                    break;
+                case ScoreType.Awards:
+                    baseColor = Color.Gold;
+                    break;
+                case ScoreType.Stats:
+                    baseColor = Color.Orange;
+                    break;
+                case ScoreType.Roles:
+                    baseColor = Color.OrangeRed;
+                    break;
+                case ScoreType.Descriptors:
+                    baseColor = Color.Red;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(scoreType), scoreType, null);
+
+
+            }
+
+            return Color.FromArgb(150, baseColor);
         }
     }
 }
