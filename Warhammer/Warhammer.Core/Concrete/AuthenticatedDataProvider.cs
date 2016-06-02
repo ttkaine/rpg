@@ -724,6 +724,7 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> NpcWithXp()
         {
+            return new List<Person>();
             return _repository.People().Where(p => !p.PlayerId.HasValue)
                 .Where(p => p.Stats.Sum(s => s.Value) > 10 && p.CurrentXp > 10)
                 .OrderByDescending(p => p.CurrentXp).ToList();
