@@ -1144,7 +1144,7 @@ namespace Warhammer.Core.Concrete
                 session.IsClosed = !session.IsClosed;
                 Save(session);
 
-                if (SiteHasFeature(Feature.SimpleStats) && session.IsClosed)
+                if (SiteHasFeature(Feature.SimpleStats) && session.IsClosed && SiteHasFeature(Feature.SimpleAutoXp))
                 {
                     ApplyXpForSession(session);
                 }
