@@ -284,6 +284,17 @@
           <Property Name="TrueText" Type="nvarchar" MaxLength="50" />
           <Property Name="FalseText" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="SimpleHitPoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="HitPointTypeId" Type="int" Nullable="false" />
+          <Property Name="HitPointLevelId" Type="int" Nullable="false" />
+          <Property Name="Purchased" Type="datetime" />
+          <Property Name="XpCost" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="SiteFeature">
           <Key>
             <PropertyRef Name="Id" />
@@ -719,6 +730,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SimpleHitPoints_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="SimpleHitPoints" Type="Self.SimpleHitPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SimpleHitPoints">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserSetting_Player">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="UserSetting" Type="Self.UserSetting" Multiplicity="*" />
@@ -757,6 +780,7 @@
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SimpleHitPoints" EntityType="Self.SimpleHitPoints" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSetting" EntityType="Self.UserSetting" Schema="dbo" store:Type="Tables" />
@@ -891,6 +915,10 @@
           <AssociationSet Name="FK_SessionLog_Session" Association="Self.FK_SessionLog_Session">
             <End Role="Session" EntitySet="Session" />
             <End Role="SessionLog" EntitySet="SessionLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SimpleHitPoints_Person" Association="Self.FK_SimpleHitPoints_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="SimpleHitPoints" EntitySet="SimpleHitPoints" />
           </AssociationSet>
           <AssociationSet Name="FK_UserSetting_Player" Association="Self.FK_UserSetting_Player">
             <End Role="Player" EntitySet="Player" />
@@ -1040,6 +1068,11 @@
             <End Role="Person" EntitySet="Pages" />
             <End Role="FateStunt" EntitySet="FateStunts" />
           </AssociationSet>
+          <EntitySet Name="SimpleHitPoints" EntityType="WarhammerModel.SimpleHitPoint" />
+          <AssociationSet Name="FK_SimpleHitPoints_Person" Association="WarhammerModel.FK_SimpleHitPoints_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="SimpleHitPoint" EntitySet="SimpleHitPoints" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1133,6 +1166,7 @@
           <NavigationProperty Name="FateAspects" Relationship="WarhammerModel.FK_FateAspect_Person" FromRole="Person" ToRole="FateAspect" />
           <NavigationProperty Name="FateStats" Relationship="WarhammerModel.FK_FateStat_Person" FromRole="Person" ToRole="FateStat" />
           <NavigationProperty Name="FateStunts" Relationship="WarhammerModel.FK_FateStunt_Person" FromRole="Person" ToRole="FateStunt" />
+          <NavigationProperty Name="SimpleHitPoints" Relationship="WarhammerModel.FK_SimpleHitPoints_Person" FromRole="Person" ToRole="SimpleHitPoint" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -1712,6 +1746,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SimpleHitPoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="HitPointTypeId" Type="Int32" Nullable="false" />
+          <Property Name="HitPointLevelId" Type="Int32" Nullable="false" />
+          <Property Name="Purchased" Type="DateTime" Precision="3" />
+          <Property Name="XpCost" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_SimpleHitPoints_Person" FromRole="SimpleHitPoint" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_SimpleHitPoints_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.SimpleHitPoint" Role="SimpleHitPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SimpleHitPoint">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2038,6 +2096,18 @@
                 <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SimpleHitPoints">
+            <EntityTypeMapping TypeName="WarhammerModel.SimpleHitPoint">
+              <MappingFragment StoreEntitySet="SimpleHitPoints">
+                <ScalarProperty Name="XpCost" ColumnName="XpCost" />
+                <ScalarProperty Name="Purchased" ColumnName="Purchased" />
+                <ScalarProperty Name="HitPointLevelId" ColumnName="HitPointLevelId" />
+                <ScalarProperty Name="HitPointTypeId" ColumnName="HitPointTypeId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

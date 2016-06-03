@@ -1,0 +1,36 @@
+﻿@model Warhammer.Mvc.Models.SimpleHitPointsViewModel
+
+
+@if (Model.HarmTrack.Any(h => h.Enabled) || Model.WearTrack.Any(h => h.Enabled))
+{
+    <div class="content-block" id="HitPoints">
+        <div class="hitpoint-track wear-track">
+            <h4>Wear</h4>
+            <table class="table table-striped">
+                @if (ViewBag.EditMode)
+                {
+                    @Html.EditorFor(m => Model.WearTrack)
+                }
+                else
+                {
+                    @Html.DisplayFor(m => Model.WearTrack)
+                }
+
+            </table>
+        </div>
+        <div class="hitpoint-track harm-track">
+            <h4>Harm</h4>
+            <table class="table table-striped">
+                @if (ViewBag.EditMode)
+                {
+                    @Html.EditorFor(m => Model.HarmTrack)
+                }
+                else
+                {
+                    @Html.DisplayFor(m => Model.HarmTrack)
+                }
+            </table>
+        </div>
+
+    </div>
+}

@@ -23,6 +23,7 @@ namespace Warhammer.Core.Entities
             this.FateAspects = new HashSet<FateAspect>();
             this.FateStats = new HashSet<FateStat>();
             this.FateStunts = new HashSet<FateStunt>();
+            this.SimpleHitPoints = new HashSet<SimpleHitPoint>();
         }
     
         public bool IsDead { get; set; }
@@ -44,5 +45,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<FateAspect> FateAspects { get; set; }
         public virtual ICollection<FateStat> FateStats { get; set; }
         public virtual ICollection<FateStunt> FateStunts { get; set; }
+        public virtual ICollection<SimpleHitPoint> SimpleHitPoints { get; set; }
     }
 }

@@ -209,6 +209,9 @@
     <Compile Include="Entities\Setting.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\SimpleHitPoint.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\SiteFeature.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -229,6 +232,7 @@
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
     <Compile Include="Entities\_Setting.cs" />
+    <Compile Include="Entities\_SimpleHitPoints.cs" />
     <Compile Include="Entities\_SiteFeature.cs" />
     <Compile Include="Entities\_Trophy.cs" />
     <Compile Include="Entities\_UserSetting.cs" />

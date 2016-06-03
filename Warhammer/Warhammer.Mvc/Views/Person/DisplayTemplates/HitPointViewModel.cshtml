@@ -1,0 +1,10 @@
+﻿@model Warhammer.Mvc.Models.HitPointViewModel
+
+@if (Model.Enabled)
+{
+    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")"><span class="label label-pill label-success">@Model.Name</span></td></tr>
+}
+else
+{
+    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")"><span class="label label-pill label-info"></span></td></tr>
+}

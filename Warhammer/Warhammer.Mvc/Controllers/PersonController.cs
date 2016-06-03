@@ -8,6 +8,7 @@ using DotNet.Highcharts.Helpers;
 using DotNet.Highcharts.Options;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 
@@ -107,6 +108,105 @@ namespace Warhammer.Mvc.Controllers
             }
             return PartialView("ViewStats", postedStats);
         }
+
+        public ActionResult HitPoints(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.SimpleHitPoints))
+            {
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    SimpleHitPointsViewModel model = MakeSimpleHitPointsViewModel(person);
+                    return PartialView(model);
+                }
+            }
+            return null;
+        }
+
+        private SimpleHitPointsViewModel MakeSimpleHitPointsViewModel(Person person)
+        {
+            bool userCanBuy = person.PlayerId == CurrentPlayer.Id || !person.PlayerId.HasValue && CurrentPlayer.IsGm;
+
+            SimpleHitPointsViewModel model = new SimpleHitPointsViewModel();
+            List<int> allLevels = SimpleHitPointLevel.Trivial.Numbers().OrderBy(i => i).ToList();
+
+            model.WearTrack = new List<HitPointViewModel>();
+
+            foreach (int level in allLevels)
+            {
+                SimpleHitPoint hitPoint =
+                    person.SimpleHitPoints.FirstOrDefault(
+                        s => s.HitPointLevelId == level && s.HitPointTypeId == (int) SimpleHitPointType.Wear);
+
+                if (hitPoint != null)
+                {
+                    model.WearTrack.Add(new HitPointViewModel
+                    {
+                        CanBuy = !hitPoint.Purchased.HasValue && person.CurrentXp >= level && userCanBuy,
+                        CostToBuy = level,
+                        Enabled = hitPoint.Purchased.HasValue,
+                        Name = hitPoint.LongDisplayValue
+                    });
+                }
+                else
+                {
+                    SimpleHitPoint temp = new SimpleHitPoint
+                    {
+                        HitPointLevelId = level,
+                        HitPointTypeId = (int)SimpleHitPointType.Wear
+                    };
+
+                    model.WearTrack.Add(new HitPointViewModel
+                    {
+                        CanBuy = person.CurrentXp >= level && userCanBuy,
+                        CostToBuy = level,
+                        Enabled = false,
+                        Name = temp.LongDisplayValue
+                    });
+                }
+
+            }
+
+            model.HarmTrack = new List<HitPointViewModel>();
+
+            foreach (int level in allLevels)
+            {
+                SimpleHitPoint hitPoint =
+                    person.SimpleHitPoints.FirstOrDefault(
+                        s => s.HitPointLevelId == level && s.HitPointTypeId == (int)SimpleHitPointType.Harm);
+
+                if (hitPoint != null)
+                {
+                    model.HarmTrack.Add(new HitPointViewModel
+                    {
+                        CanBuy = !hitPoint.Purchased.HasValue && person.CurrentXp >= level && userCanBuy,
+                        CostToBuy = level,
+                        Enabled = hitPoint.Purchased.HasValue,
+                        Name = hitPoint.LongDisplayValue
+                    });
+                }
+                else
+                {
+                    SimpleHitPoint temp = new SimpleHitPoint
+                    {
+                        HitPointLevelId = level,
+                        HitPointTypeId = (int)SimpleHitPointType.Harm
+                    };
+
+                    model.HarmTrack.Add(new HitPointViewModel
+                    {
+                        CanBuy = person.CurrentXp >= level && userCanBuy,
+                        CostToBuy = level,
+                        Enabled = false,
+                        Name = temp.LongDisplayValue
+                    });
+                }
+
+            }
+
+            return model;
+        }
+
 
         [HttpPost]
         public ActionResult AddRole(int personId, string role)

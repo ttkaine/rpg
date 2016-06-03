@@ -7187,6 +7187,14 @@ div.commentdetail {
 hr {
   opacity: 0;
 }
+.hitpoint-track {
+  position: relative;
+  float: left;
+  width: 50%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance
