@@ -26,6 +26,7 @@ function setupPage(id)
     getRollTypeFromCookie();
     getDiceTypeFromCookie();
     getRerollMaximumsFromCookie();
+    getDiceCountFromCookie();
     toggleRollTypeDisplay();
 
     setupDiceDropDowns();
@@ -540,10 +541,16 @@ function updatePlayerToPost()
     });
 }
 
+function ddlDiceCount_Change()
+{
+    setDiceCountCookie();
+}
+
 function ddlRollType_Change()
 {
     toggleRollTypeDisplay();
     setRollTypeCookie();
+    getDiceCountFromCookie();
 }
 
 function ddlDieSize_Change()
@@ -558,20 +565,49 @@ function chkReRolls_Click()
 
 function toggleRollTypeDisplay()
 {
-    var dicePool = $("#ddlRollType").val() == "1";
+    var type = $("#ddlRollType").val();
 
-    if (dicePool)
+    if (type == "1")
     {
         $("#ddlDieSize").attr("style", "display:none;");
         $("#spanD10").attr("style", "display:block;");
+        $("#spanD6").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:none;");
         $("#divRollTarget").attr("style", "display:block;");
+        $("#ddlRollTarget10").attr("style", "display:block;");
+        $("#ddlRollTarget6").attr("style", "display:none;");
+        $("#divReRolls").attr("style", "display:block;");
     }
-    else
+    if (type == "2")
     {
         $("#ddlDieSize").attr("style", "display:block;");
         $("#spanD10").attr("style", "display:none;");
+        $("#spanD6").attr("style", "display:none;");
         $("#divRollTarget").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:none;");
+        $("#divReRolls").attr("style", "display:block;");
     }
+    if (type == "3")
+    {
+        $("#ddlDieSize").attr("style", "display:none;");
+        $("#spanD10").attr("style", "display:none;");
+        $("#spanD6").attr("style", "display:block;");
+        $("#divRollTarget").attr("style", "display:block;");
+        $("#ddlRollTarget6").attr("style", "display:block;");
+        $("#ddlRollTarget10").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:none;");
+        $("#divReRolls").attr("style", "display:block;");
+    }
+    if (type == "4")
+    {
+        $("#ddlDieSize").attr("style", "display:none;");
+        $("#spanD10").attr("style", "display:none;");
+        $("#spanD6").attr("style", "display:none;");
+        $("#divRollTarget").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:block;");
+        $("#divReRolls").attr("style", "display:none;");
+    }
+
 }
 
 function btnRollDice_Click()
@@ -592,16 +628,29 @@ function postDiceRoll()
     var rollType = $("#ddlRollType").val();
     var diceCount = $("#ddlDiceCount").val();
     var dieSize = 10;
-    var rollTarget = 0;
+    var rollTarget = 1;
     if (rollType == "2")
     {
         dieSize = $("#ddlDieSize").val();
-    }
-    else
+    }    
+    if (rollType == "1")
     {
-        rollTarget = $("#ddlRollTarget").val();
+        rollTarget = $("#ddlRollTarget10").val();
+        dieSize = 10;
+    }
+    if (rollType == "3")
+    {
+        rollTarget = $("#ddlRollTarget6").val();
+        dieSize = 6;
     }
     var reRollMaximums = $("#chkReRolls").is(':checked');
+    if (rollType == "4")
+    {
+        dieSize = 3;
+        reRollMaximums = false;
+    }
+
+    
 
     var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ', "lastPostId": ' + lastPostId + ', "dieSize": ' + dieSize + ', "dieCount": ' + diceCount + ', "rollType": ' + rollType + ', "rollTarget": ' + rollTarget + ', "reRollMaximum": ' + reRollMaximums + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
 
@@ -1231,6 +1280,23 @@ function getDiceTypeFromCookie()
     }
 }
 
+function getDiceCountFromCookie()
+{
+    var rollType = $("#ddlRollType").val();
+    var diceCount = getCookie("rollType" + rollType + "Count");
+    if (diceCount.length > 0) 
+    {
+        $("#ddlDiceCount").val(diceCount);
+    }
+    else
+    {
+        if (rollType == "4")
+        {
+            $("#ddlDiceCount").val("4");
+        }
+    }
+}
+
 function getRerollMaximumsFromCookie()
 {
     var rerollMaximums = getCookie("rerollMaximums");
@@ -1248,6 +1314,13 @@ function setRollTypeCookie()
 {
     var rollType = $("#ddlRollType").val();
     document.cookie = "rollType=" + rollType + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
+}
+
+function setDiceCountCookie()
+{
+    var rollType = $("#ddlRollType").val();
+    var diceCount = $("#ddlDiceCount").val();
+    document.cookie = "rollType" + rollType + "Count=" + diceCount + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
 }
 
 function setDiceTypeCookie()

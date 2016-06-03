@@ -10,8 +10,10 @@
 
 	public enum RollType
 	{
-		DicePool = 1,
-		Totalled = 2
+		DicePool10 = 1,
+		Totalled = 2,
+        DicePool6 = 3,
+        FUDGE = 4
 	}
 
 	public enum PostResult

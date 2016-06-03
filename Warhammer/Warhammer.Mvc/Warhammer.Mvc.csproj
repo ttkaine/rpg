@@ -291,6 +291,9 @@
     <Content Include="Content\Images\RoleplayForum\dice_control.jpg" />
     <Content Include="Content\Images\RoleplayForum\dice_roll.jpg" />
     <Content Include="Content\Images\RoleplayForum\display_lock_tile.jpg" />
+    <Content Include="Content\Images\RoleplayForum\fudge-plus.png" />
+    <Content Include="Content\Images\RoleplayForum\fudge-minus.png" />
+    <Content Include="Content\Images\RoleplayForum\fudge-blank.png" />
     <Content Include="Content\Images\RoleplayForum\gm.jpg" />
     <Content Include="Content\Images\RoleplayForum\main_loading.gif" />
     <Content Include="Content\Images\RoleplayForum\notify-icon.jpg" />

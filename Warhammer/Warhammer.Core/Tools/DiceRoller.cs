@@ -28,7 +28,19 @@ namespace Warhammer.Core.Tools
 			}
 		}
 
-		public List<int> RollDice(int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximums)
+        public List<int> RollFudgeDice(int dieCount)
+        {
+            List<int> rolls = new List<int>();
+            for (int i = 0; i < dieCount; i++)
+            {
+                int roll = RandomNumberGenerator.Next(3) -1;
+                rolls.Add(roll);
+            }
+
+            return rolls;
+        }
+
+        public List<int> RollDice(int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximums)
 		{
 			List<int> rolls = new List<int>();
 			for (int i = 0; i < dieCount; i++)
