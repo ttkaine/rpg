@@ -178,7 +178,7 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                return (int)(Math.Floor(DescriptorNames.Count * 2.5) - 4);
+                return (DescriptorNames.Count * 2) - 4;
             }
         }
 
