@@ -1,7 +1,7 @@
 ﻿
 var lastPostId;
 var lastUpdateTime;
-var refreshInterval;
+//var refreshInterval;
 var selectedTab;
 var recipients;
 var sessionId;
@@ -37,7 +37,7 @@ function setupPage(id)
     setupCharacterDetails();    
 
     $("#divOverlay").attr("style", "display:none;");
-    refreshInterval = setInterval(pageRefresh, 3000);
+    //refreshInterval = setInterval(pageRefresh, 3000);
 
     $(window).focus(function()
     {
@@ -70,76 +70,80 @@ function setupDiceDropDowns()
 
 function selectedTabChanged(tab)
 {
-    selectedTab = tab;
+    if (selectedTab != tab)
+    {
+        selectedTab = tab;
 
-    if (selectedTab == 1)
-    {
-        $("#divInCharacterButton").attr("class", "ToggleButtonEnabled");
-        $("#divInCharacterButton").attr("checked", "checked");
-        $("#divPlayerPostControls").attr("style", "background-color:#fff;");
-        $("#divCharacterControls").attr("style", "background-color:#fff;");
-        $("#imgCharacter").attr("style", "display:block;");
-        $("#btnEditCharacter").attr("style", "display:block;");
-    }
-    else
-    {
-        $("#divInCharacterButton").attr("class", "ToggleButtonDisabled");
-        $("#divInCharacterButton").attr("checked", "unchecked");
-        $("#divCharacterControls").attr("style", "background-color:#eaea99;");
-        $("#imgCharacter").attr("style", "display:none;");
-        $("#btnEditCharacter").attr("style", "display:none;");
-    }
-
-    if (selectedTab == 2)
-    {
-        $("#divPlayerPostControls").attr("style", "background-color:#ffffaa;");
-        $("#divOutOfCharacterButton").attr("class", "ToggleButtonEnabled");
-        $("#divOutOfCharacterButton").attr("checked", "checked");
-    }
-    else
-    {
-        $("#divOutOfCharacterButton").attr("class", "ToggleButtonDisabled");
-        $("#divOutOfCharacterButton").attr("checked", "unchecked");
-    }
-
-    if (selectedTab == 3)
-    {
-        $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
-        $("#divDiceRollButton").attr("checked", "checked");
-        $("#divPlayerDiceControls").attr("style", "display:block;");
-        $(".PlayerTextPostControls").attr("style", "display:none;");
-    }
-    else
-    {
-        $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
-        $("#divDiceRollButton").attr("checked", "unchecked");
-        $("#divPlayerDiceControls").attr("style", "display:none;");
-        $(".PlayerTextPostControls").attr("style", "display:block;");
-    }
-
-    if (selectedTab == 1 || selectedTab == 3)
-    {
-        if ($("#ddlPostAs option").size() > 0)
+        if (selectedTab == 1)
         {
-            $("#ddlPostAs").attr("style", "display:block;");
-            $("#spanPostAs").html("Post As: ");
-            $("#btnPost").removeAttr("disabled");
+            $("#divInCharacterButton").attr("class", "ToggleButtonEnabled");
+            $("#divInCharacterButton").attr("checked", "checked");
+            $("#divPlayerPostControls").attr("style", "background-color:#fff;");
+            $("#divCharacterControls").attr("style", "background-color:#fff;");
+            $("#imgCharacter").attr("style", "display:block;");
+            $("#btnEditCharacter").attr("style", "display:block;");
+        }
+        else
+        {
+            $("#divInCharacterButton").attr("class", "ToggleButtonDisabled");
+            $("#divInCharacterButton").attr("checked", "unchecked");
+            $("#divCharacterControls").attr("style", "background-color:#eaea99;");
+            $("#imgCharacter").attr("style", "display:none;");
+            $("#btnEditCharacter").attr("style", "display:none;");
+        }
+
+        if (selectedTab == 2)
+        {
+            $("#divPlayerPostControls").attr("style", "background-color:#ffffaa;");
+            $("#divOutOfCharacterButton").attr("class", "ToggleButtonEnabled");
+            $("#divOutOfCharacterButton").attr("checked", "checked");
+        }
+        else
+        {
+            $("#divOutOfCharacterButton").attr("class", "ToggleButtonDisabled");
+            $("#divOutOfCharacterButton").attr("checked", "unchecked");
+        }
+
+        if (selectedTab == 3)
+        {
+            $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
+            $("#divDiceRollButton").attr("checked", "checked");
+            $("#divPlayerDiceControls").attr("style", "display:block;");
+            $(".PlayerTextPostControls").attr("style", "display:none;");
+
+            toggleRollTypeDisplay();
+            getDiceCountFromCookie();
+        }
+        else
+        {
+            $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
+            $("#divDiceRollButton").attr("checked", "unchecked");
+            $("#divPlayerDiceControls").attr("style", "display:none;");
+            $(".PlayerTextPostControls").attr("style", "display:block;");
+        }
+
+        if (selectedTab == 1 || selectedTab == 3)
+        {
+            if ($("#ddlPostAs option").size() > 0)
+            {
+                $("#ddlPostAs").attr("style", "display:block;");
+                $("#spanPostAs").html("Post As: ");
+                $("#btnPost").removeAttr("disabled");
+            }
+            else
+            {
+                $("#ddlPostAs").attr("style", "display:none;");
+                $("#spanPostAs").html("No characters available");
+                $("#btnPost").attr("disabled", "disabled");
+            }
         }
         else
         {
             $("#ddlPostAs").attr("style", "display:none;");
-            $("#spanPostAs").html("No characters available");
-            $("#btnPost").attr("disabled", "disabled");
+            $("#btnPost").removeAttr("disabled");
+            $("#spanPostAs").html("Post As:&nbsp;&nbsp;OOC");
         }
     }
-    else
-    {
-        $("#ddlPostAs").attr("style", "display:none;");
-        $("#btnPost").removeAttr("disabled");
-        $("#spanPostAs").html("Post As:&nbsp;&nbsp;OOC");
-    }
-
-
 }
 
 function toggleOoc(doSlide)
@@ -434,7 +438,7 @@ function txtPost_keyPress(event)
 
 function postSubmitted(text)
 {
-    clearInterval(refreshInterval);
+    //clearInterval(refreshInterval);
 
     var cleanedText = text.replace(/"/g, '&quote;');
 
@@ -473,12 +477,12 @@ function postSubmitted(text)
             $("#playerToPost").html(jsonData.PlayerTurnMessage);
             isMyTurn = jsonData.IsCurrentPlayerTurn;
             updateCurrentPlayerTurn();
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to post at this time.");
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         }
     });
 
@@ -617,7 +621,7 @@ function btnRollDice_Click()
 
 function postDiceRoll()
 {
-    clearInterval(refreshInterval);
+    //clearInterval(refreshInterval);
 
     //var sessionId = queryString("id");
     var characterId = -1;
@@ -672,12 +676,12 @@ function postDiceRoll()
             $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to post at this time.");
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         }
     });
 
@@ -745,7 +749,7 @@ function makePostOoc(postId)
 
     if (result == true)
     {
-        clearInterval(refreshInterval);
+        //clearInterval(refreshInterval);
 
         //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
@@ -765,12 +769,12 @@ function makePostOoc(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert("Unable to set post OOC at this time.");
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             }
         });
     }
@@ -783,7 +787,7 @@ function deletePost(postId)
 
     if (result == true)
     {
-        clearInterval(refreshInterval);
+        //clearInterval(refreshInterval);
 
         //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
@@ -803,12 +807,12 @@ function deletePost(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert("Unable to delete post at this time.");
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             }
         });       
     }
@@ -837,7 +841,7 @@ function revertPost(postId)
 
     if (result == true)
     {
-        clearInterval(refreshInterval);
+        //clearInterval(refreshInterval);
 
         //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
@@ -857,12 +861,12 @@ function revertPost(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert("Unable to revert post at this time.");
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             }
         });          
     }
@@ -887,7 +891,7 @@ function btnEditPostSubmit_click(postId)
 
 function editedPostSubmitted(postId, text)
 {
-    clearInterval(refreshInterval);
+    //clearInterval(refreshInterval);
 
     var cleanedText = text.replace(/"/g, '&quote;');
 
@@ -909,12 +913,12 @@ function editedPostSubmitted(postId, text)
         {
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to edit post at this time.");
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
             $("#btnEditPostSubmit").prop("disabled", false);
         }
     });

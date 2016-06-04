@@ -277,22 +277,16 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 			html.Append("<div class=\"Post\"><div id=\"post");
 			html.Append(post.ID);
-			html.Append("\" class=\"GmInCharacterPost\"><div class=\"PostHeader\"><span class=\"PostNumber\">");
-			//{PostNumber}
+            html.Append("\" class=\"GmInCharacterPost");
+            if (post.CharacterName == "GM")
+            {
+                html.Append(" GmPost");
+            }
+            html.Append("\"><div class=\"PostHeader\"><span class=\"PostNumber\">");
 			html.Append("</span><span class=\"PostCharacter\">");
 			html.Append(post.CharacterName);
 			html.Append("</span>");
-			//if (post.CharacterId > 0)
-			//{
-			//	html.Append("<span class=\"ViewCharacterIcon\" onclick=\"viewCharacter(");
-			//	html.Append(post.CharacterId);
-			//	html.Append(", '");
-			//	html.Append(post.CharacterName);
-			//	html.Append("');\"></span>");
-			//}		
 			html.Append("<span class=\"PostPlayer\">");
-			//html.Append(post.PlayerName);
-			//html.Append(" (GM)");
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
 			if (post.CharacterName == "GM")
 			{
@@ -510,8 +504,8 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 		private string ApplyPostFormatting(string postContent)
 		{
-			Regex bold = new Regex(@"\[b\](.*)\[/b\]");
-			Regex italic = new Regex(@"\[i\](.*)\[/i\]");
+			Regex bold = new Regex(@"\[b\](.*?)\[/b\]");
+			Regex italic = new Regex(@"\[i\](.*?)\[/i\]");
 
 			MatchCollection boldMatches = bold.Matches(postContent);
 			foreach (Match match in boldMatches)

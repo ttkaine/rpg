@@ -18,6 +18,33 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/RoleplayCss/Roleplay.css")" />
 }
 
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(function () {
+            var rpHub = $.connection.roleplayHub;
+
+            rpHub.client.update = function ()
+            {
+                setTimeout(function ()
+                {
+                    pageRefresh();
+                }, 2000);
+            };
+
+            $.connection.hub.start().done(function ()
+            {
+            });
+        });
+        // This optional function html-encodes messages for display in the page.
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}
+
 <div id="roleplayContent">
     <div id="modalOverlay" class="ModalOverlay" style="display:none">
         <div class="ModalOverlayBackground"></div>
