@@ -80,7 +80,15 @@ namespace Warhammer.Mvc.HtmlBuilders
 				case (int)PostType.DiceRoll:
 					if (post is DiceRollPostViewModel)
 					{
-						html = GetHtmlForDiceRollPost((DiceRollPostViewModel)post);
+                        DiceRollPostViewModel roll = (DiceRollPostViewModel)post;
+                        if (roll.RollType == (int)RollType.FUDGE)
+                        {
+                            html = GetHtmlForFATEDiceRollPost(roll);
+                        }
+                        else
+                        {
+                            html = GetHtmlForDiceRollPost(roll);
+                        }
 					}
 					break;
 			}
@@ -269,22 +277,16 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 			html.Append("<div class=\"Post\"><div id=\"post");
 			html.Append(post.ID);
-			html.Append("\" class=\"GmInCharacterPost\"><div class=\"PostHeader\"><span class=\"PostNumber\">");
-			//{PostNumber}
+            html.Append("\" class=\"GmInCharacterPost");
+            if (post.CharacterName == "GM")
+            {
+                html.Append(" GmPost");
+            }
+            html.Append("\"><div class=\"PostHeader\"><span class=\"PostNumber\">");
 			html.Append("</span><span class=\"PostCharacter\">");
 			html.Append(post.CharacterName);
 			html.Append("</span>");
-			//if (post.CharacterId > 0)
-			//{
-			//	html.Append("<span class=\"ViewCharacterIcon\" onclick=\"viewCharacter(");
-			//	html.Append(post.CharacterId);
-			//	html.Append(", '");
-			//	html.Append(post.CharacterName);
-			//	html.Append("');\"></span>");
-			//}		
 			html.Append("<span class=\"PostPlayer\">");
-			//html.Append(post.PlayerName);
-			//html.Append(" (GM)");
 			html.Append("</span><div class=\"Clear\"></div></div><div class=\"PostInfo\"><span class=\"CharacterPicture\">");
 			if (post.CharacterName == "GM")
 			{
@@ -365,7 +367,59 @@ namespace Warhammer.Mvc.HtmlBuilders
 			return html.ToString();
 		}
 
-		private string GetHtmlForDiceRollPost(DiceRollPostViewModel post)
+        private string GetHtmlForFATEDiceRollPost(DiceRollPostViewModel post)
+        {
+            StringBuilder html = new StringBuilder();
+
+            html.Append("<div class=\"Post\"><div id=\"post");
+            html.Append(post.ID);
+            html.Append("\" class=\"DiceRollPost\"><div class=\"PostHeader\"><span class=\"PostPlayer\">");
+            html.Append(post.PlayerName);
+            if (post.IsPostedByGm)
+            {
+                html.Append(" (GM)");
+            }
+            html.Append("</span><span class=\"PostCharacter\">");
+            html.Append(post.CharacterName);
+            html.Append("</span><div class=\"Clear\"></div></div>");
+            html.Append("<div class=\"PostContent\"><div class=\"RollDescription\">");
+            for (int i = 0; i < post.RollValues.Count; i++)
+            {                
+                if (post.RollValues[i] < 0)
+                {
+                    html.Append("<div class=\"FudgeMinus\"></div>");
+                }
+                else if (post.RollValues[i] > 0)
+                {
+                    html.Append("<div class=\"FudgePlus\"></div>");
+                }
+                else
+                {
+                    html.Append("<div class=\"FudgeBlank\"></div>");
+                }
+            }
+            html.Append("</div><span class=\"RollResult\">");
+            int total = 0;
+            foreach (int roll in post.RollValues)
+            {
+                total += roll;
+            }
+            html.Append("Total: ");
+            if (total > 0)
+            {
+                html.Append("+");
+            }
+            html.Append(total);
+            html.Append("</span></div><div class=\"Clear\"></div></div>");
+            html.Append("<div id=\"coverpost");
+            html.Append(post.ID);
+            html.Append("\" class=\"PostCover\"></div>");
+            html.Append("</div>");
+
+            return html.ToString();
+        }
+
+        private string GetHtmlForDiceRollPost(DiceRollPostViewModel post)
 		{
 			StringBuilder html = new StringBuilder();
 
@@ -413,7 +467,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 				previousRollWasMax = (post.RollValues[i] == post.DieSize);
 			}
 			html.Append("</span><span class=\"RollResult\">");
-			if (post.RollType == (int)RollType.DicePool)
+			if (post.RollType == (int)RollType.DicePool6 || post.RollType == (int)RollType.DicePool10)
 			{
 				html.Append("Difficulty: ");
 				html.Append(post.RollTarget);
@@ -450,8 +504,8 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 		private string ApplyPostFormatting(string postContent)
 		{
-			Regex bold = new Regex(@"\[b\](.*)\[/b\]");
-			Regex italic = new Regex(@"\[i\](.*)\[/i\]");
+			Regex bold = new Regex(@"\[b\](.*?)\[/b\]");
+			Regex italic = new Regex(@"\[i\](.*?)\[/i\]");
 
 			MatchCollection boldMatches = bold.Matches(postContent);
 			foreach (Match match in boldMatches)

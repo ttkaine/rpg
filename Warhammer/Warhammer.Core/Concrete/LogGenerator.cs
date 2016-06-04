@@ -46,11 +46,18 @@ namespace Warhammer.Core.Concrete
 					{
 						output.AppendLine("GM:");
 					}
-					output.Append(post.DieCount);
-					output.Append("D");
-					output.Append(post.DieSize);
-					output.Append(" = ");
-					output.AppendLine(post.RollValues.Replace(",", ", "));					
+                    if (post.RollType == (int)RollType.FUDGE)
+                    {
+                        output.Append("FATE ROLL = ");
+                    }
+                    else
+                    {
+                        output.Append(post.DieCount);
+                        output.Append("D");
+                        output.Append(post.DieSize);
+                        output.Append(" = ");
+                    }
+                    output.AppendLine(post.RollValues.Replace(",", ", "));                    
 				}
 				else
 				{

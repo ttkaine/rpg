@@ -476,9 +476,14 @@ footer
 {
     width: calc(100% - 20px);
     padding: 8px 10px 4px 10px;
-    background-color: #990000;
+    background-color: #111;
     color: #fff;
     font-size: 18px;
+}
+
+.GmInCharacterPost.GmPost .PostHeader
+{
+    background-color: #990000;
 }
 
 .GmInCharacterPost .PostInfo
@@ -743,6 +748,30 @@ footer
     margin: 0;  
 }
 
+.FudgePlus, .FudgeMinus, .FudgeBlank
+{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: 0 5px 0 0;
+    padding: 0;
+}
+
+.FudgePlus
+{
+    background: url(/content/images/roleplayforum/fudge-plus.png) no-repeat scroll center center;
+} 
+
+.FudgeMinus
+{
+    background: url(/content/images/roleplayforum/fudge-minus.png) no-repeat scroll center center;
+} 
+
+.FudgeBlank
+{
+    background: url(/content/images/roleplayforum/fudge-blank.png) no-repeat scroll center center;
+}
+
 .DiceRollPost .RollResult
 {
     display: block;
@@ -794,7 +823,7 @@ footer
     margin: 7px 0 0 5px;
 }
 
-.D10Fixed
+.D10Fixed, .D6Fixed, .FudgeFixed, .Fudge4Fixed
 {
     margin: 0 0 0 5px;
 }

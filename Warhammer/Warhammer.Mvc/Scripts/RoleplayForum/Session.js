@@ -1,7 +1,7 @@
 ﻿
 var lastPostId;
 var lastUpdateTime;
-var refreshInterval;
+//var refreshInterval;
 var selectedTab;
 var recipients;
 var sessionId;
@@ -26,6 +26,7 @@ function setupPage(id)
     getRollTypeFromCookie();
     getDiceTypeFromCookie();
     getRerollMaximumsFromCookie();
+    getDiceCountFromCookie();
     toggleRollTypeDisplay();
 
     setupDiceDropDowns();
@@ -36,7 +37,7 @@ function setupPage(id)
     setupCharacterDetails();    
 
     $("#divOverlay").attr("style", "display:none;");
-    refreshInterval = setInterval(pageRefresh, 3000);
+    //refreshInterval = setInterval(pageRefresh, 3000);
 
     $(window).focus(function()
     {
@@ -69,76 +70,80 @@ function setupDiceDropDowns()
 
 function selectedTabChanged(tab)
 {
-    selectedTab = tab;
+    if (selectedTab != tab)
+    {
+        selectedTab = tab;
 
-    if (selectedTab == 1)
-    {
-        $("#divInCharacterButton").attr("class", "ToggleButtonEnabled");
-        $("#divInCharacterButton").attr("checked", "checked");
-        $("#divPlayerPostControls").attr("style", "background-color:#fff;");
-        $("#divCharacterControls").attr("style", "background-color:#fff;");
-        $("#imgCharacter").attr("style", "display:block;");
-        $("#btnEditCharacter").attr("style", "display:block;");
-    }
-    else
-    {
-        $("#divInCharacterButton").attr("class", "ToggleButtonDisabled");
-        $("#divInCharacterButton").attr("checked", "unchecked");
-        $("#divCharacterControls").attr("style", "background-color:#eaea99;");
-        $("#imgCharacter").attr("style", "display:none;");
-        $("#btnEditCharacter").attr("style", "display:none;");
-    }
-
-    if (selectedTab == 2)
-    {
-        $("#divPlayerPostControls").attr("style", "background-color:#ffffaa;");
-        $("#divOutOfCharacterButton").attr("class", "ToggleButtonEnabled");
-        $("#divOutOfCharacterButton").attr("checked", "checked");
-    }
-    else
-    {
-        $("#divOutOfCharacterButton").attr("class", "ToggleButtonDisabled");
-        $("#divOutOfCharacterButton").attr("checked", "unchecked");
-    }
-
-    if (selectedTab == 3)
-    {
-        $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
-        $("#divDiceRollButton").attr("checked", "checked");
-        $("#divPlayerDiceControls").attr("style", "display:block;");
-        $(".PlayerTextPostControls").attr("style", "display:none;");
-    }
-    else
-    {
-        $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
-        $("#divDiceRollButton").attr("checked", "unchecked");
-        $("#divPlayerDiceControls").attr("style", "display:none;");
-        $(".PlayerTextPostControls").attr("style", "display:block;");
-    }
-
-    if (selectedTab == 1 || selectedTab == 3)
-    {
-        if ($("#ddlPostAs option").size() > 0)
+        if (selectedTab == 1)
         {
-            $("#ddlPostAs").attr("style", "display:block;");
-            $("#spanPostAs").html("Post As: ");
-            $("#btnPost").removeAttr("disabled");
+            $("#divInCharacterButton").attr("class", "ToggleButtonEnabled");
+            $("#divInCharacterButton").attr("checked", "checked");
+            $("#divPlayerPostControls").attr("style", "background-color:#fff;");
+            $("#divCharacterControls").attr("style", "background-color:#fff;");
+            $("#imgCharacter").attr("style", "display:block;");
+            $("#btnEditCharacter").attr("style", "display:block;");
+        }
+        else
+        {
+            $("#divInCharacterButton").attr("class", "ToggleButtonDisabled");
+            $("#divInCharacterButton").attr("checked", "unchecked");
+            $("#divCharacterControls").attr("style", "background-color:#eaea99;");
+            $("#imgCharacter").attr("style", "display:none;");
+            $("#btnEditCharacter").attr("style", "display:none;");
+        }
+
+        if (selectedTab == 2)
+        {
+            $("#divPlayerPostControls").attr("style", "background-color:#ffffaa;");
+            $("#divOutOfCharacterButton").attr("class", "ToggleButtonEnabled");
+            $("#divOutOfCharacterButton").attr("checked", "checked");
+        }
+        else
+        {
+            $("#divOutOfCharacterButton").attr("class", "ToggleButtonDisabled");
+            $("#divOutOfCharacterButton").attr("checked", "unchecked");
+        }
+
+        if (selectedTab == 3)
+        {
+            $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
+            $("#divDiceRollButton").attr("checked", "checked");
+            $("#divPlayerDiceControls").attr("style", "display:block;");
+            $(".PlayerTextPostControls").attr("style", "display:none;");
+
+            toggleRollTypeDisplay();
+            getDiceCountFromCookie();
+        }
+        else
+        {
+            $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
+            $("#divDiceRollButton").attr("checked", "unchecked");
+            $("#divPlayerDiceControls").attr("style", "display:none;");
+            $(".PlayerTextPostControls").attr("style", "display:block;");
+        }
+
+        if (selectedTab == 1 || selectedTab == 3)
+        {
+            if ($("#ddlPostAs option").size() > 0)
+            {
+                $("#ddlPostAs").attr("style", "display:block;");
+                $("#spanPostAs").html("Post As: ");
+                $("#btnPost").removeAttr("disabled");
+            }
+            else
+            {
+                $("#ddlPostAs").attr("style", "display:none;");
+                $("#spanPostAs").html("No characters available");
+                $("#btnPost").attr("disabled", "disabled");
+            }
         }
         else
         {
             $("#ddlPostAs").attr("style", "display:none;");
-            $("#spanPostAs").html("No characters available");
-            $("#btnPost").attr("disabled", "disabled");
+            $("#btnPost").removeAttr("disabled");
+            $("#spanPostAs").html("Post As:&nbsp;&nbsp;OOC");
         }
     }
-    else
-    {
-        $("#ddlPostAs").attr("style", "display:none;");
-        $("#btnPost").removeAttr("disabled");
-        $("#spanPostAs").html("Post As:&nbsp;&nbsp;OOC");
-    }
-
-
 }
 
 function toggleOoc(doSlide)
@@ -433,7 +438,7 @@ function txtPost_keyPress(event)
 
 function postSubmitted(text)
 {
-    clearInterval(refreshInterval);
+    //clearInterval(refreshInterval);
 
     var cleanedText = text.replace(/"/g, '&quote;');
 
@@ -472,12 +477,13 @@ function postSubmitted(text)
             $("#playerToPost").html(jsonData.PlayerTurnMessage);
             isMyTurn = jsonData.IsCurrentPlayerTurn;
             updateCurrentPlayerTurn();
-            refreshInterval = setInterval(pageRefresh, 3000);
+            roleplaySessionUpdated();
+            //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to post at this time.");
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         }
     });
 
@@ -540,10 +546,16 @@ function updatePlayerToPost()
     });
 }
 
+function ddlDiceCount_Change()
+{
+    setDiceCountCookie();
+}
+
 function ddlRollType_Change()
 {
     toggleRollTypeDisplay();
     setRollTypeCookie();
+    getDiceCountFromCookie();
 }
 
 function ddlDieSize_Change()
@@ -558,20 +570,49 @@ function chkReRolls_Click()
 
 function toggleRollTypeDisplay()
 {
-    var dicePool = $("#ddlRollType").val() == "1";
+    var type = $("#ddlRollType").val();
 
-    if (dicePool)
+    if (type == "1")
     {
         $("#ddlDieSize").attr("style", "display:none;");
         $("#spanD10").attr("style", "display:block;");
+        $("#spanD6").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:none;");
         $("#divRollTarget").attr("style", "display:block;");
+        $("#ddlRollTarget10").attr("style", "display:block;");
+        $("#ddlRollTarget6").attr("style", "display:none;");
+        $("#divReRolls").attr("style", "display:block;");
     }
-    else
+    if (type == "2")
     {
         $("#ddlDieSize").attr("style", "display:block;");
         $("#spanD10").attr("style", "display:none;");
+        $("#spanD6").attr("style", "display:none;");
         $("#divRollTarget").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:none;");
+        $("#divReRolls").attr("style", "display:block;");
     }
+    if (type == "3")
+    {
+        $("#ddlDieSize").attr("style", "display:none;");
+        $("#spanD10").attr("style", "display:none;");
+        $("#spanD6").attr("style", "display:block;");
+        $("#divRollTarget").attr("style", "display:block;");
+        $("#ddlRollTarget6").attr("style", "display:block;");
+        $("#ddlRollTarget10").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:none;");
+        $("#divReRolls").attr("style", "display:block;");
+    }
+    if (type == "4")
+    {
+        $("#ddlDieSize").attr("style", "display:none;");
+        $("#spanD10").attr("style", "display:none;");
+        $("#spanD6").attr("style", "display:none;");
+        $("#divRollTarget").attr("style", "display:none;");
+        $("#spanFudge").attr("style", "display:block;");
+        $("#divReRolls").attr("style", "display:none;");
+    }
+
 }
 
 function btnRollDice_Click()
@@ -581,7 +622,7 @@ function btnRollDice_Click()
 
 function postDiceRoll()
 {
-    clearInterval(refreshInterval);
+    //clearInterval(refreshInterval);
 
     //var sessionId = queryString("id");
     var characterId = -1;
@@ -592,16 +633,29 @@ function postDiceRoll()
     var rollType = $("#ddlRollType").val();
     var diceCount = $("#ddlDiceCount").val();
     var dieSize = 10;
-    var rollTarget = 0;
+    var rollTarget = 1;
     if (rollType == "2")
     {
         dieSize = $("#ddlDieSize").val();
-    }
-    else
+    }    
+    if (rollType == "1")
     {
-        rollTarget = $("#ddlRollTarget").val();
+        rollTarget = $("#ddlRollTarget10").val();
+        dieSize = 10;
+    }
+    if (rollType == "3")
+    {
+        rollTarget = $("#ddlRollTarget6").val();
+        dieSize = 6;
     }
     var reRollMaximums = $("#chkReRolls").is(':checked');
+    if (rollType == "4")
+    {
+        dieSize = 3;
+        reRollMaximums = false;
+    }
+
+    
 
     var parameters = '{"sessionId": ' + sessionId + ', "characterId": ' + characterId + ', "lastPostId": ' + lastPostId + ', "dieSize": ' + dieSize + ', "dieCount": ' + diceCount + ', "rollType": ' + rollType + ', "rollTarget": ' + rollTarget + ', "reRollMaximum": ' + reRollMaximums + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
 
@@ -623,12 +677,13 @@ function postDiceRoll()
             $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
-            refreshInterval = setInterval(pageRefresh, 3000);
+            roleplaySessionUpdated();
+            //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to post at this time.");
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
         }
     });
 
@@ -696,7 +751,7 @@ function makePostOoc(postId)
 
     if (result == true)
     {
-        clearInterval(refreshInterval);
+        //clearInterval(refreshInterval);
 
         //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
@@ -716,12 +771,13 @@ function makePostOoc(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
-                refreshInterval = setInterval(pageRefresh, 3000);
+                roleplaySessionUpdated();
+                //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert("Unable to set post OOC at this time.");
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             }
         });
     }
@@ -734,7 +790,7 @@ function deletePost(postId)
 
     if (result == true)
     {
-        clearInterval(refreshInterval);
+        //clearInterval(refreshInterval);
 
         //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
@@ -754,12 +810,13 @@ function deletePost(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
-                refreshInterval = setInterval(pageRefresh, 3000);
+                roleplaySessionUpdated();
+                //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert("Unable to delete post at this time.");
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             }
         });       
     }
@@ -788,7 +845,7 @@ function revertPost(postId)
 
     if (result == true)
     {
-        clearInterval(refreshInterval);
+        //clearInterval(refreshInterval);
 
         //var sessionId = queryString("id");
         var parameters = '{"sessionId": ' + sessionId + ', "postId": ' + postId + ', "lastPostId": ' + lastPostId + ', "lastUpdateTime": "' + lastUpdateTime + '" }';
@@ -808,12 +865,13 @@ function revertPost(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
-                refreshInterval = setInterval(pageRefresh, 3000);
+                roleplaySessionUpdated();
+                //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert("Unable to revert post at this time.");
-                refreshInterval = setInterval(pageRefresh, 3000);
+                //refreshInterval = setInterval(pageRefresh, 3000);
             }
         });          
     }
@@ -838,7 +896,7 @@ function btnEditPostSubmit_click(postId)
 
 function editedPostSubmitted(postId, text)
 {
-    clearInterval(refreshInterval);
+    //clearInterval(refreshInterval);
 
     var cleanedText = text.replace(/"/g, '&quote;');
 
@@ -860,12 +918,13 @@ function editedPostSubmitted(postId, text)
         {
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
-            refreshInterval = setInterval(pageRefresh, 3000);
+            roleplaySessionUpdated();
+            //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to edit post at this time.");
-            refreshInterval = setInterval(pageRefresh, 3000);
+            //refreshInterval = setInterval(pageRefresh, 3000);
             $("#btnEditPostSubmit").prop("disabled", false);
         }
     });
@@ -1231,6 +1290,23 @@ function getDiceTypeFromCookie()
     }
 }
 
+function getDiceCountFromCookie()
+{
+    var rollType = $("#ddlRollType").val();
+    var diceCount = getCookie("rollType" + rollType + "Count");
+    if (diceCount.length > 0) 
+    {
+        $("#ddlDiceCount").val(diceCount);
+    }
+    else
+    {
+        if (rollType == "4")
+        {
+            $("#ddlDiceCount").val("4");
+        }
+    }
+}
+
 function getRerollMaximumsFromCookie()
 {
     var rerollMaximums = getCookie("rerollMaximums");
@@ -1248,6 +1324,13 @@ function setRollTypeCookie()
 {
     var rollType = $("#ddlRollType").val();
     document.cookie = "rollType=" + rollType + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
+}
+
+function setDiceCountCookie()
+{
+    var rollType = $("#ddlRollType").val();
+    var diceCount = $("#ddlDiceCount").val();
+    document.cookie = "rollType" + rollType + "Count=" + diceCount + "; expires=Fri, 1 Jan 2100 12:00:00 UTC;";
 }
 
 function setDiceTypeCookie()

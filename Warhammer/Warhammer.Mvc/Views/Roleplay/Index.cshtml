@@ -18,6 +18,36 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/RoleplayCss/Roleplay.css")" />
 }
 
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        var rpHub;
+        var connected = false;
+        $(function () {
+            rpHub = $.connection.roleplayHub;
+
+            rpHub.client.updateSession = function ()
+            {
+                pageRefresh();
+            };
+
+            $.connection.hub.start().done(function ()
+            {
+                connected = true;
+            });
+        });
+
+        function roleplaySessionUpdated()
+        {
+            if (connected)
+            {
+                rpHub.server.sessionUpdated();
+            }            
+        }
+    </script>
+}
+
 <div id="roleplayContent">
     <div id="modalOverlay" class="ModalOverlay" style="display:none">
         <div class="ModalOverlayBackground"></div>
@@ -179,12 +209,14 @@
 						Roll Type: 
 						<span class="DiceControlSpan">
 							<select id="ddlRollType" class="DiceControlDropDown" onchange="ddlRollType_Change();">
-								<option value="1">D10 Dice Pool</option>
+                                <option value="3">D6 Dice Pool</option>
+                                <option value="1">D10 Dice Pool</option>
 								<option value="2" selected="selected">D* Totalled</option>
+                                <option value="4">FUDGE Dice</option>
 							</select>
 						</span>
 					</div><!-- DiceControlsRow -->
-					<div class="DiceControlsRow">
+					<div id="divReRolls" class="DiceControlsRow">
 						Re-roll Maximums: 
 						<span class="DiceControlSpan">
 							<input id="chkReRolls" class="DiceControlCheckBox" type="checkbox" onclick="chkReRolls_Click();" />
@@ -193,7 +225,7 @@
 					<div class="DiceControlsRow">
 						Dice Count: 
 						<span class="DiceControlSpan">
-							<select id="ddlDiceCount" class="DiceControlDropDown">
+							<select id="ddlDiceCount" class="DiceControlDropDown" onchange="ddlDiceCount_Change();">
 							</select>
 						</span>                    
 					</div><!-- DiceControlsRow -->
@@ -209,13 +241,15 @@
 								<option value="20">D20</option>
 								<option value="100" selected="selected">D100</option>
 							</select>
+                            <span id="spanFudge" class="FudgeFixed" style="display:none;">FUDGE</span>
 							<span id="spanD10" class="D10Fixed" style="display:none;">D10</span>
+                            <span id="spanD6" class="D6Fixed" style="display:none;">D6</span>
 						</span>
 					</div><!-- DiceControlsRow -->
 					<div id="divRollTarget" class="DiceControlsRow" style="display:none;">
 						Success Target: 
 						<span class="DiceControlSpan">
-							<select id="ddlRollTarget" class="DiceControlDropDown">
+							<select id="ddlRollTarget10" class="DiceControlDropDown">
 								<option value="2">2</option>
 								<option value="3">3</option>
 								<option value="4">4</option>
@@ -226,6 +260,13 @@
 								<option value="9">9</option>
 								<option value="10">10</option>
 							</select>
+                            <select id="ddlRollTarget6" class="DiceControlDropDown" style="display:none;">
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5" selected="selected">5</option>
+                                <option value="6">6</option>
+                            </select>
 						</span>
 					</div><!-- DiceControlsRow -->					                  
 					<div class="DiceRollButtonContainer">

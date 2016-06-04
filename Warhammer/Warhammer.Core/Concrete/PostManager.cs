@@ -153,24 +153,32 @@ namespace Warhammer.Core.Concrete
 			{
 				return PostResult.SessionClosed;
 			}
-			if (dieSize != 4 && dieSize != 6 && dieSize != 8 && dieSize != 10 && dieSize != 12 && dieSize != 20 && dieSize != 100)
+            if (rollType < 1 || rollType > 4)
+            {
+                return PostResult.InvalidDiceRoll;
+            }
+            if (rollType != (int)RollType.FUDGE && dieSize != 4 && dieSize != 6 && dieSize != 8 && dieSize != 10 && dieSize != 12 && dieSize != 20 && dieSize != 100)
 			{
 				return PostResult.InvalidDiceRoll;
 			}
-			if (rollType < 1 || rollType > 2)
+            if (rollType == (int)RollType.FUDGE && dieSize != 3)
+            {
+                return PostResult.InvalidDiceRoll;
+            }
+			if (rollType == (int)RollType.DicePool10 && (dieSize != 10 || rollTarget < 2 || rollTarget > 10))
 			{
 				return PostResult.InvalidDiceRoll;
 			}
-			if (rollType == (int)RollType.DicePool && (dieSize != 10 || rollTarget < 2 || rollTarget > 10))
-			{
-				return PostResult.InvalidDiceRoll;
-			}
-			if (dieCount < 1 || dieCount > 30)
+            if (rollType == (int)RollType.DicePool6 && (dieSize != 6 || rollTarget < 2 || rollTarget > 6))
+            {
+                return PostResult.InvalidDiceRoll;
+            }
+            if (dieCount < 1 || dieCount > 30)
 			{
 				return PostResult.InvalidDiceRoll;
 			}
 
-			List<int> rolls = DiceRoller.RollDice(dieSize, dieCount, rollType, rollTarget, reRollMaximums);
+			List<int> rolls = (rollType == (int)RollType.FUDGE) ? DiceRoller.RollFudgeDice(dieCount) : DiceRoller.RollDice(dieSize, dieCount, rollType, rollTarget, reRollMaximums);
 			StringBuilder rollValues = new StringBuilder();
 			foreach (int roll in rolls)
 			{
