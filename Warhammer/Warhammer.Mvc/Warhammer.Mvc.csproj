@@ -443,6 +443,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
+    <None Include="Properties\PublishProfiles\CI01.pubxml" />
     <None Include="Properties\PublishProfiles\FATE_FIILE.pubxml" />
     <None Include="Properties\PublishProfiles\Warhammer_Federer_File.pubxml" />
     <None Include="Properties\PublishProfiles\WARHAMMER_MURRAY_FILE.pubxml" />
