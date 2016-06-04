@@ -4,6 +4,33 @@
     ViewBag.Title = @Model.SiteName + "- Home Page";
 }
 
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        var rpHub;
+        var connected = false;
+        $(function () {
+            rpHub = $.connection.roleplayHub;
+
+            rpHub.client.updateTextSessionsOnHomePage = function ()
+            {
+                updateTextSessions();
+            };
+
+            $.connection.hub.start().done(function ()
+            {
+                connected = true;
+            });
+        });
+
+        function updateTextSessions()
+        {
+            // Text session status updates here
+        }
+    </script>
+}
+
 <div id="homepage" class="content-wrapper">
 
     <div class="banner-content">

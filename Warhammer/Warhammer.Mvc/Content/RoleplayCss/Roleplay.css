@@ -476,9 +476,14 @@ footer
 {
     width: calc(100% - 20px);
     padding: 8px 10px 4px 10px;
-    background-color: #990000;
+    background-color: #111;
     color: #fff;
     font-size: 18px;
+}
+
+.GmInCharacterPost.GmPost .PostHeader
+{
+    background-color: #990000;
 }
 
 .GmInCharacterPost .PostInfo

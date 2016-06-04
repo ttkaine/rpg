@@ -62,6 +62,8 @@ namespace Warhammer.Mvc
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+
+            app.MapSignalR();
         }
     }
 }
