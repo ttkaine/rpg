@@ -23,7 +23,7 @@ namespace Warhammer.Mvc.Controllers
 	//[Authorize]
     public class RoleplayController : BaseController
     {
-		public IModelFactory ModelFactory { get; set; }
+		public new IModelFactory ModelFactory { get; set; }
 		public IPostManager PostManager { get; set; }
 		public ILogGenerator LogGenerator { get; set; }
 		//public ICharacterManager CharacterManager { get; set; }
@@ -227,7 +227,7 @@ namespace Warhammer.Mvc.Controllers
 						PostManager.SetTurnOverForUser(sessionId);
 					}
 				}
-                CallSignalRUpdate();
+                //CallSignalRUpdate();
 
 				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 
@@ -301,7 +301,7 @@ namespace Warhammer.Mvc.Controllers
 
 				PostResult result = PostManager.CreateDiceRollPostForUser(sessionId, characterId, dieSize, dieCount, rollType, rollTarget, reRollMaximum, true);
 
-                CallSignalRUpdate();
+                //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 
 				if (result == PostResult.Success)
@@ -454,7 +454,7 @@ namespace Warhammer.Mvc.Controllers
 			if (DataProvider.IsLoggedIn())
 			{
 				bool deleted = PostManager.DeletePostForUser(postId);
-                CallSignalRUpdate();
+                //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 				if (!deleted)
 				{
@@ -490,7 +490,7 @@ namespace Warhammer.Mvc.Controllers
 			if (DataProvider.IsLoggedIn())
 			{
 				bool markedOoc = PostManager.MarkPostOoc(postId);
-                CallSignalRUpdate();
+                //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 				if (!markedOoc)
 				{
@@ -530,7 +530,7 @@ namespace Warhammer.Mvc.Controllers
 				text = text.Replace("&quote;", "\"");
 
 				PostResult result = PostManager.EditTextPostForUser(postId, text);
-                CallSignalRUpdate();
+                //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 
 				if (result == PostResult.Success)
@@ -600,7 +600,7 @@ namespace Warhammer.Mvc.Controllers
 			if (DataProvider.IsLoggedIn())
 			{
 				bool reverted = PostManager.RevertPostForUser(postId);
-                CallSignalRUpdate();
+                //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
 				if (!reverted)
 				{
@@ -787,10 +787,10 @@ namespace Warhammer.Mvc.Controllers
 		    return RedirectToAction("Index", "Home");
 	    }
 
-        public void CallSignalRUpdate()
-        {
-            var context = GlobalHost.ConnectionManager.GetHubContext<RoleplayHub>();
-            context.Clients.All.update();
-        }
-	}	
+        //public void CallSignalRUpdate()
+        //{
+        //    var context = GlobalHost.ConnectionManager.GetHubContext<RoleplayHub>();
+        //    context.Clients.All.update();
+        //}
+    }	
 }

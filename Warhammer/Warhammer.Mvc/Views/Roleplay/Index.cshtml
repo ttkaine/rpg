@@ -22,25 +22,28 @@
     <script type="text/javascript" src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script type="text/javascript" src="~/signalr/hubs"></script>
     <script type="text/javascript">
+        var rpHub;
+        var connected = false;
         $(function () {
-            var rpHub = $.connection.roleplayHub;
+            rpHub = $.connection.roleplayHub;
 
-            rpHub.client.update = function ()
+            rpHub.client.updateSession = function ()
             {
-                setTimeout(function ()
-                {
-                    pageRefresh();
-                }, 2000);
+                pageRefresh();
             };
 
             $.connection.hub.start().done(function ()
             {
+                connected = true;
             });
         });
-        // This optional function html-encodes messages for display in the page.
-        function htmlEncode(value) {
-            var encodedValue = $('<div />').text(value).html();
-            return encodedValue;
+
+        function roleplaySessionUpdated()
+        {
+            if (connected)
+            {
+                rpHub.server.sessionUpdated();
+            }            
         }
     </script>
 }

@@ -477,6 +477,7 @@ function postSubmitted(text)
             $("#playerToPost").html(jsonData.PlayerTurnMessage);
             isMyTurn = jsonData.IsCurrentPlayerTurn;
             updateCurrentPlayerTurn();
+            roleplaySessionUpdated();
             //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -676,6 +677,7 @@ function postDiceRoll()
             $("#chkDeviceToggle").prop("checked", false);
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
+            roleplaySessionUpdated();
             //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -769,6 +771,7 @@ function makePostOoc(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
+                roleplaySessionUpdated();
                 //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -807,6 +810,7 @@ function deletePost(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
+                roleplaySessionUpdated();
                 //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -861,6 +865,7 @@ function revertPost(postId)
             {
                 var jsonData = eval(data)[0];
                 handleNewPosts(jsonData, scrollToEnd);
+                roleplaySessionUpdated();
                 //refreshInterval = setInterval(pageRefresh, 3000);
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -913,6 +918,7 @@ function editedPostSubmitted(postId, text)
         {
             var jsonData = eval(data)[0];
             handleNewPosts(jsonData, scrollToEnd);
+            roleplaySessionUpdated();
             //refreshInterval = setInterval(pageRefresh, 3000);
         },
         error: function (jqXHR, textStatus, errorThrown)

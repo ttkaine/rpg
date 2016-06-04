@@ -8,9 +8,10 @@ namespace Warhammer.Mvc.Concrete
 {
     public class RoleplayHub : Hub
     {
-        public void Update()
+        public void SessionUpdated()
         {
-            Clients.All.update();
+            Clients.AllExcept(Context.ConnectionId).updateSession();
+            Clients.All.updateTextSessionsOnHomePage();
         }
     }
 }
