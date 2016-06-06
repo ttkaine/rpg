@@ -2,9 +2,11 @@
 
 @if (Model.Enabled)
 {
-    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")"><span class="label label-pill label-success">@Model.Name</span></td></tr>
+    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")">
+            <h4><span class="label label-pill label-success">@Model.Name</span></h4>
+    </td></tr>
 }
 else
 {
-    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")"><span class="label label-pill label-info"></span></td></tr>
+    @*<tr><td class="@(Model.Enabled ? "" : "hiddenStat")"></td></tr>*@
 }

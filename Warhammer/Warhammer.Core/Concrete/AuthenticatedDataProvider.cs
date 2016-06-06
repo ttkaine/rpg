@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -1016,6 +1017,51 @@ namespace Warhammer.Core.Concrete
         {
             return _repository.ScoreHistories().Where(s => s.PersonId == id).Where(a => a.DateTime == DateTime.Today).OrderBy(s => s.ScoreTypeId).ToList();
 
+        }
+
+        public void SetDefaultHitPoints(int id)
+        {
+            Person person = GetPerson(id);
+            if (person != null)
+            {
+                if (!person.SimpleHitPoints.Any(s => s.Purchased.HasValue))
+                {
+                    BuyHitPointSlot(id, SimpleHitPointLevel.Slight, SimpleHitPointType.Harm,free: true);
+                    BuyHitPointSlot(id, SimpleHitPointLevel.Significant, SimpleHitPointType.Harm,free: true);
+                    BuyHitPointSlot(id, SimpleHitPointLevel.Slight, SimpleHitPointType.Wear, free: true);
+                    BuyHitPointSlot(id, SimpleHitPointLevel.Significant, SimpleHitPointType.Wear, free: true);
+                }
+            }
+        }
+
+        public void BuyHitPointSlot(int id, SimpleHitPointLevel level, SimpleHitPointType type, bool free = false)
+        {
+            Person person = GetPerson(id);
+            if (person != null)
+            {
+                if (free || person.CanBuyHitSlot(level, type))
+                {
+                    if (!free)
+                    {
+                        int cost = person.HitSlotCost(level, type);
+                        person.CurrentXp = person.CurrentXp - cost;
+                        person.XpSpent = person.XpSpent + cost;
+                    }
+
+                    SimpleHitPoint hitPoint =
+                        person.SimpleHitPoints.FirstOrDefault(
+                            p => p.SimpleHitPointLevel == level && p.SimpleHitPointType == type);
+                    if (hitPoint == null)
+                    {
+                        hitPoint = new SimpleHitPoint { SimpleHitPointLevel = level, SimpleHitPointType = type };
+                        person.SimpleHitPoints.Add(hitPoint);
+                    }
+
+                    hitPoint.Purchased = DateTime.Now;
+
+                    Save(person);
+                }
+            }
         }
 
         public void RemoveAward(int personId, int awardId)

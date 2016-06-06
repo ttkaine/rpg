@@ -1,9 +1,9 @@
 ﻿@model Warhammer.Mvc.Models.SimpleHitPointsViewModel
 
 
-@if (Model.HarmTrack.Any(h => h.Enabled) || Model.WearTrack.Any(h => h.Enabled))
+@if ((Model.HarmTrack.Any(h => h.Enabled) || Model.WearTrack.Any(h => h.Enabled)))
 {
-    <div class="content-block" id="HitPoints">
+    <div class="alert alert-success" id="HitPoints">
         <div class="hitpoint-track wear-track">
             <h4>Wear</h4>
             <table class="table table-striped">
@@ -31,6 +31,20 @@
                 }
             </table>
         </div>
-
+        <div class="clearfix"></div>
     </div>
+}
+else
+{
+    if (ViewBag.EditMode && Model.CanEdit)
+    {
+        <div class="alert alert-success" id="HitPoints">
+            <h3>Hit Points Not Set Up</h3>
+            @using (Ajax.BeginForm("SetupHitPoints", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+            {
+                <input type="hidden" name="id" value="@Model.PersonId"/>
+                <input type="submit" class="btn btn-block btn-info"  value="Set Default Hit Points"/>
+            }
+        </div>
+     }
 }

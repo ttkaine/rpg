@@ -101,6 +101,11 @@ namespace Warhammer.Mvc.Controllers
                         };
                     DataProvider.SetStats(postedStats.PersonId, postedStats.Stats, postedStats.AddedRole, descriptors);
 
+                    if (DataProvider.SiteHasFeature(Feature.SimpleHitPoints))
+                    {
+                        DataProvider.SetDefaultHitPoints(postedStats.PersonId);
+                    }
+
                     var model = GetCleanModel(postedStats.PersonId);
                     return PartialView("ViewStats", model);
                 }
@@ -125,9 +130,12 @@ namespace Warhammer.Mvc.Controllers
 
         private SimpleHitPointsViewModel MakeSimpleHitPointsViewModel(Person person)
         {
+
             bool userCanBuy = person.PlayerId == CurrentPlayer.Id || !person.PlayerId.HasValue && CurrentPlayer.IsGm;
 
-            SimpleHitPointsViewModel model = new SimpleHitPointsViewModel();
+            int baseCost = person.SimpleHitPoints.Count(h => h.Purchased.HasValue);
+
+            SimpleHitPointsViewModel model = new SimpleHitPointsViewModel { CanEdit = userCanBuy, PersonId = person.Id };
             List<int> allLevels = SimpleHitPointLevel.Trivial.Numbers().OrderBy(i => i).ToList();
 
             model.WearTrack = new List<HitPointViewModel>();
@@ -137,13 +145,19 @@ namespace Warhammer.Mvc.Controllers
                 SimpleHitPoint hitPoint =
                     person.SimpleHitPoints.FirstOrDefault(
                         s => s.HitPointLevelId == level && s.HitPointTypeId == (int) SimpleHitPointType.Wear);
+            
+                bool canBuy = person.CanBuyHitSlot((SimpleHitPointLevel)level, SimpleHitPointType.Wear) && userCanBuy;
+                int cost = person.HitSlotCost((SimpleHitPointLevel)level, SimpleHitPointType.Wear);
 
                 if (hitPoint != null)
                 {
                     model.WearTrack.Add(new HitPointViewModel
                     {
-                        CanBuy = !hitPoint.Purchased.HasValue && person.CurrentXp >= level && userCanBuy,
-                        CostToBuy = level,
+                        PersonId = person.Id,
+                        Type = (int)SimpleHitPointType.Wear,
+                        Level = level,
+                        CanBuy = canBuy,
+                        CostToBuy =  cost,
                         Enabled = hitPoint.Purchased.HasValue,
                         Name = hitPoint.LongDisplayValue
                     });
@@ -158,8 +172,11 @@ namespace Warhammer.Mvc.Controllers
 
                     model.WearTrack.Add(new HitPointViewModel
                     {
-                        CanBuy = person.CurrentXp >= level && userCanBuy,
-                        CostToBuy = level,
+                        PersonId = person.Id,
+                        Type = (int)SimpleHitPointType.Wear,
+                        Level = level,
+                        CanBuy = canBuy,
+                        CostToBuy = cost,
                         Enabled = false,
                         Name = temp.LongDisplayValue
                     });
@@ -175,12 +192,18 @@ namespace Warhammer.Mvc.Controllers
                     person.SimpleHitPoints.FirstOrDefault(
                         s => s.HitPointLevelId == level && s.HitPointTypeId == (int)SimpleHitPointType.Harm);
 
+                bool canBuy = person.CanBuyHitSlot((SimpleHitPointLevel) level, SimpleHitPointType.Harm) && userCanBuy;
+                int cost = person.HitSlotCost((SimpleHitPointLevel) level, SimpleHitPointType.Harm);
+
                 if (hitPoint != null)
                 {
                     model.HarmTrack.Add(new HitPointViewModel
                     {
-                        CanBuy = !hitPoint.Purchased.HasValue && person.CurrentXp >= level && userCanBuy,
-                        CostToBuy = level,
+                        PersonId = person.Id,
+                        Type = (int)SimpleHitPointType.Harm,
+                        Level = level,
+                        CanBuy = canBuy,
+                        CostToBuy = cost,
                         Enabled = hitPoint.Purchased.HasValue,
                         Name = hitPoint.LongDisplayValue
                     });
@@ -195,8 +218,11 @@ namespace Warhammer.Mvc.Controllers
 
                     model.HarmTrack.Add(new HitPointViewModel
                     {
-                        CanBuy = person.CurrentXp >= level && userCanBuy,
-                        CostToBuy = level,
+                        PersonId = person.Id,
+                        Type = (int)SimpleHitPointType.Harm,
+                        Level = level,
+                        CanBuy = canBuy,
+                        CostToBuy = cost,
                         Enabled = false,
                         Name = temp.LongDisplayValue
                     });
@@ -505,6 +531,33 @@ namespace Warhammer.Mvc.Controllers
             }
 
             return Color.FromArgb(150, baseColor);
+        }
+
+        [HttpPost]
+        public ActionResult SetupHitPoints(int id)
+        {
+            Person person = DataProvider.GetPerson(id);
+            if (person != null)
+            {
+                DataProvider.SetDefaultHitPoints(id);
+
+                var model = GetCleanModel(id);
+                return PartialView("ViewStats", model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult BuyHitPointSlot(int id, int level, int type)
+        {
+            Person person = DataProvider.GetPerson(id);
+            if (person != null)
+            {
+                DataProvider.BuyHitPointSlot(id, (SimpleHitPointLevel)level, (SimpleHitPointType)type);
+                var model = GetCleanModel(id);
+                return PartialView("ViewStats", model);
+            }
+            return null;
         }
     }
 }

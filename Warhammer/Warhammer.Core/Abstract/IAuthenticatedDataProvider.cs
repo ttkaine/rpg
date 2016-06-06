@@ -108,5 +108,7 @@ namespace Warhammer.Core.Abstract
         void ToggleStuntVisibility(int stuntId);
         List<Award> GetLatestAwards(int count);
         List<ScoreHistory> GetCurrentScoresForPerson(int id);
+        void SetDefaultHitPoints(int id);
+        void BuyHitPointSlot(int id, SimpleHitPointLevel simpleHitPointLevel, SimpleHitPointType simpleHitPointType, bool free = false);
     }
 }

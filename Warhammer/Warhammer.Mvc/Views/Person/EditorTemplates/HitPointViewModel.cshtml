@@ -1,0 +1,26 @@
+﻿
+@model Warhammer.Mvc.Models.HitPointViewModel
+
+@if (Model.Enabled)
+{
+    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")"><span class="label label-pill label-success">@Model.Name</span></td></tr>
+}
+else
+{
+    <tr><td class="@(Model.Enabled ? "" : "hiddenStat")">
+        @if (Model.CanBuy)
+        {
+            using (Ajax.BeginForm("BuyHitPointSlot", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+            {
+                <input type="hidden" name="id" value="@Model.PersonId"/>
+                <input type="hidden" name="level" value="@Model.Level"/>
+                <input type="hidden" name="type" value="@Model.Type" />
+                <input type="submit" class="btn btn-block btn-success" value="Buy For @(Model.CostToBuy) XP" />
+            }
+        }
+        else
+        {
+            <span>Cost to buy: @(Model.CostToBuy) XP</span>
+        }
+    </td></tr>
+}

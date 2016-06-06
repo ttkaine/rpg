@@ -41,8 +41,8 @@
                 {
                     <div class="row">
                         <input type="hidden" name="Stats[@i].Key" value="@item.Key"/>
-                        <label class="col-md-6">@item.Key</label>
-                        <input class="col-md-4" name="Stats[@i].Value" value="@item.Value"/>
+                        <label>@item.Key</label>
+                        <input class="form-control" type="number" name="Stats[@i].Value" value="@item.Value"/>
                         @{
                             i++;
                         }

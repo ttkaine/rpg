@@ -226,5 +226,19 @@ namespace Warhammer.Core.Entities
         public double UpliftFactor { get; set; }
 
 
+        public bool CanBuyHitSlot(SimpleHitPointLevel level, SimpleHitPointType type)
+        {
+            if (SimpleHitPoints.Any(s => s.Purchased.HasValue && s.HitPointLevelId == (int) level && s.HitPointTypeId == (int) type))
+            {
+                return false;
+            }
+
+            return CurrentXp >= HitSlotCost(level, type);
+        }
+
+        public int HitSlotCost(SimpleHitPointLevel level, SimpleHitPointType type)
+        {
+            return (int)level + SimpleHitPoints.Count(s => s.Purchased.HasValue && s.HitPointTypeId == (int)type);
+        }
     }
 }

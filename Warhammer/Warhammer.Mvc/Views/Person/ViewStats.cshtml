@@ -14,7 +14,7 @@
             }
             @if (User.IsInRole("Admin") && ViewBag.EditMode)
             {
-                using (Ajax.BeginForm("GiveXp", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                using (Ajax.BeginForm("GiveXp", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
                 {
                     @Html.HiddenFor(m => m.PersonId)
                     @Html.TextBox("xp")
@@ -34,7 +34,7 @@
                     <p>Add a role for @Model.RoleCost XP</p>
                     if (Model.CanBuyRole)
                     {
-                        using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                        using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
                         {
                             @Html.ValidationSummary("", new { @class = "text-danger" })
                             @Html.HiddenFor(m => m.PersonId)
@@ -59,7 +59,7 @@
                     <p>Add a Descriptor for @(Model.DescriptorCost) XP</p>
                     if (Model.CanBuyDescriptor)
                     {
-                        using (Ajax.BeginForm("AddDescriptor", "Person", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                        using (Ajax.BeginForm("AddDescriptor", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
                         {
                             @Html.ValidationSummary("", new { @class = "text-danger" })
                             @Html.HiddenFor(m => m.PersonId)
@@ -106,7 +106,7 @@
                             {
                                 if (Model.CanBuyStat)
                                 {
-                                    using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
+                                    using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
                                     {
                                         @Html.ValidationSummary("", new {@class = "text-danger"})
                                         @Html.HiddenFor(m => m.PersonId)
@@ -125,12 +125,16 @@
                 }
                 </tbody>
             </table>
+
+
         </div>
-}
-else
-{
-    if (ViewBag.EditMode)
+
+        @Html.Action("HitPoints", "Person", new { id = Model.PersonId })
+    }
+    else
     {
+        if (ViewBag.EditMode)
+        {
             @Html.EditorFor(m => Model)
             }
             else

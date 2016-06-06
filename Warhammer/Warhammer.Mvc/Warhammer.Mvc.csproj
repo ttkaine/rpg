@@ -631,6 +631,7 @@
     <Content Include="Views\Home\DisplayTemplates\AwardItem.cshtml" />
     <Content Include="Views\Person\HitPoints.cshtml" />
     <Content Include="Views\Person\DisplayTemplates\HitPointViewModel.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\HitPointViewModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
