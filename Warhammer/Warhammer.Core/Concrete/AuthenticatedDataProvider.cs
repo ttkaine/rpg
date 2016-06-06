@@ -1069,7 +1069,19 @@ namespace Warhammer.Core.Concrete
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
-                foreach (Person person in session.People)
+                List<Person> people = session.People.ToList();
+
+                //always award all players regardless - just to be fair
+                List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue).ToList();
+                foreach (Person person in playerCharacters)
+                {
+                    if (people.All(p => p.Id != person.Id))
+                    {
+                        people.Add(person);      
+                    }
+                }
+
+                foreach (Person person in people)
                 {
                     AddXp(person.Id, xpAwarded);
                 }
