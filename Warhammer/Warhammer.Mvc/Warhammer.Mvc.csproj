@@ -244,6 +244,7 @@
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
+    <Compile Include="Models\SessionXpModel.cs" />
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
     <Compile Include="Models\UserSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -632,6 +633,7 @@
     <Content Include="Views\Person\HitPoints.cshtml" />
     <Content Include="Views\Person\DisplayTemplates\HitPointViewModel.cshtml" />
     <Content Include="Views\Person\EditorTemplates\HitPointViewModel.cshtml" />
+    <Content Include="Views\AdminPageControls\SessionXpControl.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

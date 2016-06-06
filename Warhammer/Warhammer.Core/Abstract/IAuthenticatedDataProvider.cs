@@ -110,5 +110,6 @@ namespace Warhammer.Core.Abstract
         List<ScoreHistory> GetCurrentScoresForPerson(int id);
         void SetDefaultHitPoints(int id);
         void BuyHitPointSlot(int id, SimpleHitPointLevel simpleHitPointLevel, SimpleHitPointType simpleHitPointType, bool free = false);
+        void AddXpForSession(int sessionId, int xpAwarded);
     }
 }

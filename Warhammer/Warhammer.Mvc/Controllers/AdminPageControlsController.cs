@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
 {
@@ -90,6 +91,36 @@ namespace Warhammer.Mvc.Controllers
                 }
             }
 
+            return null;
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult SessionXpControl(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            {
+                SessionXpModel model = new SessionXpModel
+                {
+                    SessionId = id,
+                    XpAwarded = 0
+                };
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult SessionXpControl(SessionXpModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            {
+                if (ModelState.IsValid)
+            {
+                DataProvider.AddXpForSession(model.SessionId, model.XpAwarded);
+            }
+            return PartialView(model);
+            }
             return null;
         }
     }

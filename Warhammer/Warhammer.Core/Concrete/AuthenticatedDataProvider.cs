@@ -1064,6 +1064,18 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void AddXpForSession(int sessionId, int xpAwarded)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                foreach (Person person in session.People)
+                {
+                    AddXp(person.Id, xpAwarded);
+                }
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
