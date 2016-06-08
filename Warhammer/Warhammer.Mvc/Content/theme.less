@@ -149,7 +149,7 @@ div.session-container{
 .fate-stat-block,
 .header-block,
 .content-block {
-    
+    margin-bottom: 20px;
     padding: 15px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -158,6 +158,7 @@ div.session-container{
     -webkit-box-shadow: #333333 5px 5px 15px ;
     box-shadow: #333333 5px 5px 15px ;
 }
+
 .content-block {
        background-color: white;
        overflow:auto;
@@ -236,6 +237,8 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
     box-shadow: #333333 5px 5px 15px ;
 }
 
+
+
 .trophy-image,
 .mini-profile-image{
         width: 80px;
@@ -243,6 +246,21 @@ font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
         margin: 8px;
         margin-top: 0;
     }
+
+#recentActivity {
+    font-size: small;
+}
+#recentActivity .mini-profile-image,
+#recentActivity .mini-trophy-image {
+        width: 30px;
+        height: 30px;
+}
+
+#recentActivity tr:nth-child(odd) td {
+    padding-top: 1px;
+    padding-bottom: 1px;
+
+}
 
 .score-box-base,
 .score-box-bonus,
@@ -499,3 +517,4 @@ hr {
 .hitpoint-track {
       .make-xs-column(6);
 }
+

@@ -5,7 +5,7 @@
     <td>
         @if (!Model.IsPlayerComment)
         {
-            @Html.Action("PageImage", "Page", new { id = Model.PersonId })
+            @Html.Action("PageImage", "Page", new {id = Model.PersonId})
         }
         else
         {
@@ -14,17 +14,16 @@
 
 
     </td>
-    <td colspan="2">
+    <td></td>
+    <td>
         @Html.Raw(Model.Description)
     </td>
 
 </tr>
 <tr>
     <td colspan="3">
-        <p class="note">
-            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null)
-            <br />
-            @Model.Created.ToLongTimeString() @Model.Created.ToLongDateString()
-        </p>
+        <span class="note">
+            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null) @Model.Created.ToLongTimeString() @Model.Created.ToLongDateString()
+        </span>
     </td>
 </tr>

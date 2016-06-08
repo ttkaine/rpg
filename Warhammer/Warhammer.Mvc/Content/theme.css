@@ -6920,6 +6920,7 @@ div.session-container {
 .fate-stat-block,
 .header-block,
 .content-block {
+  margin-bottom: 20px;
   padding: 15px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -6995,6 +6996,18 @@ footer {
   height: 80px;
   margin: 8px;
   margin-top: 0;
+}
+#recentActivity {
+  font-size: small;
+}
+#recentActivity .mini-profile-image,
+#recentActivity .mini-trophy-image {
+  width: 30px;
+  height: 30px;
+}
+#recentActivity tr:nth-child(odd) td {
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 .score-box-base,
 .score-box-bonus,
