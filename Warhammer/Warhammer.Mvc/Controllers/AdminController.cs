@@ -263,23 +263,20 @@ namespace Warhammer.Mvc.Controllers
             return PartialView("FeatureList", features);
         }
 
-        public ViewResult AdminSettings()
+        public ActionResult AdminSettings()
         {
             List<AdminSetting> settings = _adminSettings.AdminSettings();
             return View(settings);
         }
 
         [HttpPost]
-        public ViewResult AdminSettings(IEnumerable<AdminSetting> model)
+        public ActionResult AdminSettings(IEnumerable<AdminSetting> model)
         {
             foreach (AdminSetting adminSetting in model)
             {
                 _adminSettings.SetAdminSettingValue(adminSetting.Name, adminSetting.SettingValue);
             }
-            List<AdminSetting> settings = _adminSettings.AdminSettings();
-            return View(settings);
+            return RedirectToAction("Features");
         }
-
-
     }
 }
