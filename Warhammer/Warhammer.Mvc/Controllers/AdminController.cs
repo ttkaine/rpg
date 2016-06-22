@@ -16,11 +16,13 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IDatabaseUpdateProvider _databaseUpdate;
         private readonly IImageProcessor _imageProcessor;
+        private readonly IAdminSettingsProvider _adminSettings;
         // GET: Admin
-        public AdminController(IAuthenticatedDataProvider data, IDatabaseUpdateProvider databaseUpdate, IImageProcessor imageProcessor) : base(data)
+        public AdminController(IAuthenticatedDataProvider data, IDatabaseUpdateProvider databaseUpdate, IImageProcessor imageProcessor, IAdminSettingsProvider adminSettings) : base(data)
         {
             _databaseUpdate = databaseUpdate;
             _imageProcessor = imageProcessor;
+            _adminSettings = adminSettings;
         }
 
 
@@ -261,6 +263,22 @@ namespace Warhammer.Mvc.Controllers
             return PartialView("FeatureList", features);
         }
 
+        public ViewResult AdminSettings()
+        {
+            List<AdminSetting> settings = _adminSettings.AdminSettings();
+            return View(settings);
+        }
+
+        [HttpPost]
+        public ViewResult AdminSettings(IEnumerable<AdminSetting> model)
+        {
+            foreach (AdminSetting adminSetting in model)
+            {
+                _adminSettings.SetAdminSettingValue(adminSetting.Name, adminSetting.SettingValue);
+            }
+            List<AdminSetting> settings = _adminSettings.AdminSettings();
+            return View(settings);
+        }
 
 
     }

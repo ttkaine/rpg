@@ -340,6 +340,26 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public IQueryable<AdminSetting> AdminSettings()
+        {
+            return _entities.AdminSettings;
+        }
+
+        public int Save(AdminSetting setting)
+        {
+            if (setting.Id == 0)
+            {
+                _entities.AdminSettings.Add(setting);
+            }
+            else
+            {
+                _entities.Entry(setting).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return setting.Id;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

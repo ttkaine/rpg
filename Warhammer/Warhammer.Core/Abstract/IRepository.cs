@@ -47,5 +47,7 @@ namespace Warhammer.Core.Abstract
         IQueryable<FateStunt> FateStunts();
         int Save(FateStunt fateStunt);
         void Delete(FateStunt fateStunt);
+        IQueryable<AdminSetting> AdminSettings();
+        int Save(AdminSetting setting);
     }
 }

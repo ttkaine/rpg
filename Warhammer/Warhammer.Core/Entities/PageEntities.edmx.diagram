@@ -66,6 +66,7 @@
         <AssociationConnector Association="WarhammerModel.FK_FateStunt_Person" />
         <EntityTypeShape EntityType="WarhammerModel.SimpleHitPoint" Width="1.5" PointX="8.25" PointY="35.75" />
         <AssociationConnector Association="WarhammerModel.FK_SimpleHitPoints_Person" />
+        <EntityTypeShape EntityType="WarhammerModel.AdminSetting" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

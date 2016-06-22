@@ -123,6 +123,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IAdminSettingsProvider.cs" />
     <Compile Include="Abstract\IAuthenticatedDataProvider.cs" />
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Abstract\IModelFactory.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IScoreCalculator.cs" />
+    <Compile Include="Concrete\AdminSettingsProvider.cs" />
     <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\EmailHandler.cs" />
@@ -143,6 +145,9 @@
     <Compile Include="Concrete\ModelFactory.cs" />
     <Compile Include="Concrete\Repository.cs" />
     <Compile Include="Concrete\ScoreCalculator.cs" />
+    <Compile Include="Entities\AdminSetting.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\AspNetRole.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -239,6 +244,7 @@
     <Compile Include="Entities\UserSetting.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\_AdminSetting.cs" />
     <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_FateAspect.cs" />
     <Compile Include="Entities\_FateStat.cs" />

@@ -277,6 +277,7 @@
     <Content Include="Content\DbUpdateScripts\16051601.sql" />
     <Content Include="Content\DbUpdateScripts\16051801.sql" />
     <Content Include="Content\DbUpdateScripts\16060201.sql" />
+    <Content Include="Content\DbUpdateScripts\16062201.sql" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
@@ -637,6 +638,9 @@
     <Content Include="Views\Person\DisplayTemplates\HitPointViewModel.cshtml" />
     <Content Include="Views\Person\EditorTemplates\HitPointViewModel.cshtml" />
     <Content Include="Views\AdminPageControls\SessionXpControl.cshtml" />
+    <Content Include="Views\Admin\AdminSettings.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\AdminSetting.cshtml" />
+    <Content Include="Views\Admin\DisplayTemplates\AdminSetting.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -646,9 +650,11 @@
     </None>
     <None Include="Web.PIRATE.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.Pirate_Federer.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.SPACE.config">
       <DependentUpon>Web.config</DependentUpon>

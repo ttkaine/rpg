@@ -11,25 +11,64 @@ namespace Warhammer.Core.Concrete
     public class EmailHandler : IEmailHandler
     {
         IAuthenticatedUserProvider _user;
+        IAdminSettingsProvider _settings;
 
         private string SendingMailAddress
         {
-            get { return ConfigurationManager.AppSettings["AdminMailAddress"]; }
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.SendingEmailAddress);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["AdminMailAddress"];
+                }
+                return setting;
+            }
+        }
+
+        private string SendingMailAddressName
+        {
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.SendingEmailName);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["AdminMailAddressName"];
+                }
+                return setting;
+            }
         }
 
         private string Password
         {
-            get { return ConfigurationManager.AppSettings["AdminMailPassword"]; }
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.SendingEmailPassword);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["AdminMailPassword"];
+                }
+                return setting;
+            }
         }
 
-        private string SMTPServer
+        private string SmtpServer
         {
-            get { return ConfigurationManager.AppSettings["SMTPServer"]; }
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.SendingSmtpServer);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["SmtpServer"];
+                }
+                return setting;
+            }
         }
 
-        public EmailHandler(IAuthenticatedUserProvider user)
+        public EmailHandler(IAuthenticatedUserProvider user, IAdminSettingsProvider settings)
         {
             _user = user;
+            _settings = settings;
         }
 
 
@@ -39,7 +78,7 @@ namespace Warhammer.Core.Concrete
             string message = string.Format("It's totally your turn in the text session '{0}' so go have a look!", session.FullName);
             NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
 
-            SmtpClient client = new SmtpClient(SMTPServer)
+            SmtpClient client = new SmtpClient(SmtpServer)
             {
                 Port = 25,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -49,7 +88,7 @@ namespace Warhammer.Core.Concrete
             };
 
             MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
-            MailAddress fromAddress = new MailAddress(SendingMailAddress, "The Pirate Captain");
+            MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
             MailMessage mail = new MailMessage(fromAddress, toAddress)
             {
                 Subject = subject,
@@ -67,7 +106,7 @@ namespace Warhammer.Core.Concrete
                 string message = "So, there's this new page on the site now. So, totally check it out, right?";
                 NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
 
-                SmtpClient client = new SmtpClient(SMTPServer)
+                SmtpClient client = new SmtpClient(SmtpServer)
                 {
                     Port = 25,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -77,7 +116,7 @@ namespace Warhammer.Core.Concrete
                 };
 
                 MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
-                MailAddress fromAddress = new MailAddress(SendingMailAddress, "The Pirate Captain");
+                MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
                 MailMessage mail = new MailMessage(fromAddress, toAddress)
                 {
                     Subject = subject,
@@ -97,7 +136,7 @@ namespace Warhammer.Core.Concrete
                 string message = "So, there's this page that's all updated and interesting on the site now. So, totally check it out, okay?";
                 NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
 
-                SmtpClient client = new SmtpClient(SMTPServer)
+                SmtpClient client = new SmtpClient(SmtpServer)
                 {
                     Port = 25,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -107,7 +146,7 @@ namespace Warhammer.Core.Concrete
                 };
 
                 MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
-                MailAddress fromAddress = new MailAddress(SendingMailAddress, "The Pirate Captain");
+                MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
                 MailMessage mail = new MailMessage(fromAddress, toAddress)
                 {
                     Subject = subject,
@@ -127,7 +166,7 @@ namespace Warhammer.Core.Concrete
                 string message = string.Format("<b>{0}:</b>{1}", senderName, description);
                 NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
 
-                SmtpClient client = new SmtpClient(SMTPServer)
+                SmtpClient client = new SmtpClient(SmtpServer)
                 {
                     Port = 25,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -137,7 +176,7 @@ namespace Warhammer.Core.Concrete
                 };
 
                 MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
-                MailAddress fromAddress = new MailAddress(SendingMailAddress, "The Pirate Captain");
+                MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
                 MailMessage mail = new MailMessage(fromAddress, toAddress)
                 {
                     Subject = subject,

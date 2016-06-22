@@ -15,6 +15,14 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="AdminSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SettingId" Type="int" Nullable="false" />
+          <Property Name="SettingValue" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -756,6 +764,7 @@
         </Association>
         <EntityContainer Name="WarhammerModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdminSetting" EntityType="Self.AdminSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -1073,6 +1082,7 @@
             <End Role="Person" EntitySet="Pages" />
             <End Role="SimpleHitPoint" EntitySet="SimpleHitPoints" />
           </AssociationSet>
+          <EntitySet Name="AdminSettings" EntityType="WarhammerModel.AdminSetting" />
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1770,6 +1780,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdminSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SettingId" Type="Int32" Nullable="false" />
+          <Property Name="SettingValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2109,6 +2127,15 @@
                 <ScalarProperty Name="HitPointLevelId" ColumnName="HitPointLevelId" />
                 <ScalarProperty Name="HitPointTypeId" ColumnName="HitPointTypeId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminSettings">
+            <EntityTypeMapping TypeName="WarhammerModel.AdminSetting">
+              <MappingFragment StoreEntitySet="AdminSetting">
+                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -1,0 +1,10 @@
+﻿@model Warhammer.Core.Entities.AdminSetting
+
+<div>
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.SettingId)
+    
+    <label>@Model.Name</label>
+    <br/>
+    @Html.TextAreaFor(m => m.SettingValue)
+</div>
