@@ -360,6 +360,21 @@ namespace Warhammer.Core.Concrete
             return setting.Id;
         }
 
+        public int Save(Player player)
+        {
+            if (player.Id == 0)
+            {
+                _entities.Players.Add(player);
+            }
+            else
+            {
+                _entities.Entry(player).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return player.Id;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

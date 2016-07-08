@@ -112,5 +112,6 @@ namespace Warhammer.Core.Abstract
         void BuyHitPointSlot(int id, SimpleHitPointLevel simpleHitPointLevel, SimpleHitPointType simpleHitPointType, bool free = false);
         void AddXpForSession(int sessionId, int xpAwarded);
 
+        void AddPlayer(string name, string email);
     }
 }

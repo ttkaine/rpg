@@ -1088,6 +1088,16 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void AddPlayer(string name, string email)
+        {
+            Player player = new Player
+            {
+                DisplayName = name,
+                UserName = email
+            };
+            _repository.Save(player);
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
