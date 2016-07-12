@@ -129,6 +129,7 @@
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
     <Compile Include="Abstract\IEmailHandler.cs" />
+    <Compile Include="Abstract\IExceptionLogHandler.cs" />
     <Compile Include="Abstract\IImageProcessor.cs" />
     <Compile Include="Abstract\ILogGenerator.cs" />
     <Compile Include="Abstract\IPostManager.cs" />

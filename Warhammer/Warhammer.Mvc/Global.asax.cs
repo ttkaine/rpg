@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Warhammer.Core.Abstract;
+using Warhammer.Mvc.Controllers;
+using Warhammer.Mvc.Helpers;
 
 namespace Warhammer.Mvc
 {
@@ -62,6 +67,57 @@ namespace Warhammer.Mvc
             databaseFailPage = databaseFailPage.Replace("_MESSAGE_", message);
             string applcationOfflinePage = Server.MapPath("~/app_offline.htm");
             File.WriteAllText(applcationOfflinePage, databaseFailPage);
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            if (CustomErrorsAreOff())
+            {
+                return;
+            }
+
+            var httpContext = ((MvcApplication)sender).Context;
+            var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
+            var currentController = " ";
+            var currentAction = " ";
+
+            if (currentRouteData != null)
+            {
+                if (!string.IsNullOrEmpty(currentRouteData.Values["controller"]?.ToString()))
+                {
+                    currentController = currentRouteData.Values["controller"].ToString();
+                }
+
+                if (!string.IsNullOrEmpty(currentRouteData.Values["action"]?.ToString()))
+                {
+                    currentAction = currentRouteData.Values["action"].ToString();
+                }
+            }
+
+            var exception = Server.GetLastError();
+            exception = exception.LogExceptionSequence(DateTime.Now, new HttpRequestWrapper(Context.Request));
+
+            var controller = new ErrorController();
+            var routeData = new RouteData();
+
+            httpContext.ClearError();
+            httpContext.Response.Clear();
+            httpContext.Response.StatusCode = (exception as HttpException)?.GetHttpCode() ?? 500;
+            httpContext.Response.TrySkipIisCustomErrors = true;
+
+            routeData.Values["controller"] = "Error";
+            routeData.Values["action"] = "Index";
+
+            controller.ViewData.Model = new HandleErrorInfo(exception, currentController, currentAction);
+            ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+        }
+
+        private static bool CustomErrorsAreOff()
+        {
+            CustomErrorsSection section =
+                ConfigurationManager.GetSection("system.web/customErrors") as CustomErrorsSection;
+
+            return section != null && section.Mode == CustomErrorsMode.Off;
         }
     }
 }
