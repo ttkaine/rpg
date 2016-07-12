@@ -65,8 +65,13 @@
                     <div class="alert alert-success">
                         @if (Model.NewPages.Any())
                         {
+                            if (Model.NewPages.Count() > 5)
+                            {
+                                @Html.ActionLink("Mark All as Seen", "MarkAllRead")
+                            }
                             <h3>New Pages</h3>
                             <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
+
                             <ul>
                                 @foreach (var page in Model.NewPages)
                                 {
