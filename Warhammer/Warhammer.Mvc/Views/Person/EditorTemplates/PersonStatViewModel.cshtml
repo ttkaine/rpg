@@ -4,6 +4,7 @@
 {
     @Html.ValidationSummary("", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.PersonId)
+    @Html.HiddenFor(m => m.IsNpc)
     <input type="hidden" value="true" name="Posted" id="Posted"/>
     <div class="form-group">
         @Html.LabelFor(m => m.AddedRole, new { @class = "col-md-12 control-label" })
@@ -11,25 +12,27 @@
             @Html.TextBoxFor(m => m.AddedRole, new { @class = "form-control" })
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.AddedDescriptor1, new {@class = "col-md-12 control-label"})
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AddedDescriptor1, new {@class = "form-control"})
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.AddedDescriptor2, new {@class = "col-md-12 control-label"})
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AddedDescriptor2, new {@class = "form-control"})
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.AddedDescriptor3, new { @class = "col-md-12 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AddedDescriptor3, new { @class = "form-control" })
-        </div>
-    </div>
+     if (!Model.IsNpc)
+     {
+         <div class="form-group">
+             @Html.LabelFor(m => m.AddedDescriptor1, new {@class = "col-md-12 control-label"})
+             <div class="col-md-10">
+                 @Html.TextBoxFor(m => m.AddedDescriptor1, new {@class = "form-control"})
+             </div>
+         </div>
+         <div class="form-group">
+             @Html.LabelFor(m => m.AddedDescriptor2, new {@class = "col-md-12 control-label"})
+             <div class="col-md-10">
+                 @Html.TextBoxFor(m => m.AddedDescriptor2, new {@class = "form-control"})
+             </div>
+         </div>
+         <div class="form-group">
+             @Html.LabelFor(m => m.AddedDescriptor3, new {@class = "col-md-12 control-label"})
+             <div class="col-md-10">
+                 @Html.TextBoxFor(m => m.AddedDescriptor3, new {@class = "form-control"})
+             </div>
+         </div>
+     }
     <div class="form-group">
         @Html.LabelFor(m => m.Stats, new {@class = "col-md-12 control-label"})
         <div class="col-md-10">

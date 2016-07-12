@@ -52,5 +52,6 @@ namespace Warhammer.Core.Abstract
         int Save(Player player);
         int Save(ExceptionLog exceptionLog);
         IQueryable<ExceptionLog> ExceptionLogs();
+        void Delete(PersonStat personStat);
     }
 }

@@ -395,6 +395,12 @@ namespace Warhammer.Core.Concrete
             return _entities.ExceptionLogs;
         }
 
+        public void Delete(PersonStat personStat)
+        {
+            _entities.PersonStats.Remove(personStat);
+            _entities.SaveChanges();
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

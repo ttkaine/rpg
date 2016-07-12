@@ -62,7 +62,7 @@ namespace Warhammer.Mvc.Concrete
             model.CanBuyDescriptor = person.CanBuyDescriptor;
             model.XpSpent = person.XpSpent;
             model.MaySpendXp = !person.IsDead && model.StatsCreated;
-
+            model.IsNpc = person.IsNpc;
             return model;
 
         }

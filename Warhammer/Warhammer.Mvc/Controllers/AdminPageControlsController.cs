@@ -123,5 +123,16 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ResetNpcStats(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            {
+                DataProvider.ResetNpcStats(id);
+            }
+            return null;
+        }
     }
 }

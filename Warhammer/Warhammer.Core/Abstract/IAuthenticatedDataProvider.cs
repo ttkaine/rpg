@@ -114,5 +114,6 @@ namespace Warhammer.Core.Abstract
 
         void AddPlayer(string name, string email);
         List<ExceptionLog> GetExceptionLogs(int count);
+        void ResetNpcStats(int id);
     }
 }

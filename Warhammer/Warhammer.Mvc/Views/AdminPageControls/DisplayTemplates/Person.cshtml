@@ -12,3 +12,14 @@ else
 {
     @Html.ActionLink("Kill", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
 }
+<hr/>
+@if (Model.IsNpc && Model.RoleNames.Count > 0)
+{
+    <div id="ResetBox">
+        @using (Ajax.BeginForm("ResetNpcStats", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "ResetBox" }))
+        {
+        @Html.HiddenFor(m => m.Id)
+        <input type="submit" value="Reset NPC Stats" class="btn btn-danger btn-block" />
+        }
+    </div>
+}

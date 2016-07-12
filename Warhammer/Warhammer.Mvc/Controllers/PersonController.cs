@@ -89,7 +89,7 @@ namespace Warhammer.Mvc.Controllers
                 {
                     ModelState.AddModelError("Stats", "Stats must add up to 18 points");
                 }
-
+                
                 if (ModelState.IsValid)
                 {
                     List<string> descriptors =

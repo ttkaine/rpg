@@ -138,7 +138,10 @@ namespace Warhammer.Core.Entities
                 Dictionary < StatName, int> temp = new Dictionary<StatName, int>();
                 foreach (PersonStat personStat in PersonStats)
                 {
-                    temp.Add((StatName)personStat.StatId, personStat.CurrentValue);
+                    if (!temp.ContainsKey((StatName) personStat.StatId))
+                    {
+                        temp.Add((StatName) personStat.StatId, personStat.CurrentValue);
+                    }
                 }
 
                 foreach (int statId in Enum.GetValues(typeof(StatName)))
@@ -178,13 +181,30 @@ namespace Warhammer.Core.Entities
         {
             get
             {
+                if (IsNpc)
+                {
+                    return (DescriptorNames.Count + 1)*10;
+                }
                 return (DescriptorNames.Count * 2) - 4;
             }
         }
 
+        public bool IsNpc => !PlayerId.HasValue;
+
         public int StatCost
         {
-          get { return Stats.Sum(s => s.Value) - 17; }
+            get
+            {
+                if (!Stats.Any())
+                {
+                    return 100;
+                }
+                if (IsNpc)
+                {
+                    return Stats.Sum(s => s.Value);
+                }
+                return Stats.Sum(s => s.Value) - 17;
+            }
         }
 
         public IEnumerable<Session> Sessions

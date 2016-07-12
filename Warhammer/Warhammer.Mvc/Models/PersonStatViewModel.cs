@@ -35,13 +35,13 @@ namespace Warhammer.Mvc.Models
         public int CurrentXp { get; set; }
         public List<string> Descriptors { get; set; }
 
-        [Required]
+     //   [Required]
         [Display(Name = "First Descriptor")]
         public string AddedDescriptor1 { get; set; }
-        [Required]
+    //    [Required]
         [Display(Name = "Second Descriptor")]
         public string AddedDescriptor2 { get; set; }
-        [Required]
+     //   [Required]
         [Display(Name = "Third Descriptor")]
         public string AddedDescriptor3 { get; set; }
 
@@ -64,5 +64,6 @@ namespace Warhammer.Mvc.Models
         public int DescriptorCost { get; set; }
         public string CharacterName { get; set; }
         public int RoleCost { get; set; }
+        public bool IsNpc { get; set; }
     }
 }
