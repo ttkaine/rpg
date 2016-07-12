@@ -49,5 +49,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<FateStunt> FateStunts { get; set; }
         public virtual DbSet<SimpleHitPoint> SimpleHitPoints { get; set; }
         public virtual DbSet<AdminSetting> AdminSettings { get; set; }
+        public virtual DbSet<ExceptionLog> ExceptionLogs { get; set; }
     }
 }

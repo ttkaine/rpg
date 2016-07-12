@@ -27,6 +27,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Index()
         {
+            throw new Exception("Test Exception!");
             List<EnumDefinition> definitions = new List<EnumDefinition>();
             string assemblyName = "Warhammer.Core";
 

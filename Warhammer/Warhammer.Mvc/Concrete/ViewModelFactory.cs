@@ -110,6 +110,14 @@ namespace Warhammer.Mvc.Concrete
                     IconUrl = _urlHelper.Content("~/Content/Images/Features.png"),
                     //  IconCssClass = "badge"
                 });
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Logs",
+                    Url = _urlHelper.Action("Log", "Admin"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/log.png"),
+                    //  IconCssClass = "badge"
+                });
             }
 
             return model;

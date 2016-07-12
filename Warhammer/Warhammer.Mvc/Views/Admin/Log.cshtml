@@ -1,0 +1,45 @@
+﻿@model List<Warhammer.Core.Entities.ExceptionLog>
+@{
+    ViewBag.Title = "Log";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Exception Logs</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Message</th>
+                    <th>Identifier</th>
+                    <th>Date Time</th>
+                    <th>Sequence</th>
+                    <th>Trace</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @Html.DisplayFor(m => Model)
+                </tbody>
+            </table>
+         
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Some logged Errors</h3>
+            <p>
+                Sometimse things don't work quite right... oh well...
+            </p>
+        </div>
+    </div>
+
+</div>
+

@@ -1098,6 +1098,11 @@ namespace Warhammer.Core.Concrete
             _repository.Save(player);
         }
 
+        public List<ExceptionLog> GetExceptionLogs(int count)
+        {
+            return _repository.ExceptionLogs().OrderByDescending(l => l.DateTime).Take(count).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
