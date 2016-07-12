@@ -201,14 +201,14 @@ namespace Warhammer.Core.Concrete
                     });
                 }
 
-                if (person.DescriptorNames != null && person.DescriptorNames.Count > 3)
+                if (person.DescriptorNames != null && person.DescriptorNames.Count > 0)
                 {
                     scoreHistories.Add(new ScoreHistory
                     {
                         ScoreType = ScoreType.Descriptors,
                         DateTime = scoreDate,
                         PersonId = person.Id,
-                        PointsValue = person.DescriptorNames.Count*0.25m
+                        PointsValue = person.DescriptorNames.Count
                     });
                 }
                 else
