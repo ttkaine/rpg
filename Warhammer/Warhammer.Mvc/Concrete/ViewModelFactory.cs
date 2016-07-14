@@ -88,6 +88,18 @@ namespace Warhammer.Mvc.Concrete
                 SubMenu = peopleSubMenu
             });
 
+            if (_data.SiteHasFeature(Feature.CrowRules))
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Rules Document",
+                    Url = "https://1drv.ms/w/s!AkAJN4vahKOIqhGTXm3ZFcHdIT1C",
+                    IconUrl = _urlHelper.Content("~/Content/Images/rules.png"),
+                    //  IconCssClass = "badge"
+                });
+            }
+
             if (_data.SiteHasFeature(Feature.UserSettings))
             {
                 model.RightMenu.Add(new MenuItemViewModel

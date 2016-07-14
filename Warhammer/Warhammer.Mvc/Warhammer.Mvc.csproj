@@ -319,6 +319,7 @@
     <Content Include="Content\Images\RoleplayForum\view-messages.png" />
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
+    <Content Include="Content\Images\rules.png" />
     <Content Include="Content\Images\Settings.png" />
     <Content Include="Content\Images\space_background.jpg" />
     <Content Include="Content\Images\Trophy.png" />
