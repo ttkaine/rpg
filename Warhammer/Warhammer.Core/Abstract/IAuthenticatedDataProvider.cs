@@ -113,5 +113,7 @@ namespace Warhammer.Core.Abstract
         void AddXpForSession(int sessionId, int xpAwarded);
 
         void AddPlayer(string name, string email);
+        List<ExceptionLog> GetExceptionLogs(int count);
+        void ResetNpcStats(int id);
     }
 }

@@ -106,6 +106,23 @@
           <Property Name="PageId" Type="int" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ExceptionLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Severity" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="Timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="StackTrace" Type="nvarchar(max)" />
+          <Property Name="ExceptionType" Type="nvarchar" MaxLength="250" />
+          <Property Name="ExecutingAssembly" Type="nvarchar" MaxLength="250" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="Identifier" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EntityId" Type="int" />
+        </EntityType>
         <EntityType Name="FateAspect">
           <Key>
             <PropertyRef Name="Id" />
@@ -773,6 +790,7 @@
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateAspect" EntityType="Self.FateAspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStat" EntityType="Self.FateStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStunt" EntityType="Self.FateStunt" Schema="dbo" store:Type="Tables" />
@@ -1083,6 +1101,7 @@
             <End Role="SimpleHitPoint" EntitySet="SimpleHitPoints" />
           </AssociationSet>
           <EntitySet Name="AdminSettings" EntityType="WarhammerModel.AdminSetting" />
+          <EntitySet Name="ExceptionLogs" EntityType="WarhammerModel.ExceptionLog" />
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1788,6 +1807,23 @@
           <Property Name="SettingId" Type="Int32" Nullable="false" />
           <Property Name="SettingValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ExceptionLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Severity" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Timestamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExceptionType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ExecutingAssembly" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="Identifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntityId" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2136,6 +2172,24 @@
               <MappingFragment StoreEntitySet="AdminSetting">
                 <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExceptionLogs">
+            <EntityTypeMapping TypeName="WarhammerModel.ExceptionLog">
+              <MappingFragment StoreEntitySet="ExceptionLog">
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="ExecutingAssembly" ColumnName="ExecutingAssembly" />
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

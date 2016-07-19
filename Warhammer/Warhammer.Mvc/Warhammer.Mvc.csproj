@@ -205,6 +205,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -212,9 +213,11 @@
     <Compile Include="Controllers\PageControlsController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\RoleplayController.cs" />
+    <Compile Include="Controllers\TimiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExceptionHelpers.cs" />
     <Compile Include="HtmlBuilders\CharacterSheetBuilder.cs" />
     <Compile Include="HtmlBuilders\PostBuilder.cs" />
     <Compile Include="HtmlBuilders\SessionDownloadBuilder.cs" />
@@ -278,6 +281,7 @@
     <Content Include="Content\DbUpdateScripts\16051801.sql" />
     <Content Include="Content\DbUpdateScripts\16060201.sql" />
     <Content Include="Content\DbUpdateScripts\16062201.sql" />
+    <Content Include="Content\DbUpdateScripts\16071201.sql" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
@@ -290,6 +294,7 @@
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\home.png" />
     <Content Include="Content\Images\lock.png" />
+    <Content Include="Content\Images\log.png" />
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Images\page-location.png" />
     <Content Include="Content\Images\page-page.png" />
@@ -314,6 +319,7 @@
     <Content Include="Content\Images\RoleplayForum\view-messages.png" />
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
+    <Content Include="Content\Images\rules.png" />
     <Content Include="Content\Images\Settings.png" />
     <Content Include="Content\Images\space_background.jpg" />
     <Content Include="Content\Images\Trophy.png" />
@@ -342,6 +348,7 @@
     <Content Include="Content\RoleplayCss\Roleplay.css" />
     <Content Include="Content\RoleplayCss\SessionLog.css" />
     <Content Include="Content\space.css" />
+    <Content Include="Content\StaticPages\DatabaseError.html" />
     <Content Include="Content\theme.css">
       <DependentUpon>theme.less</DependentUpon>
     </Content>
@@ -641,6 +648,8 @@
     <Content Include="Views\Admin\AdminSettings.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\AdminSetting.cshtml" />
     <Content Include="Views\Admin\DisplayTemplates\AdminSetting.cshtml" />
+    <Content Include="Views\Admin\Log.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ExceptionLog.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -674,6 +683,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Error\" />
     <Folder Include="Views\Home\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>

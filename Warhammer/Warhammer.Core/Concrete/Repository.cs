@@ -375,6 +375,32 @@ namespace Warhammer.Core.Concrete
             return player.Id;
         }
 
+        public int Save(ExceptionLog exceptionLog)
+        {
+            if (exceptionLog.Id == 0)
+            {
+                _entities.ExceptionLogs.Add(exceptionLog);
+            }
+            else
+            {
+                _entities.Entry(exceptionLog).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return exceptionLog.Id;
+        }
+
+        public IQueryable<ExceptionLog> ExceptionLogs()
+        {
+            return _entities.ExceptionLogs;
+        }
+
+        public void Delete(PersonStat personStat)
+        {
+            _entities.PersonStats.Remove(personStat);
+            _entities.SaveChanges();
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

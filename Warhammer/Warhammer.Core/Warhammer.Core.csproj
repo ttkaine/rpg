@@ -124,10 +124,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IAdminSettingsProvider.cs" />
+    <Compile Include="Abstract\IApplicationInitalizeHandler.cs" />
     <Compile Include="Abstract\IAuthenticatedDataProvider.cs" />
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
     <Compile Include="Abstract\IEmailHandler.cs" />
+    <Compile Include="Abstract\IExceptionLogHandler.cs" />
     <Compile Include="Abstract\IImageProcessor.cs" />
     <Compile Include="Abstract\ILogGenerator.cs" />
     <Compile Include="Abstract\IPostManager.cs" />
@@ -135,9 +137,11 @@
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IScoreCalculator.cs" />
     <Compile Include="Concrete\AdminSettingsProvider.cs" />
+    <Compile Include="Concrete\ApplicationInitalizeHandler.cs" />
     <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\EmailHandler.cs" />
+    <Compile Include="Concrete\ExceptionLogHandler.cs" />
     <Compile Include="Concrete\ImageProcessor.cs" />
     <Compile Include="Concrete\InlineHtmlImage.cs" />
     <Compile Include="Concrete\LogGenerator.cs" />
@@ -170,6 +174,9 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\C__MigrationHistory.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ExceptionLog.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FateAspect.cs">
@@ -246,6 +253,7 @@
     </Compile>
     <Compile Include="Entities\_AdminSetting.cs" />
     <Compile Include="Entities\_Comment.cs" />
+    <Compile Include="Entities\_ExceptionLog.cs" />
     <Compile Include="Entities\_FateAspect.cs" />
     <Compile Include="Entities\_FateStat.cs" />
     <Compile Include="Entities\_Page.cs" />

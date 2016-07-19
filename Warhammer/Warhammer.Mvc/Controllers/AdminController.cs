@@ -232,7 +232,11 @@ namespace Warhammer.Mvc.Controllers
         }
 
 
-
+        public ViewResult Log()
+        {
+            List<ExceptionLog> logs = DataProvider.GetExceptionLogs(50);
+            return View(logs);
+        }
 
 
         public ViewResult Features()

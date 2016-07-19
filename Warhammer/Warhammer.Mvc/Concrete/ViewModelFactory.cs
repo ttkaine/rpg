@@ -62,7 +62,7 @@ namespace Warhammer.Mvc.Concrete
             model.CanBuyDescriptor = person.CanBuyDescriptor;
             model.XpSpent = person.XpSpent;
             model.MaySpendXp = !person.IsDead && model.StatsCreated;
-
+            model.IsNpc = person.IsNpc;
             return model;
 
         }
@@ -88,6 +88,18 @@ namespace Warhammer.Mvc.Concrete
                 SubMenu = peopleSubMenu
             });
 
+            if (_data.SiteHasFeature(Feature.CrowRules))
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Rules Document",
+                    Url = "https://1drv.ms/w/s!AkAJN4vahKOIqhGTXm3ZFcHdIT1C",
+                    IconUrl = _urlHelper.Content("~/Content/Images/rules.png"),
+                    //  IconCssClass = "badge"
+                });
+            }
+
             if (_data.SiteHasFeature(Feature.UserSettings))
             {
                 model.RightMenu.Add(new MenuItemViewModel
@@ -108,6 +120,14 @@ namespace Warhammer.Mvc.Concrete
                     AltText = "Features",
                     Url = _urlHelper.Action("Features", "Admin"),
                     IconUrl = _urlHelper.Content("~/Content/Images/Features.png"),
+                    //  IconCssClass = "badge"
+                });
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Logs",
+                    Url = _urlHelper.Action("Log", "Admin"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/log.png"),
                     //  IconCssClass = "badge"
                 });
             }

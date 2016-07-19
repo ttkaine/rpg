@@ -302,5 +302,15 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult MarkAllRead()
+        {
+            List<Page> pages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate).ToList();
+            foreach (Page page in pages)
+            {
+                DataProvider.MarkAsSeen(page.Id);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

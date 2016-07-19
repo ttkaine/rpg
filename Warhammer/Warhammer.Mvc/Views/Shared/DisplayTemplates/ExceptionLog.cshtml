@@ -1,0 +1,14 @@
+﻿@model Warhammer.Core.Entities.ExceptionLog
+<tr>
+    <td>@Model.Id</td>
+    <td>@Model.Message</td>
+    <td>@Model.Identifier</td>
+    <td>@Model.DateTime</td>
+    <td>@Model.Sequence</td>
+    <td>
+        @if (!string.IsNullOrWhiteSpace(Model.StackTrace))
+        {
+            <img src="@Url.Content("~/Content/Images/log.png")" title="@Model.StackTrace" alt="@Model.StackTrace"/>
+        }
+    </td>
+</tr>

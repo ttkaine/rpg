@@ -50,5 +50,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<AdminSetting> AdminSettings();
         int Save(AdminSetting setting);
         int Save(Player player);
+        int Save(ExceptionLog exceptionLog);
+        IQueryable<ExceptionLog> ExceptionLogs();
+        void Delete(PersonStat personStat);
     }
 }

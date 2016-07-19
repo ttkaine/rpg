@@ -645,7 +645,7 @@ namespace Warhammer.Core.Concrete
         public void SetStats(int personId, Dictionary<StatName, int> stats, string addedRole, List<string> descriptors)
         {
             Person person = GetPerson(personId);
-            if (person.PersonStats.Count == 0)
+            if (person.PersonStats.Sum(s => s.CurrentValue) == 0)
             {
                 person.Roles = addedRole;
 
@@ -656,13 +656,19 @@ namespace Warhammer.Core.Concrete
 
                 foreach (KeyValuePair<StatName, int> keyValuePair in stats)
                 {
-                    PersonStat stat = new PersonStat();
+
+                    PersonStat stat = person.PersonStats.FirstOrDefault(p => p.StatId == (int) keyValuePair.Key);
+
+                    if (stat == null)
+                    {
+                        stat = new PersonStat { StatId = (int)keyValuePair.Key };
+                        person.PersonStats.Add(stat);
+                    }
+                    
                     stat.CurrentValue = keyValuePair.Value;
                     stat.InitialValue = keyValuePair.Value;
                     stat.PersonId = personId;
-                    stat.StatId = (int) keyValuePair.Key;
                     stat.XpSpent = 0;
-                    person.PersonStats.Add(stat);
                 }
                 Save(person);
             }
@@ -1096,6 +1102,38 @@ namespace Warhammer.Core.Concrete
                 UserName = email
             };
             _repository.Save(player);
+        }
+
+        public List<ExceptionLog> GetExceptionLogs(int count)
+        {
+            return _repository.ExceptionLogs().OrderByDescending(l => l.DateTime).Take(count).ToList();
+        }
+
+        public void ResetNpcStats(int id)
+        {
+            Person person = _repository.People().FirstOrDefault(p => p.Id == id);
+            if (person != null && !person.PlayerId.HasValue)
+            {
+                person.Descriptors = "";
+                person.Roles = "";
+
+                person.XpSpent = 0;
+                person.CurrentXp = 0;
+
+                foreach (SimpleHitPoint simpleHitPoint in person.SimpleHitPoints)
+                {
+                    simpleHitPoint.Purchased = null;
+                    simpleHitPoint.XpCost = 0;
+                }
+
+                Save(person);
+
+                List<PersonStat> stats = person.PersonStats.ToList();
+                foreach (PersonStat personStat in stats)
+                {
+                    _repository.Delete(personStat);
+                }
+            }
         }
 
         public void RemoveAward(int personId, int awardId)
