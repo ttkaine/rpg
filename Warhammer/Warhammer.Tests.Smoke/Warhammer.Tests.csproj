@@ -80,7 +80,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WarhammerCI01|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\WarhammerCI01\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;Dev</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CI01</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
