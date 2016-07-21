@@ -87,7 +87,7 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
                 Debug.WriteLine("Base URL : {0}", Settings.BaseUrl);
 
                 Driver = new FirefoxDriver();
-                Driver.FindElement(By.TagName("html")).SendKeys(Keys.F11);
+               // Driver.FindElement(By.TagName("html")).SendKeys(Keys.F11);
                 Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
                 Driver.Navigate().GoToUrl(Settings.UpdateUrl);
 

@@ -1384,7 +1384,7 @@ namespace Warhammer.Core.Concrete
             List<Person> people = new List<Person>();
             if (SiteHasFeature(Feature.CharacterLeague))
             {
-                if (SiteHasFeature(Feature.PublicLeague) || SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin)
+                if (SiteHasFeature(Feature.PublicLeague) || (SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin))
                 {
                     people = People().Where(p => p.CurrentScore > 0).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
                 }
