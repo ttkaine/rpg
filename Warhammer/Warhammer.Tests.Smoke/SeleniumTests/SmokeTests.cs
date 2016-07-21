@@ -41,8 +41,8 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
         public void HitAFewPageTypePages()
         {
             Driver.Navigate().GoToUrl(Settings.BaseUrl);
-            Wait.Until(ExpectedConditions.ElementExists(By.Id("recentChangesList")));
-            IWebElement list = Driver.FindElement(By.Id("recentChangesList"));
+            Wait.Until(ExpectedConditions.ElementExists(By.Id("recentActivity")));
+            IWebElement list = Driver.FindElement(By.Id("recentActivity"));
 
             List<string> linkTexts = list.FindElements(By.TagName("a")).Select(l => l.Text).ToList();
 
@@ -53,7 +53,7 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
                 IWebElement titleElement = Driver.FindElement(By.Id("fullName"));
                 Assert.IsTrue(linkText.Contains(titleElement.Text), "Title should be the front of link text");
                 Driver.Navigate().GoToUrl(Settings.BaseUrl);
-                Wait.Until(ExpectedConditions.ElementExists(By.Id("recentChangesList")));
+                Wait.Until(ExpectedConditions.ElementExists(By.Id("recentActivity")));
             }
         }
 
