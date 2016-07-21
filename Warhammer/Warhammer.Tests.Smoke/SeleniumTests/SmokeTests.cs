@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
@@ -52,6 +53,8 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
                 var element  = Driver.FindElement(By.LinkText(linkText));
                 Actions actions = new Actions(Driver);
                 actions.MoveToElement(element);
+                ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                Thread.Sleep(500);
                 element.Click();
                 Wait.Until(ExpectedConditions.ElementExists(By.Id("fullName")));
                 IWebElement titleElement = Driver.FindElement(By.Id("fullName"));
@@ -72,7 +75,14 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
 
             foreach (string linkId in linkIds)
             {
-                Driver.FindElement(By.Id(linkId)).Click();
+                var element = Driver.FindElement(By.Id(linkId));
+                Actions actions = new Actions(Driver);
+                actions.MoveToElement(element);
+                ((IJavaScriptExecutor)Driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                Thread.Sleep(500);
+                element.Click();
+
+              //  Driver.FindElement(By.Id(linkId)).Click();
                 Wait.Until(ExpectedConditions.ElementExists(By.Id("fullName")));
                 Assert.IsNotNull(ExpectedConditions.ElementExists(By.Id("fullName")));
                 Driver.Navigate().GoToUrl(Settings.BaseUrl + "/Home/CharacterLeague");
