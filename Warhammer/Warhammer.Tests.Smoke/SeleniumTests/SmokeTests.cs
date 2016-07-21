@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace Warhammer.Tests.Smoke.SeleniumTests
@@ -48,7 +49,10 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
 
             foreach (string linkText in linkTexts)
             {
-                Driver.FindElement(By.LinkText(linkText)).Click();
+                var element  = Driver.FindElement(By.LinkText(linkText));
+                Actions actions = new Actions(Driver);
+                actions.MoveToElement(element);
+                element.Click();
                 Wait.Until(ExpectedConditions.ElementExists(By.Id("fullName")));
                 IWebElement titleElement = Driver.FindElement(By.Id("fullName"));
                 Assert.IsTrue(linkText.Contains(titleElement.Text), "Title should be the front of link text");
@@ -64,7 +68,7 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
             Wait.Until(ExpectedConditions.ElementExists(By.Id("characterLeagueList")));
             IWebElement list = Driver.FindElement(By.Id("characterLeagueList"));
 
-            List<string> linkIds = list.FindElements(By.TagName("a")).Select(l => l.GetAttribute("Id")).Take(10).ToList();
+            List<string> linkIds = list.FindElements(By.TagName("a")).Select(l => l.GetAttribute("Id")).Where(s => s != null).Take(10).ToList();
 
             foreach (string linkId in linkIds)
             {

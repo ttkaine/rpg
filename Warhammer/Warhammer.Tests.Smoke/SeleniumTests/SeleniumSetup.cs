@@ -88,8 +88,8 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
 
                 Driver = new FirefoxDriver();
                // Driver.FindElement(By.TagName("html")).SendKeys(Keys.F11);
-                Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
-                Driver.Navigate().GoToUrl(Settings.UpdateUrl);
+               // Driver.Manage().Timeouts().ImplicitlyWait(new TimeSpan(0, 0, 30));
+                Driver.Navigate().GoToUrl(Settings.BaseUrl);
 
                 Wait.Until(ExpectedConditions.TitleContains("Identify yourself."));
 
