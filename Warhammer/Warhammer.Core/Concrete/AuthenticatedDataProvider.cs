@@ -945,6 +945,7 @@ namespace Warhammer.Core.Concrete
                 _repository.People()
                     .Where(p => !p.PlayerId.HasValue)
                     .Select(p => new PageListItemModel {Id = p.Id, Fullname = p.FullName})
+                    .OrderBy(p => p.Fullname)
                     .ToList();
         }
 
