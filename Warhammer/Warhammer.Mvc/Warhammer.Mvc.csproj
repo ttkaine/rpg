@@ -465,6 +465,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
     <None Include="Properties\PublishProfiles\CI01.pubxml" />
+    <None Include="Properties\PublishProfiles\Fate_Federer.pubxml" />
     <None Include="Properties\PublishProfiles\FATE_FIILE.pubxml" />
     <None Include="Properties\PublishProfiles\Pirate_Federer.pubxml" />
     <None Include="Properties\PublishProfiles\Warhammer_CI01.pubxml" />

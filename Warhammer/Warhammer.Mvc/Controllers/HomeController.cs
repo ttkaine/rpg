@@ -17,15 +17,13 @@ namespace Warhammer.Mvc.Controllers
     public class HomeController : BaseController
     {
         private readonly IScoreCalculator _scoreCalculator;
+        private readonly IAdminSettingsProvider _adminSettings;
+
         private string SiteName
         {
             get
             {
-                if (ConfigurationManager.AppSettings["SiteName"] != null)
-                {
-                    return ConfigurationManager.AppSettings["SiteName"];
-                }
-                return "Warhammer";
+                return _adminSettings.GetAdminSetting(AdminSettingName.SiteName);
             }
         }
 
@@ -33,17 +31,14 @@ namespace Warhammer.Mvc.Controllers
         {
             get
             {
-                if (ConfigurationManager.AppSettings["CssOverride"] != null)
-                {
-                    return ConfigurationManager.AppSettings["CssOverride"];
-                }
-                return "";
+                return _adminSettings.GetAdminSetting(AdminSettingName.CssOverrideFilename);
             }
         }
 
-        public HomeController(IAuthenticatedDataProvider data, IScoreCalculator scoreCalculator) : base(data)
+        public HomeController(IAuthenticatedDataProvider data, IScoreCalculator scoreCalculator, IAdminSettingsProvider adminSettings) : base(data)
         {
             _scoreCalculator = scoreCalculator;
+            _adminSettings = adminSettings;
         }
 
         public ActionResult Index()
