@@ -53,5 +53,6 @@ namespace Warhammer.Core.Abstract
         int Save(ExceptionLog exceptionLog);
         IQueryable<ExceptionLog> ExceptionLogs();
         void Delete(PersonStat personStat);
+        int Save(PageView pageView);
     }
 }

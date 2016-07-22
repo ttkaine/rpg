@@ -521,9 +521,9 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    page.PageViews.Add(new PageView{ PageId = page.Id, PlayerId = CurrentPlayer.Id, Viewed = DateTime.Now });
+                    pageView = new PageView{ PageId = page.Id, PlayerId = CurrentPlayer.Id, Viewed = DateTime.Now };
                 }
-                _repository.Save(page);
+                _repository.Save(pageView);
             }
         }
 
@@ -1107,6 +1107,21 @@ namespace Warhammer.Core.Concrete
                 UserName = email
             };
             _repository.Save(player);
+
+            DateTime createDate = DateTime.Now;
+
+            List<int> ids = _repository.Pages().Select(p => p.Id).ToList();
+
+            foreach (int pageId in ids)
+            {
+                var view = new PageView
+                {
+                    PageId = pageId,
+                    PlayerId = player.Id,
+                    Viewed = createDate
+                };
+                _repository.Save(view);
+            }
         }
 
         public List<ExceptionLog> GetExceptionLogs(int count)

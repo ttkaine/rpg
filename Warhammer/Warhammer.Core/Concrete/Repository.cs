@@ -401,6 +401,21 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public int Save(PageView pageView)
+        {
+            if (pageView.Id == 0)
+            {
+                _entities.PageViews.Add(pageView);
+            }
+            else
+            {
+                _entities.Entry(pageView).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return pageView.Id;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))
