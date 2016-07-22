@@ -1,7 +1,4 @@
-﻿
-@using System.Xml.Schema
-@using Warhammer.Core.Entities
-@model Warhammer.Mvc.Models.FateStuntsViewModel
+﻿@model Warhammer.Mvc.Models.FateStuntsViewModel
 @if (Model.StuntModels.Any(m => m.ShowHidden || m.Stunt.IsVisible) || ViewBag.EditMode)
 {
     <div id="fateStunts" class="content-block">

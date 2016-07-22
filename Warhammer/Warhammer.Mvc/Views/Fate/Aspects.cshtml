@@ -1,5 +1,4 @@
-﻿@using System.Xml.Schema
-@model List<Warhammer.Mvc.Models.FateAspectViewModel>
+﻿@model List<Warhammer.Mvc.Models.FateAspectViewModel>
 @if (Model.Any(m => m.ShowHidden || m.Aspect.IsVisible))
 {
     <div id="fateAspects" class="content-block">

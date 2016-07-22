@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Warhammer.Core.Entities
+﻿namespace Warhammer.Core.Entities
 {
 
 

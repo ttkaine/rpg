@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Warhammer.Mvc.Models
+﻿namespace Warhammer.Mvc.Models
 {
     public class SessionXpModel
     {

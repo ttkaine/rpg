@@ -1,6 +1,4 @@
-﻿
-@using System.Xml.Schema
-@using Warhammer.Core.Entities
+﻿@using Warhammer.Core.Entities
 @model List<Warhammer.Mvc.Models.FateStatViewModel>
 @if ((!ViewBag.EditMode && Model.Any(m => m.ShowHidden || m.Stat.IsVisible)) || (ViewBag.EditMode && Model.All(m => m.CanEdit)))
 {

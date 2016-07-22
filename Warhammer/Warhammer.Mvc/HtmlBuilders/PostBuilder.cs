@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using Warhammer.Core;
-using Warhammer.Core.Entities;
 using Warhammer.Core.RoleplayViewModels;
 
 namespace Warhammer.Mvc.HtmlBuilders
