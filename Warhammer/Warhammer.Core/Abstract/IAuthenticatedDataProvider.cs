@@ -86,6 +86,7 @@ namespace Warhammer.Core.Abstract
         bool ShowGraveyard { get;  }
         bool ShowLeague { get; }
         bool ShowCharacterSheet { get; }
+        bool CurrentUserIsGuest { get; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         List<Setting> SettingSection(int sectionId);

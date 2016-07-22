@@ -5,7 +5,7 @@
         @Html.DisplayFor(c => Model.Comments, new { isPageView = Model.ShowCommentAddPanel })
     </ul>
 
-    @if (Model.ShowCommentAddPanel)
+    @if (Model.ShowCommentAddPanel && User.IsInRole("Player"))
     {
         using (Ajax.BeginForm("PostComment", "Comment", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "comments"}))
         {

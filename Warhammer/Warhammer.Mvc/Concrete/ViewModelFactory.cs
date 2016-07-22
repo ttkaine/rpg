@@ -87,7 +87,7 @@ namespace Warhammer.Mvc.Concrete
                 SubMenu = peopleSubMenu
             });
 
-            if (_data.SiteHasFeature(Feature.CrowRules))
+            if (_data.SiteHasFeature(Feature.CrowRules) && !_data.CurrentUserIsGuest)
             {
                 model.LeftMenu.Add(new MenuItemViewModel
                 {
@@ -99,7 +99,7 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
-            if (_data.SiteHasFeature(Feature.UserSettings))
+            if (_data.SiteHasFeature(Feature.UserSettings) && !_data.CurrentUserIsGuest)
             {
                 model.RightMenu.Add(new MenuItemViewModel
                 {

@@ -9,7 +9,7 @@ using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Player")]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

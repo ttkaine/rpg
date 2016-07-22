@@ -47,6 +47,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult EditComment(int? pageId, int commentId, string comment)
         {
             DataProvider.EditComment(commentId, comment);
@@ -56,7 +57,8 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-    //    [ValidateInput(false)]
+        [Authorize(Roles = "Player")]
+        //    [ValidateInput(false)]
         public ActionResult PostComment(CommentListViewModel model)
         {
 
@@ -84,6 +86,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult Delete(int commentId, int? pageId)
         {
             DataProvider.DeleteComment(commentId);

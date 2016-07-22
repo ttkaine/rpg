@@ -19,6 +19,7 @@ namespace Warhammer.Mvc.Controllers
         readonly IViewModelFactory _factory;
 
         [HttpPost, ValidateInput(false)]
+        [Authorize(Roles = "Player")]
         public ActionResult Edit(int personId, string fullName, string shortName, string description, string saveAction)
         {
             if (saveAction == "Save")
@@ -77,6 +78,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult SetStats(PersonStatViewModel postedStats)
         {
             if (!DataProvider.SiteHasFeature(Feature.SimpleStats))
@@ -235,6 +237,7 @@ namespace Warhammer.Mvc.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult AddRole(int personId, string role)
         {
             if (!string.IsNullOrWhiteSpace(role))
@@ -246,6 +249,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult AddDescriptor(int personId, string descriptor)
         {
             if (!string.IsNullOrWhiteSpace(descriptor))
@@ -257,6 +261,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult BuyStatIncrease(int personId, int statId)
         {
             StatName statName = (StatName) statId;
@@ -385,8 +390,7 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
-        public
-            ActionResult ScoreHistory(int id)
+        public ActionResult ScoreHistory(int id)
         {
             if (DataProvider.SiteHasFeature(Feature.ScoreHistory))
             {
@@ -534,6 +538,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult SetupHitPoints(int id)
         {
             Person person = DataProvider.GetPerson(id);
@@ -548,6 +553,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult BuyHitPointSlot(int id, int level, int type)
         {
             Person person = DataProvider.GetPerson(id);

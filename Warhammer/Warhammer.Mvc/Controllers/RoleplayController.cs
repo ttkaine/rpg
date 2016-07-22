@@ -199,7 +199,8 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public JsonResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
+        [Authorize(Roles = "Player")]
+        public JsonResult MakeTextPost(int sessionId, int characterId, int lastPostId, bool isOoc, string text, string lastUpdateTime, string recipientString)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -287,7 +288,8 @@ namespace Warhammer.Mvc.Controllers
 			return Regex.Replace(source, "<.*?>", string.Empty);
 		}
 
-		public JsonResult MakeDiceRollPost(int sessionId, int characterId, int lastPostId, int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximum, string lastUpdateTime)
+        [Authorize(Roles = "Player")]
+        public JsonResult MakeDiceRollPost(int sessionId, int characterId, int lastPostId, int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximum, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -441,7 +443,8 @@ namespace Warhammer.Mvc.Controllers
 			return Json("[" + serializer.Serialize(returnObject) + "]");		    
 	    }
 
-		public JsonResult DeletePost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
+        [Authorize(Roles = "Player")]
+        public JsonResult DeletePost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -477,7 +480,8 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public JsonResult MakePostOoc(int sessionId, int postId, int lastPostId, string lastUpdateTime)
+        [Authorize(Roles = "Player")]
+        public JsonResult MakePostOoc(int sessionId, int postId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -513,7 +517,8 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public JsonResult EditTextPost(int sessionId, int postId, int lastPostId, string text, string lastUpdateTime)
+        [Authorize(Roles = "Player")]
+        public JsonResult EditTextPost(int sessionId, int postId, int lastPostId, string text, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
@@ -587,7 +592,8 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		public JsonResult RevertPost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
+        [Authorize(Roles = "Player")]
+        public JsonResult RevertPost(int sessionId, int postId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
 			if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))

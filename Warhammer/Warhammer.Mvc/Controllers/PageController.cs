@@ -59,6 +59,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
+        [Authorize(Roles = "Player")]
         public ActionResult Index(Page page)
         {
             if (ModelState.IsValid)
@@ -107,6 +108,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult DeleteLink(int id, int linkToDeleteId)
         {
             if (ModelState.IsValid)
@@ -179,6 +181,7 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        [Authorize(Roles = "Player")]
         public ActionResult ChangeImage(int? id)
         {
             if (id.HasValue)
@@ -194,6 +197,7 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("index", "home");
         }
 
+        [Authorize(Roles = "Player")]
         public ActionResult EditLinks(int? id)
         {
             if (id.HasValue)
@@ -216,6 +220,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult EditLinks(EditLinksViewModel model)
         {
             if (ModelState.IsValid)
@@ -236,6 +241,7 @@ namespace Warhammer.Mvc.Controllers
         
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         [ValidateInput(false)]
         public ActionResult ChangeImage(string saveAction, int id, HttpPostedFileBase profileImageFile, double? y1, double? x1, double? h, double? w)
         {
@@ -266,6 +272,7 @@ namespace Warhammer.Mvc.Controllers
             Page model = DataProvider.GetPage(id);
             return View(model);
         }
+
         private Rectangle GetCropArea(double? y1, double? x1, double? h, double? w)
         {
             if (y1.HasValue && x1.HasValue && h.HasValue && w.HasValue)
@@ -275,7 +282,5 @@ namespace Warhammer.Mvc.Controllers
 
             return new Rectangle();
         }
-
-
     }
 }

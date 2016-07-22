@@ -170,9 +170,13 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult FavouriteNpcs()
         {
-            ModelState.Clear();
-            var model = MyFavNpcModel();
-            return PartialView(model);
+            if (User.IsInRole("Player"))
+            {
+                ModelState.Clear();
+                var model = MyFavNpcModel();
+                return PartialView(model);
+            }
+            return null;
         }
 
         private MyFavNpcModel MyFavNpcModel()
@@ -218,6 +222,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult UpdateFavNpc(MyFavNpcModel model)
         {
             if (ModelState.IsValid)
@@ -274,6 +279,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult SwitchSetting(int settingId)
         {
             int sectionId = DataProvider.SwitchSetting(settingId);
@@ -295,6 +301,7 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        [Authorize(Roles = "Player")]
         public ActionResult MarkAllRead()
         {
             List<Page> pages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate).ToList();

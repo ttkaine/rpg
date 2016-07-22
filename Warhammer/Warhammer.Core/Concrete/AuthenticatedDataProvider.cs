@@ -767,6 +767,11 @@ namespace Warhammer.Core.Concrete
             get { return SiteHasFeature(Feature.CharacterSheet); }
         }
 
+        public bool CurrentUserIsGuest
+        {
+            get { return _authenticatedUser.IsGuest; }
+        }
+
         public List<UserSetting> UserSettings()
         {
             List<UserSetting> settings = _repository.UserSettings().Where(u => u.PlayerId == CurrentPlayer.Id).ToList();

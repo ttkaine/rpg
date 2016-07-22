@@ -62,6 +62,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult Aspects(List<FateAspectViewModel> model)
         {
             if (model != null)
@@ -101,7 +102,9 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult Stats(List<FateStatViewModel> model)
         {
             if (model != null && model.Any())
@@ -127,7 +130,6 @@ namespace Warhammer.Mvc.Controllers
 
             return null;
         }
-
 
         private List<FateStatViewModel> GetFateStatsViewModel(Person person)
         {
@@ -214,6 +216,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult AddStunt(FateStunt stunt)
         {
             if (ModelState.IsValid)
@@ -232,6 +235,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult EditStunts(FateStuntsViewModel model)
         {
 

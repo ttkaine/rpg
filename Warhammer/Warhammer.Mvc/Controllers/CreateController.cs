@@ -7,6 +7,7 @@ using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
 {
+    [Authorize(Roles = "Player")]
     public class CreateController : BaseController
     {
         // GET: Create

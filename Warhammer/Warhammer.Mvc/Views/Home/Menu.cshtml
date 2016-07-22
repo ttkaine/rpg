@@ -16,7 +16,7 @@
                 <ul class="nav navbar-nav">
                     @if (Request != null && Request.Url != null)
                     {
-                        if (ViewBag.EditMode)
+                        if (ViewBag.EditMode && User.IsInRole("Player"))
                         {
                             <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create", new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
                             <li class="dropdown">
@@ -32,13 +32,13 @@
                         }
                         else
                         {
-                            if (User.Identity.Name.ToLower().StartsWith("guest"))
+                            if (User.IsInRole("Player"))
                             {
-                                <li>Guest Mode</li>
+                                <li>@Html.ActionLink("Switch to Edit Mode", "EditMode", "Create", new { returnUrl = Request.Url.AbsoluteUri }, null)</li>
                             }
                             else
                             {
-                                <li>@Html.ActionLink("Switch to Edit Mode", "EditMode", "Create", new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
+                                <li><a href="#">Guest Mode</a></li>
                             }
                         }
 

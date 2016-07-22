@@ -200,7 +200,14 @@
                         <div class="PlayerToPostContainer">
                             <span id="playerToPost">Loading post order data...</span>
                         </div>
-                        <input id="btnPost" type="button" value="WAIT" class="PlayerPostButton" onclick="btnPost_Click();" />    
+                    @if (User.IsInRole("Player"))
+                    {
+                        <input id="btnPost" type="button" value="WAIT" class="PlayerPostButton" onclick="btnPost_Click();"/>
+                    }
+                    else
+                    {
+                        <input id="btnPost" type="button" value="WAIT" class="PlayerPostButton" onclick="alert('Guest Mode')" />
+                    }
                     </div><!-- PostButtonContainer -->
                 </div><!-- PlayerTextPostControls -->
 
@@ -268,10 +275,16 @@
                                 <option value="6">6</option>
                             </select>
 						</span>
-					</div><!-- DiceControlsRow -->					                  
-					<div class="DiceRollButtonContainer">
-						<input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="btnRollDice_Click();" />    
-					</div><!-- DiceRollButtonContainer -->						
+					</div><!-- DiceControlsRow -->
+				    <div class="DiceRollButtonContainer">
+				        @if (User.IsInRole("Player"))
+				        {
+				            <input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="btnRollDice_Click();"/>            }
+                        else
+                        {
+                            <input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="alert('Guest Mode')" />
+                        }
+				    </div><!-- DiceRollButtonContainer -->						
 				</div><!-- PlayerDiceControls -->
 
                 <div class="Clear"></div>

@@ -13,6 +13,7 @@
     {
         bool UserIsAuthenticated { get; }
         string UserName { get; }
-        bool IsAdmin { get; } 
+        bool IsAdmin { get; }
+        bool IsGuest { get; }
     }
 }

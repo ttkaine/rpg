@@ -39,5 +39,17 @@ namespace Warhammer.Mvc.Concrete
                     return false;
             }
         }
+
+        public bool IsGuest
+        {
+            get
+            {
+                var context = HttpContext.Current;
+                if (context != null && context.User != null && context.User.Identity != null)
+                    return !HttpContext.Current.User.IsInRole("Player");
+                else
+                    return true;
+            }
+        }
     }
 }
