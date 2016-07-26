@@ -1196,6 +1196,10 @@ namespace Warhammer.Core.Concrete
             }
 
             var filterPredicate = PredicateBuilder.True<Page>();
+            var postPredicate = PredicateBuilder.True<Session>();
+
+
+
             string[] terms = searchTerm.Split(' ');
 
             foreach (string term in terms)
@@ -1206,7 +1210,19 @@ namespace Warhammer.Core.Concrete
                 termPredicate = termPredicate.Or(p => p.FullName.Contains(temp));
                 termPredicate = termPredicate.Or(p => p.PlainText.Contains(temp));
                 filterPredicate = filterPredicate.And(termPredicate.Expand());
+
+                var postTermPredicate = PredicateBuilder.False<Session>();
+                postTermPredicate = postTermPredicate.Or(s => s.Posts.Any(p => !p.IsRevised && p.OriginalContent.Contains(temp)));
+                postTermPredicate = postTermPredicate.Or(s => s.Posts.Any(p => p.IsRevised && p.RevisedContent.Contains(temp)));
+                postPredicate = postPredicate.And(postTermPredicate.Expand());
             }
+
+            var sessionQuery = _repository.Pages().OfType<Session>();
+            sessionQuery = sessionQuery.AsExpandable().Where(postPredicate.Expand());
+            List<int> sessionIds = sessionQuery.Select(s => s.Id).ToList();
+
+            filterPredicate = filterPredicate.Or(p => sessionIds.Any(s => s == p.Id));
+
             var query = _repository.Pages();
 
             query = query.AsExpandable().Where(filterPredicate.Expand());
