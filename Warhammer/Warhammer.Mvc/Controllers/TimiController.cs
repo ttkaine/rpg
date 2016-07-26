@@ -15,6 +15,7 @@ namespace Warhammer.Mvc.Controllers
         public int Value { get; set; }
     }
 
+    [Authorize(Roles = "Admin")]
     public class TimiController : BaseController
     {
         // GET: Timi
