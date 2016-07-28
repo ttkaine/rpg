@@ -15,6 +15,7 @@ namespace Warhammer.Mvc.Controllers
         public int Value { get; set; }
     }
 
+    [Authorize(Roles = "Admin")]
     public class TimiController : BaseController
     {
         // GET: Timi
@@ -22,7 +23,16 @@ namespace Warhammer.Mvc.Controllers
         {
         }
 
-
+        public ActionResult Touch()
+        {
+            List<Page> all = DataProvider.AllPages();
+            foreach (Page page in all)
+            {
+                page.PlainText = page.RawText;
+                DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, page.Description);
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
         public ActionResult Index()
         {

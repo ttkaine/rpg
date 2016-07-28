@@ -178,6 +178,11 @@ namespace Warhammer.Core.Concrete
             Page existingPage = _repository.Pages().FirstOrDefault(p => p.Id == id);
             if (existingPage != null)
             {
+                if (string.IsNullOrWhiteSpace(description))
+                {
+                    description = string.Empty;
+                }
+
                 int changedLength = description.Length;
                 int originalLength = 0;
 
@@ -287,7 +292,7 @@ namespace Warhammer.Core.Concrete
             }
             page.Modified = DateTime.Now;
             page.ModifedById = CurrentPlayer.Id;
-
+            page.PlainText = page.RawText;
 
 
             int pageId = _repository.Save(page);
@@ -437,10 +442,13 @@ namespace Warhammer.Core.Concrete
         {
             Page page = GetPage(id);
             Page linkTo = GetPage(addLinkTo);
-            page.Related.Add(linkTo);
-            linkTo.Related.Add(page);
-            Save(page);
-            Save(linkTo);
+            if (!page.Related.Contains(linkTo))
+            {
+                page.Related.Add(linkTo);
+                linkTo.Related.Add(page);
+                Save(page);
+                Save(linkTo);
+            }
         }
 
         public void RemoveLink(int id, int linkToDeleteId)
@@ -1166,6 +1174,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Page> AllPages()
+        {
+            return _repository.Pages().ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -1193,6 +1206,10 @@ namespace Warhammer.Core.Concrete
             }
 
             var filterPredicate = PredicateBuilder.True<Page>();
+            var postPredicate = PredicateBuilder.True<Session>();
+
+
+
             string[] terms = searchTerm.Split(' ');
 
             foreach (string term in terms)
@@ -1201,9 +1218,21 @@ namespace Warhammer.Core.Concrete
                 string temp = term;
                 termPredicate = termPredicate.Or(p => p.ShortName.Contains(temp));
                 termPredicate = termPredicate.Or(p => p.FullName.Contains(temp));
-                termPredicate = termPredicate.Or(p => p.Description.Length < 10000 && p.Description.Contains(temp));
+                termPredicate = termPredicate.Or(p => p.PlainText.Contains(temp));
                 filterPredicate = filterPredicate.And(termPredicate.Expand());
+
+                var postTermPredicate = PredicateBuilder.False<Session>();
+                postTermPredicate = postTermPredicate.Or(s => s.Posts.Any(p => !p.IsRevised && p.OriginalContent.Contains(temp)));
+                postTermPredicate = postTermPredicate.Or(s => s.Posts.Any(p => p.IsRevised && p.RevisedContent.Contains(temp)));
+                postPredicate = postPredicate.And(postTermPredicate.Expand());
             }
+
+            var sessionQuery = _repository.Pages().OfType<Session>();
+            sessionQuery = sessionQuery.AsExpandable().Where(postPredicate.Expand());
+            List<int> sessionIds = sessionQuery.Select(s => s.Id).ToList();
+
+            filterPredicate = filterPredicate.Or(p => sessionIds.Any(s => s == p.Id));
+
             var query = _repository.Pages();
 
             query = query.AsExpandable().Where(filterPredicate.Expand());
@@ -1218,11 +1247,11 @@ namespace Warhammer.Core.Concrete
                     .ThenByDescending(p => p.FullName.StartsWith(searchTerm))
                     .ThenByDescending(p => p.ShortName.Contains(searchTerm))
                     .ThenByDescending(p => p.FullName.Contains(searchTerm))
-                    .ThenByDescending(p => p.Description.Contains(spacedTerm))
-                    .ThenByDescending(p => p.Description.Contains(startedTerm))
-                    .ThenByDescending(p => p.Description.Contains(endedTerm))
+                    .ThenByDescending(p => p.PlainText.Contains(spacedTerm))
+                    .ThenByDescending(p => p.PlainText.Contains(startedTerm))
+                    .ThenByDescending(p => p.PlainText.Contains(endedTerm))
                     .ThenByDescending(p => p.FullName)
-                    .Take(10).ToList();
+                    .Take(15).ToList();
         }
 
         public bool PageExists(string shortName, string fullName)

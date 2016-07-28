@@ -77,6 +77,10 @@ namespace Warhammer.Core.Entities
         {
             get
             {
+                if (string.IsNullOrWhiteSpace(Description))
+                {
+                    return string.Empty;
+                }
                 string text = Regex.Replace(Description, "<.*?>", string.Empty);
                 return text;
             }
