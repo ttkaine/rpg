@@ -651,6 +651,7 @@
     <Content Include="Views\Admin\DisplayTemplates\AdminSetting.cshtml" />
     <Content Include="Views\Admin\Log.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ExceptionLog.cshtml" />
+    <Content Include="Views\Home\Footer.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

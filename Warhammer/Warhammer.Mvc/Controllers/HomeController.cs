@@ -306,5 +306,11 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public ActionResult Footer()
+        {
+            string footerMessage = DataProvider.VersionInfo();
+            return PartialView("Footer", footerMessage);
+        }
     }
 }

@@ -25,6 +25,11 @@ namespace Warhammer.Core.Concrete
         //    return _entities.ChangeLogs;
         //}
 
+        public IQueryable<ChangeLog> ChangeLogs()
+        {
+            return _entities.ChangeLogs;
+        }
+
         public IQueryable<Person> People()
         {
             return _entities.Pages.OfType<Person>();

@@ -118,9 +118,7 @@
     @RenderBody()
     @if (User.Identity.IsAuthenticated)
     {
-        <footer>
-            <p>&copy; @DateTime.Now.Year</p>
-        </footer>
+        @Html.Action("Footer","Home")
     }
 </div>
 

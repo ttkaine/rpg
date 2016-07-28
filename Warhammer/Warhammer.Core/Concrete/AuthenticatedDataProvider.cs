@@ -76,7 +76,17 @@ namespace Warhammer.Core.Concrete
 
         public string VersionInfo()
         {
-            return string.Format("Software Version: {0}", Assembly.GetExecutingAssembly().GetName().Version);
+            string softwareVersion = $"Software Version: {Assembly.GetExecutingAssembly().GetName().Version}";
+            string databaseVersion = "Default Database";
+
+            ChangeLog dbVersion = _repository.ChangeLogs().OrderByDescending(c => c.DateTime).FirstOrDefault();
+            if (dbVersion != null)
+            {
+                databaseVersion =
+                    $"Database: {dbVersion.Id}:{dbVersion.DateTime.Year.ToString("00")}{dbVersion.DateTime.Month.ToString("00")}{dbVersion.DateTime.Day.ToString("00")}";
+            }
+
+            return $"{softwareVersion} :: {databaseVersion}";
         }
 
         public ICollection<Person> MyPeople()
