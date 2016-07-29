@@ -99,10 +99,12 @@ namespace Warhammer.Mvc.Controllers
         {
             if (DataProvider.SiteHasFeature(Feature.SimpleStats))
             {
+                Page page = DataProvider.GetPage(id);
                 SessionXpModel model = new SessionXpModel
                 {
                     SessionId = id,
-                    XpAwarded = 0
+                    XpAwarded = page.XpAwarded ?? 0,
+                    XpToAward = 1
                 };
                 return PartialView(model);
             }
@@ -116,10 +118,22 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.SimpleStats))
             {
                 if (ModelState.IsValid)
-            {
-                DataProvider.AddXpForSession(model.SessionId, model.XpAwarded);
-            }
-            return PartialView(model);
+                {
+                    DataProvider.AddXpForSession(model.SessionId, model.XpToAward);
+
+                    int id = model.SessionId;
+
+                    ModelState.Clear();
+                    Page page = DataProvider.GetPage(id);
+                    SessionXpModel updatedModel = new SessionXpModel
+                    {
+                        SessionId = id,
+                        XpAwarded = page.XpAwarded ?? 0,
+                        XpToAward = 1
+                    };
+
+                    return PartialView(updatedModel);
+                } 
             }
             return null;
         }

@@ -170,6 +170,7 @@
           <Property Name="SignificantUpdateById" Type="int" Nullable="false" />
           <Property Name="SignificantUpdate" Type="datetime" Nullable="false" />
           <Property Name="Pinned" Type="bit" Nullable="false" />
+          <Property Name="XpAwarded" Type="int" />
           <Property Name="PlainText" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PageView">
@@ -1166,6 +1167,7 @@
           <NavigationProperty Name="Related" Relationship="WarhammerModel.PersonAtSession" FromRole="Page" ToRole="Page1" />
           <NavigationProperty Name="Pages" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" />
           <Property Name="PlainText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="XpAwarded" Type="Int32" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -1870,6 +1872,7 @@
           <EntitySetMapping Name="Pages">
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="XpAwarded" ColumnName="XpAwarded" />
                 <ScalarProperty Name="PlainText" ColumnName="PlainText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Pinned" ColumnName="Pinned" />

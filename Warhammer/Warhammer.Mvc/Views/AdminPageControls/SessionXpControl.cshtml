@@ -1,18 +1,25 @@
 ﻿@model Warhammer.Mvc.Models.SessionXpModel
 
 <div class="alert alert-info" id="xpAwardBox">
-
     @if (Model.XpAwarded == 0)
     {
         using (Ajax.BeginForm("SessionXpControl", "AdminPageControls", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "xpAwardBox"}))
         {
             @Html.HiddenFor(m => m.SessionId)
-            @Html.TextBoxFor(m => m.XpAwarded, new {@class = "form-control"})
+            @Html.HiddenFor(m => m.XpAwarded)
+            @Html.TextBoxFor(m => m.XpToAward, new {@class = "form-control"})
             <input type="submit" value="Award XP" class="btn btn-success btn-block"/>
         }
     }
     else
     {
         <h3>Awarded @Model.XpAwarded XP!</h3>
+        using (Ajax.BeginForm("SessionXpControl", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "xpAwardBox" }))
+        {
+            @Html.HiddenFor(m => m.SessionId)
+            @Html.HiddenFor(m => m.XpAwarded)
+            @Html.TextBoxFor(m => m.XpToAward, new { @class = "form-control" })
+            <input type="submit" value="Award Additional XP" class="btn btn-warning btn-block" />
+        }
     }
 </div>

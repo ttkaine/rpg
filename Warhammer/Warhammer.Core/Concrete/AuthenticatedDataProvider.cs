@@ -1114,6 +1114,9 @@ namespace Warhammer.Core.Concrete
                 {
                     AddXp(person.Id, xpAwarded);
                 }
+
+                session.XpAwarded = session.XpAwarded + xpAwarded;
+                Save(session);
             }
         }
 

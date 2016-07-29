@@ -4,6 +4,6 @@
     {
         public int SessionId { get; set; }
         public int XpAwarded { get; set; }
-
+        public int XpToAward { get; set; }
     }
 }
