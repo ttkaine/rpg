@@ -16,6 +16,7 @@ namespace Warhammer.Core.Entities
     {
         public Nullable<int> PersonId { get; set; }
         public Nullable<int> SessionId { get; set; }
+        public Nullable<System.DateTime> XpAwarded { get; set; }
     
         public virtual Person Person { get; set; }
         public virtual Session Session { get; set; }

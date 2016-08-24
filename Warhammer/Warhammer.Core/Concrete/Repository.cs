@@ -421,6 +421,12 @@ namespace Warhammer.Core.Concrete
             return pageView.Id;
         }
 
+        public void Delete(ScoreHistory scoreHistory)
+        {
+            _entities.ScoreHistories.Remove(scoreHistory);
+            _entities.SaveChanges();
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

@@ -205,6 +205,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
+    <Compile Include="Controllers\DefaultXpController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -254,37 +255,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DbUpdateScripts\0001.sql" />
-    <Content Include="Content\DbUpdateScripts\0002.sql" />
-    <Content Include="Content\DbUpdateScripts\0003.sql" />
-    <Content Include="Content\DbUpdateScripts\0004.sql" />
-    <Content Include="Content\DbUpdateScripts\0005.sql" />
-    <Content Include="Content\DbUpdateScripts\0006.sql" />
-    <Content Include="Content\DbUpdateScripts\0007.sql" />
-    <Content Include="Content\DbUpdateScripts\0008.sql" />
-    <Content Include="Content\DbUpdateScripts\0009.sql" />
-    <Content Include="Content\DbUpdateScripts\0010.sql" />
-    <Content Include="Content\DbUpdateScripts\0011.sql" />
-    <Content Include="Content\DbUpdateScripts\0012.sql" />
-    <Content Include="Content\DbUpdateScripts\0013.sql" />
-    <Content Include="Content\DbUpdateScripts\16051701.sql" />
-    <Content Include="Content\DbUpdateScripts\15101801.sql" />
-    <Content Include="Content\DbUpdateScripts\15112301.sql" />
-    <Content Include="Content\DbUpdateScripts\15122701.sql" />
-    <Content Include="Content\DbUpdateScripts\15122702.sql" />
-    <Content Include="Content\DbUpdateScripts\15122703.sql" />
-    <Content Include="Content\DbUpdateScripts\15123001.sql" />
-    <Content Include="Content\DbUpdateScripts\15123002.sql" />
-    <Content Include="Content\DbUpdateScripts\16010201.sql" />
-    <Content Include="Content\DbUpdateScripts\16013101.sql" />
-    <Content Include="Content\DbUpdateScripts\16051601.sql" />
-    <Content Include="Content\DbUpdateScripts\16051801.sql" />
-    <Content Include="Content\DbUpdateScripts\16060201.sql" />
-    <Content Include="Content\DbUpdateScripts\16062201.sql" />
-    <Content Include="Content\DbUpdateScripts\16071201.sql" />
-    <Content Include="Content\DbUpdateScripts\16072501.sql" />
-    <Content Include="Content\DbUpdateScripts\16072901.sql" />
-    <Content Include="Content\DbUpdateScripts\16072902.sql" />
+    <Content Include="Content\DbUpdateScripts\16082401.sql" />
+    <Content Include="Content\DbUpdateScripts\16082402.sql" />
+    <Content Include="Content\DbUpdateScripts\16082403.sql" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
@@ -655,6 +628,10 @@
     <Content Include="Views\Admin\Log.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ExceptionLog.cshtml" />
     <Content Include="Views\Home\Footer.cshtml" />
+    <Content Include="Views\DefaultXp\Index.cshtml" />
+    <Content Include="Views\DefaultXp\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\DefaultXp\DisplayTemplates\SessionLog.cshtml" />
+    <Content Include="Views\DefaultXp\DisplayTemplates\Session.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

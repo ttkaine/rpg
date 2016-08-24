@@ -27,6 +27,7 @@ namespace Warhammer.Core.Entities
         public bool IsTextSession { get; set; }
         public bool IsPrivate { get; set; }
         public bool IsGmTurn { get; set; }
+        public Nullable<System.DateTime> XpAwarded { get; set; }
     
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
         public virtual ICollection<Post> Posts { get; set; }

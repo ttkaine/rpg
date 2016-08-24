@@ -482,6 +482,19 @@ namespace Warhammer.Core.Concrete
                 {
                     DeletePageView(pageView.Id);
                 }
+                
+                Person person = page as Person;
+
+                if (person != null)
+                {
+                    List<ScoreHistory> scores =
+                        _repository.ScoreHistories().Where(p => p.PersonId == person.Id).ToList();
+                    foreach (ScoreHistory scoreHistory in scores)
+                    {
+                        _repository.Delete(scoreHistory);
+                    }
+                }
+
                 _repository.Delete(page);
             }
         }
@@ -1115,7 +1128,6 @@ namespace Warhammer.Core.Concrete
                     AddXp(person.Id, xpAwarded);
                 }
 
-                session.XpAwarded = session.XpAwarded + xpAwarded;
                 Save(session);
             }
         }
@@ -1180,6 +1192,42 @@ namespace Warhammer.Core.Concrete
         public List<Page> AllPages()
         {
             return _repository.Pages().ToList();
+        }
+
+        public void AddDefaultXp(int pageId)
+        {
+            Page page = GetPage(pageId);
+            int xp = 0;
+            int sessionId = 0;
+
+            Session session = page as Session;
+            if (session != null)
+            {
+                if (!session.XpAwarded.HasValue)
+                {
+                    session.XpAwarded = DateTime.Now;
+                    xp = session.IsTextSession ? 1 : 3;
+                    sessionId = session.Id;
+                    Save(session);
+                }
+            }
+
+            SessionLog log = page as SessionLog;
+            if (log != null)
+            {
+                if (!log.XpAwarded.HasValue)
+                {
+                    xp = 1;
+                    sessionId = log.SessionId ?? 0;
+                    log.XpAwarded = DateTime.Now;
+                    Save(log);
+                }
+            }
+
+            if (xp > 0 && sessionId > 0)
+            {
+                AddXpForSession(sessionId, xp);
+            }
         }
 
         public void RemoveAward(int personId, int awardId)

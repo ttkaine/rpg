@@ -117,5 +117,6 @@ namespace Warhammer.Core.Abstract
         List<ExceptionLog> GetExceptionLogs(int count);
         void ResetNpcStats(int id);
         List<Page> AllPages();
+        void AddDefaultXp(int pageId);
     }
 }

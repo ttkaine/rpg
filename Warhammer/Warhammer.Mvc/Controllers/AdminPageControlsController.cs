@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Models;
@@ -103,7 +104,6 @@ namespace Warhammer.Mvc.Controllers
                 SessionXpModel model = new SessionXpModel
                 {
                     SessionId = id,
-                    XpAwarded = page.XpAwarded ?? 0,
                     XpToAward = 1
                 };
                 return PartialView(model);
@@ -124,12 +124,11 @@ namespace Warhammer.Mvc.Controllers
                     int id = model.SessionId;
 
                     ModelState.Clear();
-                    Page page = DataProvider.GetPage(id);
                     SessionXpModel updatedModel = new SessionXpModel
                     {
                         SessionId = id,
-                        XpAwarded = page.XpAwarded ?? 0,
-                        XpToAward = 1
+                        XpToAward = 1,
+                        XpAwarded = model.XpToAward
                     };
 
                     return PartialView(updatedModel);

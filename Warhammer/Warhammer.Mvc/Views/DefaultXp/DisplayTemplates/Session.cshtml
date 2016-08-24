@@ -1,0 +1,10 @@
+﻿@model Warhammer.Core.Entities.Session
+
+@if (!Model.XpAwarded.HasValue)
+{
+ using (Html.BeginForm("AwardXp", "DefaultXp", FormMethod.Post, new {id = "defaultXp"}))
+ {
+     @Html.HiddenFor(m => m.Id)
+     <button class="btn btn-block btn-success" type="submit">* Award Default XP *</button>
+ }
+}

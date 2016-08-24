@@ -55,5 +55,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<ExceptionLog> ExceptionLogs();
         void Delete(PersonStat personStat);
         int Save(PageView pageView);
+        void Delete(ScoreHistory scoreHistory);
     }
 }
