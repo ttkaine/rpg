@@ -118,5 +118,6 @@ namespace Warhammer.Core.Abstract
         void ResetNpcStats(int id);
         List<Page> AllPages();
         void AddDefaultXp(int pageId);
+        List<PageListItemModel> FullPageList();
     }
 }

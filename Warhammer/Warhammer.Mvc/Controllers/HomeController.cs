@@ -70,6 +70,13 @@ namespace Warhammer.Mvc.Controllers
             return View(model);
         }
 
+
+        public ActionResult FullPageList()
+        {
+            List<PageListItemModel> model = DataProvider.FullPageList();
+            return View(model);
+        }
+
         public ActionResult Sessions()
         {
             List<Session> sessions = DataProvider.Sessions().OrderByDescending(s => s.DateTime).ToList();

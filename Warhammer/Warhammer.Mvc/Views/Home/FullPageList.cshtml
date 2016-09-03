@@ -1,0 +1,32 @@
+﻿
+@using Warhammer.Core.Entities
+@model IEnumerable<Warhammer.Core.Models.PageListItemModel>
+@{
+    ViewBag.Title = "All The Pages";
+}
+
+<div class="content-wrapper">
+
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Full Index of Pages</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <table class="table table-striped">
+                @Html.DisplayForModel()
+            </table>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>A list of all the pages on the site</h3>
+            <p>There's quite a lot of stuff here, eh?</p>
+        </div>
+    </div>
+
+</div>

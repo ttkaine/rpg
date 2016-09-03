@@ -236,6 +236,13 @@ namespace Warhammer.Mvc.Concrete
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
 
+
+            items.Add(new MenuItemViewModel
+            {
+                Name = "Page List",
+                Url = _urlHelper.Action("FullPageList", "Home"),
+            });
+
             if (_data.SiteHasFeature(Feature.WarhammerMap))
             {
                 items.Add(new MenuItemViewModel
