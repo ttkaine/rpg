@@ -725,10 +725,10 @@ namespace Warhammer.Core.Concrete
             Save(person);
         }
 
-        public void AddXp(int personId, int xpValue)
+        public void AddXp(int personId, decimal xpValue)
         {
             Person person = GetPerson(personId);
-            person.CurrentXp = person.CurrentXp + xpValue;
+            person.XPAwarded = person.XPAwarded + xpValue;
             Save(person);
         }
 
@@ -1086,7 +1086,6 @@ namespace Warhammer.Core.Concrete
                     if (!free)
                     {
                         int cost = person.HitSlotCost(level, type);
-                        person.CurrentXp = person.CurrentXp - cost;
                         person.XpSpent = person.XpSpent + cost;
                     }
 
@@ -1106,7 +1105,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void AddXpForSession(int sessionId, int xpAwarded)
+        public void AddXpForSession(int sessionId, decimal xpAwarded)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
@@ -1171,7 +1170,6 @@ namespace Warhammer.Core.Concrete
                 person.Roles = "";
 
                 person.XpSpent = 0;
-                person.CurrentXp = 0;
 
                 foreach (SimpleHitPoint simpleHitPoint in person.SimpleHitPoints)
                 {
@@ -1197,7 +1195,7 @@ namespace Warhammer.Core.Concrete
         public void AddDefaultXp(int pageId)
         {
             Page page = GetPage(pageId);
-            int xp = 0;
+            decimal xp = 0;
             int sessionId = 0;
 
             Session session = page as Session;
@@ -1206,7 +1204,7 @@ namespace Warhammer.Core.Concrete
                 if (!session.XpAwarded.HasValue)
                 {
                     session.XpAwarded = DateTime.Now;
-                    xp = session.IsTextSession ? 1 : 3;
+                    xp = session.IsTextSession ? 0.1m : 0.3m;
                     sessionId = session.Id;
                     Save(session);
                 }
@@ -1217,7 +1215,7 @@ namespace Warhammer.Core.Concrete
             {
                 if (!log.XpAwarded.HasValue)
                 {
-                    xp = 1;
+                    xp = 0.1m;
                     sessionId = log.SessionId ?? 0;
                     log.XpAwarded = DateTime.Now;
                     Save(log);
@@ -1398,14 +1396,14 @@ namespace Warhammer.Core.Concrete
             {
                 if (!person.IsDead)
                 {
-                    person.CurrentXp++;
+                    person.XPAwarded++;
                     if (session.People.Contains(person))
                     {
-                        person.CurrentXp++;
+                        person.XPAwarded++;
                     }
                     if (session.Posts.Any(p => p.CharacterId == person.Id))
                     {
-                        person.CurrentXp++;
+                        person.XPAwarded++;
                     }
                     Save(person);
                 }

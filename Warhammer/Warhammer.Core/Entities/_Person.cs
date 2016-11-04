@@ -75,7 +75,6 @@ namespace Warhammer.Core.Entities
             {
                 if (!free)
                 {
-                    CurrentXp = CurrentXp - RoleCost;
                     XpSpent = XpSpent + RoleCost;
                 }
                 if (string.IsNullOrWhiteSpace(Roles))
@@ -97,7 +96,6 @@ namespace Warhammer.Core.Entities
             {
                 if (!free)
                 {
-                    CurrentXp = CurrentXp - DescriptorCost;
                     XpSpent = XpSpent + DescriptorCost;
                 }
                 if (string.IsNullOrWhiteSpace(descriptor))
@@ -120,7 +118,6 @@ namespace Warhammer.Core.Entities
                 PersonStat stat = PersonStats.FirstOrDefault(s => s.StatId == (int) statName);
                 if (stat != null)
                 {
-                    CurrentXp = CurrentXp - StatCost;
                     XpSpent = XpSpent + StatCost;
                     stat.XpSpent = stat.XpSpent + StatCost;
                     stat.CurrentValue++;
@@ -180,10 +177,6 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                if (IsNpc)
-                {
-                    return (DescriptorNames.Count + 1)*10;
-                }
                 return (DescriptorNames.Count * 2) - 4;
             }
         }
@@ -198,10 +191,7 @@ namespace Warhammer.Core.Entities
                 {
                     return 100;
                 }
-                if (IsNpc)
-                {
-                    return Stats.Sum(s => s.Value);
-                }
+
                 return Stats.Sum(s => s.Value) - 17;
             }
         }
@@ -243,6 +233,8 @@ namespace Warhammer.Core.Entities
 
         public bool InclueUplift { get; set; }
         public double UpliftFactor { get; set; }
+
+        public decimal CurrentXp => XPAwarded - XpSpent;
 
 
         public bool CanBuyHitSlot(SimpleHitPointLevel level, SimpleHitPointType type)

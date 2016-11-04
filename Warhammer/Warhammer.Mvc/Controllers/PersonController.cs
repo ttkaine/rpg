@@ -380,7 +380,6 @@ namespace Warhammer.Mvc.Controllers
                             })
                             .SetSeries(pieSeries);
 
-
                         return PartialView("Chart", chart);
 
                     }

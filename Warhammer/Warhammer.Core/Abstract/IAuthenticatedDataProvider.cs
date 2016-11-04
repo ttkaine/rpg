@@ -77,7 +77,7 @@ namespace Warhammer.Core.Abstract
         void AddRoleToPerson(int personId, string role);
         void AddDescriptorToPerson(int personId, string descriptor);
         void BuyStatIncrease(int personId, StatName statName);
-        void AddXp(int personId, int xpValue);
+        void AddXp(int personId, decimal xpValue);
         bool CheckStatPermissions(int personId);
         bool CheckStatSummaryPermissions();
         List<Person> NpcWithXp();
@@ -111,7 +111,7 @@ namespace Warhammer.Core.Abstract
         List<ScoreHistory> GetCurrentScoresForPerson(int id);
         void SetDefaultHitPoints(int id);
         void BuyHitPointSlot(int id, SimpleHitPointLevel simpleHitPointLevel, SimpleHitPointType simpleHitPointType, bool free = false);
-        void AddXpForSession(int sessionId, int xpAwarded);
+        void AddXpForSession(int sessionId, decimal xpAwarded);
 
         void AddPlayer(string name, string email);
         List<ExceptionLog> GetExceptionLogs(int count);

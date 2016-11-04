@@ -33,9 +33,9 @@ namespace Warhammer.Core.Entities
         public bool IsInMainParty { get; set; }
         public string Roles { get; set; }
         public string Descriptors { get; set; }
-        public int CurrentXp { get; set; }
         public int XpSpent { get; set; }
         public decimal CurrentScore { get; set; }
+        public decimal XPAwarded { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }

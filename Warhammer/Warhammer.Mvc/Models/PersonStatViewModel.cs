@@ -31,7 +31,7 @@ namespace Warhammer.Mvc.Models
            
         //}
 
-        public int CurrentXp { get; set; }
+        public decimal CurrentXp { get; set; }
         public List<string> Descriptors { get; set; }
 
      //   [Required]

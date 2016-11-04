@@ -193,9 +193,9 @@
           <Property Name="IsInMainParty" Type="bit" Nullable="false" />
           <Property Name="Roles" Type="nvarchar(max)" />
           <Property Name="Descriptors" Type="nvarchar(max)" />
-          <Property Name="CurrentXp" Type="int" Nullable="false" />
           <Property Name="XpSpent" Type="int" Nullable="false" />
           <Property Name="CurrentScore" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="XPAwarded" Type="decimal" Precision="16" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -1192,7 +1192,6 @@
           <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Person" FromRole="Person" ToRole="SessionLog" />
           <Property Name="Roles" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Descriptors" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentXp" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonStats" Relationship="WarhammerModel.FK_PersonStat_Person" FromRole="Person" ToRole="PersonStat" />
           <Property Name="XpSpent" Type="Int32" Nullable="false" />
           <Property Name="CurrentScore" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
@@ -1200,6 +1199,7 @@
           <NavigationProperty Name="FateStats" Relationship="WarhammerModel.FK_FateStat_Person" FromRole="Person" ToRole="FateStat" />
           <NavigationProperty Name="FateStunts" Relationship="WarhammerModel.FK_FateStunt_Person" FromRole="Person" ToRole="FateStunt" />
           <NavigationProperty Name="SimpleHitPoints" Relationship="WarhammerModel.FK_SimpleHitPoints_Person" FromRole="Person" ToRole="SimpleHitPoint" />
+          <Property Name="XPAwarded" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -1900,9 +1900,9 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="XPAwarded" ColumnName="XPAwarded" />
                 <ScalarProperty Name="CurrentScore" ColumnName="CurrentScore" />
                 <ScalarProperty Name="XpSpent" ColumnName="XpSpent" />
-                <ScalarProperty Name="CurrentXp" ColumnName="CurrentXp" />
                 <ScalarProperty Name="Descriptors" ColumnName="Descriptors" />
                 <ScalarProperty Name="Roles" ColumnName="Roles" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
