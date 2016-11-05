@@ -258,6 +258,9 @@
     <Content Include="Content\DbUpdateScripts\16082401.sql" />
     <Content Include="Content\DbUpdateScripts\16082402.sql" />
     <Content Include="Content\DbUpdateScripts\16082403.sql" />
+    <Content Include="Content\DbUpdateScripts\16110401.sql" />
+    <Content Include="Content\DbUpdateScripts\16110402.sql" />
+    <Content Include="Content\DbUpdateScripts\16110403.sql" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
