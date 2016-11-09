@@ -1240,6 +1240,16 @@ namespace Warhammer.Core.Concrete
                 }).ToList();
         }
 
+        public List<Page> PagesWithOutstandingXp()
+        {
+            List<Session> sessions = _repository.Pages().OfType<Session>().Where(p => !p.XpAwarded.HasValue && ((p.IsClosed && p.IsTextSession) || !p.IsTextSession)).ToList();
+            List<SessionLog> logs = _repository.Pages().OfType<SessionLog>().Where(p => !p.XpAwarded.HasValue).ToList();
+            List<Page> pages = new List<Page>();
+            pages.AddRange(sessions);
+            pages.AddRange(logs);
+            return pages.OrderBy(p => p.AgeInDays).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

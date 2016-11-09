@@ -282,5 +282,11 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Features");
         }
+
+        public ActionResult OutstandingXp()
+        {
+            List<Page> pages = DataProvider.PagesWithOutstandingXp();
+            return View(pages);
+        }
     }
 }

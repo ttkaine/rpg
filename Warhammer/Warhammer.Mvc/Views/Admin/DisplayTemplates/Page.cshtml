@@ -1,0 +1,18 @@
+﻿@model Warhammer.Core.Entities.Page
+
+<li>
+    <div>
+        @using (Html.BeginForm("AwardXp", "DefaultXp", FormMethod.Post, new { id = "defaultXp" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+
+            <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = Model.Id})">
+                <img src="@Url.Content("~/Content/Images/home.png")" alt="Page" title="See The Page" />
+            </a>
+
+
+            <button class="btn btn-success" type="submit">Award Default XP for @Model.FullName (@Model.ShortName)</button>
+        }
+
+    </div>
+</li>

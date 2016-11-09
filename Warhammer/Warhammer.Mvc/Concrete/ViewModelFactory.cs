@@ -113,6 +113,7 @@ namespace Warhammer.Mvc.Concrete
 
             if (_data.CurrentUserIsAdmin)
             {
+
                 model.RightMenu.Add(new MenuItemViewModel
                 {
                     Name = "",
@@ -264,6 +265,15 @@ namespace Warhammer.Mvc.Concrete
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Sessions", Url = _urlHelper.Action("Sessions", "Home"),
+                });
+            }
+
+            if (_data.CurrentUserIsAdmin)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Outstanding Xp",
+                    Url = _urlHelper.Action("OutstandingXp", "Admin"),
                 });
             }
 

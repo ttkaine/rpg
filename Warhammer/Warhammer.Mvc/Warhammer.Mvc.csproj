@@ -255,12 +255,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DbUpdateScripts\16082401.sql" />
-    <Content Include="Content\DbUpdateScripts\16082402.sql" />
-    <Content Include="Content\DbUpdateScripts\16082403.sql" />
-    <Content Include="Content\DbUpdateScripts\16110401.sql" />
-    <Content Include="Content\DbUpdateScripts\16110402.sql" />
-    <Content Include="Content\DbUpdateScripts\16110403.sql" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
@@ -637,6 +631,8 @@
     <Content Include="Views\DefaultXp\DisplayTemplates\Session.cshtml" />
     <Content Include="Views\Home\FullPageList.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\PageListItemModel.cshtml" />
+    <Content Include="Views\Admin\OutstandingXp.cshtml" />
+    <Content Include="Views\Admin\DisplayTemplates\Page.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -669,6 +665,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\DbUpdateScripts\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
     <Folder Include="Views\Home\EditorTemplates\" />

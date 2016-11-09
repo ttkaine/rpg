@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Warhammer.Core.Entities.Page>
+@{
+    ViewBag.Title = "Outstanding Xp";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Pages with Outstanding Xp</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            <ul>
+                @Html.DisplayForModel()
+            </ul>
+        </div>
+
+    </div>
+    
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Award Xp for things here</h3>
+        </div>
+    </div>
+
+</div>
