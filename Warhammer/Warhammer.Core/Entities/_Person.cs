@@ -177,6 +177,10 @@ namespace Warhammer.Core.Entities
         {
             get
             {
+                if (IsNpc)
+                {
+                    return (DescriptorNames.Count * 2) + 1;
+                }
                 return (DescriptorNames.Count * 2) - 4;
             }
         }
