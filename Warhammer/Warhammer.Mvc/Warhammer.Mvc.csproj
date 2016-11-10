@@ -255,6 +255,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
@@ -498,6 +499,7 @@
     <Content Include="Scripts\RoleplayForum\CharacterSheet.js" />
     <Content Include="Scripts\RoleplayForum\Session.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="StaticPages\DatabaseError.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -665,7 +667,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\DbUpdateScripts\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
     <Folder Include="Views\Home\EditorTemplates\" />
