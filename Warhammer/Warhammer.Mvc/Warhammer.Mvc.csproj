@@ -635,6 +635,8 @@
     <Content Include="Views\Home\DisplayTemplates\PageListItemModel.cshtml" />
     <Content Include="Views\Admin\OutstandingXp.cshtml" />
     <Content Include="Views\Admin\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Admin\CrowNpcSheet.cshtml" />
+    <Content Include="Views\Admin\DisplayTemplates\Person.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

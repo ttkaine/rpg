@@ -230,6 +230,15 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            if (_data.SiteHasFeature(Feature.SimpleStats) && _data.CurrentUserIsAdmin)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "NPC Sheet",
+                    Url = _urlHelper.Action("CrowNpcSheet", "Admin")
+                });
+            }
+
             return items;
         }
 

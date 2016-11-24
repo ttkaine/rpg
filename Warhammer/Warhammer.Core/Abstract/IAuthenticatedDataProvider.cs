@@ -120,5 +120,6 @@ namespace Warhammer.Core.Abstract
         void AddDefaultXp(int pageId);
         List<PageListItemModel> FullPageList();
         List<Page> PagesWithOutstandingXp();
+        List<Person> NpcsWithStats();
     }
 }

@@ -26,6 +26,15 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
+        public int StatValue(StatName name)
+        {
+            if (Stats.Any(s => s.Key == name))
+            {
+                return Stats.FirstOrDefault(s => s.Key == name).Value;
+            }
+            return -1;
+        }
+
         private const char Seperator = '¬';
         public List<string> RoleNames
         {

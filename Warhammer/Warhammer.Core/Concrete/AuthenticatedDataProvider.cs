@@ -1250,6 +1250,16 @@ namespace Warhammer.Core.Concrete
             return pages.OrderBy(p => p.AgeInDays).ToList();
         }
 
+        public List<Person> NpcsWithStats()
+        {
+            return
+                _repository.People()
+                .Where(p => p.PlayerId == null)
+                .Where(p => p.PersonStats.Any())
+                .Where(p => !p.IsDead)
+                .OrderByDescending(p => p.CurrentScore).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

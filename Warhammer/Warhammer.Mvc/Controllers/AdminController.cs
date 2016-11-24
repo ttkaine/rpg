@@ -288,5 +288,15 @@ namespace Warhammer.Mvc.Controllers
             List<Page> pages = DataProvider.PagesWithOutstandingXp();
             return View(pages);
         }
+
+        public ActionResult CrowNpcSheet()
+        {
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            {
+                List<Person> npcs = DataProvider.NpcsWithStats();
+                return View(npcs);
+            }
+            return null;
+        }
     }
 }
