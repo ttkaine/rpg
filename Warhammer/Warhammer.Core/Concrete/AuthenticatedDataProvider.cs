@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
@@ -1258,6 +1259,22 @@ namespace Warhammer.Core.Concrete
                 .Where(p => p.PersonStats.Any())
                 .Where(p => !p.IsDead)
                 .OrderByDescending(p => p.CurrentScore).ToList();
+        }
+
+        public PageImage SaveImage(int pageId, byte[] image)
+        {
+            PageImage pageImage = new PageImage
+            {
+                Data = image,
+                PageId = pageId
+            };
+            int id = _repository.Save(pageImage);
+            return _repository.PageImages().FirstOrDefault(p => p.Id == id);
+        }
+
+        public PageImage GetPageImage(int id)
+        {
+            return _repository.PageImages().FirstOrDefault(p => p.Id == id);
         }
 
         public void RemoveAward(int personId, int awardId)

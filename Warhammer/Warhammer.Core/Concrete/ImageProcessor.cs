@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using Warhammer.Core.Abstract;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
     public class ImageProcessor : IImageProcessor
     {
-        public Image GetImageFromHtmlString(string html)
+        public List<ExtractedImage> GetImagesFromHtmlString(string html)
         {
             ConvertHtml convertHtml = new ConvertHtml();
-            Image image = convertHtml.ExtractImagesInHtml(html);
-            return image;
+            List<ExtractedImage> images = convertHtml.ExtractImagesInHtml(html);
+            return images;
         }
 
         public Image ResizeImage(Image imgToResize, Size destinationSize)

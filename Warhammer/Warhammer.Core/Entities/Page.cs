@@ -20,6 +20,7 @@ namespace Warhammer.Core.Entities
             this.PageViews = new HashSet<PageView>();
             this.Related = new HashSet<Page>();
             this.Pages = new HashSet<Page>();
+            this.PageImages = new HashSet<PageImage>();
         }
     
         public int Id { get; set; }
@@ -43,5 +44,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<PageView> PageViews { get; set; }
         public virtual ICollection<Page> Related { get; set; }
         public virtual ICollection<Page> Pages { get; set; }
+        public virtual ICollection<PageImage> PageImages { get; set; }
     }
 }

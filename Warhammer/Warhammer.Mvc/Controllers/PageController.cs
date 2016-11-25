@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
@@ -66,15 +68,29 @@ namespace Warhammer.Mvc.Controllers
             {
                 ClearPageCache(page.Id);
 
+                List<ExtractedImage> images = _imageProcessor.GetImagesFromHtmlString(page.Description);
+
+                foreach (ExtractedImage image in images)
+                {
+                    byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
+                    PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
+                    string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
+                    page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+                }
+
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
+
+                
                 if (updatedPage.ImageData == null)
                 {
-                    Image image = _imageProcessor.GetImageFromHtmlString(updatedPage.Description);
+
+                    ExtractedImage primaryImage = images.FirstOrDefault();
+                    Image image = primaryImage?.Image;
                     if (image != null)
                     {
                         image = _imageProcessor.ResizeImage(image, new Size {Height = 200, Width = 200});
                         byte[] imageData = _imageProcessor.GetJpegFromImage(image);
-                        
+
                         DataProvider.ChangePicture(updatedPage.Id, imageData, "Image/Jpeg");
                     }
                 }

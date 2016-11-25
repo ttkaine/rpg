@@ -38,6 +38,7 @@ namespace Warhammer.Core.Abstract
         IQueryable<ScoreHistory> ScoreHistories();
         int Save(ScoreHistory scoreHistory);
         IQueryable<Person> PeopleForScoring();
+        IQueryable<PageImage> PageImages();
 
         void BulkInsert<T>( IList<T> list);
         IQueryable<FateAspect> FateAspects();
@@ -56,5 +57,6 @@ namespace Warhammer.Core.Abstract
         void Delete(PersonStat personStat);
         int Save(PageView pageView);
         void Delete(ScoreHistory scoreHistory);
+        int Save(PageImage pageImage);
     }
 }

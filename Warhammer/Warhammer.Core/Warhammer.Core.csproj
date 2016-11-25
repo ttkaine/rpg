@@ -206,6 +206,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PageEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PageImage.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\PageView.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -270,6 +273,7 @@
     <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />

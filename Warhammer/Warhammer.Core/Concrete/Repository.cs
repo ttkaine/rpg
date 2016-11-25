@@ -239,6 +239,11 @@ namespace Warhammer.Core.Concrete
                 .AsNoTracking();
         }
 
+        public IQueryable<PageImage> PageImages()
+        {
+            return _entities.PageImages;
+        }
+
         #endregion
 
         #region Save
@@ -425,6 +430,21 @@ namespace Warhammer.Core.Concrete
         {
             _entities.ScoreHistories.Remove(scoreHistory);
             _entities.SaveChanges();
+        }
+
+        public int Save(PageImage pageImage)
+        {
+            if (pageImage.Id == 0)
+            {
+                _entities.PageImages.Add(pageImage);
+            }
+            else
+            {
+                _entities.Entry(pageImage).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return pageImage.Id;
         }
 
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)

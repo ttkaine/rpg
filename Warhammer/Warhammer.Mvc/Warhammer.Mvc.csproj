@@ -235,6 +235,7 @@
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
+    <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\FateAspectViewModel.cs" />
     <Compile Include="Models\FateStatsViewModel.cs" />
     <Compile Include="Models\FateStuntsViewModel.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\DbUpdateScripts\16112501.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
