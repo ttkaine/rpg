@@ -319,5 +319,27 @@ namespace Warhammer.Mvc.Controllers
             string footerMessage = DataProvider.VersionInfo();
             return PartialView("Footer", footerMessage);
         }
+
+        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.Any, NoStore = true)]
+        public ActionResult ShowImage(int id)
+        {
+            PageImage iamge = DataProvider.GetPageImage(id);
+            var defaultDir = Server.MapPath("/Content/Images");
+
+            if (iamge != null)
+            {
+                if (iamge.Data != null && iamge.Data.Length > 100)
+                {
+                    return File(iamge.Data, "image/jpeg");
+                }
+            }
+
+            var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
+
+            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+
+            return File(defaultImagePath, "image/jpeg");
+        }
     }
 }

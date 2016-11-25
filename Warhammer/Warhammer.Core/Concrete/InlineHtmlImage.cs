@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
@@ -60,8 +62,9 @@ namespace Warhammer.Core.Concrete
             return image;
         }
 
-        public Image ExtractImagesInHtml(string text)
+        public List<ExtractedImage> ExtractImagesInHtml(string text)
         {
+            List<ExtractedImage> images = new List<ExtractedImage>();
             try
             {
                 const char separator1 = ',';
@@ -103,7 +106,7 @@ namespace Warhammer.Core.Concrete
                                 Image image = Base64ToImage(imageBase64);
                                 if(image != null)
                                 {
-                                    return image;
+                                    images.Add(new ExtractedImage {Image = image, OriginalSrc = mImg.Value});
                                 }
                             }
 // ReSharper disable once EmptyGeneralCatchClause
@@ -115,9 +118,8 @@ namespace Warhammer.Core.Concrete
                         {
                             try
                             {
-                                Image bmp = Image.FromFile(imageData);
-                                return bmp;
-
+                              //  Image bmp = Image.FromFile(imageData);
+                             //   images.Add(new ExtractedImage { Image = bmp, OriginalSrc = mImg.Value });
                             }
 // ReSharper disable once EmptyGeneralCatchClause
                             catch (Exception)
@@ -132,7 +134,7 @@ namespace Warhammer.Core.Concrete
             {
             }
 
-            return null;
+            return images;
         }
     }
 }

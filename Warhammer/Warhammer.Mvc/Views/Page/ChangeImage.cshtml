@@ -19,7 +19,7 @@
         <div class="main-content">
             <div class="content-block">
 
-                @if (Model.ImageData != null && Model.ImageData.Length > 0 && !string.IsNullOrWhiteSpace(Model.ImageMime))
+                @if (Model.PrimaryImage != null && Model.PrimaryImage.Length > 0 && !string.IsNullOrWhiteSpace(Model.ImageMime))
                 {
                     <h2>Current Image</h2>
                     <img src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName"/>

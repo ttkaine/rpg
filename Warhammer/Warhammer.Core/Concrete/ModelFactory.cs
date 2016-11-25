@@ -125,7 +125,7 @@ namespace Warhammer.Core.Concrete
 				viewModel.ID = character.Id;
 				viewModel.Description = character.RawText;
 				viewModel.Name = character.ShortName;
-				viewModel.Image = character.ImageData;
+				viewModel.Image = character.PrimaryImage;
 				viewModel.ImageMimeType = character.ImageMime;
 				viewModel.PlayerId = character.PlayerId.GetValueOrDefault();
 				viewModel.CharacterSheet = string.Empty;
@@ -142,7 +142,7 @@ namespace Warhammer.Core.Concrete
 			viewModel.ID = character.Id;
 			viewModel.Description = character.RawText;
 			viewModel.Name = character.ShortName;
-			viewModel.Image = character.ImageData;
+			viewModel.Image = character.PrimaryImage;
 		    viewModel.ImageMimeType = character.ImageMime;
 			viewModel.PlayerId = character.PlayerId.GetValueOrDefault();
 			viewModel.CharacterSheet = string.Empty;
