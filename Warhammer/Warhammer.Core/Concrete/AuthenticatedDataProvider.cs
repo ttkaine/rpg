@@ -165,13 +165,13 @@ namespace Warhammer.Core.Concrete
 
         public void ChangePicture(int id, byte[] data, string mimeType)
         {
-            Page page = _repository.Pages().FirstOrDefault(p => p.Id == id);
-            if (page != null)
-            {
-                page.ImageData = data;
-                page.ImageMime = mimeType;
-                Save(page);
-            }
+            PageImage image = _repository.PageImages().FirstOrDefault(p => p.PageId == id && p.IsPrimary) ?? new PageImage();
+
+            image.Data = data;
+            image.PageId = id;
+            image.IsPrimary = true;
+
+            _repository.Save(image);
         }
 
         public Page UpdatePageDetails(int id, string shortName, string fullName, string description)
@@ -201,6 +201,22 @@ namespace Warhammer.Core.Concrete
                 existingPage.ShortName = shortName;
                 existingPage.FullName = fullName;
                 existingPage.Description = description;
+
+                if (existingPage.HasInlineImage)
+                {
+                    if (!existingPage.HasExternalImage)
+                    {
+                        PageImage image = new PageImage
+                        {
+                            PageId = existingPage.Id,
+                            Data = existingPage.ImageData,
+                            IsPrimary = true
+                        };
+
+                        _repository.Save(image);
+                    }
+                    existingPage.ImageData = null;
+                }
             }
             
             Save(existingPage);

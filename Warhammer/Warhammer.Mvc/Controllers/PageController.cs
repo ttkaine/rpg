@@ -81,9 +81,8 @@ namespace Warhammer.Mvc.Controllers
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
 
                 
-                if (updatedPage.ImageData == null)
+                if (!updatedPage.HasImage)
                 {
-
                     ExtractedImage primaryImage = images.FirstOrDefault();
                     Image image = primaryImage?.Image;
                     if (image != null)
@@ -143,9 +142,9 @@ namespace Warhammer.Mvc.Controllers
 
             if (page != null)
             {
-                if (page.ImageData != null && page.ImageData.Length > 100 && !string.IsNullOrWhiteSpace(page.ImageMime))
+                if (page.HasImage)
                 {
-                    return File(page.ImageData, page.ImageMime);
+                    return File(page.PrimaryImage, "image/jpeg");
                 }
 
                 if (page is Session)
@@ -170,9 +169,9 @@ namespace Warhammer.Mvc.Controllers
                 {
                     SessionLog log = page as SessionLog;
 
-                    if (log.Person.ImageData != null && log.Person.ImageData.Length > 100 && !string.IsNullOrWhiteSpace(log.Person.ImageMime))
+                    if (log.Person.HasImage)
                     {
-                        return File(log.Person.ImageData, log.Person.ImageMime);
+                        return File(log.Person.PrimaryImage, "image/jpeg");
                     }
 
                     var personPath = Path.Combine(defaultDir, "page-log.png");
