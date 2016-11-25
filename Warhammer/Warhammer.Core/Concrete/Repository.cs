@@ -447,6 +447,12 @@ namespace Warhammer.Core.Concrete
             return pageImage.Id;
         }
 
+        public void Delete(PageImage pageImage)
+        {
+            _entities.PageImages.Remove(pageImage);
+            _entities.SaveChanges();
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

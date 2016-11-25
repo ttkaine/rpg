@@ -167,11 +167,19 @@ namespace Warhammer.Core.Concrete
         {
             PageImage image = _repository.PageImages().FirstOrDefault(p => p.PageId == id && p.IsPrimary) ?? new PageImage();
 
-            image.Data = data;
-            image.PageId = id;
-            image.IsPrimary = true;
+            if (data == null && image.Id > 0)
+            {
+                _repository.Delete(image);
+            }
+            else
+            {
+                image.Data = data;
+                image.PageId = id;
+                image.IsPrimary = true;
 
-            _repository.Save(image);
+                _repository.Save(image);
+            }
+
         }
 
         public Page UpdatePageDetails(int id, string shortName, string fullName, string description)
@@ -510,6 +518,15 @@ namespace Warhammer.Core.Concrete
                     {
                         _repository.Delete(scoreHistory);
                     }
+                    foreach (Award personAward in person.Awards)
+                    {
+                        RemoveAward(person.Id, personAward.Id);
+                    }
+                }
+
+                foreach (PageImage image in page.PageImages)
+                {
+                    _repository.Delete(image);
                 }
 
                 _repository.Delete(page);

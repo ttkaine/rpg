@@ -58,5 +58,6 @@ namespace Warhammer.Core.Abstract
         int Save(PageView pageView);
         void Delete(ScoreHistory scoreHistory);
         int Save(PageImage pageImage);
+        void Delete(PageImage pageImage);
     }
 }
