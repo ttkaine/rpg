@@ -13,10 +13,26 @@
 
     <div class="main-content">
         <div class="content-block">
-            <ul>
-                @Html.DisplayForModel()
-            </ul>
-        </div>
+            
+            @if (Model.Any())
+            {
+                <div class="alert alert-warning">
+                    <h1>You have @Model.Count() oustranding request@(Model.Count() > 1 ? "s" : "")</h1>
+                    <p>So now you gotta decide if these suckers deserve any XP...</p>
+                </div>
+                <ul class="outstanding-xp-list">
+                    @Html.DisplayForModel()
+                </ul>
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    <h1>All XP has been awarded.</h1>
+                    <p>You got nothing to do here!</p>
+                </div>
+
+                    }
+                </div>
 
     </div>
     

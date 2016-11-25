@@ -39,8 +39,23 @@ namespace Warhammer.Mvc.Controllers
                     DataProvider.AddDefaultXp(id.Value);
                 }
             }
-            return RedirectToAction("Index", "Page", new { id });
+            return RedirectToAction("OutstandingXp", "Admin", new { id });
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult RejectXp(int? id)
+        {
+            if (id.HasValue && User.IsInRole("Admin"))
+            {
+                Page page = DataProvider.GetPage(id.Value);
+
+                if (page != null)
+                {
+                    DataProvider.SetPageXpAwarded(page.Id);
+                }
+            }
+            return RedirectToAction("OutstandingXp", "Admin", new { id });
+        }
     }
 }

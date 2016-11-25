@@ -7208,6 +7208,21 @@ hr {
   padding-left: 15px;
   padding-right: 15px;
 }
+ul.outstanding-xp-list {
+  list-style: none;
+}
+.outstanding-xp-list li {
+  margin-bottom: 50px;
+}
+.outstanding-xp-list li div {
+  display: inline-block;
+}
+.outstanding-xp-list li > div {
+  width: 100%;
+}
+.dismiss-xp-panel {
+  float: right;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

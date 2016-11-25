@@ -1310,6 +1310,33 @@ namespace Warhammer.Core.Concrete
             return _repository.PageImages().FirstOrDefault(p => p.Id == id);
         }
 
+        public void SetPageXpAwarded(int pageId)
+        {
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
+            if (page != null)
+            {
+                Session session = page as Session;
+                if (session != null)
+                {
+                    if (!session.XpAwarded.HasValue)
+                    {
+                        session.XpAwarded = DateTime.Now;
+                    }
+                }
+
+                SessionLog log = page as SessionLog;
+                if (log != null)
+                {
+                    if (!log.XpAwarded.HasValue)
+                    {
+                        log.XpAwarded = DateTime.Now;
+                    }
+                }
+
+                Save(page);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

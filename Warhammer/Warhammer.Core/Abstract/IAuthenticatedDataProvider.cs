@@ -124,5 +124,6 @@ namespace Warhammer.Core.Abstract
         List<Person> NpcsWithStats();
         PageImage SaveImage(int pageId, byte[] image);
         PageImage GetPageImage(int id);
+        void SetPageXpAwarded(int pageId);
     }
 }
