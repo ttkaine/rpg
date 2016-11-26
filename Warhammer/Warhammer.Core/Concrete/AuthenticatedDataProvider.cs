@@ -1337,6 +1337,19 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public Dictionary<int, string> GetOldImagePages()
+        {
+            //todo take this out again when the images are all updated
+
+            Dictionary<int, string> pages =
+                _repository.Pages()
+                    .Where(p => p.ImageData != null || p.Description.Length > 50000)
+                    .OrderByDescending(p => p.Description.Length)
+                    .Select(p => new {Id = p.Id, name = p.ShortName})
+                    .ToDictionary(p => p.Id, k => k.name);
+            return pages;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

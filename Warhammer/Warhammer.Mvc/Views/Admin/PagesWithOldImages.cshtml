@@ -1,0 +1,33 @@
+﻿@model Dictionary<int, string>
+
+@{
+    ViewBag.Title = "Pages to fix";
+}
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+            <ul>
+                @foreach (KeyValuePair<int, string> page in Model)
+                {
+                    <li>
+                         @Html.ActionLink(page.Value, "Index", "Page", new { id = page.Key }, null) 
+                    </li>
+             
+                }
+            </ul>
+            
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <p>These pages are in need up the new updated image stuff - they need to be re-saved to re-process.</p>
+            //todo take this out again when the images are all updated
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

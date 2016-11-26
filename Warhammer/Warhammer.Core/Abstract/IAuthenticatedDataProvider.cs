@@ -125,5 +125,6 @@ namespace Warhammer.Core.Abstract
         PageImage SaveImage(int pageId, byte[] image);
         PageImage GetPageImage(int id);
         void SetPageXpAwarded(int pageId);
+        Dictionary<int, string> GetOldImagePages();
     }
 }
