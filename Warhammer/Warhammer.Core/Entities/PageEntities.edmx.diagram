@@ -70,6 +70,17 @@
         <EntityTypeShape EntityType="WarhammerModel.ExceptionLog" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="WarhammerModel.PageImage" Width="1.5" PointX="5.25" PointY="6.125" />
         <AssociationConnector Association="WarhammerModel.FK_PageImage_Page" />
+        <EntityTypeShape EntityType="WarhammerModel.Creature" Width="1.5" PointX="10.625" PointY="39.75" />
+        <EntityTypeShape EntityType="WarhammerModel.CreatureAbility" Width="1.5" PointX="7.5" PointY="39.5" />
+        <EntityTypeShape EntityType="WarhammerModel.Organisation" Width="1.5" PointX="1.75" PointY="23.875" />
+        <EntityTypeShape EntityType="WarhammerModel.Reputation" Width="1.5" PointX="11.25" PointY="24.125" />
+        <AssociationConnector Association="WarhammerModel.FK_Creature_Creature" />
+        <AssociationConnector Association="WarhammerModel.FK_CreatureAbility_Creature" />
+        <AssociationConnector Association="WarhammerModel.FK_Reputation_Creature" />
+        <AssociationConnector Association="WarhammerModel.FK_Reputation_Organisation" />
+        <AssociationConnector Association="WarhammerModel.FK_Reputation_Person" />
+        <InheritanceConnector EntityType="WarhammerModel.Creature" />
+        <InheritanceConnector EntityType="WarhammerModel.Organisation" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

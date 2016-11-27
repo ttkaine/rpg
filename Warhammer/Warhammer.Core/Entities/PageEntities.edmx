@@ -106,6 +106,24 @@
           <Property Name="PageId" Type="int" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Creature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ParentType" Type="int" />
+          <Property Name="ThreatLevelId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CreatureAbility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CreatureId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="AbilityThreatLevelId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ExceptionLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -152,6 +170,13 @@
           <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="IsVisible" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Organisation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OrganisationType" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Page">
           <Key>
@@ -276,6 +301,20 @@
           <Property Name="SessionId" Type="int" Nullable="false" />
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="LastTurnEnded" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reputation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="WearLevelId" Type="int" Nullable="false" />
+          <Property Name="HarmLevelId" Type="int" Nullable="false" />
+          <Property Name="Xp" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="PersonId" Type="int" />
+          <Property Name="OrganisationId" Type="int" />
+          <Property Name="CreatureId" Type="int" />
         </EntityType>
         <EntityType Name="ScoreHistory">
           <Key>
@@ -435,6 +474,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Creature_Creature">
+          <End Role="Creature" Type="Self.Creature" Multiplicity="0..1" />
+          <End Role="Creature1" Type="Self.Creature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Creature1">
+              <PropertyRef Name="ParentType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Creature_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Creature" Type="Self.Creature" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Creature">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatureAbility_Creature">
+          <End Role="Creature" Type="Self.Creature" Multiplicity="1" />
+          <End Role="CreatureAbility" Type="Self.CreatureAbility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CreatureAbility">
+              <PropertyRef Name="CreatureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -524,6 +599,18 @@
             </Principal>
             <Dependent Role="FateStunt">
               <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organisation_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Organisation" Type="Self.Organisation" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Organisation">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -719,6 +806,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Reputation_Creature">
+          <End Role="Creature" Type="Self.Creature" Multiplicity="0..1" />
+          <End Role="Reputation" Type="Self.Reputation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reputation">
+              <PropertyRef Name="CreatureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reputation_Organisation">
+          <End Role="Organisation" Type="Self.Organisation" Multiplicity="0..1" />
+          <End Role="Reputation" Type="Self.Reputation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organisation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reputation">
+              <PropertyRef Name="OrganisationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reputation_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Reputation" Type="Self.Reputation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reputation">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ScoreHistory_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="ScoreHistory" Type="Self.ScoreHistory" Multiplicity="*" />
@@ -814,10 +937,13 @@
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Creature" EntityType="Self.Creature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatureAbility" EntityType="Self.CreatureAbility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateAspect" EntityType="Self.FateAspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStat" EntityType="Self.FateStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStunt" EntityType="Self.FateStunt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Organisation" EntityType="Self.Organisation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PageImage" EntityType="Self.PageImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PageView" EntityType="Self.PageView" Schema="dbo" store:Type="Tables" />
@@ -828,6 +954,7 @@
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reputation" EntityType="Self.Reputation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScoreHistory" EntityType="Self.ScoreHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
@@ -860,6 +987,18 @@
             <End Role="Player" EntitySet="Player" />
             <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
+          <AssociationSet Name="FK_Creature_Creature" Association="Self.FK_Creature_Creature">
+            <End Role="Creature" EntitySet="Creature" />
+            <End Role="Creature1" EntitySet="Creature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Creature_Page" Association="Self.FK_Creature_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Creature" EntitySet="Creature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatureAbility_Creature" Association="Self.FK_CreatureAbility_Creature">
+            <End Role="Creature" EntitySet="Creature" />
+            <End Role="CreatureAbility" EntitySet="CreatureAbility" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -887,6 +1026,10 @@
           <AssociationSet Name="FK_FateStunt_Person" Association="Self.FK_FateStunt_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="FateStunt" EntitySet="FateStunt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organisation_Page" Association="Self.FK_Organisation_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Organisation" EntitySet="Organisation" />
           </AssociationSet>
           <AssociationSet Name="FK_Page_Person" Association="Self.FK_Page_Person">
             <End Role="Player" EntitySet="Player" />
@@ -951,6 +1094,18 @@
           <AssociationSet Name="FK_PostOrder_Session" Association="Self.FK_PostOrder_Session">
             <End Role="Session" EntitySet="Session" />
             <End Role="PostOrder" EntitySet="PostOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reputation_Creature" Association="Self.FK_Reputation_Creature">
+            <End Role="Creature" EntitySet="Creature" />
+            <End Role="Reputation" EntitySet="Reputation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reputation_Organisation" Association="Self.FK_Reputation_Organisation">
+            <End Role="Organisation" EntitySet="Organisation" />
+            <End Role="Reputation" EntitySet="Reputation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reputation_Person" Association="Self.FK_Reputation_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Reputation" EntitySet="Reputation" />
           </AssociationSet>
           <AssociationSet Name="FK_ScoreHistory_Person" Association="Self.FK_ScoreHistory_Person">
             <End Role="Person" EntitySet="Person" />
@@ -1136,6 +1291,28 @@
             <End Role="Page" EntitySet="Pages" />
             <End Role="PageImage" EntitySet="PageImages" />
           </AssociationSet>
+          <EntitySet Name="CreatureAbilities" EntityType="WarhammerModel.CreatureAbility" />
+          <EntitySet Name="Reputations" EntityType="WarhammerModel.Reputation" />
+          <AssociationSet Name="FK_Creature_Creature" Association="WarhammerModel.FK_Creature_Creature">
+            <End Role="Creature" EntitySet="Pages" />
+            <End Role="Creature1" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatureAbility_Creature" Association="WarhammerModel.FK_CreatureAbility_Creature">
+            <End Role="Creature" EntitySet="Pages" />
+            <End Role="CreatureAbility" EntitySet="CreatureAbilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reputation_Creature" Association="WarhammerModel.FK_Reputation_Creature">
+            <End Role="Creature" EntitySet="Pages" />
+            <End Role="Reputation" EntitySet="Reputations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reputation_Organisation" Association="WarhammerModel.FK_Reputation_Organisation">
+            <End Role="Organisation" EntitySet="Pages" />
+            <End Role="Reputation" EntitySet="Reputations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reputation_Person" Association="WarhammerModel.FK_Reputation_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="Reputation" EntitySet="Reputations" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1232,6 +1409,7 @@
           <NavigationProperty Name="FateStunts" Relationship="WarhammerModel.FK_FateStunt_Person" FromRole="Person" ToRole="FateStunt" />
           <NavigationProperty Name="SimpleHitPoints" Relationship="WarhammerModel.FK_SimpleHitPoints_Person" FromRole="Person" ToRole="SimpleHitPoint" />
           <Property Name="XPAwarded" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <NavigationProperty Name="Reputations" Relationship="WarhammerModel.FK_Reputation_Person" FromRole="Person" ToRole="Reputation" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -1884,6 +2062,106 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Creature" BaseType="WarhammerModel.Page">
+          <Property Name="ParentType" Type="Int32" />
+          <Property Name="ThreatLevelId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Creature1" Relationship="WarhammerModel.FK_Creature_Creature" FromRole="Creature" ToRole="Creature1" />
+          <NavigationProperty Name="Creature2" Relationship="WarhammerModel.FK_Creature_Creature" FromRole="Creature1" ToRole="Creature" />
+          <NavigationProperty Name="CreatureAbilities" Relationship="WarhammerModel.FK_CreatureAbility_Creature" FromRole="Creature" ToRole="CreatureAbility" />
+          <NavigationProperty Name="Reputations" Relationship="WarhammerModel.FK_Reputation_Creature" FromRole="Creature" ToRole="Reputation" />
+        </EntityType>
+        <EntityType Name="CreatureAbility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CreatureId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AbilityThreatLevelId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Creature" Relationship="WarhammerModel.FK_CreatureAbility_Creature" FromRole="CreatureAbility" ToRole="Creature" />
+        </EntityType>
+        <EntityType Name="Organisation" BaseType="WarhammerModel.Page">
+          <Property Name="OrganisationType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reputations" Relationship="WarhammerModel.FK_Reputation_Organisation" FromRole="Organisation" ToRole="Reputation" />
+        </EntityType>
+        <EntityType Name="Reputation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="WearLevelId" Type="Int32" Nullable="false" />
+          <Property Name="HarmLevelId" Type="Int32" Nullable="false" />
+          <Property Name="Xp" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PersonId" Type="Int32" />
+          <Property Name="OrganisationId" Type="Int32" />
+          <Property Name="CreatureId" Type="Int32" />
+          <NavigationProperty Name="Creature" Relationship="WarhammerModel.FK_Reputation_Creature" FromRole="Reputation" ToRole="Creature" />
+          <NavigationProperty Name="Organisation" Relationship="WarhammerModel.FK_Reputation_Organisation" FromRole="Reputation" ToRole="Organisation" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Reputation_Person" FromRole="Reputation" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_Creature_Creature">
+          <End Type="WarhammerModel.Creature" Role="Creature" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Creature" Role="Creature1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Creature1">
+              <PropertyRef Name="ParentType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatureAbility_Creature">
+          <End Type="WarhammerModel.Creature" Role="Creature" Multiplicity="1" />
+          <End Type="WarhammerModel.CreatureAbility" Role="CreatureAbility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CreatureAbility">
+              <PropertyRef Name="CreatureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reputation_Creature">
+          <End Type="WarhammerModel.Creature" Role="Creature" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Reputation" Role="Reputation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reputation">
+              <PropertyRef Name="CreatureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reputation_Organisation">
+          <End Type="WarhammerModel.Organisation" Role="Organisation" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Reputation" Role="Reputation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organisation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reputation">
+              <PropertyRef Name="OrganisationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reputation_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Reputation" Role="Reputation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reputation">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1984,6 +2262,19 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IsWithin" ColumnName="IsWithin" />
                 <ScalarProperty Name="PlaceType" ColumnName="PlaceType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Creature)">
+              <MappingFragment StoreEntitySet="Creature">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ParentType" ColumnName="ParentType" />
+                <ScalarProperty Name="ThreatLevelId" ColumnName="ThreatLevelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Organisation)">
+              <MappingFragment StoreEntitySet="Organisation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrganisationType" ColumnName="OrganisationType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2263,6 +2554,32 @@
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatureAbilities">
+            <EntityTypeMapping TypeName="WarhammerModel.CreatureAbility">
+              <MappingFragment StoreEntitySet="CreatureAbility">
+                <ScalarProperty Name="AbilityThreatLevelId" ColumnName="AbilityThreatLevelId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatureId" ColumnName="CreatureId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reputations">
+            <EntityTypeMapping TypeName="WarhammerModel.Reputation">
+              <MappingFragment StoreEntitySet="Reputation">
+                <ScalarProperty Name="CreatureId" ColumnName="CreatureId" />
+                <ScalarProperty Name="OrganisationId" ColumnName="OrganisationId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Xp" ColumnName="Xp" />
+                <ScalarProperty Name="HarmLevelId" ColumnName="HarmLevelId" />
+                <ScalarProperty Name="WearLevelId" ColumnName="WearLevelId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
