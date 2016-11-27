@@ -60,6 +60,31 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult UpdateAllImages()
+        {
+            List<Page> allPages = DataProvider.AllPages();
+
+            foreach (Page page in allPages)
+            {
+                if (!string.IsNullOrWhiteSpace(page.Description))
+                {
+                    List<ExtractedImage> images = _imageProcessor.GetImagesFromHtmlString(page.Description);
+
+                    foreach (ExtractedImage image in images)
+                    {
+                        byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
+                        PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
+                        string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
+                        page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+                    }
+
+                    Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName,
+                        _linkGenerator.ResolveCreoleLinks(page.Description));
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost, ValidateInput(false)]
         [Authorize(Roles = "Player")]
         public ActionResult Index(Page page)
