@@ -286,16 +286,6 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
-            //todo take this out again when the images are all updated
-            if (_data.CurrentUserIsAdmin)
-            {
-                items.Add(new MenuItemViewModel
-                {
-                    Name = "Old Image List",
-                    Url = _urlHelper.Action("PagesWithOldImages", "Admin"),
-                });
-            }
-
             items.AddRange(_data.PinnedPages().Select(pinnedPage => new MenuItemViewModel
             {
                 Name = pinnedPage.FullName, Url = _urlHelper.Action("Index", "Page", new {id = pinnedPage.Id})

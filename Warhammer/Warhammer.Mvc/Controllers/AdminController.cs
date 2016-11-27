@@ -298,12 +298,5 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
-
-        public ActionResult PagesWithOldImages()
-        {
-            //todo take this out again when the images are all updated
-            Dictionary<int, string> pages = DataProvider.GetOldImagePages();
-            return View(pages);
-        }
     }
 }

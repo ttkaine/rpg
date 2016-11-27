@@ -639,7 +639,6 @@
     <Content Include="Views\Admin\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Admin\CrowNpcSheet.cshtml" />
     <Content Include="Views\Admin\DisplayTemplates\Person.cshtml" />
-    <Content Include="Views\Admin\PagesWithOldImages.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
