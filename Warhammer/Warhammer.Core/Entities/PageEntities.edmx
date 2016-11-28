@@ -2065,8 +2065,8 @@
         <EntityType Name="Creature" BaseType="WarhammerModel.Page">
           <Property Name="ParentType" Type="Int32" />
           <Property Name="ThreatLevelId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Creature1" Relationship="WarhammerModel.FK_Creature_Creature" FromRole="Creature" ToRole="Creature1" />
-          <NavigationProperty Name="Creature2" Relationship="WarhammerModel.FK_Creature_Creature" FromRole="Creature1" ToRole="Creature" />
+          <NavigationProperty Name="ChildCreatures" Relationship="WarhammerModel.FK_Creature_Creature" FromRole="Creature" ToRole="Creature1" />
+          <NavigationProperty Name="ParentCreature" Relationship="WarhammerModel.FK_Creature_Creature" FromRole="Creature1" ToRole="Creature" />
           <NavigationProperty Name="CreatureAbilities" Relationship="WarhammerModel.FK_CreatureAbility_Creature" FromRole="Creature" ToRole="CreatureAbility" />
           <NavigationProperty Name="Reputations" Relationship="WarhammerModel.FK_Reputation_Creature" FromRole="Creature" ToRole="Reputation" />
         </EntityType>

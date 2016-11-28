@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -64,6 +65,24 @@ namespace Warhammer.Mvc.Controllers
                 return RedirectToAction("Index", "Page", new { id = pageId });
             }
             return View(page as Person);
+        }
+
+        public ActionResult Creature()
+        {
+            CreateCreatureViewModel model = new CreateCreatureViewModel();
+            model.ParentOptions = new SelectList(DataProvider.Creatures().OrderBy(l => l.Breadcrumb), "Id", "Breadcrumb");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Creature(CreateCreatureViewModel creatureModel)
+        {
+            if (ModelState.IsValid)
+            {
+                int pageId = DataProvider.AddCreature(creatureModel);
+                return RedirectToAction("Index", "Page", new { id = pageId });
+            }
+            return View(creatureModel);
         }
 
         public ActionResult GameSession()

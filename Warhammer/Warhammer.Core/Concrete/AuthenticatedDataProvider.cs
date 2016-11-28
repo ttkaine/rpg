@@ -1337,6 +1337,24 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Creature> Creatures()
+        {
+            return _repository.Pages().OfType<Creature>().ToList();
+        }
+
+        public int AddCreature(CreateCreatureViewModel creatureModel)
+        {
+            Creature creature = new Creature
+            {
+                ParentType = creatureModel.ParentId,
+                ShortName = creatureModel.Name,
+                FullName = creatureModel.Name,
+                Description = creatureModel.Description,
+                ThreatLevel = creatureModel.ThreatLevel
+            };
+            return Save(creature);
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

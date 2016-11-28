@@ -16,7 +16,7 @@ namespace Warhammer.Core.Entities
     {
         public Creature()
         {
-            this.Creature1 = new HashSet<Creature>();
+            this.ChildCreatures = new HashSet<Creature>();
             this.CreatureAbilities = new HashSet<CreatureAbility>();
             this.Reputations = new HashSet<Reputation>();
         }
@@ -24,8 +24,8 @@ namespace Warhammer.Core.Entities
         public Nullable<int> ParentType { get; set; }
         public int ThreatLevelId { get; set; }
     
-        public virtual ICollection<Creature> Creature1 { get; set; }
-        public virtual Creature Creature2 { get; set; }
+        public virtual ICollection<Creature> ChildCreatures { get; set; }
+        public virtual Creature ParentCreature { get; set; }
         public virtual ICollection<CreatureAbility> CreatureAbilities { get; set; }
         public virtual ICollection<Reputation> Reputations { get; set; }
     }
