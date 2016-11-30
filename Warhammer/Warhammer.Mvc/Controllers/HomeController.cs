@@ -129,7 +129,7 @@ namespace Warhammer.Mvc.Controllers
             return View();
         }
 
-        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult TrophyImage(int id)
         {
             Trophy trophy = DataProvider.GetTrophy(id);
@@ -320,7 +320,7 @@ namespace Warhammer.Mvc.Controllers
             return PartialView("Footer", footerMessage);
         }
 
-        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.Any, NoStore = true)]
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult ShowImage(int id)
         {
             PageImage iamge = DataProvider.GetPageImage(id);
