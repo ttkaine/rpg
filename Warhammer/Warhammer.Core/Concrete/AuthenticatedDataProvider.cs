@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
@@ -164,13 +165,21 @@ namespace Warhammer.Core.Concrete
 
         public void ChangePicture(int id, byte[] data, string mimeType)
         {
-            Page page = _repository.Pages().FirstOrDefault(p => p.Id == id);
-            if (page != null)
+            PageImage image = _repository.PageImages().FirstOrDefault(p => p.PageId == id && p.IsPrimary) ?? new PageImage();
+
+            if (data == null && image.Id > 0)
             {
-                page.ImageData = data;
-                page.ImageMime = mimeType;
-                Save(page);
+                _repository.Delete(image);
             }
+            else
+            {
+                image.Data = data;
+                image.PageId = id;
+                image.IsPrimary = true;
+
+                _repository.Save(image);
+            }
+
         }
 
         public Page UpdatePageDetails(int id, string shortName, string fullName, string description)
@@ -200,6 +209,22 @@ namespace Warhammer.Core.Concrete
                 existingPage.ShortName = shortName;
                 existingPage.FullName = fullName;
                 existingPage.Description = description;
+
+                if (existingPage.HasInlineImage)
+                {
+                    if (!existingPage.HasExternalImage)
+                    {
+                        PageImage image = new PageImage
+                        {
+                            PageId = existingPage.Id,
+                            Data = existingPage.ImageData,
+                            IsPrimary = true
+                        };
+
+                        _repository.Save(image);
+                    }
+                    existingPage.ImageData = null;
+                }
             }
             
             Save(existingPage);
@@ -493,6 +518,15 @@ namespace Warhammer.Core.Concrete
                     {
                         _repository.Delete(scoreHistory);
                     }
+                    foreach (Award personAward in person.Awards)
+                    {
+                        RemoveAward(person.Id, personAward.Id);
+                    }
+                }
+
+                foreach (PageImage image in page.PageImages)
+                {
+                    _repository.Delete(image);
                 }
 
                 _repository.Delete(page);
@@ -1248,6 +1282,59 @@ namespace Warhammer.Core.Concrete
             pages.AddRange(sessions);
             pages.AddRange(logs);
             return pages.OrderBy(p => p.AgeInDays).ToList();
+        }
+
+        public List<Person> NpcsWithStats()
+        {
+            return
+                _repository.People()
+                .Where(p => p.PlayerId == null)
+                .Where(p => p.PersonStats.Any())
+                .Where(p => !p.IsDead)
+                .OrderByDescending(p => p.CurrentScore).ToList();
+        }
+
+        public PageImage SaveImage(int pageId, byte[] image)
+        {
+            PageImage pageImage = new PageImage
+            {
+                Data = image,
+                PageId = pageId
+            };
+            int id = _repository.Save(pageImage);
+            return _repository.PageImages().FirstOrDefault(p => p.Id == id);
+        }
+
+        public PageImage GetPageImage(int id)
+        {
+            return _repository.PageImages().FirstOrDefault(p => p.Id == id);
+        }
+
+        public void SetPageXpAwarded(int pageId)
+        {
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
+            if (page != null)
+            {
+                Session session = page as Session;
+                if (session != null)
+                {
+                    if (!session.XpAwarded.HasValue)
+                    {
+                        session.XpAwarded = DateTime.Now;
+                    }
+                }
+
+                SessionLog log = page as SessionLog;
+                if (log != null)
+                {
+                    if (!log.XpAwarded.HasValue)
+                    {
+                        log.XpAwarded = DateTime.Now;
+                    }
+                }
+
+                Save(page);
+            }
         }
 
         public void RemoveAward(int personId, int awardId)

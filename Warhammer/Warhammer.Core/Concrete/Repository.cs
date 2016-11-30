@@ -239,6 +239,11 @@ namespace Warhammer.Core.Concrete
                 .AsNoTracking();
         }
 
+        public IQueryable<PageImage> PageImages()
+        {
+            return _entities.PageImages;
+        }
+
         #endregion
 
         #region Save
@@ -424,6 +429,27 @@ namespace Warhammer.Core.Concrete
         public void Delete(ScoreHistory scoreHistory)
         {
             _entities.ScoreHistories.Remove(scoreHistory);
+            _entities.SaveChanges();
+        }
+
+        public int Save(PageImage pageImage)
+        {
+            if (pageImage.Id == 0)
+            {
+                _entities.PageImages.Add(pageImage);
+            }
+            else
+            {
+                _entities.Entry(pageImage).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return pageImage.Id;
+        }
+
+        public void Delete(PageImage pageImage)
+        {
+            _entities.PageImages.Remove(pageImage);
             _entities.SaveChanges();
         }
 

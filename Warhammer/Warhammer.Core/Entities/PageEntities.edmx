@@ -172,6 +172,15 @@
           <Property Name="Pinned" Type="bit" Nullable="false" />
           <Property Name="PlainText" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="PageImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PageId" Type="int" Nullable="false" />
+          <Property Name="IsPrimary" Type="bit" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="PageView">
           <Key>
             <PropertyRef Name="Id" />
@@ -542,6 +551,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PageImage_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="PageImage" Type="Self.PageImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PageImage">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PageView_Page">
           <End Role="Page" Type="Self.Page" Multiplicity="1" />
           <End Role="PageView" Type="Self.PageView" Multiplicity="*" />
@@ -798,6 +819,7 @@
           <EntitySet Name="FateStat" EntityType="Self.FateStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStunt" EntityType="Self.FateStunt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PageImage" EntityType="Self.PageImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PageView" EntityType="Self.PageView" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonAtSession" EntityType="Self.PersonAtSession" Schema="dbo" store:Type="Tables" />
@@ -873,6 +895,10 @@
           <AssociationSet Name="FK_Page_Player" Association="Self.FK_Page_Player">
             <End Role="Player" EntitySet="Player" />
             <End Role="Page" EntitySet="Page" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PageImage_Page" Association="Self.FK_PageImage_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="PageImage" EntitySet="PageImage" />
           </AssociationSet>
           <AssociationSet Name="FK_PageView_Page" Association="Self.FK_PageView_Page">
             <End Role="Page" EntitySet="Page" />
@@ -1105,6 +1131,11 @@
           </AssociationSet>
           <EntitySet Name="AdminSettings" EntityType="WarhammerModel.AdminSetting" />
           <EntitySet Name="ExceptionLogs" EntityType="WarhammerModel.ExceptionLog" />
+          <EntitySet Name="PageImages" EntityType="WarhammerModel.PageImage" />
+          <AssociationSet Name="FK_PageImage_Page" Association="WarhammerModel.FK_PageImage_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="PageImage" EntitySet="PageImages" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1168,6 +1199,7 @@
           <NavigationProperty Name="Related" Relationship="WarhammerModel.PersonAtSession" FromRole="Page" ToRole="Page1" />
           <NavigationProperty Name="Pages" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" />
           <Property Name="PlainText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PageImages" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="Page" ToRole="PageImage" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -1830,6 +1862,28 @@
           <Property Name="Identifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EntityId" Type="Int32" />
         </EntityType>
+        <EntityType Name="PageImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PageId" Type="Int32" Nullable="false" />
+          <Property Name="IsPrimary" Type="Boolean" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="PageImage" ToRole="Page" />
+        </EntityType>
+        <Association Name="FK_PageImage_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.PageImage" Role="PageImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PageImage">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2199,6 +2253,16 @@
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="Severity" ColumnName="Severity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PageImages">
+            <EntityTypeMapping TypeName="WarhammerModel.PageImage">
+              <MappingFragment StoreEntitySet="PageImage">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

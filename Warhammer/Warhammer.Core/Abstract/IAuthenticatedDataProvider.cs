@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
 
@@ -120,5 +121,9 @@ namespace Warhammer.Core.Abstract
         void AddDefaultXp(int pageId);
         List<PageListItemModel> FullPageList();
         List<Page> PagesWithOutstandingXp();
+        List<Person> NpcsWithStats();
+        PageImage SaveImage(int pageId, byte[] image);
+        PageImage GetPageImage(int id);
+        void SetPageXpAwarded(int pageId);
     }
 }

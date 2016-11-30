@@ -1,0 +1,32 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Core.Entities.Person
+<tr>
+    <td>
+        @if (Model is Person || Model.HasImage)
+        {
+            <img style="height: 80px; width: 80px;  border-radius: 40px; box-shadow: #333333 5px 5px 15px; margin-right: 20px;" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
+        }
+    </td>
+
+    <td style="text-align: center;font-size: 1.5em; padding: 5px;">C<br /> <b>@Model.StatValue(StatName.Combat)</b></td>
+    <td style="text-align: center;font-size: 1.5em; padding: 5px;">A<br /> <b>@Model.StatValue(StatName.Action) </b></td>
+    <td style="text-align: center;font-size: 1.5em; padding: 5px;">I<br /> <b>@Model.StatValue(StatName.Intellect) </b></td>
+    <td style="text-align: center;font-size: 1.5em; padding: 5px;">W<br /> <b>@Model.StatValue(StatName.Work) </b></td>
+    <td style="text-align: center;font-size: 1.5em; padding: 5px;">So<br /> <b>@Model.StatValue(StatName.Social) </b></td>
+    <td style="text-align: center;font-size: 1.5em; padding: 5px;">Se<br /> <b>@Model.StatValue(StatName.Self) </b></td>
+    <td style="text-align: center; font-size: 1.2em;padding: 15px;"><b>@Model.ShortName</b></td>
+    <td>@(string.Join(", ", Model.DescriptorNames))</td>
+
+    <td>
+        @foreach (var wear in Model.SimpleHitPoints.Where(h => h.SimpleHitPointType == SimpleHitPointType.Wear).OrderBy(w => w.HitPointLevelId))
+        {
+            <span>[ @Html.Raw(wear.HitPointLevelId) ]</span><br />
+        }
+    </td>
+    <td>
+        @foreach (var harm in Model.SimpleHitPoints.Where(h => h.SimpleHitPointType == SimpleHitPointType.Harm).OrderBy(w => w.HitPointLevelId))
+        {
+            <span>[ @Html.Raw(harm.HitPointLevelId) ]</span><br />
+        }
+    </td>
+</tr>

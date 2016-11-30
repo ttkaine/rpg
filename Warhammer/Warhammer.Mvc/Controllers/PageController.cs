@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
@@ -66,15 +68,28 @@ namespace Warhammer.Mvc.Controllers
             {
                 ClearPageCache(page.Id);
 
-                Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
-                if (updatedPage.ImageData == null)
+                List<ExtractedImage> images = _imageProcessor.GetImagesFromHtmlString(page.Description);
+
+                foreach (ExtractedImage image in images)
                 {
-                    Image image = _imageProcessor.GetImageFromHtmlString(updatedPage.Description);
+                    byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
+                    PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
+                    string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
+                    page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+                }
+
+                Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
+
+                
+                if (!updatedPage.HasImage)
+                {
+                    ExtractedImage primaryImage = images.FirstOrDefault();
+                    Image image = primaryImage?.Image;
                     if (image != null)
                     {
                         image = _imageProcessor.ResizeImage(image, new Size {Height = 200, Width = 200});
                         byte[] imageData = _imageProcessor.GetJpegFromImage(image);
-                        
+
                         DataProvider.ChangePicture(updatedPage.Id, imageData, "Image/Jpeg");
                     }
                 }
@@ -127,9 +142,9 @@ namespace Warhammer.Mvc.Controllers
 
             if (page != null)
             {
-                if (page.ImageData != null && page.ImageData.Length > 100 && !string.IsNullOrWhiteSpace(page.ImageMime))
+                if (page.HasImage)
                 {
-                    return File(page.ImageData, page.ImageMime);
+                    return File(page.PrimaryImage, "image/jpeg");
                 }
 
                 if (page is Session)
@@ -154,9 +169,9 @@ namespace Warhammer.Mvc.Controllers
                 {
                     SessionLog log = page as SessionLog;
 
-                    if (log.Person.ImageData != null && log.Person.ImageData.Length > 100 && !string.IsNullOrWhiteSpace(log.Person.ImageMime))
+                    if (log.Person.HasImage)
                     {
-                        return File(log.Person.ImageData, log.Person.ImageMime);
+                        return File(log.Person.PrimaryImage, "image/jpeg");
                     }
 
                     var personPath = Path.Combine(defaultDir, "page-log.png");
