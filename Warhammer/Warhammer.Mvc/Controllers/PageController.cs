@@ -119,7 +119,7 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("index", new { id = id });
         }
 
-        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult Image(int id)
         {
             Page page = DataProvider.GetPage(id);
@@ -171,6 +171,7 @@ namespace Warhammer.Mvc.Controllers
             return File(defaultImagePath, "image/jpeg");
         }
 
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult PageImage(int? id)
         {
             if (id.HasValue)
