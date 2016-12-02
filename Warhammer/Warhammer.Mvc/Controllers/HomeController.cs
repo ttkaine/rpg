@@ -314,6 +314,17 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Player")]
+        public ActionResult MarkAllModifiedRead()
+        {
+            List<Page> pages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate).ToList();
+            foreach (Page page in pages)
+            {
+                DataProvider.MarkAsSeen(page.Id);
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Footer()
         {
             string footerMessage = DataProvider.VersionInfo();

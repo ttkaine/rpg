@@ -65,11 +65,12 @@
                     <div class="alert alert-success">
                         @if (Model.NewPages.Any())
                         {
+
+                            <h3>New Pages</h3>
                             if (Model.NewPages.Count() > 5)
                             {
                                 @Html.ActionLink("Mark All as Seen", "MarkAllRead")
                             }
-                            <h3>New Pages</h3>
                             <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
 
                             <ul>
@@ -81,7 +82,12 @@
                         }
                         @if (Model.UpdatedPages.Any())
                         {
+
                             <h3>Updated Pages</h3>
+                            if (Model.UpdatedPages.Count() > 5)
+                            {
+                                @Html.ActionLink("Mark All as Seen", "MarkAllModifiedRead")
+                            }
                             <p class="note">These are pages that have had significant updates since you last looked at them...</p>
                             <ul>
                                 @foreach (var page in Model.UpdatedPages)
