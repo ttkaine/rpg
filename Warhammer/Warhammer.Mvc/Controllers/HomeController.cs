@@ -129,7 +129,7 @@ namespace Warhammer.Mvc.Controllers
             return View();
         }
 
-        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult TrophyImage(int id)
         {
             Trophy trophy = DataProvider.GetTrophy(id);
@@ -314,13 +314,24 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Player")]
+        public ActionResult MarkAllModifiedRead()
+        {
+            List<Page> pages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate).ToList();
+            foreach (Page page in pages)
+            {
+                DataProvider.MarkAsSeen(page.Id);
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Footer()
         {
             string footerMessage = DataProvider.VersionInfo();
             return PartialView("Footer", footerMessage);
         }
 
-        [OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.Any, NoStore = true)]
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult ShowImage(int id)
         {
             PageImage iamge = DataProvider.GetPageImage(id);
