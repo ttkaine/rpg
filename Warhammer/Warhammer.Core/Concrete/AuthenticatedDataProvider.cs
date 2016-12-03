@@ -972,17 +972,26 @@ namespace Warhammer.Core.Concrete
 
             foreach (Page page in pages)
             {
-                dateObject.Add(page.SignificantUpdate, page);
+                if (!dateObject.ContainsKey(page.SignificantUpdate))
+                {
+                    dateObject.Add(page.SignificantUpdate, page);
+                }
             }
 
             foreach (Award award in awards)
             {
-                dateObject.Add(award.AwardedOn, award);
+                if (!dateObject.ContainsKey(award.AwardedOn))
+                {
+                    dateObject.Add(award.AwardedOn, award);
+                }
             }
 
             foreach (Comment comment in comments)
             {
-                dateObject.Add(comment.Created, comment);
+                if (!dateObject.ContainsKey(comment.Created))
+                {
+                    dateObject.Add(comment.Created, comment);
+                }
             }
 
             var list = dateObject.Keys.ToList();
