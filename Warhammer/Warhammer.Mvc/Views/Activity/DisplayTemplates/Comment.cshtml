@@ -1,4 +1,5 @@
 ﻿
+@using System.Text.RegularExpressions
 @model Warhammer.Core.Entities.Comment
 
 <tr>
@@ -15,8 +16,8 @@
 
     </td>
     <td></td>
-    <td>
-        @Html.Raw(Model.Description)
+    <td>  
+        @Html.Raw(Model.FormattedContent)
     </td>
 
 </tr>
