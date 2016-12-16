@@ -85,6 +85,24 @@ namespace Warhammer.Mvc.Controllers
             return View(creatureModel);
         }
 
+        public ActionResult Organisation()
+        {
+            CreateOrganisationViewModel model = new CreateOrganisationViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Organisation(CreateOrganisationViewModel organisationModel)
+        {
+            if (ModelState.IsValid)
+            {
+                int pageId = DataProvider.AddOrganisation(organisationModel.Name, organisationModel.Description);
+                return RedirectToAction("Index", "Page", new { id = pageId });
+            }
+            return View(organisationModel);
+        }
+
+
         public ActionResult GameSession()
         {
             Session session = new Session();
@@ -187,5 +205,6 @@ namespace Warhammer.Mvc.Controllers
             model.ParentPlace = new SelectList(DataProvider.Places().OrderBy(l => l.Breadcrumb), "Id", "Breadcrumb");
             return View(model);
         }
+
     }
 }

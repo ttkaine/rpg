@@ -232,6 +232,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
+    <Compile Include="Models\CreateOrganisationViewModel.cs" />
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
@@ -641,6 +642,8 @@
     <Content Include="Views\Admin\CrowNpcSheet.cshtml" />
     <Content Include="Views\Admin\DisplayTemplates\Person.cshtml" />
     <Content Include="Views\Create\Creature.cshtml" />
+    <Content Include="Views\Create\Organisation.cshtml" />
+    <Content Include="Views\Home\Bestiary.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

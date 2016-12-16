@@ -1364,6 +1364,17 @@ namespace Warhammer.Core.Concrete
             return Save(creature);
         }
 
+        public int AddOrganisation(string name, string description)
+        {
+            Organisation org = new Organisation
+            {
+                ShortName = name,
+                FullName = name,
+                Description = description
+            };
+            return Save(org);
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

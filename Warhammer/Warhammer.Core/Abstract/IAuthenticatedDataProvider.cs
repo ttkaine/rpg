@@ -127,5 +127,6 @@ namespace Warhammer.Core.Abstract
         void SetPageXpAwarded(int pageId);
         List<Creature> Creatures();
         int AddCreature(CreateCreatureViewModel creatureModel);
+        int AddOrganisation(string name, string description);
     }
 }

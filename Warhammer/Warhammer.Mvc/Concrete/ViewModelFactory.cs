@@ -269,6 +269,16 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            if (_data.SiteHasFeature(Feature.Bestiary))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Trophy Cabinet",
+                    Url = _urlHelper.Action("Bestiary", "Home"),
+                   // IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
+                });
+            }
+
             if (_data.SiteHasFeature(Feature.SessionPage))
             {
                 items.Add(new MenuItemViewModel
