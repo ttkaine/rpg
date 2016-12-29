@@ -1247,7 +1247,7 @@ namespace Warhammer.Core.Concrete
                 if (!session.XpAwarded.HasValue)
                 {
                     session.XpAwarded = DateTime.Now;
-                    xp = session.IsTextSession ? 0.1m : 0.3m;
+                    xp = session.IsTextSession ? 0.25m : 0.5m;
                     sessionId = session.Id;
                     Save(session);
                 }
@@ -1260,6 +1260,15 @@ namespace Warhammer.Core.Concrete
                 {
                     xp = 0.1m;
                     sessionId = log.SessionId ?? 0;
+
+                    decimal wordBonus = (decimal)log.Session.WordCount/2000 * (log.Session.IsTextSession ? 1 : 2);
+                    if (wordBonus > 0.1m)
+                    {
+                        wordBonus = 0.1m;
+                    }
+
+                    xp = xp + wordBonus;
+
                     log.XpAwarded = DateTime.Now;
                     Save(log);
                 }
