@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
+//using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.PageObjects;
@@ -152,12 +152,12 @@ namespace Warhammer.Tests.Smoke.SeleniumTests
         [TearDown]
         public void Down()
         {
-            //if (TestContext.CurrentContext.Result.Outcome == TestStatus.Failed)
-            //{
-            //    Console.WriteLine("Test Failed");
-            //    Console.WriteLine("Take Screen Shot...");
-            //    TakeScreenshot("TEST_FAIL");
-            //}
+            if (TestContext.CurrentContext.Result.Status == TestStatus.Failed)
+            {
+                Console.WriteLine("Test Failed");
+                Console.WriteLine("Take Screen Shot...");
+                TakeScreenshot("TEST_FAIL");
+            }
         }
 
         public void TakeScreenshot(string name)
