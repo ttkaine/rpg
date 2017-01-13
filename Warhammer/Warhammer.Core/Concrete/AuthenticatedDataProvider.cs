@@ -92,7 +92,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Person> MyPeople()
         {
-            return _repository.People().Where(p => p.Player.UserName == _authenticatedUser.UserName).ToList();
+            return _repository.People().Where(p => p.Player.UserName == _authenticatedUser.UserName && !p.IsDead).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
@@ -1640,7 +1640,7 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> OtherPCs()
         {
-            return _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id).ToList();
+            return _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id && !p.IsDead).ToList();
         }
 
 	    private List<Person> ApplyNail(List<Person> people)
