@@ -759,10 +759,28 @@ namespace Warhammer.Core.Concrete
             Save(person);
         }
 
+        public decimal CurrentMaxPlayerXp()
+        {
+            decimal xpCap = _repository.People().Where(p => p.PlayerId.HasValue).Max(p => p.XPAwarded);
+            return xpCap;
+        }
+
         public void AddXp(int personId, decimal xpValue)
         {
             Person person = GetPerson(personId);
             person.XPAwarded = person.XPAwarded + xpValue;
+
+
+            decimal playerXpLevel = CurrentMaxPlayerXp();
+            if (person.PlayerId.HasValue && person.XPAwarded < playerXpLevel)
+            {
+                person.XPAwarded = person.XPAwarded + xpValue;
+                if (person.XPAwarded > playerXpLevel)
+                {
+                    person.XPAwarded = playerXpLevel;
+                }
+            }
+
             Save(person);
         }
 
@@ -1153,10 +1171,10 @@ namespace Warhammer.Core.Concrete
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
-                List<Person> people = session.People.ToList();
+                List<Person> people = session.People.Where(p => !p.IsDead).ToList();
 
                 //always award all players regardless - just to be fair
-                List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue).ToList();
+                List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).ToList();
                 foreach (Person person in playerCharacters)
                 {
                     if (people.All(p => p.Id != person.Id))
@@ -1235,11 +1253,10 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().ToList();
         }
 
-        public void AddDefaultXp(int pageId)
+        public decimal GetDefaultXpForPage(Page page, out int sessionId)
         {
-            Page page = GetPage(pageId);
             decimal xp = 0;
-            int sessionId = 0;
+            sessionId = 0;
 
             Session session = page as Session;
             if (session != null)
@@ -1249,7 +1266,7 @@ namespace Warhammer.Core.Concrete
                     session.XpAwarded = DateTime.Now;
                     xp = session.IsTextSession ? 0.25m : 0.5m;
                     sessionId = session.Id;
-                    Save(session);
+                  //  Save(session);
                 }
             }
 
@@ -1261,7 +1278,7 @@ namespace Warhammer.Core.Concrete
                     xp = 0.1m;
                     sessionId = log.SessionId ?? 0;
 
-                    decimal wordBonus = (decimal)log.Session.WordCount/2000 * (log.Session.IsTextSession ? 1 : 2);
+                    decimal wordBonus = (decimal)log.Session.WordCount / 2000 * (log.Session.IsTextSession ? 1 : 2);
                     if (wordBonus > 0.1m)
                     {
                         wordBonus = 0.1m;
@@ -1270,9 +1287,20 @@ namespace Warhammer.Core.Concrete
                     xp = xp + wordBonus;
 
                     log.XpAwarded = DateTime.Now;
-                    Save(log);
+                //    Save(log);
                 }
             }
+
+            return xp;
+        }
+
+        public void AddDefaultXp(int pageId)
+        {
+            Page page = GetPage(pageId);
+
+            int sessionId;
+            decimal xp = GetDefaultXpForPage(page, out sessionId);
+
 
             if (xp > 0 && sessionId > 0)
             {

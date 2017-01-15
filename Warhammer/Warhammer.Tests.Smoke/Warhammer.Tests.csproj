@@ -127,12 +127,18 @@
     <Compile Include="SeleniumTests\SmokeTests.cs" />
     <Compile Include="TestSettings.cs" />
     <Compile Include="UnitTests\BaseUnitTests.cs" />
+    <Compile Include="UnitTests\XpUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Warhammer.Core\Warhammer.Core.csproj">
+      <Project>{903E12BF-CA1B-4C80-95D5-3690B0FA03A8}</Project>
+      <Name>Warhammer.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Selenium.Firefox.WebDriver.0.13.0\build\Selenium.Firefox.WebDriver.targets" Condition="Exists('..\packages\Selenium.Firefox.WebDriver.0.13.0\build\Selenium.Firefox.WebDriver.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
