@@ -734,7 +734,7 @@ namespace Warhammer.Mvc.Controllers
 		//	}
 		//}
 
-		[OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+		[OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.Downstream, NoStore = true)]
 		public ActionResult Image(int id)
 		{
 			CharacterViewModel character = ModelFactory.GetCharacter(id);
