@@ -128,5 +128,7 @@ namespace Warhammer.Core.Abstract
         List<Creature> Creatures();
         int AddCreature(CreateCreatureViewModel creatureModel);
         int AddOrganisation(string name, string description);
+        List<PriceListItem> PriceList();
+        void SavePriceList(List<PriceListItem> priceListItems);
     }
 }

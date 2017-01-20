@@ -267,6 +267,9 @@
     <Compile Include="Entities\PostOrder.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PriceListItem.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Reputation.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -304,6 +307,7 @@
     <Compile Include="Entities\_Person.cs" />
     <Compile Include="Entities\_Place.cs" />
     <Compile Include="Entities\_Player.cs" />
+    <Compile Include="Entities\_PriceListItem.cs" />
     <Compile Include="Entities\_ScoreHistory.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />

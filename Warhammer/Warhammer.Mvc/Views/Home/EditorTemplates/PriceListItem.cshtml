@@ -1,0 +1,14 @@
+﻿@model Warhammer.Core.Entities.PriceListItem
+
+<tr>
+    <td class="name">
+        @Html.EditorFor(m => m.Name)    
+        @Html.HiddenFor(p => p.Id)
+    </td>
+    <td>@Html.EditorFor(m => m.PriceInPence)</td>
+    <td class="description">
+        @Html.TextAreaFor(b => b.Description)
+        <br/>
+        @Html.DropDownListFor(m => m.ParentId, Model.AllItems.Where(i => i.Id != Model.Id).Select(i => new SelectListItem {Value = i.Id.ToString(), Selected = Model.ParentId == i.Id, Text = i.Name}), "-None-")
+    </td>
+</tr>

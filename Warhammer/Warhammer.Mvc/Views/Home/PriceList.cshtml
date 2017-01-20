@@ -1,0 +1,158 @@
+﻿@model IEnumerable<Warhammer.Core.Entities.PriceListItem>
+@{
+    ViewBag.Title = "PriceList";
+}
+
+<div class="content-wrapper">
+
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">The Master Price List</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            
+            @if (ViewBag.EditMode && !User.IsInRole("Admin"))
+            {
+                <div class="alert alert-danger">
+                    <h1>Take care if editing! </h1>
+                    <p>The it's probably possible to break this page completely by accidentally making a circular reference where a parent is the child of one of its own children. This would totally crash the site but I haven't thought of an easy bulletproof way of stopping you doing it yet... so take it easy, okay?</p>
+                </div>
+            }
+             
+
+                    <h2>Prices for things...</h2>
+                    <p>Prices for items in the Warhammer world are quite variable. They vary from city to city, as well as over time. Recorded here are some base prices to use an a benchmark. When we state a price for something in the game I'll try to record it here so we can remember what things cost for next time...</p>
+
+                    <div id="priceList">
+                        <input class="search input-lg" placeholder="Filter" />
+                        <hr />
+                        @using (Html.BeginForm())
+                {
+                    if (ViewBag.EditMode)
+                    {
+                                <input type="submit" value="Save Changes" />
+                            }
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Item Name</td>
+                                        <td>Price</td>
+                                        <td>Description</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    @(ViewBag.EditMode ? Html.EditorForModel() : Html.DisplayForModel())
+                                </tbody>
+                            </table>
+
+                            if (ViewBag.EditMode)
+                            {
+                                <input type="submit" value="Save Changes" />
+                            }
+                        }
+                    </div>
+
+                </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Coinage</h3>
+            <p>There are a number of different demoninations of coins available in the Old World and beyond and many places still use barter extensivly.</p>
+            <p>Some common coin types are:</p>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td>Coin</td>
+                    <td>Written</td>
+                    <td>Value in pence</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Farthing</td>
+                        <td>&#188;d</td>
+                        <td>0.25</td>
+                    </tr>
+                    <tr>
+                        <td>halfpenny</td>
+                        <td>&#189;d</td>
+                        <td>0.5</td>
+                    </tr>
+                    <tr>
+                        <td>Penny</td>
+                        <td>-/1 or 1d</td>
+                        <td>1</td>
+                    </tr>
+                <tr>
+                    <td>Bit</td>
+                    <td>3d</td>
+                    <td>3</td>
+                </tr>
+                    <tr>
+                        <td>Groat</td>
+                        <td>4d</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Shilling</td>
+                        <td>1/-</td>
+                        <td>12</td>
+                    </tr>
+                <tr>
+                    <td>Quarter Noble</td>
+                    <td>1/8</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>Half Noble</td>
+                    <td>3/4</td>
+                    <td>40</td>
+                </tr>
+                <tr>
+                    <td>Full Noble</td>
+                    <td>6/8</td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>Half Crown</td>
+                    <td>10/- or &#189;GC</td>
+                    <td>120</td>
+                </tr>
+                <tr>
+                    <td>Gold Crown</td>
+                    <td>1GC</td>
+                    <td>240</td>
+                </tr>
+                <tr>
+                    <td>Soverign</td>
+                    <td>1GC</td>
+                    <td>240</td>
+                </tr>
+                <tr>
+                    <td>Guilder</td>
+                    <td>1GC</td>
+                    <td>240</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="@Url.Content("~/scripts/list.js")"></script>
+<script>
+    var options = {
+        valueNames: ['name', 'price', 'description'],
+        page: 2000
+    };
+
+    var userList = new List('priceList', options);
+
+</script>

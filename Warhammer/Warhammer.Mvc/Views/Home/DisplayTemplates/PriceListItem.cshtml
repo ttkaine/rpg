@@ -1,0 +1,14 @@
+﻿@model Warhammer.Core.Entities.PriceListItem
+
+@if (Model.PriceInPence.HasValue && Model.PriceInPence > 0)
+{
+    <tr>
+        <td class="name">@Model.Name</td>
+        <td>@Html.Raw(Model.DisplayPrice)</td>
+        <td class="description">
+            @Model.Description
+            <br />
+            <span class="note">@Model.Breadcrumb</span>
+        </td>
+    </tr>
+}
