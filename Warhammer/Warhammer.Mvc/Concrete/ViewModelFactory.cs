@@ -71,14 +71,39 @@ namespace Warhammer.Mvc.Concrete
             MenuViewModel model = new MenuViewModel();
 
             List<MenuItemViewModel> usefulSubMenu = MakeUsefulSubmenu();
+            List<MenuItemViewModel> featuresMenu = MakeFeaturesSubmenu();
             List<MenuItemViewModel> peopleSubMenu = MakePeopleSubmenu();
+            List<MenuItemViewModel> adminSubMenu = MakeAdminSubmenu();
 
-            model.LeftMenu.Add(new MenuItemViewModel
+            if (usefulSubMenu.Any())
             {
-                Name = "Useful Pages",
-                Url = "#",
-                SubMenu = usefulSubMenu
-            });
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "Useful Pages",
+                    Url = "#",
+                    SubMenu = usefulSubMenu
+                });
+            }
+
+            if (featuresMenu.Any())
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "Features",
+                    Url = "#",
+                    SubMenu = featuresMenu
+                });
+            }
+
+            if (adminSubMenu.Any())
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "Administration",
+                    Url = "#",
+                    SubMenu = adminSubMenu
+                });
+            }
 
             model.LeftMenu.Add(new MenuItemViewModel
             {
@@ -87,17 +112,7 @@ namespace Warhammer.Mvc.Concrete
                 SubMenu = peopleSubMenu
             });
 
-            if (_data.SiteHasFeature(Feature.CrowRules) && !_data.CurrentUserIsGuest)
-            {
-                model.LeftMenu.Add(new MenuItemViewModel
-                {
-                    Name = "",
-                    AltText = "Rules Document",
-                    Url = "https://1drv.ms/w/s!AkAJN4vahKOIqhGTXm3ZFcHdIT1C",
-                    IconUrl = _urlHelper.Content("~/Content/Images/rules.png"),
-                    //  IconCssClass = "badge"
-                });
-            }
+
 
             if (_data.SiteHasFeature(Feature.UserSettings) && !_data.CurrentUserIsGuest)
             {
@@ -111,28 +126,57 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            return model;
+        }
+
+        private List<MenuItemViewModel> MakeAdminSubmenu()
+        {
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>();
             if (_data.CurrentUserIsAdmin)
             {
-
-                model.RightMenu.Add(new MenuItemViewModel
+                items.Add(new MenuItemViewModel
                 {
-                    Name = "",
+                    Name = "Outstanding Xp",
+                    Url = _urlHelper.Action("OutstandingXp", "Admin"),
+                });
+
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Edit Features",
                     AltText = "Features",
                     Url = _urlHelper.Action("Features", "Admin"),
                     IconUrl = _urlHelper.Content("~/Content/Images/Features.png"),
                     //  IconCssClass = "badge"
                 });
-                model.RightMenu.Add(new MenuItemViewModel
+                items.Add(new MenuItemViewModel
                 {
-                    Name = "",
+                    Name = "Logs",
                     AltText = "Logs",
                     Url = _urlHelper.Action("Log", "Admin"),
                     IconUrl = _urlHelper.Content("~/Content/Images/log.png"),
                     //  IconCssClass = "badge"
                 });
+
+                if (_data.SiteHasFeature(Feature.PriceList))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Price List",
+                        Url = _urlHelper.Action("PriceList", "Home"),
+                    });
+                }
             }
 
-            return model;
+            return items;
+        }
+
+        private List<MenuItemViewModel> MakeFeaturesSubmenu()
+        {
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+
+
+
+            return items;
         }
 
         public UserSettingsViewModel MakeUserSettings()
@@ -197,15 +241,6 @@ namespace Warhammer.Mvc.Concrete
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
 
-            if (_data.CurrentUserIsAdmin)
-            {
-                items.Add(new MenuItemViewModel
-                {
-                    Name = "Browse...", Url = _urlHelper.Action("People", "Home")
-                });
-            }
-
-
             if (_data.ShowLeague)
             {
                 items.Add(new MenuItemViewModel
@@ -246,36 +281,32 @@ namespace Warhammer.Mvc.Concrete
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
 
-
             items.Add(new MenuItemViewModel
             {
                 Name = "Page List",
                 Url = _urlHelper.Action("FullPageList", "Home"),
+                IconUrl = _urlHelper.Content("~/Content/Images/pages.png")
             });
+
 
             if (_data.SiteHasFeature(Feature.WarhammerMap))
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Map of the World", Url = "http://www.gitzmansgallery.com/shdmotwow-full.html",
+                    Name = "Map of the World",
+                    Url = "http://www.gitzmansgallery.com/shdmotwow-full.html",
+                    IconUrl = _urlHelper.Content("~/Content/Images/globe.png")
                 });
             }
+
 
             if (_data.SiteHasFeature(Feature.TrophyCabinet))
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Trophy Cabinet", Url = _urlHelper.Action("Trophies", "Home"), IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
-                });
-            }
-
-            if (_data.SiteHasFeature(Feature.Bestiary))
-            {
-                items.Add(new MenuItemViewModel
-                {
                     Name = "Trophy Cabinet",
-                    Url = _urlHelper.Action("Bestiary", "Home"),
-                   // IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
+                    Url = _urlHelper.Action("Trophies", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
                 });
             }
 
@@ -283,16 +314,39 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Sessions", Url = _urlHelper.Action("Sessions", "Home"),
+                    Name = "Sessions",
+                    Url = _urlHelper.Action("Sessions", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
                 });
             }
 
-            if (_data.CurrentUserIsAdmin)
+            if (_data.SiteHasFeature(Feature.CrowRules) && !_data.CurrentUserIsGuest)
             {
                 items.Add(new MenuItemViewModel
                 {
-                    Name = "Outstanding Xp",
-                    Url = _urlHelper.Action("OutstandingXp", "Admin"),
+                    Name = "Current Game Rules",
+                    AltText = "Rules Document",
+                    Url = "https://1drv.ms/w/s!AkAJN4vahKOIqhGTXm3ZFcHdIT1C",
+                    IconUrl = _urlHelper.Content("~/Content/Images/rules.png"),
+                    //  IconCssClass = "badge"
+                });
+            }
+
+            if (_data.SiteHasFeature(Feature.Bestiary))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Bestiary",
+                    Url = _urlHelper.Action("Bestiary", "Home"),
+                });
+            }
+            if (_data.SiteHasFeature(Feature.PublicPrices) && _data.SiteHasFeature(Feature.PriceList))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Price List",
+                    Url = _urlHelper.Action("PriceList", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/coin.png")
                 });
             }
 
@@ -300,7 +354,6 @@ namespace Warhammer.Mvc.Concrete
             {
                 Name = pinnedPage.FullName, Url = _urlHelper.Action("Index", "Page", new {id = pinnedPage.Id})
             }));
-
 
             return items;
         }

@@ -59,5 +59,7 @@ namespace Warhammer.Core.Abstract
         void Delete(ScoreHistory scoreHistory);
         int Save(PageImage pageImage);
         void Delete(PageImage pageImage);
+        IQueryable<PriceListItem> PriceListItems();
+        int Save(PriceListItem priceListItem);
     }
 }

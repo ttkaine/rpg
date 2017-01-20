@@ -302,6 +302,16 @@
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="LastTurnEnded" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="PriceListItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="PriceInPence" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Reputation">
           <Key>
             <PropertyRef Name="Id" />
@@ -806,6 +816,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PriceListItem_PriceListItem">
+          <End Role="PriceListItem" Type="Self.PriceListItem" Multiplicity="0..1" />
+          <End Role="PriceListItem1" Type="Self.PriceListItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceListItem">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PriceListItem1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Reputation_Creature">
           <End Role="Creature" Type="Self.Creature" Multiplicity="0..1" />
           <End Role="Reputation" Type="Self.Reputation" Multiplicity="*" />
@@ -954,6 +976,7 @@
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceListItem" EntityType="Self.PriceListItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reputation" EntityType="Self.Reputation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScoreHistory" EntityType="Self.ScoreHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
@@ -1094,6 +1117,10 @@
           <AssociationSet Name="FK_PostOrder_Session" Association="Self.FK_PostOrder_Session">
             <End Role="Session" EntitySet="Session" />
             <End Role="PostOrder" EntitySet="PostOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriceListItem_PriceListItem" Association="Self.FK_PriceListItem_PriceListItem">
+            <End Role="PriceListItem" EntitySet="PriceListItem" />
+            <End Role="PriceListItem1" EntitySet="PriceListItem" />
           </AssociationSet>
           <AssociationSet Name="FK_Reputation_Creature" Association="Self.FK_Reputation_Creature">
             <End Role="Creature" EntitySet="Creature" />
@@ -1312,6 +1339,11 @@
           <AssociationSet Name="FK_Reputation_Person" Association="WarhammerModel.FK_Reputation_Person">
             <End Role="Person" EntitySet="Pages" />
             <End Role="Reputation" EntitySet="Reputations" />
+          </AssociationSet>
+          <EntitySet Name="PriceListItems" EntityType="WarhammerModel.PriceListItem" />
+          <AssociationSet Name="FK_PriceListItem_PriceListItem" Association="WarhammerModel.FK_PriceListItem_PriceListItem">
+            <End Role="PriceListItem" EntitySet="PriceListItems" />
+            <End Role="PriceListItem1" EntitySet="PriceListItems" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
@@ -2162,6 +2194,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PriceListItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PriceInPence" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Children" Relationship="WarhammerModel.FK_PriceListItem_PriceListItem" FromRole="PriceListItem" ToRole="PriceListItem1" />
+          <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_PriceListItem_PriceListItem" FromRole="PriceListItem1" ToRole="PriceListItem" />
+        </EntityType>
+        <Association Name="FK_PriceListItem_PriceListItem">
+          <End Type="WarhammerModel.PriceListItem" Role="PriceListItem" Multiplicity="0..1" />
+          <End Type="WarhammerModel.PriceListItem" Role="PriceListItem1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceListItem">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PriceListItem1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2580,6 +2636,17 @@
                 <ScalarProperty Name="Xp" ColumnName="Xp" />
                 <ScalarProperty Name="HarmLevelId" ColumnName="HarmLevelId" />
                 <ScalarProperty Name="WearLevelId" ColumnName="WearLevelId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceListItems">
+            <EntityTypeMapping TypeName="WarhammerModel.PriceListItem">
+              <MappingFragment StoreEntitySet="PriceListItem">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PriceInPence" ColumnName="PriceInPence" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

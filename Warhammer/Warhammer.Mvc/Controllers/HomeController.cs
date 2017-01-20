@@ -274,6 +274,46 @@ namespace Warhammer.Mvc.Controllers
 
         }
 
+        public ActionResult PriceList()
+        {
+            if (DataProvider.SiteHasFeature(Feature.PriceList))
+            {
+                if (DataProvider.SiteHasFeature(Feature.PublicPrices) || User.IsInRole("Admin"))
+                {
+                    List<PriceListItem> priceList = DataProvider.PriceList();
+                    if (ViewBag.EditMode)
+                    {
+                        priceList.Add(new PriceListItem {AllItems = priceList});
+                    }
+                    return View(priceList);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult PriceList(List<PriceListItem> model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PriceList))
+            {
+                if (DataProvider.SiteHasFeature(Feature.PublicPrices) || User.IsInRole("Admin"))
+                {
+                    if (ModelState.IsValid)
+                    {
+                        DataProvider.SavePriceList(model);
+                    }
+                    ModelState.Clear();
+                    List<PriceListItem> priceList = DataProvider.PriceList();
+                    if (ViewBag.EditMode)
+                    {
+                        priceList.Add(new PriceListItem {Id = 0, AllItems = priceList});
+                    }
+                    return View(priceList);
+                }
+            }
+            return null;
+        }
+
         public ActionResult SettingsSection(int sectionId)
         {
             UserSettingsSectionViewModel model = ModelFactory.Make(DataProvider.SettingSection(sectionId));

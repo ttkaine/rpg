@@ -263,15 +263,18 @@
   <ItemGroup>
     <Content Include="Content\DbUpdateScripts\16112501.sql" />
     <Content Include="Content\DbUpdateScripts\16112701.sql" />
+    <Content Include="Content\DbUpdateScripts\17012001.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
+    <Content Include="Content\Images\coin.png" />
     <Content Include="Content\Images\edited.png" />
     <Content Include="Content\Images\fate_background.jpg" />
     <Content Include="Content\Images\features.png" />
+    <Content Include="Content\Images\globe.png" />
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\home.png" />
@@ -283,6 +286,7 @@
     <Content Include="Content\Images\page-person.png" />
     <Content Include="Content\Images\page-place.png" />
     <Content Include="Content\Images\page-session.png" />
+    <Content Include="Content\Images\pages.png" />
     <Content Include="Content\Images\pirate_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
@@ -302,6 +306,7 @@
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
     <Content Include="Content\Images\rules.png" />
+    <Content Include="Content\Images\sessions.png" />
     <Content Include="Content\Images\Settings.png" />
     <Content Include="Content\Images\space_background.jpg" />
     <Content Include="Content\Images\Trophy.png" />
@@ -648,6 +653,9 @@
     <Content Include="Views\Create\Creature.cshtml" />
     <Content Include="Views\Create\Organisation.cshtml" />
     <Content Include="Views\Home\Bestiary.cshtml" />
+    <Content Include="Views\Home\PriceList.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\PriceListItem.cshtml" />
+    <Content Include="Views\Home\EditorTemplates\PriceListItem.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -682,7 +690,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
-    <Folder Include="Views\Home\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

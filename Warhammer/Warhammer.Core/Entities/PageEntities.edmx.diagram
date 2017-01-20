@@ -81,6 +81,8 @@
         <AssociationConnector Association="WarhammerModel.FK_Reputation_Person" />
         <InheritanceConnector EntityType="WarhammerModel.Creature" />
         <InheritanceConnector EntityType="WarhammerModel.Organisation" />
+        <EntityTypeShape EntityType="WarhammerModel.PriceListItem" Width="1.5" PointX="13.625" PointY="7" />
+        <AssociationConnector Association="WarhammerModel.FK_PriceListItem_PriceListItem" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -26,7 +26,9 @@ namespace Warhammer.Core.Entities
         SimpleAutoXp,
         SimpleHitPoints,
         CrowRules,
-        Bestiary
+        Bestiary,
+        PriceList,
+        PublicPrices
     }
 
     public partial class SiteFeature

@@ -453,6 +453,26 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public IQueryable<PriceListItem> PriceListItems()
+        {
+            return _entities.PriceListItems;
+        }
+
+        public int Save(PriceListItem priceListItem)
+        {
+            if (priceListItem.Id == 0)
+            {
+                _entities.PriceListItems.Add(priceListItem);
+            }
+            else
+            {
+                _entities.Entry(priceListItem).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return priceListItem.Id;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

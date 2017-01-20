@@ -1412,6 +1412,49 @@ namespace Warhammer.Core.Concrete
             return Save(org);
         }
 
+        public List<PriceListItem> PriceList()
+        {
+            List<PriceListItem> items =  _repository.PriceListItems().ToList()
+                .OrderBy(p => p.Breadcrumb).ToList();
+
+            foreach (PriceListItem priceListItem in items)
+            {
+                priceListItem.AllItems = items;
+            }
+            return items;
+        }
+
+        public void SavePriceList(List<PriceListItem> priceListItems)
+        {
+            foreach (PriceListItem item in priceListItems)
+            {
+                PriceListItem existing = _repository.PriceListItems().FirstOrDefault(p => p.Id == item.Id);
+                if (existing != null)
+                {
+                    if (item.ParentId.HasValue)
+                    {
+                        if (existing.AllChildren().Select(c => c.Id).ToList().Contains(item.ParentId.Value))
+                        {
+                            item.ParentId = null;
+                        }
+                    }
+                    existing.Name = item.Name;
+                    existing.ParentId = item.ParentId;
+                    existing.PriceInPence = item.PriceInPence;
+                    existing.Description = item.Description;
+                    _repository.Save(existing);
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Name))
+                    {
+                        _repository.Save(item);
+                    }
+                }
+
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
