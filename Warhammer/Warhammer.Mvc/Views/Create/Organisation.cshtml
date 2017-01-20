@@ -1,0 +1,62 @@
+﻿@model  Warhammer.Mvc.Models.CreateOrganisationViewModel
+@{
+    ViewBag.Title = "Add an Organisation to the World...";
+}
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+
+            <h2>Add an Organisation to the World...</h2>
+            <p>Organisations are a way of grouping people by afiliation - members of cults, groups, companies, Knightly Orders or what have you.</p>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+
+
+
+                <div class="form-horizontal">
+                    <h1>Add n Organisation</h1>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="form-group">
+                        @Html.Label("Tell us the name of this organisation:", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Tell us a bit abot it:", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create Organisation" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <p>Creatures and Monsters</p>
+            <p>Have you seen a beast worth noting down? This is the place for such things...</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

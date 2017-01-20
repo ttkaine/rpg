@@ -51,5 +51,7 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<AdminSetting> AdminSettings { get; set; }
         public virtual DbSet<ExceptionLog> ExceptionLogs { get; set; }
         public virtual DbSet<PageImage> PageImages { get; set; }
+        public virtual DbSet<CreatureAbility> CreatureAbilities { get; set; }
+        public virtual DbSet<Reputation> Reputations { get; set; }
     }
 }

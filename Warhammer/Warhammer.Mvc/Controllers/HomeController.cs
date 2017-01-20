@@ -352,5 +352,11 @@ namespace Warhammer.Mvc.Controllers
 
             return File(defaultImagePath, "image/jpeg");
         }
+
+        public ActionResult Bestiary()
+        {
+            List<Creature> creatures = DataProvider.Creatures().OrderBy(l => l.Breadcrumb).ToList();
+            return View(creatures);
+        }
     }
 }

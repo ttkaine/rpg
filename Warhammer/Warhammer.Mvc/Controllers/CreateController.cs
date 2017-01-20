@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -65,6 +66,42 @@ namespace Warhammer.Mvc.Controllers
             }
             return View(page as Person);
         }
+
+        public ActionResult Creature()
+        {
+            CreateCreatureViewModel model = new CreateCreatureViewModel();
+            model.ParentOptions = new SelectList(DataProvider.Creatures().OrderBy(l => l.Breadcrumb), "Id", "Breadcrumb");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Creature(CreateCreatureViewModel creatureModel)
+        {
+            if (ModelState.IsValid)
+            {
+                int pageId = DataProvider.AddCreature(creatureModel);
+                return RedirectToAction("Index", "Page", new { id = pageId });
+            }
+            return View(creatureModel);
+        }
+
+        public ActionResult Organisation()
+        {
+            CreateOrganisationViewModel model = new CreateOrganisationViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Organisation(CreateOrganisationViewModel organisationModel)
+        {
+            if (ModelState.IsValid)
+            {
+                int pageId = DataProvider.AddOrganisation(organisationModel.Name, organisationModel.Description);
+                return RedirectToAction("Index", "Page", new { id = pageId });
+            }
+            return View(organisationModel);
+        }
+
 
         public ActionResult GameSession()
         {
@@ -168,5 +205,6 @@ namespace Warhammer.Mvc.Controllers
             model.ParentPlace = new SelectList(DataProvider.Places().OrderBy(l => l.Breadcrumb), "Id", "Breadcrumb");
             return View(model);
         }
+
     }
 }

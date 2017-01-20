@@ -201,6 +201,12 @@
     <Compile Include="Entities\Comment.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Creature.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CreatureAbility.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\C__MigrationHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -214,6 +220,9 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FateStunt.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Organisation.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Page.cs">
@@ -258,6 +267,9 @@
     <Compile Include="Entities\PostOrder.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Reputation.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ScoreHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -284,6 +296,7 @@
     </Compile>
     <Compile Include="Entities\_AdminSetting.cs" />
     <Compile Include="Entities\_Comment.cs" />
+    <Compile Include="Entities\_Creature.cs" />
     <Compile Include="Entities\_ExceptionLog.cs" />
     <Compile Include="Entities\_FateAspect.cs" />
     <Compile Include="Entities\_FateStat.cs" />
@@ -301,6 +314,7 @@
     <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Models\CreateCreatureViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -311,6 +325,7 @@
     <Compile Include="RoleplayViewModels\PostViewModel.cs" />
     <Compile Include="RoleplayViewModels\SessionViewModel.cs" />
     <Compile Include="RoleplayViewModels\TextPostViewModel.cs" />
+    <Compile Include="ThreatLevel.cs" />
     <Compile Include="Tools\DiceRoller.cs" />
   </ItemGroup>
   <ItemGroup />

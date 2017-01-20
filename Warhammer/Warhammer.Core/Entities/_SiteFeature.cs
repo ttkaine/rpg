@@ -25,7 +25,8 @@ namespace Warhammer.Core.Entities
         CurrentScorePie,
         SimpleAutoXp,
         SimpleHitPoints,
-        CrowRules
+        CrowRules,
+        Bestiary
     }
 
     public partial class SiteFeature
