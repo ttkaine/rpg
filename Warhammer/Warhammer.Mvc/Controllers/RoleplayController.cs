@@ -667,88 +667,85 @@ namespace Warhammer.Mvc.Controllers
 			}
 		}
 
-		//public JsonResult GetEditableCharacterSheet(int characterId)
-		//{
-		//	if (DataProvider.IsLoggedIn())
-		//	{
-		//		CharacterViewModel character = ModelFactory.GetCharacterForCurrentUser(characterId);
-		//		JavaScriptSerializer serializer = new JavaScriptSerializer();
+        //public JsonResult GetEditableCharacterSheet(int characterId)
+        //{
+        //	if (DataProvider.IsLoggedIn())
+        //	{
+        //		CharacterViewModel character = ModelFactory.GetCharacterForCurrentUser(characterId);
+        //		JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-		//		if (character != null)
-		//		{
-		//			JsonCharacterSheet characterSheet; 
-		//			if (!string.IsNullOrWhiteSpace(character.CharacterSheet))
-		//			{
-		//				try
-		//				{
-		//					characterSheet = (JsonCharacterSheet)serializer.Deserialize(character.CharacterSheet, typeof(JsonCharacterSheet));
-		//					characterSheet = JsonCharacterSheetFactory.RefreshCharacterSheetFromSource(characterSheet);
-		//				}
-		//				catch
-		//				{
-		//					characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
-		//				}
-		//			}
-		//			else
-		//			{
-		//				characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
-		//			}
+        //		if (character != null)
+        //		{
+        //			JsonCharacterSheet characterSheet; 
+        //			if (!string.IsNullOrWhiteSpace(character.CharacterSheet))
+        //			{
+        //				try
+        //				{
+        //					characterSheet = (JsonCharacterSheet)serializer.Deserialize(character.CharacterSheet, typeof(JsonCharacterSheet));
+        //					characterSheet = JsonCharacterSheetFactory.RefreshCharacterSheetFromSource(characterSheet);
+        //				}
+        //				catch
+        //				{
+        //					characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
+        //				}
+        //			}
+        //			else
+        //			{
+        //				characterSheet = JsonCharacterSheetFactory.GetCharacterSheet(CharacterSheetStyle.So82013Fantasy);
+        //			}
 
-		//			CharacterSheetBuilder sheetBuilder = CharacterSheetBuilder.Instance;
-		//			string characterSheetHtml = sheetBuilder.GetCharacterSheetEditorHtml(characterSheet);
-		//			return Json(serializer.Serialize(characterSheetHtml));
-		//		}
-		//		else
-		//		{
-		//			return Json(serializer.Serialize("<p>You are not allowed to edit this character.</p>"));					
-		//		}
-		//	}
-		//	else
-		//	{
-		//		throw new Exception("Session timeout");
-		//	}
-		//}
+        //			CharacterSheetBuilder sheetBuilder = CharacterSheetBuilder.Instance;
+        //			string characterSheetHtml = sheetBuilder.GetCharacterSheetEditorHtml(characterSheet);
+        //			return Json(serializer.Serialize(characterSheetHtml));
+        //		}
+        //		else
+        //		{
+        //			return Json(serializer.Serialize("<p>You are not allowed to edit this character.</p>"));					
+        //		}
+        //	}
+        //	else
+        //	{
+        //		throw new Exception("Session timeout");
+        //	}
+        //}
 
-		//public JsonResult SubmitCharacterSheet(int characterId, string jsonSheet)
-		//{
-		//	if (DataProvider.IsLoggedIn())
-		//	{
-		//		CharacterViewModel character = ModelFactory.GetCharacterForCurrentUser(characterId);
-		//		JavaScriptSerializer serializer = new JavaScriptSerializer();
+        //public JsonResult SubmitCharacterSheet(int characterId, string jsonSheet)
+        //{
+        //	if (DataProvider.IsLoggedIn())
+        //	{
+        //		CharacterViewModel character = ModelFactory.GetCharacterForCurrentUser(characterId);
+        //		JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-		//		if (character != null)
-		//		{
-		//			character.CharacterSheet = jsonSheet;
-		//			CharacterManager.SaveCharacter(character);
+        //		if (character != null)
+        //		{
+        //			character.CharacterSheet = jsonSheet;
+        //			CharacterManager.SaveCharacter(character);
 
-		//			return Json(serializer.Serialize("Character sheet updated."));
-		//		}
-		//		else
-		//		{
-		//			return Json(serializer.Serialize("Unable to update character sheet for this character."));
-		//		}
-		//	}
-		//	else
-		//	{
-		//		throw new Exception("Session timeout");
-		//	}
-		//}
+        //			return Json(serializer.Serialize("Character sheet updated."));
+        //		}
+        //		else
+        //		{
+        //			return Json(serializer.Serialize("Unable to update character sheet for this character."));
+        //		}
+        //	}
+        //	else
+        //	{
+        //		throw new Exception("Session timeout");
+        //	}
+        //}
 
-		[OutputCache(Duration = 3600, VaryByParam = "id", Location = OutputCacheLocation.Downstream, NoStore = true)]
-		public ActionResult Image(int id)
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        public ActionResult Image(int id)
 		{
 			CharacterViewModel character = ModelFactory.GetCharacter(id);
 			var defaultDir = Server.MapPath("/Content/Images/RoleplayForum");
 
-			if (character != null)
-			{
-				if (character.Image != null && character.Image.Length > 100 && !string.IsNullOrWhiteSpace(character.ImageMimeType))
-				{
-					return File(character.Image, character.ImageMimeType);
-				}
-			}
+		    if (character?.Image != null && character.Image.Length > 100)
+		    {
+		        return File(character.Image, "image/jpeg");
+		    }
 
-			var defaultImagePath = Path.Combine(defaultDir, "default_character.jpg");
+		    var defaultImagePath = Path.Combine(defaultDir, "default_character.jpg");
 			return File(defaultImagePath, "image/jpeg");
 		}
 
