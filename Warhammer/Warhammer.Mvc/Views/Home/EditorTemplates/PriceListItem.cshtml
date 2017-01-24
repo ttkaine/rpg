@@ -2,9 +2,10 @@
 
 <tr>
     <td class="name">
-        @Html.EditorFor(m => m.Name)    
+        @Html.EditorFor(m => m.Name)
         @Html.HiddenFor(p => p.Id)
     </td>
+    <td> -- </td>
     <td>@Html.EditorFor(m => m.PriceInPence)</td>
     <td class="description">
         @Html.TextAreaFor(b => b.Description)

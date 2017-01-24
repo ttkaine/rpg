@@ -4,7 +4,8 @@
 {
     <tr>
         <td class="name">@Model.Name</td>
-        <td>@Html.Raw(Model.DisplayPrice)</td>
+        <td style="white-space: nowrap;">@Html.Raw(Model.DisplayPrice)</td>
+        <td style="white-space: nowrap;">@Html.Raw(String.Format("{0:n}", @Model.PriceInPence))</td>
         <td class="description">
             @Model.Description
             <br />

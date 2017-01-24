@@ -81,7 +81,7 @@ namespace Warhammer.Core.Entities
                     string display = "";
                     if (Crowns > 0)
                     {
-                        display = $"{Crowns} GC";
+                        display = $"{Crowns}GC";
                     }
                     if (Shillings > 0)
                     {

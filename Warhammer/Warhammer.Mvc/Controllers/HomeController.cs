@@ -283,7 +283,7 @@ namespace Warhammer.Mvc.Controllers
                     List<PriceListItem> priceList = DataProvider.PriceList();
                     if (ViewBag.EditMode)
                     {
-                        priceList.Add(new PriceListItem {AllItems = priceList});
+                        priceList.Insert(0, new PriceListItem {AllItems = priceList});
                     }
                     return View(priceList);
                 }
@@ -306,7 +306,7 @@ namespace Warhammer.Mvc.Controllers
                     List<PriceListItem> priceList = DataProvider.PriceList();
                     if (ViewBag.EditMode)
                     {
-                        priceList.Add(new PriceListItem {Id = 0, AllItems = priceList});
+                        priceList.Insert(0,new PriceListItem {Id = 0, AllItems = priceList});
                     }
                     return View(priceList);
                 }

@@ -1414,14 +1414,13 @@ namespace Warhammer.Core.Concrete
 
         public List<PriceListItem> PriceList()
         {
-            List<PriceListItem> items =  _repository.PriceListItems().ToList()
-                .OrderBy(p => p.Breadcrumb).ToList();
+            List<PriceListItem> items =  _repository.PriceListItems().ToList();
 
             foreach (PriceListItem priceListItem in items)
             {
                 priceListItem.AllItems = items;
             }
-            return items;
+            return items.OrderBy(p => p.Breadcrumb).ToList();
         }
 
         public void SavePriceList(List<PriceListItem> priceListItems)
