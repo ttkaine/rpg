@@ -66,7 +66,7 @@ namespace Warhammer.Core.Entities
             {
                 if (PriceInPence.HasValue)
                 {
-                    return ((int)Math.Floor(PriceInPence.Value)) - (Crowns * 240) - (Shillings * 20);
+                    return ((int)Math.Floor(PriceInPence.Value)) - (Crowns * 240) - (Shillings * 12);
                 }
                 return 0;
             }
