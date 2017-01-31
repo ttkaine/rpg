@@ -1630,6 +1630,7 @@ namespace Warhammer.Core.Concrete
             if (session != null)
             {
                 session.IsTextSession = !session.IsTextSession;
+                session.IsGmTurn = true;
                 Save(session);
             }
         }
