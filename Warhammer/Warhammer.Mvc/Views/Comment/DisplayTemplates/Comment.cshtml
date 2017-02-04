@@ -1,5 +1,4 @@
-﻿@using System.Text.RegularExpressions
-@model Warhammer.Core.Entities.Comment
+﻿@model Warhammer.Core.Entities.Comment
 <li id="comment_@Model.Id" class="@(Model.IsPlayerComment ? "player-comment" : "character-comment")">
     @if (!Model.IsPlayerComment)
     {

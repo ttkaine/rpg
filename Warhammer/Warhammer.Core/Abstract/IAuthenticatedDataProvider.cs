@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
 
