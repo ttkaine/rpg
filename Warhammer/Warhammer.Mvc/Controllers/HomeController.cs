@@ -102,7 +102,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
 
-        //       [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, NoStore = true)]
         public ActionResult CharacterLeague()
         {
             List<Person> people = DataProvider.GetLeague();

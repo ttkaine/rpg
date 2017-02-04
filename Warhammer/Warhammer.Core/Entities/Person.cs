@@ -37,6 +37,11 @@ namespace Warhammer.Core.Entities
         public int XpSpent { get; set; }
         public decimal CurrentScore { get; set; }
         public decimal XPAwarded { get; set; }
+        public Nullable<int> Crowns { get; set; }
+        public Nullable<int> Shillings { get; set; }
+        public Nullable<int> Pennies { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
+        public string Height { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }

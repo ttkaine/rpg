@@ -9,6 +9,7 @@
 <div class="content-wrapper">
 
 @Html.Action("Stats", "Fate", new {id = Model.Id})
+@Html.Action("TopStats", "Crow", new { id = Model.Id })
 
 
     @using (Html.BeginForm("Index", "Page", FormMethod.Post, new { id = "mainpageform" }))
@@ -88,7 +89,7 @@
     
     @if (!ViewBag.EditMode)
     {
-        @Html.Action("AwardHistory", "Person", new {id = Model.Id})
+        @Html.Action("AwardHistory", "Person", new { id = Model.Id })
     }
 
     <div class="content-block">
@@ -96,7 +97,7 @@
 
         @if (Model is Person)
         {
-
+            @Html.Action("DetailsPanel", "Person", new { id = Model.Id })
             Person person = Model as Person;
             @Html.Action("ViewStats", "Person", new {personId = person.Id})
             if (User.IsInRole("Admin"))
@@ -246,9 +247,7 @@
         }
 
     </div>
-
-
-  
+      
     <div class="content-block">
         <h3>Comments</h3>
         @Html.Action("Index", "Comment", new {id = Model.Id})

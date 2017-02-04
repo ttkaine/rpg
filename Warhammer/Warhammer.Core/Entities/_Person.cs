@@ -264,5 +264,26 @@ namespace Warhammer.Core.Entities
         {
             return (int)level + SimpleHitPoints.Count(s => s.Purchased.HasValue && s.HitPointTypeId == (int)type);
         }
+
+        public int TotalPennies
+        {
+            get
+            {
+                int total = 0;
+                if (Pennies.HasValue)
+                {
+                    total = total + Pennies.Value;
+                }
+                if (Shillings.HasValue)
+                {
+                    total = total + Shillings.Value*12;
+                }
+                if (Crowns.HasValue)
+                {
+                    total = total + Crowns.Value*240;
+                }
+                return total;
+            }
+        }
     }
 }

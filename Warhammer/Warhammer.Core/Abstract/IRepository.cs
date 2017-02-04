@@ -61,5 +61,6 @@ namespace Warhammer.Core.Abstract
         void Delete(PageImage pageImage);
         IQueryable<PriceListItem> PriceListItems();
         int Save(PriceListItem priceListItem);
+        IQueryable<CampaignDetail> CampaignDetails();
     }
 }

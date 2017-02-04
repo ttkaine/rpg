@@ -1454,6 +1454,27 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public CampaignDetail GetCampaginDetails()
+        {
+            return _repository.CampaignDetails().FirstOrDefault();
+        }
+
+        public void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.Crowns = crowns;
+                person.Shillings = shillings;
+                person.Pennies = pennies;
+                person.DateOfBirth = dob;
+                person.Height = height;
+                Save(person);
+            }
+
+
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

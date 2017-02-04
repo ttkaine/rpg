@@ -1,0 +1,23 @@
+﻿@model Warhammer.Mvc.Models.PersonDetailsViewModel
+
+@if (Model.ShowAny)
+{
+    <div>
+        @if (Model.ShowHeight)
+        {
+            <p>Height: @Model.Height</p>
+        }
+        
+        @if (Model.ShowAge)
+        {
+            <p>Age: <span title="@Model.DateOfBirthString">@Model.Age</span></p>
+        }
+        
+        @if (Model.ShowMoney)
+        {
+            <ul>
+                <li></li>
+            </ul>
+        }
+    </div>
+}

@@ -1,0 +1,10 @@
+﻿@model Warhammer.Mvc.Models.PersonDetailsViewModel
+
+@if (ViewBag.EditMode)
+{
+    @Html.EditorForModel()
+}
+else
+{
+    @Html.DisplayForModel()
+}
