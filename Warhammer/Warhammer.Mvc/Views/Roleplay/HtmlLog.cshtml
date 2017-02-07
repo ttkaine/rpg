@@ -28,6 +28,9 @@
     <div class="side-bar">
         <div class="content-block">
             @Html.ActionLink("Go Back To Session Page", "Index", "Page", new {id = Model.Id}, new {@class = "btn btn-success btn-block"})
+            @Html.ActionLink("Download Transcript", "TextLog", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+
+
         </div>        
         <hr />
         <div class="content-block">
