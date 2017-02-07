@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
 
@@ -130,5 +129,7 @@ namespace Warhammer.Core.Abstract
         int AddOrganisation(string name, string description);
         List<PriceListItem> PriceList();
         void SavePriceList(List<PriceListItem> priceListItems);
+        CampaignDetail GetCampaginDetails();
+        void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height);
     }
 }

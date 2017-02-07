@@ -209,6 +209,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
+    <Compile Include="Controllers\CrowController.cs" />
     <Compile Include="Controllers\DefaultXpController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FateController.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
+    <Compile Include="Models\PersonDetailsViewModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
@@ -264,6 +266,8 @@
     <Content Include="Content\DbUpdateScripts\16112501.sql" />
     <Content Include="Content\DbUpdateScripts\16112701.sql" />
     <Content Include="Content\DbUpdateScripts\17012001.sql" />
+    <Content Include="Content\DbUpdateScripts\17020401.sql" />
+    <Content Include="Content\DbUpdateScripts\17020402.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -656,6 +660,9 @@
     <Content Include="Views\Home\PriceList.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\PriceListItem.cshtml" />
     <Content Include="Views\Home\EditorTemplates\PriceListItem.cshtml" />
+    <Content Include="Views\Person\DetailsPanel.cshtml" />
+    <Content Include="Views\Person\DisplayTemplates\PersonDetailsViewModel.cshtml" />
+    <Content Include="Views\Crow\TopStats.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

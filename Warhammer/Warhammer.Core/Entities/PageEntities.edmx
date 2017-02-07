@@ -86,6 +86,13 @@
           <Property Name="NominatedById" Type="int" />
           <Property Name="NominatedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="CampaignDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrentGameDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -230,6 +237,11 @@
           <Property Name="XpSpent" Type="int" Nullable="false" />
           <Property Name="CurrentScore" Type="decimal" Precision="16" Scale="2" Nullable="false" />
           <Property Name="XPAwarded" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="Crowns" Type="int" />
+          <Property Name="Shillings" Type="int" />
+          <Property Name="Pennies" Type="int" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="Height" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -957,6 +969,7 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CampaignDetails" EntityType="Self.CampaignDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Creature" EntityType="Self.Creature" Schema="dbo" store:Type="Tables" />
@@ -1345,6 +1358,7 @@
             <End Role="PriceListItem" EntitySet="PriceListItems" />
             <End Role="PriceListItem1" EntitySet="PriceListItems" />
           </AssociationSet>
+          <EntitySet Name="CampaignDetails" EntityType="WarhammerModel.CampaignDetail" />
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1442,6 +1456,11 @@
           <NavigationProperty Name="SimpleHitPoints" Relationship="WarhammerModel.FK_SimpleHitPoints_Person" FromRole="Person" ToRole="SimpleHitPoint" />
           <Property Name="XPAwarded" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <NavigationProperty Name="Reputations" Relationship="WarhammerModel.FK_Reputation_Person" FromRole="Person" ToRole="Reputation" />
+          <Property Name="Crowns" Type="Int32" />
+          <Property Name="Shillings" Type="Int32" />
+          <Property Name="Pennies" Type="Int32" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="Height" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2218,6 +2237,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CampaignDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrentGameDate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2288,6 +2314,11 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Pennies" ColumnName="Pennies" />
+                <ScalarProperty Name="Shillings" ColumnName="Shillings" />
+                <ScalarProperty Name="Crowns" ColumnName="Crowns" />
                 <ScalarProperty Name="XPAwarded" ColumnName="XPAwarded" />
                 <ScalarProperty Name="CurrentScore" ColumnName="CurrentScore" />
                 <ScalarProperty Name="XpSpent" ColumnName="XpSpent" />
@@ -2647,6 +2678,14 @@
                 <ScalarProperty Name="PriceInPence" ColumnName="PriceInPence" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CampaignDetails">
+            <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
+              <MappingFragment StoreEntitySet="CampaignDetails">
+                <ScalarProperty Name="CurrentGameDate" ColumnName="CurrentGameDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -564,5 +564,81 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult DetailsPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel model = MakePersonDetailsViewModel(person, campagin);
+                    return PartialView(model);
+                }
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult DetailsPanel(PersonDetailsViewModel model)
+        {
+            Person person = DataProvider.GetPerson(model.PersonId);
+            if (person != null)
+            {
+                DataProvider.SetDetails(model.PersonId, model.Crowns, model.Shillings, model.Pennies, model.DateOfBirth, model.Height);
+
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    return PartialView(updatedModel);
+            }
+            return null;
+        }
+
+
+        private PersonDetailsViewModel MakePersonDetailsViewModel(Person person, CampaignDetail campagin)
+        {
+            PersonDetailsViewModel model = new PersonDetailsViewModel
+            {
+                PersonId = person.Id
+            };
+
+            if (person.TotalPennies > 0)
+            {
+                model.ShowMoney = true;
+                model.Pennies = person.Pennies ?? 0;
+                model.Shillings = person.Shillings ?? 0;
+                model.Crowns = person.Crowns ?? 0;
+            }
+
+            if (person.DateOfBirth.HasValue && campagin.CurrentGameDate.HasValue)
+            {
+                model.ShowAge = true;
+                model.DateOfBirth = person.DateOfBirth.Value;
+
+                DateTime today = campagin.CurrentGameDate.Value.Date;
+                // Calculate the age.
+                var age = today.Year - person.DateOfBirth.Value.Year;
+                // Do stuff with it.
+                if (person.DateOfBirth.Value > today.AddYears(-age))
+                {
+                    age--;
+                }
+                model.Age = age;
+                model.DateOfBirthString = $"Born {person.DateOfBirth:dddd dd MMMM yyyy}";
+                model.DateOfBirth = person.DateOfBirth.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(person.Height))
+            {
+                model.ShowHeight = true;
+                model.Height = person.Height;
+            }
+
+
+            return model;
+        }
     }
 }

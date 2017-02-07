@@ -1,0 +1,27 @@
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.PersonStatViewModel
+    
+<div id="fateStats" class="banner-content">
+    <div class="fate-stat-block">
+        <table class="table">
+            <thead>
+                <tr>
+                    @foreach (StatName header in Model.Stats.Select(s => (StatName)s.Key))
+                    {
+                        <th>@header</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (KeyValuePair<StatName, int> stat in Model.Stats)
+                    {
+                        <td title="@Html.Raw(stat.Key + " : " + stat.Value)">@stat.Value</td>
+                    }
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

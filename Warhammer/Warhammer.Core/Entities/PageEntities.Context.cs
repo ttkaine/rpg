@@ -54,5 +54,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<CreatureAbility> CreatureAbilities { get; set; }
         public virtual DbSet<Reputation> Reputations { get; set; }
         public virtual DbSet<PriceListItem> PriceListItems { get; set; }
+        public virtual DbSet<CampaignDetail> CampaignDetails { get; set; }
     }
 }

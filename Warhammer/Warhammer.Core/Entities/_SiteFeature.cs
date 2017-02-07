@@ -28,7 +28,9 @@ namespace Warhammer.Core.Entities
         CrowRules,
         Bestiary,
         PriceList,
-        PublicPrices
+        PublicPrices,
+        PersonDetails,
+        CrowTopStatsPanel
     }
 
     public partial class SiteFeature

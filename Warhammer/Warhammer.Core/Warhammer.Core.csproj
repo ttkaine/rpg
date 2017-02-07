@@ -195,6 +195,9 @@
     <Compile Include="Entities\Award.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CampaignDetail.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ChangeLog.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>

@@ -23,9 +23,24 @@ namespace Warhammer.Core.Entities
         public double Score { get { return BaseValue + ActivityBonus; } }
     }
 
+
+
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
+        public bool IsFavourite
+        {
+            get
+            {
+                return
+                    Awards.Any(
+                        a =>
+                            a.Trophy.TypeId == (int) TrophyType.FirstFavouriteNpc ||
+                            a.Trophy.TypeId == (int) TrophyType.SecondFavouriteNpc ||
+                            a.Trophy.TypeId == (int) TrophyType.ThirdFavouriteNpc);
+            }
+        }
+
         public int StatValue(StatName name)
         {
             if (Stats.Any(s => s.Key == name))
@@ -263,6 +278,27 @@ namespace Warhammer.Core.Entities
         public int HitSlotCost(SimpleHitPointLevel level, SimpleHitPointType type)
         {
             return (int)level + SimpleHitPoints.Count(s => s.Purchased.HasValue && s.HitPointTypeId == (int)type);
+        }
+
+        public int TotalPennies
+        {
+            get
+            {
+                int total = 0;
+                if (Pennies.HasValue)
+                {
+                    total = total + Pennies.Value;
+                }
+                if (Shillings.HasValue)
+                {
+                    total = total + Shillings.Value*12;
+                }
+                if (Crowns.HasValue)
+                {
+                    total = total + Crowns.Value*240;
+                }
+                return total;
+            }
         }
     }
 }

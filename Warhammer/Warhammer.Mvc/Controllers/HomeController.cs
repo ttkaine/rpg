@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -48,13 +47,8 @@ namespace Warhammer.Mvc.Controllers
                 SiteName = SiteName, 
                 NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
-           //     UpdatedTextSessions = DataProvider.UpdatedTextSessions(),
-             //   MyTurnTextSessions = DataProvider.TextSessionsWhereItisMyTurn(),
-              //  RecentChanges = DataProvider.RecentPages().ToList(),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 OtherPeople = DataProvider.OtherPCs(),
-              //  NpcWithXp = DataProvider.NpcWithXp(),
-           //     AllPeople = DataProvider.People().Where(m => !DataProvider.MyPeople().Contains(m)).OrderBy(m => m.FullName).ToList()
             };
 
             if (DataProvider.SiteHasFeature(Feature.SimpleStats))
@@ -69,7 +63,6 @@ namespace Warhammer.Mvc.Controllers
 
             return View(model);
         }
-
 
         public ActionResult FullPageList()
         {
@@ -101,8 +94,7 @@ namespace Warhammer.Mvc.Controllers
             return View(trophy);
         }
 
-
-        //       [OutputCache(Duration = 3600, Location = OutputCacheLocation.ServerAndClient, NoStore = true)]
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Any, NoStore = true)]
         public ActionResult CharacterLeague()
         {
             List<Person> people = DataProvider.GetLeague();

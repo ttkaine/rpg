@@ -473,6 +473,11 @@ namespace Warhammer.Core.Concrete
             return priceListItem.Id;
         }
 
+        public IQueryable<CampaignDetail> CampaignDetails()
+        {
+            return _entities.CampaignDetails;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))
