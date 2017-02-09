@@ -48,7 +48,7 @@ namespace Warhammer.Mvc.Concrete
         public PersonStatViewModel MakeStatModel(Person person)
         {
             PersonStatViewModel model = new PersonStatViewModel {PersonId = person.Id, CharacterName = person.ShortName };
-
+            model.IsFate = person.IsFateCharacter;
             model.Stats = person.Stats;
             model.Descriptors = person.DescriptorNames;
             model.Roles = person.RoleNames;

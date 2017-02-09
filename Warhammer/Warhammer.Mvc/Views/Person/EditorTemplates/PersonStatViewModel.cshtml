@@ -5,14 +5,18 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.PersonId)
     @Html.HiddenFor(m => m.IsNpc)
+    @Html.HiddenFor(m => m.IsFate)
     <input type="hidden" value="true" name="Posted" id="Posted"/>
-    <div class="form-group">
-        @Html.LabelFor(m => m.AddedRole, new { @class = "col-md-12 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.AddedRole, new { @class = "form-control" })
+    if (!Model.IsFate)
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.AddedRole, new {@class = "col-md-12 control-label"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.AddedRole, new {@class = "form-control"})
+            </div>
         </div>
-    </div>
-     if (!Model.IsNpc)
+    }
+    if (!Model.IsNpc)
      {
          <div class="form-group">
              @Html.LabelFor(m => m.AddedDescriptor1, new {@class = "col-md-12 control-label"})
@@ -34,7 +38,26 @@
          </div>
      }
     <div class="form-group">
-        @Html.LabelFor(m => m.Stats, new {@class = "col-md-12 control-label"})
+        @if (Model.IsFate)
+        {
+            <div class="alert alert-success">
+                <h3>Create Stats</h3>
+                <p>Set your charaacter's initial stats. The stats total 8 points worth and must be distributed as follows:</p>
+                <br />
+                <ul>
+                    <li>One stat at 3</li>
+                    <li>Two stats at 2</li>
+                    <li>Two stats at 1</li>
+                    <li>Two stats at 0</li>
+                    <li>One stat at -1</li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            @Html.LabelFor(m => m.Stats, new { @class = "col-md-12 control-label" })
+        }
+
         <div class="col-md-10">
 
 
@@ -44,7 +67,7 @@
                 {
                     <div class="row">
                         <input type="hidden" name="Stats[@i].Key" value="@item.Key"/>
-                        <label>@item.Key</label>
+                        <label>@item.Key.ToString().Replace("_", " ")</label>
                         <input class="form-control" type="number" name="Stats[@i].Value" value="@item.Value"/>
                         @{
                             i++;
@@ -57,8 +80,11 @@
 
 
     </div>
+
     <div class="form-group">
-        <input type="submit" value="Set Stats" class="btn btn-block btn-success" />
+     
+            <input type="submit" value="Set Stats" class="btn btn-block btn-success" />
+   
     </div>
 
                             }

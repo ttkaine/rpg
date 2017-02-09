@@ -108,6 +108,11 @@ namespace Warhammer.Mvc.Controllers
                                 ModelState.AddModelError("Stats", "Stats must add up to 18 points");
                             }
                         }
+
+                        if (postedStats.Stats.Any(s => s.Value < 1))
+                        {
+                            ModelState.AddModelError("Stats", "All stats must be at least 1");
+                        }
                     }
 
                     if (DataProvider.IsFate)
@@ -150,6 +155,30 @@ namespace Warhammer.Mvc.Controllers
                             {
                                 ModelState.AddModelError("Stats", "Stats should have one values at -1");
                             }
+                        }
+                    }
+
+                    if (!person.IsNpc)
+                    {
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedDescriptor1))
+                        {
+                            ModelState.AddModelError("AddedDescriptor1", "First Descriptor must have a value");
+                        }
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedDescriptor2))
+                        {
+                            ModelState.AddModelError("AddedDescriptor2", "Second Descriptor must have a value");
+                        }
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedDescriptor3))
+                        {
+                            ModelState.AddModelError("AddedDescriptor3", "Third Descriptor must have a value");
+                        }
+                    }
+
+                    if (DataProvider.IsWarhammer)
+                    {
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedRole))
+                        {
+                            ModelState.AddModelError("AddedRole", "You must include a Role for this character");
                         }
                     }
 

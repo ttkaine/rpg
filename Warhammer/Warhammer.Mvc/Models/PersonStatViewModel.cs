@@ -52,12 +52,12 @@ namespace Warhammer.Mvc.Models
         {
             get
             {
-               return Stats.All(s => s.Value > 0);
+               return Stats.Sum(s => s.Value) > 0;
             }
         }
 
         public List<string> Roles { get; set; }
-        [Required]
+  //      [Required]
         [Display(Name = "Role")]
         public string AddedRole { get; set; }
 

@@ -64,7 +64,7 @@ namespace Warhammer.Core.Concrete
         public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
         {
 
-#if Warhammer
+#if Fate
                _gameMode = "FATE";
 #endif
 

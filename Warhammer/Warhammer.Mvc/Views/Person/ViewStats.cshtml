@@ -22,33 +22,36 @@
                 }
             }
         </div>
-            <div class="alert alert-success">
-                <h4>Roles</h4>
-                @foreach (string role in Model.Roles)
-                {
-                    <h3><span class="label label-pill label-success">@role</span></h3>
-                }
+            if (!Model.IsFate)
+             {
+                 <div class="alert alert-success">
+                     <h4>Roles</h4>
+                     @foreach (string role in Model.Roles)
+                     {
+                         <h3><span class="label label-pill label-success">@role</span></h3>
+                     }
 
-                @if (Model.MaySpendXp && ViewBag.EditMode)
-                {
-                    <p>Add a role for @Model.RoleCost XP</p>
-                    if (Model.CanBuyRole)
-                    {
-                        using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
-                        {
-                            @Html.ValidationSummary("", new { @class = "text-danger" })
-                            @Html.HiddenFor(m => m.PersonId)
-                            @Html.TextBox("Role")
-                            <input type="submit" value="Add Role (@Model.RoleCost XP)" class="btn btn-block btn-success" />
-                        }
-                    }
-                    else
-                    {
-                        <p>@Model.CharacterName can't afford this.</p>
-                    }
-                }
-            </div>
-            <div class="alert alert-warning">
+                     @if (Model.MaySpendXp && ViewBag.EditMode)
+                     {
+                         <p>Add a role for @Model.RoleCost XP</p>
+                         if (Model.CanBuyRole)
+                         {
+                             using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
+                             {
+                                 @Html.ValidationSummary("", new {@class = "text-danger"})
+                                 @Html.HiddenFor(m => m.PersonId)
+                                 @Html.TextBox("Role")
+                                 <input type="submit" value="Add Role (@Model.RoleCost XP)" class="btn btn-block btn-success"/>
+                             }
+                         }
+                         else
+                         {
+                             <p>@Model.CharacterName can't afford this.</p>
+                         }
+                     }
+                 </div>
+             }
+        <div class="alert alert-warning">
                 <h4>Descriptors</h4>
                 @foreach (string desc in Model.Descriptors)
                 {
@@ -97,7 +100,7 @@
                 @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
                 {
                     <tr>
-                        <td>@keyValuePair.Key</td>
+                        <td>@keyValuePair.Key.ToString().Replace("_", " ")</td>
                         <td>
                             <span class="label label-info">@keyValuePair.Value</span>
                         </td>
@@ -128,8 +131,10 @@
 
 
         </div>
-
-        @Html.Action("HitPoints", "Person", new { id = Model.PersonId })
+        if (!Model.IsFate)
+        {
+            @Html.Action("HitPoints", "Person", new {id = Model.PersonId})
+        }
     }
     else
     {

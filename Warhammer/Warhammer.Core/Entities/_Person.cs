@@ -20,7 +20,7 @@ namespace Warhammer.Core.Entities
 #endif
 #if Fate
         Weapon_Skill = 1,
-        Balistics_Skill = 2,
+        Ballistics_Skill = 2,
         Strength = 3,
         Toughness = 4,
         Agility = 5,
@@ -236,6 +236,10 @@ namespace Warhammer.Core.Entities
                     return 100;
                 }
 
+            #if Fate
+                           return Stats.Sum(s => s.Value) - 5;
+            #endif
+
                 return Stats.Sum(s => s.Value) - 17;
             }
         }
@@ -314,6 +318,17 @@ namespace Warhammer.Core.Entities
                     total = total + Crowns.Value*240;
                 }
                 return total;
+            }
+        }
+
+        public bool IsFateCharacter
+        {
+            get
+            {
+#if Fate
+                return true;
+#endif
+                return false;
             }
         }
     }
