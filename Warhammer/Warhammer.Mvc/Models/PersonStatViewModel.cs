@@ -14,6 +14,8 @@ namespace Warhammer.Mvc.Models
             Roles = new List<string>();
         }
 
+        public bool IsFate { get; set; }
+
         public bool Posted { get; set; }
 
         public bool MaySpendXp { get; set; }

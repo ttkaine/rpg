@@ -1,18 +1,34 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Warhammer.Core.Entities
 {
+    
     public enum StatName
     {
+#if Warhammer
         Combat = 1,
         Action = 2,
         Intellect = 3,
         Work = 4,
         Social = 5,
         Self = 6
+#endif
+#if Fate
+        Weapon_Skill = 1,
+        Balistics_Skill = 2,
+        Strength = 3,
+        Toughness = 4,
+        Agility = 5,
+        Inteligence = 6,
+        Willpower = 7,
+        Fellowship = 8
+
+#endif
     }
 
     public struct ScoreBreakdown

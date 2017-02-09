@@ -14,6 +14,14 @@ namespace Warhammer.Core.Concrete
 
     public class AuthenticatedDataProvider : IAuthenticatedDataProvider
     {
+        private string _gameMode = "WARHAMMER";
+
+
+        public bool IsWarhammer => _gameMode == "WARHAMMER";
+        public bool IsFate => _gameMode == "FATE";
+
+
+
         private readonly IAuthenticatedUserProvider _authenticatedUser;
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
@@ -55,6 +63,11 @@ namespace Warhammer.Core.Concrete
 
         public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
         {
+
+#if Warhammer
+               _gameMode = "FATE";
+#endif
+
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;

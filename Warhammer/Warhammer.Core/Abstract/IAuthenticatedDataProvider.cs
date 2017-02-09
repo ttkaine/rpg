@@ -7,6 +7,8 @@ namespace Warhammer.Core.Abstract
 {
     public interface IAuthenticatedDataProvider
     {
+        bool IsWarhammer { get; }
+        bool IsFate { get; }
         string VersionInfo();
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
