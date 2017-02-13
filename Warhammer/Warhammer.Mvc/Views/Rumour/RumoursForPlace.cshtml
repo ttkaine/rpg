@@ -14,7 +14,13 @@
                 @rumour.Description
             </div>
             <div class="panel-footer">
-                <span class="note">Added @rumour.Created.ToShortDateString()</span>
+                <span class="note">
+@if (rumour.PlaceId.HasValue)
+{
+    <text>A rumnour from <strong>@rumour.Place.FullName</strong></text>
+}
+Added @rumour.Created.ToShortDateString()
+</span>
             </div>
         </div>
     }

@@ -1521,7 +1521,7 @@ namespace Warhammer.Core.Concrete
 
         public List<Rumour> GetRumoursForPlace(int placeId)
         {
-            List<Rumour> rumours = _repository.Rumours().Where(r => r.PlaceId == placeId || r.Place.Parent.Id == placeId || r.Place.Parent.Parent.Id == placeId).ToList();
+            List<Rumour> rumours = _repository.Rumours().Where(r => r.PlaceId == placeId || r.Place.Parent.Id == placeId || r.Place.Child.Any(p => p.Id == placeId)).ToList();
             
             return rumours;
         }
