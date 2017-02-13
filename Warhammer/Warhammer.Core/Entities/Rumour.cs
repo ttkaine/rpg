@@ -12,19 +12,14 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Place : Page
+    public partial class Rumour
     {
-        public Place()
-        {
-            this.Child = new HashSet<Place>();
-            this.Rumours = new HashSet<Rumour>();
-        }
+        public int Id { get; set; }
+        public System.DateTime Created { get; set; }
+        public Nullable<int> PlaceId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     
-        public Nullable<int> IsWithin { get; set; }
-        public int PlaceType { get; set; }
-    
-        public virtual ICollection<Place> Child { get; set; }
-        public virtual Place Parent { get; set; }
-        public virtual ICollection<Rumour> Rumours { get; set; }
+        public virtual Place Place { get; set; }
     }
 }
