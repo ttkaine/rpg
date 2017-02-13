@@ -984,7 +984,8 @@ namespace Warhammer.Core.Concrete
             List<Page> pages = RecentPages().ToList();
             List<Award> awards = _repository.Awards().OrderByDescending(a => a.AwardedOn).Take(20).ToList();
             List<Comment> comments = RecentComments();
-            List<Rumour> rumours = _repository.Rumours().OrderByDescending(a => a.Created).Take(20).ToList();
+            
+
 
             Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
 
@@ -1012,11 +1013,16 @@ namespace Warhammer.Core.Concrete
                 }
             }
 
-            foreach (Rumour rumour in rumours)
+            if (SiteHasFeature(Feature.RumourMill))
             {
-                if (!dateObject.ContainsKey(rumour.Created))
+                List<Rumour> rumours = _repository.Rumours().OrderByDescending(a => a.Created).Take(20).ToList();
+
+                foreach (Rumour rumour in rumours)
                 {
-                    dateObject.Add(rumour.Created, rumour);
+                    if (!dateObject.ContainsKey(rumour.Created))
+                    {
+                        dateObject.Add(rumour.Created, rumour);
+                    }
                 }
             }
 
