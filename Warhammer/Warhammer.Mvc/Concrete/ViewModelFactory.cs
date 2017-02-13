@@ -52,37 +52,38 @@ namespace Warhammer.Mvc.Concrete
 
             model.Stats = person.Stats;
 
-
-            if (_data.SiteHasFeature(Feature.CrowStats))
+            if (!model.StatsCreated)
             {
-                foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
+                if (_data.SiteHasFeature(Feature.CrowStats))
                 {
-                    if (statId < 100)
+                    foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
                     {
-                        StatName stat = (StatName) statId;
-                        if (!model.Stats.ContainsKey(stat))
+                        if (statId < 100)
                         {
-                            model.Stats.Add(stat, 0);
+                            StatName stat = (StatName) statId;
+                            if (!model.Stats.ContainsKey(stat))
+                            {
+                                model.Stats.Add(stat, 0);
+                            }
+                        }
+                    }
+                }
+
+                if (_data.SiteHasFeature(Feature.FuHammerStats))
+                {
+                    foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
+                    {
+                        if (statId < 200 && statId > 100)
+                        {
+                            StatName stat = (StatName) statId;
+                            if (!model.Stats.ContainsKey(stat))
+                            {
+                                model.Stats.Add(stat, 0);
+                            }
                         }
                     }
                 }
             }
-
-            if (_data.SiteHasFeature(Feature.FuHammerStats))
-            {
-                foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
-                {
-                    if (statId < 200 && statId > 100)
-                    {
-                        StatName stat = (StatName)statId;
-                        if (!model.Stats.ContainsKey(stat))
-                        {
-                            model.Stats.Add(stat, 0);
-                        }
-                    }
-                }
-            }
-
 
             model.Descriptors = person.DescriptorNames;
             model.Roles = person.RoleNames;
