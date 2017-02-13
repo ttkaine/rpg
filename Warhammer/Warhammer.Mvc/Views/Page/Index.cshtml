@@ -230,6 +230,8 @@
                         </li>
                     }
                 </ul>
+
+                @Html.Action("RumoursForPlace", "Rumour", new { placeId = Model.Id })
                 <div class="clearfix"></div>
             }
         }

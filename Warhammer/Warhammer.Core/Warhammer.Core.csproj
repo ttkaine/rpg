@@ -276,6 +276,9 @@
     <Compile Include="Entities\Reputation.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Rumour.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ScoreHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>

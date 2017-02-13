@@ -1,0 +1,25 @@
+﻿
+
+@model Warhammer.Core.Entities.Rumour
+
+<tr>
+    <td>
+        @if (Model.PlaceId.HasValue)
+        {
+            @Html.Action("PageImage", "Page", new {id = Model.PlaceId.Value})
+        }
+        else
+        {
+            <img src="@Url.Content("~/Content/Images/rumour.png")" title="@Model.Title" alt="Picture for @Model.Title" class="mini-profile-image" />
+        }
+    </td>
+    <td></td>
+    <td>
+        <span><a href="@Url.Action("Index","Rumour")">New Rumour @Model.Title</a></span>      
+    </td>
+</tr>
+<tr>
+    <td colspan="3">
+        <span class="note">Added @Model.Created.ToShortTimeString()</span>
+    </td>
+</tr>

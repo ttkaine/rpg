@@ -1,0 +1,30 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Rumour>
+@{
+    ViewBag.Title = "The Rumour Mill";
+}
+
+<div class="content-wrapper">
+
+    <div class="banner-content">
+        <div class="header-block banner-rumourmill">
+            <h1 id="fullName">The Rumour Mill</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            @Html.Partial("List", Model)
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Some things you may have heard round about town</h3>
+            <p>The rumour mill just keeps on chruning - spilling out these strange and twisted stories of things that nobody really knows about...</p>
+            <p>But you know... maybe there's something true in there...</p>
+        </div>
+    </div>
+
+</div>

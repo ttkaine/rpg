@@ -60,7 +60,7 @@ namespace Warhammer.Core.Entities
 
                 if (IsFuCharacter)
                 {
-                    return -7;
+                    return -5;
                 }
 
 
@@ -246,6 +246,11 @@ namespace Warhammer.Core.Entities
                     cost = 1;
                 }
 
+                if (IsFuCharacter)
+                {
+                    cost++;
+                }
+
                 return cost;
             }
         }
@@ -266,6 +271,12 @@ namespace Warhammer.Core.Entities
                 {
                     cost = 1;
                 }
+
+                if (IsFuCharacter)
+                {
+                    cost++;
+                }
+
                 return cost;
             }
         }

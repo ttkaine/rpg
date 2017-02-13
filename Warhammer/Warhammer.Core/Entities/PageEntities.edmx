@@ -338,6 +338,16 @@
           <Property Name="OrganisationId" Type="int" />
           <Property Name="CreatureId" Type="int" />
         </EntityType>
+        <EntityType Name="Rumour">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="PlaceId" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="ScoreHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -876,6 +886,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Rumour_Place">
+          <End Role="Place" Type="Self.Place" Multiplicity="0..1" />
+          <End Role="Rumour" Type="Self.Rumour" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rumour">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ScoreHistory_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="ScoreHistory" Type="Self.ScoreHistory" Multiplicity="*" />
@@ -991,6 +1013,7 @@
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceListItem" EntityType="Self.PriceListItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reputation" EntityType="Self.Reputation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rumour" EntityType="Self.Rumour" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScoreHistory" EntityType="Self.ScoreHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
@@ -1146,6 +1169,10 @@
           <AssociationSet Name="FK_Reputation_Person" Association="Self.FK_Reputation_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="Reputation" EntitySet="Reputation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rumour_Place" Association="Self.FK_Rumour_Place">
+            <End Role="Place" EntitySet="Place" />
+            <End Role="Rumour" EntitySet="Rumour" />
           </AssociationSet>
           <AssociationSet Name="FK_ScoreHistory_Person" Association="Self.FK_ScoreHistory_Person">
             <End Role="Person" EntitySet="Person" />
@@ -1359,6 +1386,11 @@
             <End Role="PriceListItem1" EntitySet="PriceListItems" />
           </AssociationSet>
           <EntitySet Name="CampaignDetails" EntityType="WarhammerModel.CampaignDetail" />
+          <EntitySet Name="Rumours" EntityType="WarhammerModel.Rumour" />
+          <AssociationSet Name="FK_Rumour_Place" Association="WarhammerModel.FK_Rumour_Place">
+            <End Role="Place" EntitySet="Pages" />
+            <End Role="Rumour" EntitySet="Rumours" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1467,6 +1499,7 @@
           <Property Name="PlaceType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Child" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place" ToRole="Place1" />
           <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_Place_Place" FromRole="Place1" ToRole="Place" />
+          <NavigationProperty Name="Rumours" Relationship="WarhammerModel.FK_Rumour_Place" FromRole="Place" ToRole="Rumour" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
@@ -2244,6 +2277,29 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CurrentGameDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Rumour">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PlaceId" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Place" Relationship="WarhammerModel.FK_Rumour_Place" FromRole="Rumour" ToRole="Place" />
+        </EntityType>
+        <Association Name="FK_Rumour_Place">
+          <End Type="WarhammerModel.Place" Role="Place" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Rumour" Role="Rumour" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Place">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rumour">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2686,6 +2742,17 @@
             <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
               <MappingFragment StoreEntitySet="CampaignDetails">
                 <ScalarProperty Name="CurrentGameDate" ColumnName="CurrentGameDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rumours">
+            <EntityTypeMapping TypeName="WarhammerModel.Rumour">
+              <MappingFragment StoreEntitySet="Rumour">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

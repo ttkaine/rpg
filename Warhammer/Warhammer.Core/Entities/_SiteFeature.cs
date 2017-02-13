@@ -35,7 +35,8 @@ namespace Warhammer.Core.Entities
         FuHammerStats,
         PersonDescriptors,
         PersonRoles,
-        PersonAspects
+        PersonAspects,
+        RumourMill
     }
 
     public partial class SiteFeature

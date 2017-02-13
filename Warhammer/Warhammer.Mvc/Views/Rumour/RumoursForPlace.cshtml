@@ -1,0 +1,27 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Warhammer.Core.Entities.Rumour>
+    
+@if (Model.Any())
+{
+    <h2>Rumours around here...</h2>
+    foreach (Rumour rumour in Model)
+    {
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                @rumour.Title
+            </div>
+            <div class="panel-body">
+                @rumour.Description
+            </div>
+            <div class="panel-footer">
+                <span class="note">
+@if (rumour.PlaceId.HasValue)
+{
+    <text>A rumnour from <strong>@rumour.Place.FullName</strong></text>
+}
+Added @rumour.Created.ToShortDateString()
+</span>
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,15 @@
+﻿@model Warhammer.Core.Entities.Rumour
+    
+<div class="panel panel-info">
+    <div class="panel-heading">
+        @Html.HiddenFor(m => m.Id)
+        @Html.EditorFor(m => m.Title)
+    </div>
+    <div class="panel-body">
+        @Html.TextAreaFor(m => m.Description)
+    </div>
+    <div class="panel-footer">
+        @Html.EditorFor(m => m.PlaceId)
+    </div>
+</div>
+
