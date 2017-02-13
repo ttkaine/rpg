@@ -39,6 +39,35 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
+        public bool IsFuCharacter
+        {
+            get { return PersonStats.Any(p => p.StatId > 100 && p.StatId < 200); }
+        }
+
+        public bool IsCrowCharacter
+        {
+            get { return PersonStats.Any(p => p.StatId > 0 && p.StatId < 100); }
+        }
+
+        public int BaseStatXpModifier
+        {
+            get
+            {
+                if (IsCrowCharacter)
+                {
+                    return -17;
+                }
+
+                if (IsFuCharacter)
+                {
+                    return -7;
+                }
+
+
+                return 0;
+            }
+        }
+
         public bool IsFavourite
         {
             get
@@ -202,11 +231,22 @@ namespace Warhammer.Core.Entities
         {
             get
             {
+                int cost = 0;
                 if (IsNpc)
                 {
-                    return (DescriptorNames.Count * 2) + 1;
+                    cost = (DescriptorNames.Count * 2) + 1;
                 }
-                return (DescriptorNames.Count * 2) - 4;
+                else
+                {
+                    cost = (DescriptorNames.Count * 2) - 4;
+                }
+
+                if (cost < 1)
+                {
+                    cost = 1;
+                }
+
+                return cost;
             }
         }
 
@@ -220,8 +260,13 @@ namespace Warhammer.Core.Entities
                 {
                     return 100;
                 }
-
-                return Stats.Sum(s => s.Value) - 17;
+             
+                int cost = Stats.Sum(s => s.Value) + BaseStatXpModifier;
+                if (cost < 1)
+                {
+                    cost = 1;
+                }
+                return cost;
             }
         }
 
