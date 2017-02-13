@@ -7,12 +7,23 @@ namespace Warhammer.Core.Entities
 {
     public enum StatName
     {
+        //0 CROW
         Combat = 1,
         Action = 2,
         Intellect = 3,
         Work = 4,
         Social = 5,
-        Self = 6
+        Self = 6,
+
+        //100  FATE / FUHammer
+        Weapon_Skill = 101,
+        Ballistics_Skill = 102,
+        Strength = 103,
+        Toughness = 104,
+        Agility = 105,
+        Inteligence = 106,
+        Willpower = 107,
+        Fellowship = 108
     }
 
     public struct ScoreBreakdown
@@ -163,16 +174,6 @@ namespace Warhammer.Core.Entities
                         temp.Add((StatName) personStat.StatId, personStat.CurrentValue);
                     }
                 }
-
-                foreach (int statId in Enum.GetValues(typeof(StatName)))
-                {
-                    StatName stat = (StatName)statId;
-                    if (!temp.ContainsKey(stat))
-                    {
-                        temp.Add(stat, 0);
-                    }
-                }
-
                 return temp;
             }
         }

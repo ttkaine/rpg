@@ -22,7 +22,10 @@
                 }
             }
         </div>
+        if (Model.ShowRoles)
+        {
             <div class="alert alert-success">
+
                 <h4>Roles</h4>
                 @foreach (string role in Model.Roles)
                 {
@@ -34,12 +37,12 @@
                     <p>Add a role for @Model.RoleCost XP</p>
                     if (Model.CanBuyRole)
                     {
-                        using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                        using (Ajax.BeginForm("AddRole", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
                         {
-                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.ValidationSummary("", new {@class = "text-danger"})
                             @Html.HiddenFor(m => m.PersonId)
                             @Html.TextBox("Role")
-                            <input type="submit" value="Add Role (@Model.RoleCost XP)" class="btn btn-block btn-success" />
+                            <input type="submit" value="Add Role (@Model.RoleCost XP)" class="btn btn-block btn-success"/>
                         }
                     }
                     else
@@ -48,6 +51,9 @@
                     }
                 }
             </div>
+        }
+        if (Model.ShowDescriptors)
+        {
             <div class="alert alert-warning">
                 <h4>Descriptors</h4>
                 @foreach (string desc in Model.Descriptors)
@@ -59,12 +65,12 @@
                     <p>Add a Descriptor for @(Model.DescriptorCost) XP</p>
                     if (Model.CanBuyDescriptor)
                     {
-                        using (Ajax.BeginForm("AddDescriptor", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel" }))
+                        using (Ajax.BeginForm("AddDescriptor", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
                         {
-                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.ValidationSummary("", new {@class = "text-danger"})
                             @Html.HiddenFor(m => m.PersonId)
                             @Html.TextBox("Descriptor")
-                            <input type="submit" value="Add Descriptor (@Model.DescriptorCost XP)" class="btn btn-block btn-success" />
+                            <input type="submit" value="Add Descriptor (@Model.DescriptorCost XP)" class="btn btn-block btn-success"/>
                         }
                     }
                     else
@@ -73,74 +79,98 @@
                     }
                 }
             </div>
-
-        <div class="alert alert-info">
-            <h4>Statistics Total: <span id="statTotal" class="label label-info">@Model.Stats.Sum(s => s.Value)</span></h4>
-            <table id="stattable" class="table table-striped">
-                <thead>
-                <tr>
-                    <td>
-                        Statistic
-                    </td>
-                    <th>
-                        Current Score
-                    </th>
-                    <td>
-                        @if (Model.MaySpendXp && ViewBag.EditMode)
-                        {
-                            <text>Advance</text>
-                        }
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
-                {
+        }
+        if (Model.ShowStats)
+        {
+            <div class="alert alert-info">
+                <h4>Statistics Total: <span id="statTotal" class="label label-info">@Model.Stats.Sum(s => s.Value)</span></h4>
+                <table id="stattable" class="table table-striped">
+                    <thead>
                     <tr>
-                        <td>@keyValuePair.Key</td>
                         <td>
-                            <span class="label label-info">@keyValuePair.Value</span>
+                            Statistic
                         </td>
+                        <th>
+                            Current Score
+                        </th>
                         <td>
                             @if (Model.MaySpendXp && ViewBag.EditMode)
                             {
-                                if (Model.CanBuyStat)
+                                <text>Advance</text>
+                            }
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (KeyValuePair<StatName, int> keyValuePair in Model.Stats)
+                    {
+                        <tr>
+                            <td>@keyValuePair.Key.ToString().Replace("_", " ")</td>
+                            <td>
+                                <span class="label label-info">@keyValuePair.Value</span>
+                            </td>
+                            <td>
+                                @if (Model.MaySpendXp && ViewBag.EditMode)
                                 {
-                                    using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
+                                    if (Model.CanBuyStat)
                                     {
-                                        @Html.ValidationSummary("", new {@class = "text-danger"})
-                                        @Html.HiddenFor(m => m.PersonId)
-                                        <input value="@((int) keyValuePair.Key)" name="StatId" type="hidden"/>
-                                        <input type="submit" value="+1 (@Model.StatCost XP)" class="btn btn-block btn-success"/>
+                                        using (Ajax.BeginForm("BuyStatIncrease", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "charStatsPanel"}))
+                                        {
+                                            @Html.ValidationSummary("", new {@class = "text-danger"})
+                                            @Html.HiddenFor(m => m.PersonId)
+                                            <input value="@((int) keyValuePair.Key)" name="StatId" type="hidden"/>
+                                            <input type="submit" value="+1 (@Model.StatCost XP)" class="btn btn-block btn-success"/>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>Next Level @Model.StatCost XP. @Model.CharacterName can't afford this</span>
                                     }
                                 }
                                 else
                                 {
-                                    <span>Next Level @Model.StatCost XP. @Model.CharacterName can't afford this</span>
+                                    int statValue = keyValuePair.Value;
+
+                                    if (Model.IsCrow)
+                                    {
+                                        statValue = statValue - 2;
+                                    }
+
+                                    StatLevel level = (StatLevel)statValue;
+                                    var statLevelName = level.ToString();
+
+                                    if (statValue > 9)
+                                    {
+                                        statLevelName = "Divine";
+                                    }
+                                    if (statValue < -3)
+                                    {
+                                        statLevelName = "Shit";
+                                    }
+                                    @Html.Raw(statLevelName)
                                 }
-                            }
-                        </td>
+                                
+                                
+                            </td>
 
-                    </tr>
-                }
-                </tbody>
-            </table>
-
-
-        </div>
-
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
         @Html.Action("HitPoints", "Person", new { id = Model.PersonId })
     }
     else
     {
         if (ViewBag.EditMode)
         {
-            @Html.EditorFor(m => Model)
-            }
-            else
-            {
-            <h3>No Statistics Yet.</h3>
-            <p>You can go to edit mode to set your stats.</p>
-            }
-            }
+             @Html.EditorFor(m => Model)
+        }
+        else
+        {
+        <h3>No Statistics Yet.</h3>
+        <p>You can go to edit mode to set your stats.</p>
+        }
+    }
         </div>
