@@ -1,0 +1,51 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Rumour>
+
+<div class="rumourmill" id="rumourmill">
+    
+    
+@if (ViewBag.EditMode && User.IsInRole("Admin"))
+{
+    using (Html.BeginForm("List", "Rumour"))
+    {
+        <input type="submit" class="btn btn-info" value="Save" />
+
+        @Html.EditorForModel()
+
+        <br/>
+        <br/>
+        <input type="submit" class="btn btn-info" value="Save"/>
+    }
+}
+else
+{
+
+    foreach (Rumour rumour in Model)
+    {
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                @rumour.Title
+            </div>
+            <div class="panel-body">
+                @rumour.Description
+            </div>
+            <div class="panel-footer">
+                @if (rumour.PlaceId.HasValue)
+                {
+                    <a href="@Url.Action("Index", "Page", new {id = rumour.PlaceId})"><img src="@Url.Action("Image", "Page", new {id = rumour.PlaceId}, null)" title="@rumour.Place.FullName" class="mini-profile-image"/></a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    using (Ajax.BeginForm("Delete", "Rumour", new AjaxOptions {InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "rumourmill"}))
+                    {
+                        <input name="Id" hidden="" value="@rumour.Id"/>
+                        <input id="postbutton" type="submit" value="Delete" class="btn btn-block btn-danger"/>
+                        <hr/>
+                    }
+                }
+            </div>
+        </div>
+    }
+}
+</div>
+

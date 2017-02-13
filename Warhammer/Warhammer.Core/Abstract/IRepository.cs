@@ -62,5 +62,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<PriceListItem> PriceListItems();
         int Save(PriceListItem priceListItem);
         IQueryable<CampaignDetail> CampaignDetails();
+        IQueryable<Rumour> Rumours();     
+        int Save(Rumour rumour);
+        void Delete(Rumour rumour);
     }
 }

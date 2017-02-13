@@ -4,7 +4,7 @@ IF(NOT EXISTS(
 BEGIN
 
 CREATE TABLE [dbo].[Rumour](
-	[Id] [int] NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Created] [datetime] NOT NULL,
 	[PlaceId] [int] NULL,
 	[Title] [nvarchar](500) NULL,

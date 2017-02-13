@@ -131,5 +131,9 @@ namespace Warhammer.Core.Abstract
         void SavePriceList(List<PriceListItem> priceListItems);
         CampaignDetail GetCampaginDetails();
         void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height);
+        List<Rumour> GetAllRumours();
+        void SaveRumours(List<Rumour> rumours);
+        void DeleteRumour(int id);
+        List<Rumour> GetRumoursForPlace(int placeId);
     }
 }

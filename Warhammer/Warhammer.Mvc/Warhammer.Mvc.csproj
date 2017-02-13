@@ -219,6 +219,7 @@
     <Compile Include="Controllers\PageControlsController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\RoleplayController.cs" />
+    <Compile Include="Controllers\RumourController.cs" />
     <Compile Include="Controllers\TimiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -285,6 +286,7 @@
     <Content Include="Content\Images\home.png" />
     <Content Include="Content\Images\lock.png" />
     <Content Include="Content\Images\log.png" />
+    <Content Include="Content\Images\mill.jpg" />
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Images\page-location.png" />
     <Content Include="Content\Images\page-page.png" />
@@ -311,6 +313,7 @@
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
     <Content Include="Content\Images\rules.png" />
+    <Content Include="Content\Images\rumour.png" />
     <Content Include="Content\Images\sessions.png" />
     <Content Include="Content\Images\Settings.png" />
     <Content Include="Content\Images\space_background.jpg" />
@@ -664,6 +667,11 @@
     <Content Include="Views\Person\DetailsPanel.cshtml" />
     <Content Include="Views\Person\DisplayTemplates\PersonDetailsViewModel.cshtml" />
     <Content Include="Views\Crow\TopStats.cshtml" />
+    <Content Include="Views\Rumour\Index.cshtml" />
+    <Content Include="Views\Rumour\List.cshtml" />
+    <Content Include="Views\Rumour\EditorTemplates\Rumour.cshtml" />
+    <Content Include="Views\Activity\DisplayTemplates\Rumour.cshtml" />
+    <Content Include="Views\Rumour\RumoursForPlace.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

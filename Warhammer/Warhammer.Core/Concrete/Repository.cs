@@ -478,6 +478,32 @@ namespace Warhammer.Core.Concrete
             return _entities.CampaignDetails;
         }
 
+        public IQueryable<Rumour> Rumours()
+        {
+            return _entities.Rumours;
+        }
+
+        public int Save(Rumour rumour)
+        {
+            if (rumour.Id == 0)
+            {
+                _entities.Rumours.Add(rumour);
+            }
+            else
+            {
+                _entities.Entry(rumour).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return rumour.Id;
+        }
+
+        public void Delete(Rumour rumour)
+        {
+            _entities.Rumours.Remove(rumour);
+            _entities.SaveChanges();
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

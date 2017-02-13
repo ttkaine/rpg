@@ -984,6 +984,7 @@ namespace Warhammer.Core.Concrete
             List<Page> pages = RecentPages().ToList();
             List<Award> awards = _repository.Awards().OrderByDescending(a => a.AwardedOn).Take(20).ToList();
             List<Comment> comments = RecentComments();
+            List<Rumour> rumours = _repository.Rumours().OrderByDescending(a => a.Created).Take(20).ToList();
 
             Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
 
@@ -1008,6 +1009,14 @@ namespace Warhammer.Core.Concrete
                 if (!dateObject.ContainsKey(comment.Created))
                 {
                     dateObject.Add(comment.Created, comment);
+                }
+            }
+
+            foreach (Rumour rumour in rumours)
+            {
+                if (!dateObject.ContainsKey(rumour.Created))
+                {
+                    dateObject.Add(rumour.Created, rumour);
                 }
             }
 
@@ -1470,8 +1479,51 @@ namespace Warhammer.Core.Concrete
                 person.Height = height;
                 Save(person);
             }
+        }
 
+        public List<Rumour> GetAllRumours()
+        {
+            return _repository.Rumours().OrderByDescending(r => r.Created).ToList();
+        }
 
+        public void SaveRumours(List<Rumour> rumours)
+        {
+            foreach (Rumour item in rumours)
+            {
+                Rumour existing = _repository.Rumours().FirstOrDefault(p => p.Id == item.Id);
+                if (existing != null)
+                {
+
+                    existing.Title = item.Title;
+                    existing.PlaceId = item.PlaceId;
+                    existing.Description = item.Description;
+                    _repository.Save(existing);
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        item.Created = DateTime.Now;
+                        _repository.Save(item);
+                    }
+                }
+            }
+        }
+
+        public void DeleteRumour(int id)
+        {
+            Rumour rumour = _repository.Rumours().FirstOrDefault(r => r.Id == id);
+            if (rumour != null)
+            {
+                _repository.Delete(rumour);
+            }
+        }
+
+        public List<Rumour> GetRumoursForPlace(int placeId)
+        {
+            List<Rumour> rumours = _repository.Rumours().Where(r => r.PlaceId == placeId || r.Place.Parent.Id == placeId || r.Place.Parent.Parent.Id == placeId).ToList();
+            
+            return rumours;
         }
 
         public void RemoveAward(int personId, int awardId)
