@@ -85,36 +85,127 @@ namespace Warhammer.Mvc.Controllers
             {
                 return null;
             }
-            if (postedStats != null)
+            if (postedStats != null && postedStats.Stats != null)
             {
-                if (postedStats.Stats != null && postedStats.Stats.Sum(s => s.Value) != 18)
-                {
-                    ModelState.AddModelError("Stats", "Stats must add up to 18 points");
-                }
-                
-                if (ModelState.IsValid)
-                {
-                    List<string> descriptors =
-                       new List<string>
-                        {
-                            postedStats.AddedDescriptor1,
-                            postedStats.AddedDescriptor2,
-                            postedStats.AddedDescriptor3
-                        };
-                    DataProvider.SetStats(postedStats.PersonId, postedStats.Stats, postedStats.AddedRole, descriptors);
+                Person person = DataProvider.GetPerson(postedStats.PersonId);
 
-                    if (DataProvider.SiteHasFeature(Feature.SimpleHitPoints))
+                if (person != null)
+                {
+                    if (DataProvider.SiteHasFeature(Feature.CrowStats))
                     {
-                        DataProvider.SetDefaultHitPoints(postedStats.PersonId);
+                        if (person.IsNpc)
+                        {
+                            if (postedStats.Stats.Sum(s => s.Value) > 18)
+                            {
+                                ModelState.AddModelError("Stats", "Don't start with more than 18 in stats. Use XP to raise them.");
+                            }
+                        }
+                        else
+                        {
+                            if (postedStats.Stats.Sum(s => s.Value) != 18)
+                            {
+                                ModelState.AddModelError("Stats", "Stats must add up to 18 points");
+                            }
+                        }
+
+                        if (postedStats.Stats.Any(s => s.Value < 1))
+                        {
+                            ModelState.AddModelError("Stats", "All stats must be at least 1");
+                        }
                     }
 
-                    var model = GetCleanModel(postedStats.PersonId);
-                    return PartialView("ViewStats", model);
-                }
+                    if (DataProvider.SiteHasFeature(Feature.FuHammerStats))
+                    {
+                        if (person.IsNpc)
+                        {
+                            if (postedStats.Stats.Sum(s => s.Value) > 8)
+                            {
+                                ModelState.AddModelError("Stats", "Don't start with more than 8 in stats. Use XP to raise them.");
+                            }
+                        }
+                        else
+                        {
+                            //should be one at 3 
+                            if (postedStats.Stats.Count(s => s.Value == 3) != 1)
+                            {
+                                ModelState.AddModelError("Stats", "Stats should have one value at 3");
+                            }
 
+                            //should be two at 2 
+                            if (postedStats.Stats.Count(s => s.Value == 2) != 2)
+                            {
+                                ModelState.AddModelError("Stats", "Stats should have two values at 2");
+                            }
+
+                            //should be two at 1 
+                            if (postedStats.Stats.Count(s => s.Value == 1) != 2)
+                            {
+                                ModelState.AddModelError("Stats", "Stats should have two values at 1");
+                            }
+
+                            //should be two at 0 
+                            if (postedStats.Stats.Count(s => s.Value == 0) != 2)
+                            {
+                                ModelState.AddModelError("Stats", "Stats should have two values at 0");
+                            }
+
+                            //should be one at -1 
+                            if (postedStats.Stats.Count(s => s.Value == -1) != 1)
+                            {
+                                ModelState.AddModelError("Stats", "Stats should have one values at -1");
+                            }
+                        }
+                    }
+
+                    if (!person.IsNpc && DataProvider.SiteHasFeature(Feature.PersonDescriptors))
+                    {
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedDescriptor1))
+                        {
+                            ModelState.AddModelError("AddedDescriptor1", "First Descriptor must have a value");
+                        }
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedDescriptor2))
+                        {
+                            ModelState.AddModelError("AddedDescriptor2", "Second Descriptor must have a value");
+                        }
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedDescriptor3))
+                        {
+                            ModelState.AddModelError("AddedDescriptor3", "Third Descriptor must have a value");
+                        }
+                    }
+
+                    if (DataProvider.SiteHasFeature(Feature.PersonRoles))
+                    {
+                        if (string.IsNullOrWhiteSpace(postedStats.AddedRole))
+                        {
+                            ModelState.AddModelError("AddedRole", "You must include a Role for this character");
+                        }
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        List<string> descriptors =
+                            new List<string>
+                            {
+                                postedStats.AddedDescriptor1,
+                                postedStats.AddedDescriptor2,
+                                postedStats.AddedDescriptor3
+                            };
+                        DataProvider.SetStats(postedStats.PersonId, postedStats.Stats, postedStats.AddedRole,
+                            descriptors);
+
+                        if (DataProvider.SiteHasFeature(Feature.SimpleHitPoints))
+                        {
+                            DataProvider.SetDefaultHitPoints(postedStats.PersonId);
+                        }
+
+                        var model = GetCleanModel(postedStats.PersonId);
+                        return PartialView("ViewStats", model);
+                    }
+                }
             }
             return PartialView("ViewStats", postedStats);
         }
+
 
         public ActionResult HitPoints(int id)
         {

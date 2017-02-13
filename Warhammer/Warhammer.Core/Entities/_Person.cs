@@ -7,12 +7,23 @@ namespace Warhammer.Core.Entities
 {
     public enum StatName
     {
+        //0 CROW
         Combat = 1,
         Action = 2,
         Intellect = 3,
         Work = 4,
         Social = 5,
-        Self = 6
+        Self = 6,
+
+        //100  FATE / FUHammer
+        Weapon_Skill = 101,
+        Ballistics_Skill = 102,
+        Strength = 103,
+        Toughness = 104,
+        Agility = 105,
+        Inteligence = 106,
+        Willpower = 107,
+        Fellowship = 108
     }
 
     public struct ScoreBreakdown
@@ -28,6 +39,35 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
+        public bool IsFuCharacter
+        {
+            get { return PersonStats.Any(p => p.StatId > 100 && p.StatId < 200); }
+        }
+
+        public bool IsCrowCharacter
+        {
+            get { return PersonStats.Any(p => p.StatId > 0 && p.StatId < 100); }
+        }
+
+        public int BaseStatXpModifier
+        {
+            get
+            {
+                if (IsCrowCharacter)
+                {
+                    return -17;
+                }
+
+                if (IsFuCharacter)
+                {
+                    return -7;
+                }
+
+
+                return 0;
+            }
+        }
+
         public bool IsFavourite
         {
             get
@@ -163,16 +203,6 @@ namespace Warhammer.Core.Entities
                         temp.Add((StatName) personStat.StatId, personStat.CurrentValue);
                     }
                 }
-
-                foreach (int statId in Enum.GetValues(typeof(StatName)))
-                {
-                    StatName stat = (StatName)statId;
-                    if (!temp.ContainsKey(stat))
-                    {
-                        temp.Add(stat, 0);
-                    }
-                }
-
                 return temp;
             }
         }
@@ -201,11 +231,22 @@ namespace Warhammer.Core.Entities
         {
             get
             {
+                int cost = 0;
                 if (IsNpc)
                 {
-                    return (DescriptorNames.Count * 2) + 1;
+                    cost = (DescriptorNames.Count * 2) + 1;
                 }
-                return (DescriptorNames.Count * 2) - 4;
+                else
+                {
+                    cost = (DescriptorNames.Count * 2) - 4;
+                }
+
+                if (cost < 1)
+                {
+                    cost = 1;
+                }
+
+                return cost;
             }
         }
 
@@ -219,8 +260,13 @@ namespace Warhammer.Core.Entities
                 {
                     return 100;
                 }
-
-                return Stats.Sum(s => s.Value) - 17;
+             
+                int cost = Stats.Sum(s => s.Value) + BaseStatXpModifier;
+                if (cost < 1)
+                {
+                    cost = 1;
+                }
+                return cost;
             }
         }
 

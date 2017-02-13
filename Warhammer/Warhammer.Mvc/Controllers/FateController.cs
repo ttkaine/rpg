@@ -19,7 +19,7 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult Aspects(int id)
         {
 
-            if (DataProvider.SiteHasFeature(Feature.FateStats))
+            if (DataProvider.SiteHasFeature(Feature.FateStats) || DataProvider.SiteHasFeature(Feature.PersonAspects))
             {
                 Person person = DataProvider.GetPerson(id);
 
@@ -67,7 +67,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (model != null)
             {
-                if (DataProvider.SiteHasFeature(Feature.FateStats))
+                if (DataProvider.SiteHasFeature(Feature.FateStats) || DataProvider.SiteHasFeature(Feature.PersonAspects))
                 {
                     if (model.Any())
                     {

@@ -30,7 +30,12 @@ namespace Warhammer.Core.Entities
         PriceList,
         PublicPrices,
         PersonDetails,
-        CrowTopStatsPanel
+        CrowTopStatsPanel,
+        CrowStats,
+        FuHammerStats,
+        PersonDescriptors,
+        PersonRoles,
+        PersonAspects
     }
 
     public partial class SiteFeature

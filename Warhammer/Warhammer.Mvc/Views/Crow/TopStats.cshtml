@@ -1,14 +1,62 @@
 ﻿@using Warhammer.Core.Entities
 @model Warhammer.Mvc.Models.PersonStatViewModel
-    
-<div id="fateStats" class="banner-content">
+
+
+
+<div id="fateStats" class="banner-content hidden-md hidden-sm hidden-xs">
     <div class="fate-stat-block">
         <table class="table">
             <thead>
                 <tr>
                     @foreach (StatName header in Model.Stats.Select(s => (StatName)s.Key))
                     {
-                        <th>@header</th>
+
+
+                        <th>@header.ToString().Replace("_", " ")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (KeyValuePair<StatName, int> stat in Model.Stats)
+                    {
+                        int statValue = stat.Value;
+
+                        if (Model.IsCrow)
+                        {
+                            statValue = statValue - 2;
+                        }
+
+                        StatLevel level = (StatLevel)statValue;
+                        var statLevelName = level.ToString();
+
+                        if (statValue > 9)
+                        {
+                            statLevelName = "Divine";
+                        }
+                        if (statValue < -3)
+                        {
+                            statLevelName = "Shit";
+                        }
+
+                        <td title="@Html.Raw(stat.Key + " : " + stat.Value)">@Html.Raw(stat.Value > 0 ? "+" : "")@stat.Value (@statLevelName)</td>
+                    }
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<div id="fateStats" class="banner-content visible-md visible-sm visible-xs">
+    <div class="fate-stat-block">
+        <table class="table">
+            <thead>
+                <tr>
+                    @foreach (StatName header in Model.Stats.Select(s => (StatName)s.Key))
+                    {
+                        <th>@header.ToString().PadLeft(2).Substring(0, 2)</th>
                     }
                 </tr>
             </thead>
