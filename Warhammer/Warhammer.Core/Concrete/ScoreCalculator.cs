@@ -156,7 +156,8 @@ namespace Warhammer.Core.Concrete
 
                 if (person.Stats != null && person.Stats.Any())
                 {
-                    statScore += person.Stats.Sum(l => l.Value)/6.0m;
+                    decimal statFactor = person.IsCrowCharacter ? 6.0m : 2.0m;
+                    statScore += person.Stats.Sum(l => l.Value)/statFactor;
                 }
                 if(statScore > 0)
                 { 
