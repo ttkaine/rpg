@@ -15,7 +15,9 @@
     </td>
     <td></td>
     <td>
-        <span><a href="@Url.Action("Index","Rumour")">New Rumour @Model.Title</a></span>      
+        <span>Rumour: @Model.Title</span> 
+        <br/>
+        @Html.Raw(Model.Description)     
     </td>
 </tr>
 <tr>
