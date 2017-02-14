@@ -17,7 +17,7 @@ namespace Warhammer.Core.Entities
 
         //100  FATE / FUHammer
         Weapon_Skill = 101,
-        Ballistics_Skill = 102,
+        Ballistic_Skill = 102,
         Strength = 103,
         Toughness = 104,
         Agility = 105,
