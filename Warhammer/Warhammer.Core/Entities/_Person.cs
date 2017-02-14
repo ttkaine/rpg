@@ -21,7 +21,7 @@ namespace Warhammer.Core.Entities
         Strength = 103,
         Toughness = 104,
         Agility = 105,
-        Inteligence = 106,
+        Intelligence = 106,
         Willpower = 107,
         Fellowship = 108
     }
