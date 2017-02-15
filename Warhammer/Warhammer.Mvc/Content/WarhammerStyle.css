@@ -7011,6 +7011,9 @@ footer {
   padding-top: 1px;
   padding-bottom: 1px;
 }
+.table td {
+  word-break: break-all;
+}
 .score-box-base,
 .score-box-bonus,
 .score-box {
