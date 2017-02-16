@@ -141,10 +141,6 @@ namespace Warhammer.Core.Concrete
 
                 decimal statScore = 0m;
 
-                if (person.FateAspects != null && person.FateAspects.Any())
-                {
-                    statScore += person.FateAspects.Count;
-                }
                 if (person.FateStunts != null && person.FateStunts.Any())
                 {
                     statScore += person.FateStunts.Count;
@@ -192,13 +188,26 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    scoreHistories.Add(new ScoreHistory
+                    if (person.FateAspects != null && person.FateAspects.Any())
                     {
-                        ScoreType = ScoreType.Roles,
-                        DateTime = scoreDate,
-                        PersonId = person.Id,
-                        PointsValue = 0
-                    });
+                        scoreHistories.Add(new ScoreHistory
+                        {
+                            ScoreType = ScoreType.Roles,
+                            DateTime = scoreDate,
+                            PersonId = person.Id,
+                            PointsValue = person.FateAspects.Count
+                        });
+                    }
+                    else
+                    {
+                        scoreHistories.Add(new ScoreHistory
+                        {
+                            ScoreType = ScoreType.Roles,
+                            DateTime = scoreDate,
+                            PersonId = person.Id,
+                            PointsValue = 0
+                        });
+                    }
                 }
 
                 if (person.DescriptorNames != null && person.DescriptorNames.Count > 0)
