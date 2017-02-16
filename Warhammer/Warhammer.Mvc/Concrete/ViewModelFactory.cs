@@ -307,7 +307,7 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
-            if (_data.SiteHasFeature(Feature.SimpleStats) && _data.CurrentUserIsAdmin)
+            if (_data.SiteHasFeature(Feature.SimpleStats) && _data.CurrentUserIsAdmin && _data.SiteHasFeature(Feature.CrowNpcSheet))
             {
                 items.Add(new MenuItemViewModel
                 {
