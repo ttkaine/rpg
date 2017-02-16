@@ -314,6 +314,7 @@
     <Compile Include="Entities\_Place.cs" />
     <Compile Include="Entities\_Player.cs" />
     <Compile Include="Entities\_PriceListItem.cs" />
+    <Compile Include="Entities\_Rumour.cs" />
     <Compile Include="Entities\_ScoreHistory.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />
