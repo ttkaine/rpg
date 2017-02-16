@@ -195,7 +195,7 @@ namespace Warhammer.Core.Concrete
                             ScoreType = ScoreType.Roles,
                             DateTime = scoreDate,
                             PersonId = person.Id,
-                            PointsValue = person.FateAspects.Count
+                            PointsValue = person.FateAspects.Count(a => a.IsVisible)
                         });
                     }
                     else
