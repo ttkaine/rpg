@@ -141,10 +141,6 @@ namespace Warhammer.Core.Concrete
 
                 decimal statScore = 0m;
 
-                if (person.FateAspects != null && person.FateAspects.Any())
-                {
-                    statScore += person.FateAspects.Count;
-                }
                 if (person.FateStunts != null && person.FateStunts.Any())
                 {
                     statScore += person.FateStunts.Count;
@@ -156,7 +152,8 @@ namespace Warhammer.Core.Concrete
 
                 if (person.Stats != null && person.Stats.Any())
                 {
-                    statScore += person.Stats.Sum(l => l.Value)/6.0m;
+                    decimal statFactor = person.IsCrowCharacter ? 6.0m : 2.0m;
+                    statScore += person.Stats.Sum(l => l.Value)/statFactor;
                 }
                 if(statScore > 0)
                 { 
@@ -191,13 +188,26 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    scoreHistories.Add(new ScoreHistory
+                    if (person.FateAspects != null && person.FateAspects.Any())
                     {
-                        ScoreType = ScoreType.Roles,
-                        DateTime = scoreDate,
-                        PersonId = person.Id,
-                        PointsValue = 0
-                    });
+                        scoreHistories.Add(new ScoreHistory
+                        {
+                            ScoreType = ScoreType.Roles,
+                            DateTime = scoreDate,
+                            PersonId = person.Id,
+                            PointsValue = person.FateAspects.Count(a => a.IsVisible)
+                        });
+                    }
+                    else
+                    {
+                        scoreHistories.Add(new ScoreHistory
+                        {
+                            ScoreType = ScoreType.Roles,
+                            DateTime = scoreDate,
+                            PersonId = person.Id,
+                            PointsValue = 0
+                        });
+                    }
                 }
 
                 if (person.DescriptorNames != null && person.DescriptorNames.Count > 0)
