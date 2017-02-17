@@ -1031,6 +1031,21 @@ namespace Warhammer.Core.Concrete
 
             List<object> results = list.Take(20).Select(date => dateObject[date]).ToList();
 
+            if (SiteHasFeature(Feature.RumourMill))
+            {
+                int numberOfRumours = _repository.Rumours().Count();
+                if(numberOfRumours > 10)
+                {
+                    int randomIndex = new Random().Next(1, numberOfRumours - 1);
+                    Rumour rumour = _repository.Rumours().OrderBy(r => r.Id).Skip(randomIndex).Take(1).FirstOrDefault();
+                    if (rumour != null)
+                    {
+                        int position = new Random().Next(1,19);
+                        results.Insert(position, rumour);
+                    }
+                }
+            }
+
             return results;
         }
 
