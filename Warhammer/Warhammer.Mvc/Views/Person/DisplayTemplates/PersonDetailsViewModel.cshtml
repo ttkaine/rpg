@@ -5,19 +5,42 @@
     <div>
         @if (Model.ShowHeight)
         {
-            <p>Height: @Model.Height</p>
+            <h4>Height: <span class="label label-info personDetail">@Model.Height</span></h4>
+            <br />
         }
-        
+
         @if (Model.ShowAge)
         {
-            <p>Age: <span title="@Model.DateOfBirthString">@Model.Age</span></p>
+            <h4>Age: <span class="label label-info personDetail" title="@Model.DateOfBirthString">@Model.Age</span></h4>
+            <br />
         }
-        
+
         @if (Model.ShowMoney)
         {
-            <ul>
-                <li></li>
-            </ul>
+            <table class="table" id="personmoney">
+                <tr>
+                    <td><img src="@Url.Content("~/Content/Images/crown.jpg")" /> </td>
+                    <td><h4>Crowns</h4> </td>
+                    <td><h4><span class="label label-warning personDetail">@Model.Crowns</span></h4> </td>
+                </tr>
+                <tr>
+                    <td><img src="@Url.Content("~/Content/Images/shilling.jpg")" /> </td>
+                    <td><h4>Shillings</h4> </td>
+                    <td><h4><span class="label label-warning personDetail">@Model.Shillings</span></h4> </td>
+                </tr>
+                <tr>
+                    <td><img src="@Url.Content("~/Content/Images/penny.jpg")" /> </td>
+                    <td><h4>Pence</h4> </td>
+                    <td><h4><span class="label label-warning personDetail">@Model.Pennies</span></h4> </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td><h4>Total as Pence</h4> </td>
+                    <td><h4><span class="label label-info personDetail">@Model.TotalPennies</span></h4> </td>
+                </tr>
+            </table>
         }
     </div>
+
+
 }

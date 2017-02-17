@@ -298,5 +298,53 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult CampaignSettings()
+        {
+            CampaignDetail details = DataProvider.GetCampaginDetails();
+            return View(details);
+        }
+
+        
+
+        public ActionResult SetGameDate(CampaignDetail model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetGameDate(model.CurrentGameDate);
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
+
+        public ActionResult AddDayToGameDate()
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.AddDayToGameDate();
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
+
+        public ActionResult AddWeekToGameDate()
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.AddWeekToGameDate();
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
+
+        public ActionResult AddMonthToGameDate()
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.AddMonthToGameDate();
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
     }
 }

@@ -1547,6 +1547,94 @@ namespace Warhammer.Core.Concrete
             return rumours;
         }
 
+        public void SetAge(int personId, int age)
+        {
+            CampaignDetail campaign = GetCampaginDetails();
+            if (campaign.CurrentGameDate.HasValue)
+            {
+                DateTime dateOfBirth = campaign.CurrentGameDate.Value.AddYears(-age);
+                
+                int months = new Random().Next(0,11);
+                int days = new Random().Next(0,28);
+
+                dateOfBirth = dateOfBirth.AddMonths(-months);
+                dateOfBirth = dateOfBirth.AddDays(-days);
+
+                SetDob(personId, dateOfBirth);
+            }
+        }
+
+        public void SetDob(int personId, DateTime dateOfBirth)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.DateOfBirth = dateOfBirth;
+                Save(person);
+            }
+        }
+
+        public void SetHeight(int personId, string height)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.Height = height;
+                Save(person);
+            }
+        }
+
+        public void SetMoney(int personId, int crowns, int shillings, int pennies)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.Crowns = crowns;
+                person.Shillings = shillings;
+                person.Pennies = pennies;
+                Save(person);
+            }
+        }
+
+        public void SetGameDate(DateTime? currentGameDate)
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            detail.CurrentGameDate = currentGameDate;
+            _repository.Save(detail);
+
+        }
+
+        public void AddDayToGameDate()
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            if (detail.CurrentGameDate.HasValue)
+            {
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddDays(1);
+                _repository.Save(detail);
+            }
+
+        }
+
+        public void AddWeekToGameDate()
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            if (detail.CurrentGameDate.HasValue)
+            {
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddDays(7);
+                _repository.Save(detail);
+            }
+        }
+
+        public void AddMonthToGameDate()
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            if (detail.CurrentGameDate.HasValue)
+            {
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddMonths(1);
+                _repository.Save(detail);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

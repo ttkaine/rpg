@@ -26,5 +26,7 @@ namespace Warhammer.Mvc.Models
 
         [Required]
         public int PersonId { get; set; }
+
+        public DateTime GameDate { get; set; }
     }
 }

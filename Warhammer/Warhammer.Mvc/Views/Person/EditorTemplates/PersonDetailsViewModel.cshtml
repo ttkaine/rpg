@@ -1,0 +1,44 @@
+﻿@model Warhammer.Mvc.Models.PersonDetailsViewModel
+    
+@if (Model.ShowAge && User.IsInRole("Admin"))
+{
+    using (Ajax.BeginForm("SetDob", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel"}))
+    {
+        <p>The Current Game Date is: @Model.GameDate.ToLongDateString()</p>
+        <p>Current Character Date of Birth is: @Model.DateOfBirthString</p>
+        <p>Which means Current Character age is: @Model.Age</p>
+        <p>You can choose a new Date Of Birth</p>
+        @Html.HiddenFor(m => m.PersonId)
+        @Html.TextBoxFor(m => m.DateOfBirth,new { @Value = Model.DateOfBirth.ToString("yyyy/MM/dd"), @class = "game-datepicker" })
+        <input type="submit" value="Set Date of Birth"/>
+    }
+
+}
+else
+{
+    using (Ajax.BeginForm("SetAge", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+    {
+        <p>Set Age</p>
+        @Html.HiddenFor(m => m.PersonId)
+        @Html.EditorFor(m => m.Age)
+        <input type="submit" value="Set Age" />
+    }
+}
+
+@using (Ajax.BeginForm("SetHeight", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+    {
+        <p>Height</p>
+        @Html.HiddenFor(m => m.PersonId)
+        @Html.EditorFor(m => m.Height)
+        <input type="submit" value="Set Height" />
+    }
+
+@using (Ajax.BeginForm("SetMoney", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+{
+    <p>Height</p>
+        @Html.HiddenFor(m => m.PersonId)
+        @Html.EditorFor(m => m.Crowns)
+        @Html.EditorFor(m => m.Shillings)
+        @Html.EditorFor(m => m.Pennies)
+        <input type="submit" value="Set Money" />
+}

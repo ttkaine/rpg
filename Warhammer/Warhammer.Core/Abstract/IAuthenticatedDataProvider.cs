@@ -135,5 +135,13 @@ namespace Warhammer.Core.Abstract
         void SaveRumours(List<Rumour> rumours);
         void DeleteRumour(int id);
         List<Rumour> GetRumoursForPlace(int placeId);
+        void SetAge(int personId, int age);
+        void SetDob(int personId, DateTime dateOfBirth);
+        void SetHeight(int personId, string height);
+        void SetMoney(int personId, int crowns, int shillings, int pennies);
+        void SetGameDate(DateTime? currentGameDate);
+        void AddDayToGameDate();
+        void AddWeekToGameDate();
+        void AddMonthToGameDate();
     }
 }

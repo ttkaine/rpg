@@ -277,6 +277,7 @@
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
     <Content Include="Content\Images\coin.png" />
+    <Content Include="Content\Images\crown.jpg" />
     <Content Include="Content\Images\edited.png" />
     <Content Include="Content\Images\fate_background.jpg" />
     <Content Include="Content\Images\features.png" />
@@ -294,6 +295,7 @@
     <Content Include="Content\Images\page-place.png" />
     <Content Include="Content\Images\page-session.png" />
     <Content Include="Content\Images\pages.png" />
+    <Content Include="Content\Images\penny.jpg" />
     <Content Include="Content\Images\pirate_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
@@ -316,6 +318,7 @@
     <Content Include="Content\Images\rumour.png" />
     <Content Include="Content\Images\sessions.png" />
     <Content Include="Content\Images\Settings.png" />
+    <Content Include="Content\Images\shilling.jpg" />
     <Content Include="Content\Images\space_background.jpg" />
     <Content Include="Content\Images\Trophy.png" />
     <Content Include="Content\Images\update.png" />
@@ -672,6 +675,8 @@
     <Content Include="Views\Rumour\EditorTemplates\Rumour.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\Rumour.cshtml" />
     <Content Include="Views\Rumour\RumoursForPlace.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\PersonDetailsViewModel.cshtml" />
+    <Content Include="Views\Admin\CampaignSettings.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

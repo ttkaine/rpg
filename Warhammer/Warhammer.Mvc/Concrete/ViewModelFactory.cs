@@ -199,7 +199,7 @@ namespace Warhammer.Mvc.Concrete
                     //  IconCssClass = "badge"
                 });
 
-                if (_data.SiteHasFeature(Feature.PriceList))
+                if (_data.SiteHasFeature(Feature.PriceList) && !_data.SiteHasFeature(Feature.PublicPrices))
                 {
                     items.Add(new MenuItemViewModel
                     {
@@ -207,6 +207,22 @@ namespace Warhammer.Mvc.Concrete
                         Url = _urlHelper.Action("PriceList", "Home"),
                     });
                 }
+
+                if (_data.SiteHasFeature(Feature.RumourMill))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Manage Rumours",
+                        Url = _urlHelper.Action("Index", "Rumour"),
+                    });
+                }
+
+
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Campaign Settings",
+                    Url = _urlHelper.Action("CampaignSettings", "Admin"),
+                });
             }
 
             return items;
