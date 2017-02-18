@@ -324,6 +324,7 @@
     <Compile Include="Entities\_Trophy.cs" />
     <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Models\CreateCreatureViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />

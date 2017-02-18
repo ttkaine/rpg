@@ -804,7 +804,7 @@ namespace Warhammer.Mvc.Controllers
                     age--;
                 }
                 model.Age = age;
-                model.DateOfBirthString = $"Born {person.DateOfBirth:dddd dd MMMM yyyy}";
+                model.DateOfBirthString = $"Born on the {person.DateOfBirth.Value.ToWarhammerDateString()} ({person.DateOfBirth:dddd dd MMMM yyyy})";
                 model.DateOfBirth = person.DateOfBirth.Value;
             }
 
