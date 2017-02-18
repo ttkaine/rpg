@@ -2,6 +2,11 @@
     
 @if (Model.ShowAge && User.IsInRole("Admin"))
 {
+    if (Model.AgeJustSet)
+    {
+        <div class="alert alert-success">Age Set to : @Model.Age</div>
+    }
+
     using (Ajax.BeginForm("SetDob", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel"}))
     {
         <p>The Current Game Date is: @Model.GameDate.ToLongDateString()</p>
@@ -9,8 +14,8 @@
         <p>Which means Current Character age is: @Model.Age</p>
         <p>You can choose a new Date Of Birth</p>
         @Html.HiddenFor(m => m.PersonId)
-        @Html.TextBoxFor(m => m.DateOfBirth,new { @Value = Model.DateOfBirth.ToString("yyyy/MM/dd"), @class = "game-datepicker" })
-        <input type="submit" value="Set Date of Birth"/>
+        @Html.TextBoxFor(m => m.DateOfBirth,new { @Value = Model.DateOfBirth.ToString("yyyy/MM/dd"), @class = "game-datepicker form-control" })
+        <input type="submit" class="btn btn-info btn-block" value="Set Date of Birth"/>
     }
 
 }
@@ -20,25 +25,34 @@ else
     {
         <p>Set Age</p>
         @Html.HiddenFor(m => m.PersonId)
-        @Html.EditorFor(m => m.Age)
-        <input type="submit" value="Set Age" />
+        @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form-control" } })
+        <input type="submit" class="btn btn-info btn-block" value="Set Age" />
     }
 }
 
 @using (Ajax.BeginForm("SetHeight", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+{
+    if (Model.HeightJustSet)
     {
+        <div class="alert alert-success">Height Set to : @Model.Height</div>
+    }
         <p>Height</p>
         @Html.HiddenFor(m => m.PersonId)
-        @Html.EditorFor(m => m.Height)
-        <input type="submit" value="Set Height" />
+        @Html.EditorFor(m => m.Height, new { htmlAttributes = new { @class = "form-control" } })
+        <input type="submit" class="btn btn-info btn-block" value="Set Height" />
     }
 
 @using (Ajax.BeginForm("SetMoney", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
 {
-    <p>Height</p>
+    if (Model.MoneyJustSet)
+    {
+        <div class="alert alert-success">Money Set to : @Model.TotalPennies</div>
+    }
+
+    <p>Money</p>
         @Html.HiddenFor(m => m.PersonId)
-        @Html.EditorFor(m => m.Crowns)
-        @Html.EditorFor(m => m.Shillings)
-        @Html.EditorFor(m => m.Pennies)
-        <input type="submit" value="Set Money" />
+        @Html.EditorFor(m => m.Crowns, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(m => m.Shillings, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(m => m.Pennies, new { htmlAttributes = new { @class = "form-control" } })
+        <input type="submit" class="btn btn-info btn-block" value="Set Money" />
 }

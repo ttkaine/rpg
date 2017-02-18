@@ -295,6 +295,7 @@
     <Content Include="Content\Images\page-place.png" />
     <Content Include="Content\Images\page-session.png" />
     <Content Include="Content\Images\pages.png" />
+    <Content Include="Content\Images\pennies.png" />
     <Content Include="Content\Images\penny.jpg" />
     <Content Include="Content\Images\pirate_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />

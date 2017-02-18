@@ -63,15 +63,6 @@ namespace Warhammer.Mvc.Controllers
             return model;
         }
 
-        //public ActionResult EditStats(int personId)
-        //{
-
-        //}
-
-        //public ActionResult EditStats(int personId)
-        //{
-
-        //}
         public PersonController(IAuthenticatedDataProvider data, IViewModelFactory factory) : base(data)
         {
             _factory = factory;
@@ -683,9 +674,13 @@ namespace Warhammer.Mvc.Controllers
                 {
                     DataProvider.SetAge(model.PersonId, model.Age);
 
-                    ModelState.Clear();
+                    ModelState.Remove("Age");
+                    ModelState.Remove("ShowAge");
+                    ModelState.Remove("DateOfBirthString");
+                    ModelState.Remove("DateOfBirth");
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.AgeJustSet = true;
                     return PartialView("DetailsPanel", updatedModel);
                 }
             }
@@ -703,9 +698,11 @@ namespace Warhammer.Mvc.Controllers
                 {
                     DataProvider.SetHeight(model.PersonId, model.Height);
 
-                    ModelState.Clear();
+                    ModelState.Remove("Height");
+                    ModelState.Remove("ShowHeight");
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.HeightJustSet = true;
                     return PartialView("DetailsPanel", updatedModel);
                 }
             }
@@ -726,6 +723,7 @@ namespace Warhammer.Mvc.Controllers
                     ModelState.Clear();
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.MoneyJustSet = true;
                     return PartialView("DetailsPanel", updatedModel);
                 }
             }
@@ -747,6 +745,7 @@ namespace Warhammer.Mvc.Controllers
                     ModelState.Clear();
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.AgeJustSet = true;
                     return PartialView("DetailsPanel", updatedModel);
                 }
             }

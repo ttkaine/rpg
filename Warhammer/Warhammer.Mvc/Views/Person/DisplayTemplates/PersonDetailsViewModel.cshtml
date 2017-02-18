@@ -18,26 +18,38 @@
         @if (Model.ShowMoney)
         {
             <table class="table" id="personmoney">
-                <tr>
-                    <td><img src="@Url.Content("~/Content/Images/crown.jpg")" /> </td>
-                    <td><h4>Crowns</h4> </td>
-                    <td><h4><span class="label label-warning personDetail">@Model.Crowns</span></h4> </td>
-                </tr>
-                <tr>
-                    <td><img src="@Url.Content("~/Content/Images/shilling.jpg")" /> </td>
-                    <td><h4>Shillings</h4> </td>
-                    <td><h4><span class="label label-warning personDetail">@Model.Shillings</span></h4> </td>
-                </tr>
-                <tr>
-                    <td><img src="@Url.Content("~/Content/Images/penny.jpg")" /> </td>
-                    <td><h4>Pence</h4> </td>
-                    <td><h4><span class="label label-warning personDetail">@Model.Pennies</span></h4> </td>
-                </tr>
-                <tr>
-                    <td> </td>
-                    <td><h4>Total as Pence</h4> </td>
-                    <td><h4><span class="label label-info personDetail">@Model.TotalPennies</span></h4> </td>
-                </tr>
+                @if (Model.Crowns > 0)
+                {
+                    <tr>
+                        <td><img src="@Url.Content("~/Content/Images/crown.jpg")"/> </td>
+                        <td><h4>Crowns</h4> </td>
+                        <td><h4><span class="label label-warning personDetail">@Model.Crowns</span></h4> </td>
+                    </tr>
+                }
+                @if (Model.Shillings > 0)
+                {
+                    <tr>
+                        <td><img src="@Url.Content("~/Content/Images/shilling.jpg")"/> </td>
+                        <td><h4>Shillings</h4> </td>
+                        <td><h4><span class="label label-warning personDetail">@Model.Shillings</span></h4> </td>
+                    </tr>
+                }
+                @if (Model.Pennies > 0)
+                {
+                    <tr>
+                        <td><img src="@Url.Content("~/Content/Images/penny.jpg")"/> </td>
+                        <td><h4>Pence</h4> </td>
+                        <td><h4><span class="label label-warning personDetail">@Model.Pennies</span></h4> </td>
+                    </tr>
+                }
+                @if (Model.TotalPennies != Model.Pennies)
+                {
+                    <tr>
+                        <td><img src="@Url.Content("~/Content/Images/pennies.png")" /> </td>
+                        <td><h4>Total as Pence</h4> </td>
+                        <td><h4><span class="label label-info personDetail">@Model.TotalPennies</span></h4> </td>
+                    </tr>
+                }
             </table>
         }
     </div>

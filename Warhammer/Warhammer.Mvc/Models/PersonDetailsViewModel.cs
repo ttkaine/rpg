@@ -1,11 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Configuration;
 using System.Web.Mvc;
 
 namespace Warhammer.Mvc.Models
 {
     public class PersonDetailsViewModel
     {
+        public bool HeightJustSet { get; set; }
+        public bool AgeJustSet { get; set; }
+        public bool MoneyJustSet { get; set; }
+
         public bool ShowAny => ShowAge || ShowHeight || ShowMoney;
 
         public bool ShowMoney { get; set; }
