@@ -7020,6 +7020,9 @@ footer {
 .table td {
   word-break: break-word;
 }
+.table td.no-break {
+  word-break: normal;
+}
 .score-box-base,
 .score-box-bonus,
 .score-box {
