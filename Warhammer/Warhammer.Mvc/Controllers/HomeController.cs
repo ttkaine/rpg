@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
@@ -42,14 +43,28 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Index()
         {
+
             HomePageViewModel model = new HomePageViewModel
             {
+
                 SiteName = SiteName, 
                 NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
                 UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 OtherPeople = DataProvider.OtherPCs(),
             };
+
+            if (DataProvider.SiteHasFeature(Feature.ShowGameDate))
+            {
+                CampaignDetail detail = DataProvider.GetCampaginDetails();
+                if (detail.CurrentGameDate.HasValue)
+                {
+                    model.GameDateDisplay =
+                        $"Current Game Date: The {detail.CurrentGameDate.Value.ToWarhammerDateString()} ({detail.CurrentGameDate:dddd dd MMMM yyyy})";
+                    model.GameDate = detail.CurrentGameDate;
+                }
+            }
+
 
             if (DataProvider.SiteHasFeature(Feature.SimpleStats))
             {

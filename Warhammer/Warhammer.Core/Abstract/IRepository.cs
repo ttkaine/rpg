@@ -65,5 +65,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<Rumour> Rumours();     
         int Save(Rumour rumour);
         void Delete(Rumour rumour);
+        int Save(CampaignDetail campaignDetail);
     }
 }

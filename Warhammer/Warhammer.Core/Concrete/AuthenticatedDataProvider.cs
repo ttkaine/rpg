@@ -1031,6 +1031,21 @@ namespace Warhammer.Core.Concrete
 
             List<object> results = list.Take(20).Select(date => dateObject[date]).ToList();
 
+            if (SiteHasFeature(Feature.RumourMill))
+            {
+                int numberOfRumours = _repository.Rumours().Count();
+                if(numberOfRumours > 10)
+                {
+                    int randomIndex = new Random().Next(1, numberOfRumours - 1);
+                    Rumour rumour = _repository.Rumours().OrderBy(r => r.Id).Skip(randomIndex).Take(1).FirstOrDefault();
+                    if (rumour != null)
+                    {
+                        int position = new Random().Next(1,19);
+                        results.Insert(position, rumour);
+                    }
+                }
+            }
+
             return results;
         }
 
@@ -1530,6 +1545,94 @@ namespace Warhammer.Core.Concrete
             List<Rumour> rumours = _repository.Rumours().Where(r => r.PlaceId == placeId || r.Place.Parent.Id == placeId || r.Place.Child.Any(p => p.Id == placeId)).ToList();
             
             return rumours;
+        }
+
+        public void SetAge(int personId, int age)
+        {
+            CampaignDetail campaign = GetCampaginDetails();
+            if (campaign.CurrentGameDate.HasValue)
+            {
+                DateTime dateOfBirth = campaign.CurrentGameDate.Value.AddYears(-age);
+                
+                int months = new Random().Next(0,11);
+                int days = new Random().Next(0,28);
+
+                dateOfBirth = dateOfBirth.AddMonths(-months);
+                dateOfBirth = dateOfBirth.AddDays(-days);
+
+                SetDob(personId, dateOfBirth);
+            }
+        }
+
+        public void SetDob(int personId, DateTime dateOfBirth)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.DateOfBirth = dateOfBirth;
+                Save(person);
+            }
+        }
+
+        public void SetHeight(int personId, string height)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.Height = height;
+                Save(person);
+            }
+        }
+
+        public void SetMoney(int personId, int crowns, int shillings, int pennies)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.Crowns = crowns;
+                person.Shillings = shillings;
+                person.Pennies = pennies;
+                Save(person);
+            }
+        }
+
+        public void SetGameDate(DateTime? currentGameDate)
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            detail.CurrentGameDate = currentGameDate;
+            _repository.Save(detail);
+
+        }
+
+        public void AddDayToGameDate()
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            if (detail.CurrentGameDate.HasValue)
+            {
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddDays(1);
+                _repository.Save(detail);
+            }
+
+        }
+
+        public void AddWeekToGameDate()
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            if (detail.CurrentGameDate.HasValue)
+            {
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddDays(7);
+                _repository.Save(detail);
+            }
+        }
+
+        public void AddMonthToGameDate()
+        {
+            CampaignDetail detail = GetCampaginDetails();
+            if (detail.CurrentGameDate.HasValue)
+            {
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddMonths(1);
+                _repository.Save(detail);
+            }
         }
 
         public void RemoveAward(int personId, int awardId)

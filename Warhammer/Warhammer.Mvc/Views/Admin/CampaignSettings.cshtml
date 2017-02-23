@@ -1,0 +1,76 @@
+﻿
+
+@using Warhammer.Core.Entities
+@using Warhammer.Core.Extensions
+@model CampaignDetail
+@{
+    ViewBag.Title = "Campaign Settings";
+}
+
+<div class="content-wrapper">
+
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Campaign Setting</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <div id="gamedatepanel">
+                @if (Model.CurrentGameDate.HasValue)
+                {
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Current Game Date</div>
+                        <div class="panel-body">The @Model.CurrentGameDate.Value.ToWarhammerDateString()</div>
+                        <div class="panel-footer">@Model.CurrentGameDate.Value.ToString("dddd dd MMMM yyyy")</div>
+                    </div>
+         
+                    <br /><br />
+                    using (Html.BeginForm("SetGameDate", "Admin"))
+                    {
+                        <p>You can choose a new Game Date</p>
+                        @Html.TextBoxFor(m => m.CurrentGameDate, new { @Value = Model.CurrentGameDate.Value.ToString("yyyy/MM/dd"), @class = "game-datepicker" })
+                        <input type="submit" value="Set Game Date" />
+                    }
+                    <br /><br />
+                    using (Html.BeginForm("AddDayToGameDate", "Admin"))
+                    {
+                        <input type="submit" class="btn btn-success" value="Add day" />
+                    }
+                    <br /><br />
+                    using (Html.BeginForm("AddWeekToGameDate", "Admin"))
+                    {
+                        <input type="submit" class="btn btn-warning" value="Add week" />
+                    }
+                    <br /><br />
+                    using (Html.BeginForm("AddMonthToGameDate", "Admin"))
+                    {
+                        <input type="submit" class="btn btn-danger" value="Add month" />
+                    }
+                }
+                else
+                {
+                    using (Ajax.BeginForm("SetGameDate", "Admin", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "gamedatepanel" }))
+                    {
+
+                        <p>Choose Game Date</p>
+                        @Html.TextBoxFor(m => m.CurrentGameDate, new { @class = "game-datepicker" })
+                        <input type="submit" value="Set Game Date" />
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Some settings for the game world...</h3>
+            <p>Not that much here yet... but soon more maybe?</p>
+        </div>
+    </div>
+
+</div>

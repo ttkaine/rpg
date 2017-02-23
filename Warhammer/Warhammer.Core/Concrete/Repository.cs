@@ -504,6 +504,21 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public int Save(CampaignDetail campaignDetail)
+        {
+            if (campaignDetail.Id == 0)
+            {
+                _entities.CampaignDetails.Add(campaignDetail);
+            }
+            else
+            {
+                _entities.Entry(campaignDetail).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return campaignDetail.Id;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

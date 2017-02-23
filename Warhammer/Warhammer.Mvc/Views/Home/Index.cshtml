@@ -1,4 +1,5 @@
 ﻿@using Warhammer.Core.Entities
+@using Warhammer.Core.Extensions
 @model Warhammer.Mvc.Models.HomePageViewModel
 @{
     ViewBag.Title = @Model.SiteName + "- Home Page";
@@ -13,19 +14,16 @@
         $(function () {
             rpHub = $.connection.roleplayHub;
 
-            rpHub.client.updateTextSessionsOnHomePage = function ()
-            {
+            rpHub.client.updateTextSessionsOnHomePage = function () {
                 updateTextSessions();
             };
 
-            $.connection.hub.start().done(function ()
-            {
+            $.connection.hub.start().done(function () {
                 connected = true;
             });
         });
 
-        function updateTextSessions()
-        {
+        function updateTextSessions() {
             // Text session status updates here
 
             $('#SessionAutoUpdate').submit();
@@ -48,69 +46,69 @@
         <div class="content-block">
             @Html.Action("Search", "Home")
         </div>
-      
-            <div class="content-block">
+        
+        <div class="content-block">
 
 
-                @Html.Action("ActiveTextSessions")
+            @Html.Action("ActiveTextSessions")
 
-                @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any())
+            @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any())
             {
-                    <div class="alert alert-warning">
-                        <p>No Exciting Page updates for you at the moment...</p>
-                    </div>
-                }
-                else
-                {
-                    <div class="alert alert-success">
-                        @if (Model.NewPages.Any())
+                <div class="alert alert-warning">
+                    <p>No Exciting Page updates for you at the moment...</p>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    @if (Model.NewPages.Any())
+                    {
+
+                        <h3>New Pages</h3>
+                        if (Model.NewPages.Count() > 5)
                         {
-
-                            <h3>New Pages</h3>
-                            if (Model.NewPages.Count() > 5)
-                            {
-                                @Html.ActionLink("Mark All as Seen", "MarkAllRead")
-                            }
-                            <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
-
-                            <ul>
-                                @foreach (var page in Model.NewPages)
-                                {
-                                    <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
-                                }
-                            </ul>
+                            @Html.ActionLink("Mark All as Seen", "MarkAllRead")
                         }
-                        @if (Model.UpdatedPages.Any())
+                        <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
+
+                        <ul>
+                            @foreach (var page in Model.NewPages)
+                            {
+                                <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
+                            }
+                        </ul>
+                    }
+                    @if (Model.UpdatedPages.Any())
+                    {
+
+                        <h3>Updated Pages</h3>
+                        if (Model.UpdatedPages.Count() > 5)
                         {
-
-                            <h3>Updated Pages</h3>
-                            if (Model.UpdatedPages.Count() > 5)
-                            {
-                                @Html.ActionLink("Mark All as Seen", "MarkAllModifiedRead")
-                            }
-                            <p class="note">These are pages that have had significant updates since you last looked at them...</p>
-                            <ul>
-                                @foreach (var page in Model.UpdatedPages)
-                                {
-                                    <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
-                                }
-                            </ul>
+                            @Html.ActionLink("Mark All as Seen", "MarkAllModifiedRead")
                         }
-                    </div>
-                }
-
-            </div>
-          
-            <div class="content-block">
-
-                @Html.Action("RecentActivity", "Activity")
-
-            </div>
-
-
-
+                        <p class="note">These are pages that have had significant updates since you last looked at them...</p>
+                        <ul>
+                            @foreach (var page in Model.UpdatedPages)
+                            {
+                                <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName <span class="tiny"> Changed by @page.ModifiedBy.DisplayName on @page.Modified</span></a></li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
 
         </div>
+
+        <div class="content-block">
+
+            @Html.Action("RecentActivity", "Activity")
+
+        </div>
+
+
+
+
+    </div>
 
     <div class="core-content">
         @if (User.IsInRole("Admin") && Model.NpcWithXp.Any())
@@ -132,7 +130,7 @@
                 </table>
 
             </div>
-        
+
         }
         @if (Model.MyPeople.Any())
         {
@@ -153,7 +151,7 @@
                 </table>
 
             </div>
-           
+
         }
         @if (Model.OtherPeople.Any())
         {
@@ -174,7 +172,7 @@
                 </table>
 
             </div>
-            
+
         }
         @Html.Action("FavouriteNpcs")
 
@@ -201,6 +199,18 @@
     </div>
 
     <div class="core-content">
+        
+        @if (Model.GameDate.HasValue)
+            {
+            <div class="content-block">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">Current Game Date</div>
+                    <div class="panel-body">The @Model.GameDate.Value.ToWarhammerDateString()</div>
+                    <div class="panel-footer">@Model.GameDate.Value.ToString("dddd dd MMMM yyyy")</div>
+                </div>
+            </div>
+        }
 
         <div class="content-block">
             <h3>Recent Comments</h3>

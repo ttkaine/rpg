@@ -63,15 +63,6 @@ namespace Warhammer.Mvc.Controllers
             return model;
         }
 
-        //public ActionResult EditStats(int personId)
-        //{
-
-        //}
-
-        //public ActionResult EditStats(int personId)
-        //{
-
-        //}
         public PersonController(IAuthenticatedDataProvider data, IViewModelFactory factory) : base(data)
         {
             _factory = factory;
@@ -674,16 +665,110 @@ namespace Warhammer.Mvc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Player")]
+        public ActionResult SetAge(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetAge(model.PersonId, model.Age);
+
+                    ModelState.Remove("Age");
+                    ModelState.Remove("ShowAge");
+                    ModelState.Remove("DateOfBirthString");
+                    ModelState.Remove("DateOfBirth");
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.AgeJustSet = true;
+                    return PartialView("DetailsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SetHeight(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetHeight(model.PersonId, model.Height);
+
+                    ModelState.Remove("Height");
+                    ModelState.Remove("ShowHeight");
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.HeightJustSet = true;
+                    return PartialView("DetailsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SetMoney(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetMoney(model.PersonId, model.Crowns, model.Shillings, model.Pennies);
+
+                    ModelState.Clear();
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.MoneyJustSet = true;
+                    return PartialView("DetailsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SetDob(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetDob(model.PersonId, model.DateOfBirth);
+
+                    ModelState.Clear();
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.AgeJustSet = true;
+                    return PartialView("DetailsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult DetailsPanel(PersonDetailsViewModel model)
         {
-            Person person = DataProvider.GetPerson(model.PersonId);
-            if (person != null)
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
             {
-                DataProvider.SetDetails(model.PersonId, model.Crowns, model.Shillings, model.Pennies, model.DateOfBirth, model.Height);
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetDetails(model.PersonId, model.Crowns, model.Shillings, model.Pennies,
+                        model.DateOfBirth, model.Height);
 
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
                     return PartialView(updatedModel);
+                }
             }
             return null;
         }
@@ -702,13 +787,14 @@ namespace Warhammer.Mvc.Controllers
                 model.Pennies = person.Pennies ?? 0;
                 model.Shillings = person.Shillings ?? 0;
                 model.Crowns = person.Crowns ?? 0;
+                model.TotalPennies = person.TotalPennies;
             }
 
             if (person.DateOfBirth.HasValue && campagin.CurrentGameDate.HasValue)
             {
                 model.ShowAge = true;
                 model.DateOfBirth = person.DateOfBirth.Value;
-
+                model.GameDate = campagin.CurrentGameDate.Value;
                 DateTime today = campagin.CurrentGameDate.Value.Date;
                 // Calculate the age.
                 var age = today.Year - person.DateOfBirth.Value.Year;
@@ -718,7 +804,7 @@ namespace Warhammer.Mvc.Controllers
                     age--;
                 }
                 model.Age = age;
-                model.DateOfBirthString = $"Born {person.DateOfBirth:dddd dd MMMM yyyy}";
+                model.DateOfBirthString = $"Born on the {person.DateOfBirth.Value.ToWarhammerDateString()} ({person.DateOfBirth:dddd dd MMMM yyyy})";
                 model.DateOfBirth = person.DateOfBirth.Value;
             }
 

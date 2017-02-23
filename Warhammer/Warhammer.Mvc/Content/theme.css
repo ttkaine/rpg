@@ -6787,8 +6787,14 @@ body {
 }
 #statTotal,
 #xptotal,
+.personDetail,
 #stattable .label-info {
   font-size: larger;
+}
+#personmoney img {
+  width: 25px;
+  height: 25px;
+  border-radius: 10px;
 }
 .form-group {
   margin-bottom: 20px;

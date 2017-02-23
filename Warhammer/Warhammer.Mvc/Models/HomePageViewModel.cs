@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Warhammer.Core.Entities;
 
@@ -17,6 +18,7 @@ namespace Warhammer.Mvc.Models
             TopNpcs = new List<Person>();
         }
 
+       public string GameDateDisplay { get; set; }
        public List<Page> RecentChanges { get; set; }
        public List<Page> MyStuff { get; set; }
        public List<Person> MyPeople { get; set; }
@@ -29,5 +31,6 @@ namespace Warhammer.Mvc.Models
        public string SiteName { get; set; }
        public List<Person> OtherPeople { get; set; }
         public List<Person> NpcWithXp { get; set; }
+        public DateTime? GameDate { get; set; }
     }
 }
