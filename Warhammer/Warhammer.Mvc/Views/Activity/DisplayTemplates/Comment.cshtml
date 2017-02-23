@@ -1,7 +1,7 @@
 ﻿@model Warhammer.Core.Entities.Comment
 
 <tr>
-    <td>
+    <td class="no-break">
         @if (!Model.IsPlayerComment)
         {
             @Html.Action("PageImage", "Page", new {id = Model.PersonId})
