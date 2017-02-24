@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Abstract;
@@ -29,7 +30,10 @@ namespace Warhammer.Mvc.Controllers
                     if (person.PlayerId.HasValue || CurrentPlayer.IsGm)
                     {
                         PersonStatViewModel model = _factory.MakeStatModel(person);
-                        return PartialView(model);
+                        if (model.ShowStats && model.Stats.Sum(s => s.Value) > 3)
+                        {
+                            return PartialView(model);
+                        }
                     }
                 }
             }
