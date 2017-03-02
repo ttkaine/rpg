@@ -13,18 +13,18 @@ namespace Warhammer.Core.Extensions
 
     public enum DayName
     {
-        Wellentag = 1,
+        Festag,
+        Wellentag,
         Aubentag,
         Marktag,
         Backertag,
         Bezahltag,
-        Konistag,
-        Festag
+        Konistag    
     }
 
     public enum MonthName
     {
-        Nachhexen = 1,
+        Nachhexen,
         Jahrdrung,
         Pflugzeit,
         Sigmarzeit,
@@ -40,13 +40,10 @@ namespace Warhammer.Core.Extensions
 
     public static class DateTimeExtensions
     {
-
-
-
         public static string ToWarhammerDateString(this DateTime date)
         {
             MonthName month = (MonthName)date.Month;
-            MonthName day = (MonthName)date.DayOfWeek;
+            DayName day = (DayName)date.DayOfWeek;
             OrdinalOption ordinal = (OrdinalOption)(date.Day / 7);
             string year = NumberToWords(date.Year);
 
