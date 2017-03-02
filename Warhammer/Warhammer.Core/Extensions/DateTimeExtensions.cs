@@ -13,7 +13,7 @@ namespace Warhammer.Core.Extensions
 
     public enum DayName
     {
-        Wellentag,
+        Wellentag = 1,
         Aubentag,
         Marktag,
         Backertag,
@@ -24,7 +24,7 @@ namespace Warhammer.Core.Extensions
 
     public enum MonthName
     {
-        Nachhexen,
+        Nachhexen = 1,
         Jahrdrung,
         Pflugzeit,
         Sigmarzeit,
