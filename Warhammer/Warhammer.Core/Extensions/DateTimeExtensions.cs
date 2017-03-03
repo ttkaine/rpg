@@ -24,7 +24,7 @@ namespace Warhammer.Core.Extensions
 
     public enum MonthName
     {
-        Nachhexen,
+        Nachhexen = 1,
         Jahrdrung,
         Pflugzeit,
         Sigmarzeit,
