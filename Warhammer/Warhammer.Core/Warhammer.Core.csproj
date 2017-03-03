@@ -192,6 +192,9 @@
     <Compile Include="Entities\AspNetUserLogin.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Asset.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Award.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>

@@ -20,6 +20,7 @@ namespace Warhammer.Mvc.Models
         public int Crowns { get; set; }
         public int Shillings { get; set; }
         public int Pennies { get; set; }
+        public int Upkeep { get; set; }
 
         public int TotalPennies { get; set; }
         public int Age { get; set; }

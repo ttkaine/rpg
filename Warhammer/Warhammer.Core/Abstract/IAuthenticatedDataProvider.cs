@@ -130,7 +130,7 @@ namespace Warhammer.Core.Abstract
         List<PriceListItem> PriceList();
         void SavePriceList(List<PriceListItem> priceListItems);
         CampaignDetail GetCampaginDetails();
-        void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height);
+        void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height, int modelUpkeep);
         List<Rumour> GetAllRumours();
         void SaveRumours(List<Rumour> rumours);
         void DeleteRumour(int id);
@@ -138,7 +138,7 @@ namespace Warhammer.Core.Abstract
         void SetAge(int personId, int age);
         void SetDob(int personId, DateTime dateOfBirth);
         void SetHeight(int personId, string height);
-        void SetMoney(int personId, int crowns, int shillings, int pennies);
+        void SetMoney(int personId, int crowns, int shillings, int pennies, int upkeep);
         void SetGameDate(DateTime? currentGameDate);
         void AddDayToGameDate();
         void AddWeekToGameDate();

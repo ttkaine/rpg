@@ -127,6 +127,7 @@
     <Compile Include="SeleniumTests\SmokeTests.cs" />
     <Compile Include="TestSettings.cs" />
     <Compile Include="UnitTests\BaseUnitTests.cs" />
+    <Compile Include="UnitTests\MoneyTests.cs" />
     <Compile Include="UnitTests\XpUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>

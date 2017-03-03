@@ -86,6 +86,8 @@
         <EntityTypeShape EntityType="WarhammerModel.CampaignDetail" Width="1.5" PointX="10.375" PointY="6.75" />
         <EntityTypeShape EntityType="WarhammerModel.Rumour" Width="1.5" PointX="7.5" PointY="42.5" />
         <AssociationConnector Association="WarhammerModel.FK_Rumour_Place" />
+        <EntityTypeShape EntityType="WarhammerModel.Asset" Width="1.5" PointX="8.25" PointY="45.625" />
+        <AssociationConnector Association="WarhammerModel.FK_Asset_Person" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

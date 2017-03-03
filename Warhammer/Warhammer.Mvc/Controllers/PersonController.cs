@@ -718,7 +718,7 @@ namespace Warhammer.Mvc.Controllers
                 Person person = DataProvider.GetPerson(model.PersonId);
                 if (person != null)
                 {
-                    DataProvider.SetMoney(model.PersonId, model.Crowns, model.Shillings, model.Pennies);
+                    DataProvider.SetMoney(model.PersonId, model.Crowns, model.Shillings, model.Pennies, model.Upkeep);
 
                     ModelState.Clear();
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
@@ -763,7 +763,7 @@ namespace Warhammer.Mvc.Controllers
                 if (person != null)
                 {
                     DataProvider.SetDetails(model.PersonId, model.Crowns, model.Shillings, model.Pennies,
-                        model.DateOfBirth, model.Height);
+                        model.DateOfBirth, model.Height, model.Upkeep);
 
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
@@ -778,7 +778,8 @@ namespace Warhammer.Mvc.Controllers
         {
             PersonDetailsViewModel model = new PersonDetailsViewModel
             {
-                PersonId = person.Id
+                PersonId = person.Id,
+               
             };
 
             if (person.TotalPennies > 0)
@@ -788,7 +789,13 @@ namespace Warhammer.Mvc.Controllers
                 model.Shillings = person.Shillings ?? 0;
                 model.Crowns = person.Crowns ?? 0;
                 model.TotalPennies = person.TotalPennies;
+
             }
+
+            if (person.Upkeep.HasValue)
+            {
+                model.Upkeep = person.Upkeep.Value;
+            }           
 
             if (person.DateOfBirth.HasValue && campagin.CurrentGameDate.HasValue)
             {

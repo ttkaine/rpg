@@ -1488,7 +1488,7 @@ namespace Warhammer.Core.Concrete
             return _repository.CampaignDetails().FirstOrDefault();
         }
 
-        public void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height)
+        public void SetDetails(int personId, int crowns, int shillings, int pennies, DateTime dob, string height, int upkeep)
         {
             Person person = GetPerson(personId);
             if (person != null)
@@ -1498,6 +1498,7 @@ namespace Warhammer.Core.Concrete
                 person.Pennies = pennies;
                 person.DateOfBirth = dob;
                 person.Height = height;
+                person.Upkeep = upkeep;
                 Save(person);
             }
         }
@@ -1584,7 +1585,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void SetMoney(int personId, int crowns, int shillings, int pennies)
+        public void SetMoney(int personId, int crowns, int shillings, int pennies, int upkeep)
         {
             Person person = GetPerson(personId);
             if (person != null)
@@ -1592,6 +1593,7 @@ namespace Warhammer.Core.Concrete
                 person.Crowns = crowns;
                 person.Shillings = shillings;
                 person.Pennies = pennies;
+                person.Upkeep = upkeep;
                 Save(person);
             }
         }
@@ -1609,10 +1611,40 @@ namespace Warhammer.Core.Concrete
             CampaignDetail detail = GetCampaginDetails();
             if (detail.CurrentGameDate.HasValue)
             {
-                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddDays(1);
+                DateTime original = detail.CurrentGameDate.Value.Date;
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.Date.AddDays(1);
                 _repository.Save(detail);
+                ProcessUpkeep(original, detail.CurrentGameDate.Value);
             }
 
+        }
+
+        private void ProcessUpkeep(DateTime originalDate, DateTime currentDate)
+        {
+            int daysElapsed = (currentDate - originalDate).Days;
+            if (daysElapsed > 0)
+            {
+                List<Person> peopleWithUpkeep =
+                    _repository.People().Where(p => p.Upkeep.HasValue && p.Upkeep.Value != 0).ToList();
+
+                foreach (Person person in peopleWithUpkeep)
+                {
+                    if (person.Upkeep.HasValue)
+                    {
+                        if (person.Upkeep > 0)
+                        {
+                            person.AddMoney(person.Upkeep.Value);
+                        }
+                        else
+                        {
+                            int amountToDeduct = 0 - (person.Upkeep.Value * daysElapsed);
+                            person.DeductMoney(amountToDeduct);
+                        }
+
+                        Save(person);
+                    }
+                }
+            }
         }
 
         public void AddWeekToGameDate()
@@ -1620,8 +1652,10 @@ namespace Warhammer.Core.Concrete
             CampaignDetail detail = GetCampaginDetails();
             if (detail.CurrentGameDate.HasValue)
             {
-                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddDays(7);
+                DateTime original = detail.CurrentGameDate.Value.Date;
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.Date.AddDays(7);
                 _repository.Save(detail);
+                ProcessUpkeep(original, detail.CurrentGameDate.Value);
             }
         }
 
@@ -1630,8 +1664,10 @@ namespace Warhammer.Core.Concrete
             CampaignDetail detail = GetCampaginDetails();
             if (detail.CurrentGameDate.HasValue)
             {
-                detail.CurrentGameDate = detail.CurrentGameDate.Value.AddMonths(1);
+                DateTime original = detail.CurrentGameDate.Value.Date;
+                detail.CurrentGameDate = detail.CurrentGameDate.Value.Date.AddMonths(1);
                 _repository.Save(detail);
+                ProcessUpkeep(original, detail.CurrentGameDate.Value);
             }
         }
 

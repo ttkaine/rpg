@@ -357,5 +357,148 @@ namespace Warhammer.Core.Entities
                 return total;
             }
         }
+
+        public void DeductMoney(int penniesDeducted)
+        {
+            if (TotalPennies > 0 && Pennies.HasValue && Shillings.HasValue && Crowns.HasValue)
+            {
+                if (Pennies < penniesDeducted)
+                {
+                    if (penniesDeducted >= 240)
+                    {
+                        int crownsDeducted = penniesDeducted / 240;
+
+                        Crowns = Crowns - crownsDeducted;
+                        penniesDeducted = penniesDeducted - crownsDeducted * 240;
+                    }
+
+                    if (penniesDeducted >= 12)
+                    {
+                        int shillingsDeducted = penniesDeducted/12;
+                        Shillings = Shillings - shillingsDeducted;
+
+                        penniesDeducted = penniesDeducted - (shillingsDeducted * 12);
+                    }
+                }
+
+                Pennies = Pennies.Value - penniesDeducted;
+
+                //adjust coins to minimize -ve values
+
+                if (Crowns < 0 && Shillings > 20)
+                {
+                    int availableCrowns = Shillings.Value/20;
+                    int neededCrowns = Crowns.Value;
+
+                    if (neededCrowns < availableCrowns)
+                    {
+                        Crowns = 0;
+                        Shillings = Shillings.Value - (neededCrowns*20);
+                    }
+                    else
+                    {
+                        Crowns = Crowns + availableCrowns;
+                        Shillings = Shillings.Value - (availableCrowns*20);
+                    }
+                }
+
+
+                if (Shillings < 0 && Pennies > 20)
+                {
+                    int availableShillings = Pennies.Value / 12;
+                    int neededShillings = Shillings.Value;
+
+                    if (neededShillings < availableShillings)
+                    {
+                        Shillings = 0;
+                        Pennies = Pennies.Value - (neededShillings * 12);
+                    }
+                    else
+                    {
+                        Shillings = Shillings + availableShillings;
+                        Pennies = Pennies.Value - (availableShillings * 12);
+                    }
+                }
+
+
+
+                if (Pennies < 0 && TotalPennies > 0)
+                {
+                    int penniesNeeded = 0 - Pennies.Value;
+                    int shillingsToBreak = 20 * (int)Math.Round(penniesNeeded / 12.0);
+                    Pennies = Pennies.Value + (shillingsToBreak * 12);
+                    Shillings = Shillings.Value - shillingsToBreak;
+                }
+
+                if (Shillings < 0 && Crowns > 0)
+                {
+                    int shillingsNeeded = 0 - Shillings.Value;
+                    if (Crowns*20 > shillingsNeeded)
+                    {
+                        int crownsToBreak = ((20*(int) Math.Floor(shillingsNeeded/20.0)) / 20) + 1;
+                        Shillings = Shillings.Value + (crownsToBreak*20);
+                        Crowns = Crowns.Value - crownsToBreak;
+                    }
+                    else
+                    {
+                        Shillings = Shillings.Value + (Crowns.Value*20);
+                        Crowns = 0;
+                    }
+                }
+
+                if (Pennies < 0 && Shillings > 0)
+                {
+                    int penniesNeeded = 0 - Pennies.Value;
+                    if (Shillings*12 > penniesNeeded)
+                    {
+                        int shillingsToBreak = ((12*(int) Math.Floor(penniesNeeded/12.0))/12) + 1;
+                        Pennies = Pennies.Value + (shillingsToBreak*12);
+                        Shillings = Shillings.Value - shillingsToBreak;
+                    }
+                    else
+                    {
+                        Pennies = Pennies.Value + (Shillings.Value*20);
+                        Shillings = 0;
+                    }
+                }
+
+                if (Pennies < 0 && Crowns > 0)
+                {
+                    int penniesNeeded = 0 - Pennies.Value;
+                    if (Crowns * 240 > penniesNeeded)
+                    {
+                        int crownsToBreak = ((240 * (int)Math.Floor(penniesNeeded / 240.0)) / 240) + 1;
+                        Pennies = Pennies.Value + (crownsToBreak * 240);
+                        Crowns = Crowns.Value - crownsToBreak;
+                    }
+                    else
+                    {
+                        Pennies = Pennies.Value + (Crowns.Value * 240);
+                        Crowns = 0;
+                    }
+
+                    if (Pennies > 12)
+                    {
+                        int shillingsToAdd = Pennies.Value/12;
+                        Pennies = Pennies.Value - (shillingsToAdd*12);
+                        Shillings = Shillings.Value + shillingsToAdd;
+                    }
+                }
+
+            }
+        }
+
+        public void AddMoney(int upkeep)
+        {
+            int crowns = upkeep/240;
+            Crowns = Crowns.Value + crowns;
+            upkeep = upkeep - (crowns*240);
+
+            int shillings = upkeep/12;
+            Shillings = Shillings.Value + shillings;
+            upkeep = upkeep - (shillings*12);
+
+            Pennies = Pennies.Value + upkeep;
+        }
     }
 }

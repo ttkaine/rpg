@@ -25,6 +25,7 @@ namespace Warhammer.Core.Entities
             this.FateStunts = new HashSet<FateStunt>();
             this.SimpleHitPoints = new HashSet<SimpleHitPoint>();
             this.Reputations = new HashSet<Reputation>();
+            this.Assets = new HashSet<Asset>();
         }
     
         public bool IsDead { get; set; }
@@ -42,6 +43,7 @@ namespace Warhammer.Core.Entities
         public Nullable<int> Pennies { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Height { get; set; }
+        public Nullable<int> Upkeep { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }
@@ -53,5 +55,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<FateStunt> FateStunts { get; set; }
         public virtual ICollection<SimpleHitPoint> SimpleHitPoints { get; set; }
         public virtual ICollection<Reputation> Reputations { get; set; }
+        public virtual ICollection<Asset> Assets { get; set; }
     }
 }

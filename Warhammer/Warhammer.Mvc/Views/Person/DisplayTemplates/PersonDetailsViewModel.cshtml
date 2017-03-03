@@ -47,7 +47,15 @@
                     <tr>
                         <td><img src="@Url.Content("~/Content/Images/pennies.png")" /> </td>
                         <td><h4>Total as Pence</h4> </td>
-                        <td><h4><span class="label label-info personDetail">@Model.TotalPennies</span></h4> </td>
+                        <td><h4><span class="label label-info personDetail">@Html.Raw(String.Format("{0:n0}", @Model.TotalPennies))</span></h4> </td>
+                    </tr>
+                }
+                @if (Model.Upkeep != 0)
+                {
+                    <tr>
+                        <td><img src="@Url.Content("~/Content/Images/pennies.png")" /> </td>
+                        <td><h4 title="The amount the person spends, on average, on general food and accomodation per day">Personal Daily Upkeep</h4> </td>
+                        <td><h4><span class="label label-info personDetail">@Model.Upkeep</span></h4> </td>
                     </tr>
                 }
             </table>
