@@ -1625,19 +1625,26 @@ namespace Warhammer.Core.Concrete
             if (daysElapsed > 0)
             {
                 List<Person> peopleWithUpkeep =
-                    _repository.People().Where(p => p.Upkeep.HasValue && p.Upkeep.Value != 0).ToList();
+                    _repository.People().Where(p => (p.Upkeep.HasValue && p.Upkeep.Value != 0) || p.Assets.Sum(a => a.Upkeep) != 0).ToList();
 
                 foreach (Person person in peopleWithUpkeep)
                 {
+                    int amount = person.Assets.Sum(a => a.Upkeep);
                     if (person.Upkeep.HasValue)
                     {
-                        if (person.Upkeep > 0)
+                        amount = amount + person.Upkeep.Value;
+                    }
+
+                    if (amount != 0)
+                    {
+                        if (amount > 0)
                         {
-                            person.AddMoney(person.Upkeep.Value);
+                            int amountToAdd = amount*daysElapsed;
+                            person.AddMoney(amountToAdd);
                         }
                         else
                         {
-                            int amountToDeduct = 0 - (person.Upkeep.Value * daysElapsed);
+                            int amountToDeduct = 0 - (amount * daysElapsed);
                             person.DeductMoney(amountToDeduct);
                         }
 
