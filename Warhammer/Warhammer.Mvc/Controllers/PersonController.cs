@@ -795,7 +795,9 @@ namespace Warhammer.Mvc.Controllers
             if (person.Upkeep.HasValue)
             {
                 model.Upkeep = person.Upkeep.Value;
-            }           
+            }
+
+            model.TotalUpkeep = model.Upkeep + person.Assets.Sum(a => a.Upkeep);
 
             if (person.DateOfBirth.HasValue && campagin.CurrentGameDate.HasValue)
             {

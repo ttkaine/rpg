@@ -21,6 +21,7 @@ namespace Warhammer.Mvc.Models
         public int Shillings { get; set; }
         public int Pennies { get; set; }
         public int Upkeep { get; set; }
+        public int TotalUpkeep { get; set; }
 
         public int TotalPennies { get; set; }
         public int Age { get; set; }
@@ -34,5 +35,6 @@ namespace Warhammer.Mvc.Models
         public int PersonId { get; set; }
 
         public DateTime GameDate { get; set; }
+        
     }
 }

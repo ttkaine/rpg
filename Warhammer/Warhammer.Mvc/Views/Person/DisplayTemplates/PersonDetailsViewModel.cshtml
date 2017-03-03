@@ -54,8 +54,16 @@
                 {
                     <tr>
                         <td><img src="@Url.Content("~/Content/Images/pennies.png")" /> </td>
-                        <td><h4 title="The amount the person spends, on average, on general food and accomodation per day">Personal Daily Upkeep</h4> </td>
+                        <td><h4 title="The amount the person spends, on average, on general food and accomodation per day">Personal Expenses</h4> </td>
                         <td><h4><span class="label label-info personDetail">@Model.Upkeep</span></h4> </td>
+                    </tr>
+                }
+                @if (Model.TotalUpkeep != Model.Upkeep)
+                {
+                    <tr>
+                        <td><img src="@Url.Content("~/Content/Images/pennies.png")" /> </td>
+                        <td><h4 title="The net gain or loss in wealth per day based on expenses and assets">Daily Change</h4> </td>
+                        <td><h4><span class="label label-info personDetail">@Model.TotalUpkeep</span></h4> </td>
                     </tr>
                 }
             </table>

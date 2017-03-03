@@ -1632,7 +1632,7 @@ namespace Warhammer.Core.Concrete
                     int amount = person.Assets.Sum(a => a.Upkeep);
                     if (person.Upkeep.HasValue)
                     {
-                        amount = amount + person.Upkeep.Value;
+                        amount = amount - person.Upkeep.Value;
                     }
 
                     if (amount != 0)
