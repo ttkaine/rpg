@@ -18,28 +18,28 @@
         @if (Model.ShowMoney)
         {
             <table class="table" id="personmoney">
-                @if (Model.Crowns > 0)
+                @if (Model.Crowns != 0)
                 {
                     <tr>
                         <td><img src="@Url.Content("~/Content/Images/crown.jpg")"/> </td>
                         <td><h4>Crowns</h4> </td>
-                        <td><h4><span class="label label-warning personDetail">@Model.Crowns</span></h4> </td>
+                        <td><h4><span class="label @(Model.Crowns >= 0 ? "label-warning" : "label-danger") personDetail">@Model.Crowns</span></h4> </td>
                     </tr>
                 }
-                @if (Model.Shillings > 0)
+                @if (Model.Shillings != 0)
                 {
                     <tr>
                         <td><img src="@Url.Content("~/Content/Images/shilling.jpg")"/> </td>
                         <td><h4>Shillings</h4> </td>
-                        <td><h4><span class="label label-warning personDetail">@Model.Shillings</span></h4> </td>
+                        <td><h4><span class="label @(Model.Shillings >= 0 ? "label-warning" : "label-danger")  personDetail">@Model.Shillings</span></h4> </td>
                     </tr>
                 }
-                @if (Model.Pennies > 0)
+                @if (Model.Pennies != 0)
                 {
                     <tr>
                         <td><img src="@Url.Content("~/Content/Images/penny.jpg")"/> </td>
                         <td><h4>Pence</h4> </td>
-                        <td><h4><span class="label label-warning personDetail">@Model.Pennies</span></h4> </td>
+                        <td><h4><span class="label @(Model.Pennies >= 0 ? "label-warning" : "label-danger")  personDetail">@Model.Pennies</span></h4> </td>
                     </tr>
                 }
                 @if (Model.TotalPennies != Model.Pennies)
@@ -47,7 +47,7 @@
                     <tr>
                         <td><img src="@Url.Content("~/Content/Images/pennies.png")" /> </td>
                         <td><h4>Total as Pence</h4> </td>
-                        <td><h4><span class="label label-info personDetail">@Html.Raw(String.Format("{0:n0}", @Model.TotalPennies))</span></h4> </td>
+                        <td><h4><span class="label @(Model.TotalPennies >= 0 ? "label-info" : "label-danger") personDetail">@Html.Raw(String.Format("{0:n0}", @Model.TotalPennies))</span></h4> </td>
                     </tr>
                 }
                 @if (Model.Upkeep != 0)

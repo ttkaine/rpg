@@ -782,7 +782,7 @@ namespace Warhammer.Mvc.Controllers
                
             };
 
-            if (person.TotalPennies > 0)
+            if (person.TotalPennies != 0)
             {
                 model.ShowMoney = true;
                 model.Pennies = person.Pennies ?? 0;
