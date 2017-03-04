@@ -267,6 +267,14 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public PersonAssetsViewModel MakePersonAssetsViewModel(Person person)
+        {
+            PersonAssetsViewModel model = new PersonAssetsViewModel();
+            model.PersonId = person.Id;
+            model.Assets = person.Assets.ToList();
+            return model;
+        }
+
         private string GetSettingTitle(SettingSection section)
         {
             switch (section)

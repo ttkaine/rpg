@@ -66,5 +66,8 @@ namespace Warhammer.Core.Abstract
         int Save(Rumour rumour);
         void Delete(Rumour rumour);
         int Save(CampaignDetail campaignDetail);
+        void Delete(Asset asset);
+        int Save(Asset asset);
+        IQueryable<Asset> Assets();
     }
 }

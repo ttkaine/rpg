@@ -11,5 +11,6 @@ namespace Warhammer.Mvc.Abstract
         MenuViewModel MakeMenu();
         UserSettingsViewModel MakeUserSettings();
         UserSettingsSectionViewModel Make(List<Setting> settingSection);
+        PersonAssetsViewModel MakePersonAssetsViewModel(Person person);
     }
 }

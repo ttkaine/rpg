@@ -1,0 +1,13 @@
+﻿@model Warhammer.Core.Entities.Asset
+
+<div class="panel panel-default">
+    <div class="panel-heading">@Model.Title</div>
+    <div class="panel-body">
+        @Model.Description
+ 
+    </div>
+    <div class="panel-footer">
+
+        <p>Daily Upkeep: <span class="@(Model.Upkeep < 0 ? "danger": "")">@Model.UpkeepDisplay</span> (<span class="note">@(Model.Upkeep < 0 ? "-" : "+")@Model.Upkeep pennies</span>) </p>
+    </div>
+</div>

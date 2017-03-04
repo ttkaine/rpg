@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Warhammer.Core.Helpers;
 
 namespace Warhammer.Core.Entities
 {
@@ -40,7 +41,7 @@ namespace Warhammer.Core.Entities
             {
                 if (PriceInPence.HasValue)
                 {
-                    return (int) Math.Floor(PriceInPence.Value/240);
+                    return CurrencyHelper.Crowns(PriceInPence.Value);
                 }
                 return 0;
             }
@@ -52,7 +53,8 @@ namespace Warhammer.Core.Entities
             {
                 if (PriceInPence.HasValue)
                 {
-                    return ((int)Math.Floor(PriceInPence.Value / 12)) - (Crowns * 20);
+                    return CurrencyHelper.Shillings(PriceInPence.Value);
+                   
                 }
                 return 0;
             }
@@ -64,7 +66,8 @@ namespace Warhammer.Core.Entities
             {
                 if (PriceInPence.HasValue)
                 {
-                    return ((int)Math.Floor(PriceInPence.Value)) - (Crowns * 240) - (Shillings * 12);
+                    return CurrencyHelper.Pence(PriceInPence.Value);
+
                 }
                 return 0;
             }
@@ -76,60 +79,7 @@ namespace Warhammer.Core.Entities
             {
                 if (PriceInPence.HasValue)
                 {
-                    string display = "";
-                    if (Crowns > 0)
-                    {
-                        display = $"{Crowns}GC";
-                    }
-                    if (Shillings > 0)
-                    {
-                        display = $"{display} {Shillings}/";
-                        if (Pence > 0)
-                        {
-                            display = $"{display}{Pence}";
-                        }
-                        else
-                        {
-                            display = display + "-";
-                        }
-                    }
-                    else
-                    {
-                        if (Crowns > 0 && Pence > 0)
-                        {
-                            display = $"{display} -/{Pence}";
-                        }
-                        if (Pence > 0)
-                        {
-                            if (PriceInPence - Pence > 0)
-                            {
-                                if ((PriceInPence - Pence) == 0.25m)
-                                {
-                                    display = $"{Pence}&#188;d";
-                                }
-                                else if ((PriceInPence - Pence) == 0.5m)
-                                {
-                                    display = $"{Pence}&#189;d";
-                                }
-                                else if ((PriceInPence - Pence) == 0.75m)
-                                {
-                                    display = $"{Pence}&#190;d";
-                                }
-                                else
-                                {
-                                    display = $"{(int)Math.Round(PriceInPence.Value, 0)}d";
-                                }
-                            }
-                            else
-                            {  
-                                display = $"{(int)Math.Round(PriceInPence.Value, 0)}d";
-                            }
-
-                        }
-                    }
-
-
-                    return display;
+                    return CurrencyHelper.DisplayString(PriceInPence.Value);
                 }
                 else
                 {

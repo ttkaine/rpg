@@ -143,5 +143,7 @@ namespace Warhammer.Core.Abstract
         void AddDayToGameDate();
         void AddWeekToGameDate();
         void AddMonthToGameDate();
+        void SetAssets(int personId, List<Asset> assets);
+        void AddAsset(int personId, string title, string description, int upkeep);
     }
 }

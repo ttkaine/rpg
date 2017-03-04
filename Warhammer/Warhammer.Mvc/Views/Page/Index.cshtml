@@ -98,6 +98,7 @@
         @if (Model is Person)
         {
             @Html.Action("DetailsPanel", "Person", new { id = Model.Id })
+            @Html.Action("AssetsPanel", "Person", new { id = Model.Id })
             Person person = Model as Person;
             @Html.Action("ViewStats", "Person", new {personId = person.Id})
             if (User.IsInRole("Admin"))

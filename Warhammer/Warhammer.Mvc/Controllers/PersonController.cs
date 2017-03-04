@@ -647,6 +647,60 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        [HttpGet]
+        public ActionResult AssetsPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.Assets))
+            {
+                Person person = DataProvider.GetPerson(id);
+                if (person != null)
+                {
+                    PersonAssetsViewModel model = _factory.MakePersonAssetsViewModel(person);
+                    return PartialView(model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult AddAsset(PersonAssetsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.Assets))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.AddAsset(model.PersonId, model.AddAssetTitle, model.AddAssetDescription, model.AddAssetUpkeep);
+                    ModelState.Clear();
+                    PersonAssetsViewModel updatedModel = _factory.MakePersonAssetsViewModel(person);
+                    updatedModel.AssetsJustSet = true;
+                    return PartialView("AssetsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult AssetsPanel(PersonAssetsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.Assets))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetAssets(model.PersonId, model.Assets);
+
+                    ModelState.Clear();
+                    PersonAssetsViewModel updatedModel = _factory.MakePersonAssetsViewModel(person);
+                    updatedModel.AssetsJustSet = true;
+                    return PartialView(updatedModel);
+                }
+            }
+            return null;
+        }
+
         public ActionResult DetailsPanel(int id)
         {
             if (DataProvider.SiteHasFeature(Feature.PersonDetails))
@@ -797,7 +851,7 @@ namespace Warhammer.Mvc.Controllers
                 model.Upkeep = person.Upkeep.Value;
             }
 
-            model.TotalUpkeep = model.Upkeep + person.Assets.Sum(a => a.Upkeep);
+            model.TotalUpkeep = (0 - model.Upkeep) + person.Assets.Sum(a => a.Upkeep);
 
             if (person.DateOfBirth.HasValue && campagin.CurrentGameDate.HasValue)
             {

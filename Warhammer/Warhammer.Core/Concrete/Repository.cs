@@ -519,6 +519,32 @@ namespace Warhammer.Core.Concrete
             return campaignDetail.Id;
         }
 
+        public void Delete(Asset asset)
+        {
+            _entities.Assets.Remove(asset);
+            _entities.SaveChanges();
+        }
+
+        public int Save(Asset asset)
+        {
+            if (asset.Id == 0)
+            {
+                _entities.Assets.Add(asset);
+            }
+            else
+            {
+                _entities.Entry(asset).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return asset.Id;
+        }
+
+        public IQueryable<Asset> Assets()
+        {
+            return _entities.Assets;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

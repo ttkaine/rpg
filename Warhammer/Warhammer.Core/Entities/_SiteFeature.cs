@@ -38,7 +38,8 @@ namespace Warhammer.Core.Entities
         PersonAspects,
         RumourMill,
         CrowNpcSheet,
-        ShowGameDate
+        ShowGameDate,
+        Assets
     }
 
     public partial class SiteFeature

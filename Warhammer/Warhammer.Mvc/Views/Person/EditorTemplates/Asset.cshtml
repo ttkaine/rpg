@@ -1,0 +1,19 @@
+﻿@model Warhammer.Core.Entities.Asset
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        @Html.TextBoxFor(m => Model.Title, new { @class = "form-control", placeholder = "Title" })
+    </div>
+    <div class="panel-body">
+        @Html.TextAreaFor(m => Model.Description, new { @class = "form-control", placeholder = "Description..." })
+        <p>Upkeep (in pennies):</p>
+        @Html.EditorFor(m => m.Upkeep, new { @class = "form-control", placeholder = "Upkeep" })
+    </div>
+
+    @Html.HiddenFor(m => Model.Id)
+    @Html.HiddenFor(m => Model.PersonId)
+    <div class="panel-footer">    
+        @Html.CheckBoxFor(m => Model.Delete, new { data_toggle = "toggle", data_on = "Delete", data_off = "Keep", data_offstyle = "default", data_onstyle = "danger" })
+    </div>
+</div>
+<hr />

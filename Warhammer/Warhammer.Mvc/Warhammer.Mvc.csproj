@@ -253,6 +253,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
+    <Compile Include="Models\PersonAssetsViewModel.cs" />
     <Compile Include="Models\PersonDetailsViewModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
@@ -679,6 +680,9 @@
     <Content Include="Views\Rumour\RumoursForPlace.cshtml" />
     <Content Include="Views\Person\EditorTemplates\PersonDetailsViewModel.cshtml" />
     <Content Include="Views\Admin\CampaignSettings.cshtml" />
+    <Content Include="Views\Person\AssetsPanel.cshtml" />
+    <Content Include="Views\Person\DisplayTemplates\Asset.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\Asset.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

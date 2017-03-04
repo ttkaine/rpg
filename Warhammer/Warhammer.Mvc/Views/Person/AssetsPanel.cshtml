@@ -1,0 +1,59 @@
+﻿
+@model Warhammer.Mvc.Models.PersonAssetsViewModel
+
+<div id="personassets">
+
+    @if (ViewBag.EditMode)
+    {
+        <h3>Assets</h3>
+        <p>Assests are things that the character has - they can items of equipment, other possessions like houses, businesses and such or they can be staff, animals, or contracts. Just stuff, really.</p>
+
+        using (Ajax.BeginForm("AddAsset", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "personassets", OnComplete = "applyToggles()" }))
+        {
+            <div class="alert alert-info">
+                <h4>Add New Asset</h4>
+
+                <input type="hidden" name="personId" value="@Model.PersonId" />
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        @Html.TextBoxFor(m => Model.AddAssetTitle, new { @class = "form-control", placeholder = "Title" })
+                    </div>
+                    <div class="panel-body">
+                        @Html.TextAreaFor(m => Model.AddAssetDescription, new { @class = "form-control", placeholder = "Description..." })
+                    </div>
+                    <div class="panel-footer">
+                        <p>Upkeep in pennies (if any)</p>
+                        @Html.EditorFor(m => m.AddAssetUpkeep, new { @class = "form-control", placeholder = "Upkeep" })
+                    </div>
+                    <input type="submit" value="+ Add" class="btn btn-block btn-success" />
+                </div>
+            </div>
+        }
+
+        if (Model.AssetsJustSet)
+        {
+            <div class="alert alert-success">
+                <h3>Assets Saved</h3>
+                <p>Your assets have been updated</p>
+            </div>
+
+        }
+
+        using (Ajax.BeginForm("AssetsPanel", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "personassets", OnComplete = "applyToggles()" }))
+        {
+            @Html.HiddenFor(m => m.PersonId)
+            @Html.EditorFor(m => m.Assets)
+            <input type="submit" value="Save Changes" class="btn btn-block btn-success" />
+        }
+    }
+    else
+    {
+        if (Model.Assets.Any())
+        {
+            <h3>Assets</h3>
+                @Html.DisplayFor(m => m.Assets)
+        }
+    }
+
+</div>

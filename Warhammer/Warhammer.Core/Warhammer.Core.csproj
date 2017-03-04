@@ -307,6 +307,7 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\_AdminSetting.cs" />
+    <Compile Include="Entities\_Asset.cs" />
     <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_Creature.cs" />
     <Compile Include="Entities\_ExceptionLog.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Models\CreateCreatureViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
