@@ -3,7 +3,7 @@
 
 <div id="personassets">
 
-    @if (ViewBag.EditMode)
+    @if (ViewBag.EditMode && Model.AllowEdit)
     {
         <h3>Assets</h3>
         <p>Assests are things that the character has - they can items of equipment, other possessions like houses, businesses and such or they can be staff, animals, or contracts. Just stuff, really.</p>

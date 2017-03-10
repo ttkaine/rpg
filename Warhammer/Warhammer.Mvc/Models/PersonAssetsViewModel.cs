@@ -11,5 +11,6 @@ namespace Warhammer.Mvc.Models
         public string AddAssetTitle { get; set; }
         public string AddAssetDescription { get; set; }
         public int AddAssetUpkeep { get; set; }
+        public bool AllowEdit { get; set; }
     }
 }

@@ -35,6 +35,6 @@ namespace Warhammer.Mvc.Models
         public int PersonId { get; set; }
 
         public DateTime GameDate { get; set; }
-        
+        public bool AllowEdit { get; set; }
     }
 }

@@ -11,6 +11,8 @@ namespace Warhammer.Mvc.Concrete
 {
     public class ViewModelFactory : IViewModelFactory
     {
+        protected Player CurrentPlayer => _data.MyPlayer();
+
         readonly IAuthenticatedDataProvider _data;
         private readonly UrlHelper _urlHelper;
 
@@ -272,6 +274,7 @@ namespace Warhammer.Mvc.Concrete
             PersonAssetsViewModel model = new PersonAssetsViewModel();
             model.PersonId = person.Id;
             model.Assets = person.Assets.ToList();
+            model.AllowEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.Id;
             return model;
         }
 

@@ -833,7 +833,7 @@ namespace Warhammer.Mvc.Controllers
             PersonDetailsViewModel model = new PersonDetailsViewModel
             {
                 PersonId = person.Id,
-               
+                AllowEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.Id
             };
 
             if (person.TotalPennies != 0)

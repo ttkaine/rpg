@@ -2,7 +2,7 @@
 
 <div class="alert alert-info" id="PersonDetailsPanel">
  
-    @if (ViewBag.EditMode)
+    @if (ViewBag.EditMode && Model.AllowEdit)
     {
         @Html.EditorForModel()
     }
