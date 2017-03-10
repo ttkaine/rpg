@@ -144,7 +144,7 @@ namespace Warhammer.Core.Concrete
             return id;
         }
 
-        public int AddPerson(string shortName, string longName, string description)
+        public int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc)
         {
 
             Person person = new Person
@@ -153,7 +153,7 @@ namespace Warhammer.Core.Concrete
                 FullName = longName,
                 Description = description,
             };
-            if (!CurrentPlayer.IsGm)
+            if (!CurrentPlayer.IsGm && !personCreateAsNpc)
             {
                 person.PlayerId = CurrentPlayer.Id;
             }

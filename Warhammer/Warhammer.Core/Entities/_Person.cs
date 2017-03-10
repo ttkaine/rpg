@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Warhammer.Core.Entities
@@ -357,6 +358,9 @@ namespace Warhammer.Core.Entities
                 return total;
             }
         }
+
+        [Display(Name = "NPC or Player Character?")]
+        public bool CreateAsNpc { get; set; }
 
         public void DeductMoney(int penniesDeducted)
         {

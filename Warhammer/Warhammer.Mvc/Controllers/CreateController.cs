@@ -57,14 +57,14 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Person(Page page)
+        public ActionResult Person(Person person)
         {
             if (ModelState.IsValid)
             {
-                int pageId = DataProvider.AddPerson(page.ShortName, page.FullName, page.Description);
+                int pageId = DataProvider.AddPerson(person.ShortName, person.FullName, person.Description, person.CreateAsNpc);
                 return RedirectToAction("Index", "Page", new { id = pageId });
             }
-            return View(page as Person);
+            return View(person);
         }
 
         public ActionResult Creature()

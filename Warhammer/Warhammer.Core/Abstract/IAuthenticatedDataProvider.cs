@@ -11,7 +11,7 @@ namespace Warhammer.Core.Abstract
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
         int AddSession(string title, string name, string description, DateTime dateTime);
-        int AddPerson(string shortName, string longName, string description);
+        int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc);
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
         Page GetPage(int id);
