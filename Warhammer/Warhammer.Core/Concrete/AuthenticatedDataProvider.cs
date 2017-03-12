@@ -1712,6 +1712,52 @@ namespace Warhammer.Core.Concrete
             _repository.Save(asset);
         }
 
+        public void SpendMoney(int personId, int spendCrowns, int spendShillings, int spendPence)
+        {
+            Person person = _repository.People().FirstOrDefault(p => p.Id == personId);
+
+            if (person != null)
+            {
+                if (person.Crowns > spendCrowns && person.Shillings > spendShillings && person.Pennies > spendPence)
+                {
+                    person.Crowns = person.Crowns - spendCrowns;
+                    person.Shillings = person.Shillings - spendShillings;
+                    person.Pennies = person.Pennies - spendPence;
+                }
+                else
+                {
+                    int amountToDeduct = (spendCrowns * 240) + (spendShillings * 12) + spendPence;
+                    person.DeductMoney(amountToDeduct);
+                }
+
+                Save(person);
+            }
+
+        }
+
+        public void AddMoney(int personId, int addCrowns, int addShillings, int addPence)
+        {
+            Person person = _repository.People().FirstOrDefault(p => p.Id == personId);
+
+            if (person != null)
+            {
+                if (addPence > 240 && addCrowns == 0)
+                {
+                    int amountToAdd = (addCrowns * 240) + (addShillings * 12) + addPence;
+                    person.DeductMoney(amountToAdd);
+                }
+                else
+                {
+                    person.Crowns = person.Crowns + addCrowns;
+                    person.Shillings = person.Shillings + addShillings;
+                    person.Pennies = person.Pennies + addPence;
+                }
+
+                Save(person);
+            }
+
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

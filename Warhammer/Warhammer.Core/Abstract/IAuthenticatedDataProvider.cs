@@ -145,5 +145,7 @@ namespace Warhammer.Core.Abstract
         void AddMonthToGameDate();
         void SetAssets(int personId, List<Asset> assets);
         void AddAsset(int personId, string title, string description, int upkeep);
+        void SpendMoney(int personId, int spendCrowns, int spendShillings, int spendPence);
+        void AddMoney(int personId, int addCrowns, int addShillings, int addPence);
     }
 }

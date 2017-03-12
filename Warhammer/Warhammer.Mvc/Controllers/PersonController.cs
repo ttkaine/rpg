@@ -9,6 +9,7 @@ using DotNet.Highcharts.Options;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
+using Warhammer.Core.Helpers;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 
@@ -787,6 +788,49 @@ namespace Warhammer.Mvc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Player")]
+        public ActionResult SpendMoney(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SpendMoney(model.PersonId, model.SpendCrowns, model.SpendShillings, model.SpendPence);
+
+                    ModelState.Clear();
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.MoneySpent = true;
+                    return PartialView("DetailsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult AddMoney(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.AddMoney(model.PersonId, model.AddCrowns, model.AddShillings, model.AddPence);
+
+                    ModelState.Clear();
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.MoneyAdded = true;
+                    return PartialView("DetailsPanel", updatedModel);
+                }
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult SetDob(PersonDetailsViewModel model)
         {
             if (DataProvider.SiteHasFeature(Feature.PersonDetails))
@@ -805,7 +849,6 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
-
 
         [HttpPost]
         [Authorize(Roles = "Player")]
@@ -843,7 +886,7 @@ namespace Warhammer.Mvc.Controllers
                 model.Shillings = person.Shillings ?? 0;
                 model.Crowns = person.Crowns ?? 0;
                 model.TotalPennies = person.TotalPennies;
-
+                model.MoneyDisplayString = CurrencyHelper.DisplayString(person.TotalPennies);
             }
 
             if (person.Upkeep.HasValue)
@@ -880,5 +923,7 @@ namespace Warhammer.Mvc.Controllers
 
             return model;
         }
+
+
     }
 }

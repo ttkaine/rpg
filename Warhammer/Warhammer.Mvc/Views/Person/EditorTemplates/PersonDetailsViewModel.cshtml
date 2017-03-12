@@ -1,5 +1,54 @@
 ﻿@model Warhammer.Mvc.Models.PersonDetailsViewModel
-    
+
+
+@if (Model.ShowMoney)
+{
+    if (Model.MoneyAdded || Model.MoneySpent)
+    {
+        if (Model.MoneyAdded)
+        {
+            <div class="alert alert-success">
+                <p>Money Added!</p>
+                <p>New total: @Model.MoneyDisplayString</p>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <p>Money Spent!</p>
+                <p>New total: @Model.MoneyDisplayString</p>
+            </div>
+        }
+
+
+    }
+    else
+    {
+
+        using (Ajax.BeginForm("SpendMoney", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+        {
+            <p>Spend Money</p>
+            @Html.HiddenFor(m => m.PersonId)
+            @Html.EditorFor(m => m.SpendCrowns, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(m => m.SpendShillings, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(m => m.SpendPence, new { htmlAttributes = new { @class = "form-control" } })
+            <input type="submit" class="btn btn-danger btn-block" value="Spend Cash!" />
+        }
+
+        using (Ajax.BeginForm("AddMoney", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+        {
+            <p>Spend Money</p>
+            @Html.HiddenFor(m => m.PersonId)
+            @Html.EditorFor(m => m.AddCrowns, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(m => m.AddShillings, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(m => m.AddPence, new { htmlAttributes = new { @class = "form-control" } })
+            <input type="submit" class="btn btn-success btn-block" value="Add Cash!" />
+        }
+
+    }
+}
+
+
 @if (Model.ShowAge && User.IsInRole("Admin"))
 {
     if (Model.AgeJustSet)
@@ -7,15 +56,15 @@
         <div class="alert alert-success">Age Set to : @Model.Age</div>
     }
 
-    using (Ajax.BeginForm("SetDob", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel"}))
+    using (Ajax.BeginForm("SetDob", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
     {
         <p>The Current Game Date is: @Model.GameDate.ToLongDateString()</p>
         <p>Current Character Date of Birth is: @Model.DateOfBirthString</p>
         <p>Which means Current Character age is: @Model.Age</p>
         <p>You can choose a new Date Of Birth</p>
         @Html.HiddenFor(m => m.PersonId)
-        @Html.TextBoxFor(m => m.DateOfBirth,new { @Value = Model.DateOfBirth.ToString("yyyy/MM/dd"), @class = "game-datepicker form-control" })
-        <input type="submit" class="btn btn-info btn-block" value="Set Date of Birth"/>
+        @Html.TextBoxFor(m => m.DateOfBirth, new { @Value = Model.DateOfBirth.ToString("yyyy/MM/dd"), @class = "game-datepicker form-control" })
+        <input type="submit" class="btn btn-info btn-block" value="Set Date of Birth" />
     }
 
 }
@@ -36,26 +85,28 @@ else
     {
         <div class="alert alert-success">Height Set to : @Model.Height</div>
     }
-        <p>Height</p>
+    <p>Height</p>
         @Html.HiddenFor(m => m.PersonId)
         @Html.EditorFor(m => m.Height, new { htmlAttributes = new { @class = "form-control" } })
         <input type="submit" class="btn btn-info btn-block" value="Set Height" />
-    }
-
-@using (Ajax.BeginForm("SetMoney", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
-{
-    if (Model.MoneyJustSet)
-    {
-        <div class="alert alert-success">Money Set to : @Model.TotalPennies</div>
-    }
-
-    <p>Money</p>
-        @Html.HiddenFor(m => m.PersonId)
-        @Html.EditorFor(m => m.Crowns, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.EditorFor(m => m.Shillings, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.EditorFor(m => m.Pennies, new { htmlAttributes = new { @class = "form-control" } })
-    <br />
-    <p>Character may also set an Upkeep value. This is in Pennies. This amount deducted from the person's cash every time the GameDate advances by a day. This expenses not accounted for by Assets.</p>
-    @Html.EditorFor(m => m.Upkeep, new { htmlAttributes = new { @class = "form-control" } })
-        <input type="submit" class="btn btn-info btn-block" value="Set Money" />
 }
+
+
+
+@using (Ajax.BeginForm("SetMoney", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel"}))
+ {
+     if (Model.MoneyJustSet)
+     {
+         <div class="alert alert-success">Money Set to : @Model.TotalPennies</div>
+     }
+
+     <p>Money</p>
+     @Html.HiddenFor(m => m.PersonId)
+     @Html.EditorFor(m => m.Crowns, new {htmlAttributes = new {@class = "form-control"}})
+     @Html.EditorFor(m => m.Shillings, new {htmlAttributes = new {@class = "form-control"}})
+     @Html.EditorFor(m => m.Pennies, new {htmlAttributes = new {@class = "form-control"}})
+     <br/>
+     <p>Character may also set an Upkeep value. This is in Pennies. This amount deducted from the person's cash every time the GameDate advances by a day. This expenses not accounted for by Assets.</p>
+     @Html.EditorFor(m => m.Upkeep, new {htmlAttributes = new {@class = "form-control"}})
+     <input type="submit" class="btn btn-info btn-block" value="Set Money"/>
+ }
