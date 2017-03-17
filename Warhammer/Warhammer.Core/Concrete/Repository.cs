@@ -486,7 +486,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<CampaignDetail> CampaignDetails()
         {
-            return _entities.CampaignDetails;
+            return _entities.CampaignDetails.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public IQueryable<Rumour> Rumours()

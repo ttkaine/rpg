@@ -8,6 +8,5 @@ namespace Warhammer.Core.Entities
         {
             return UserSettings.Any(s => s.Enabled && s.SettingId == setting.Id);
         }
-
     }
 }

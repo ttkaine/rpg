@@ -49,7 +49,7 @@ namespace Warhammer.Mvc.Controllers
                                 ||         
                                 session.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)
                                 ||
-                                CurrentPlayer.IsGm
+                                CurrentPlayerIsGm
                                );
                     }
 

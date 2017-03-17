@@ -22,6 +22,7 @@ namespace Warhammer.Core.Entities
         public int Id { get; set; }
         public Nullable<System.DateTime> CurrentGameDate { get; set; }
         public int CampaignId { get; set; }
+        public int GmId { get; set; }
     
         public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
     }

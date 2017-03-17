@@ -106,6 +106,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CurrentGameDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="GmId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -303,7 +304,6 @@
           <Property Name="DisplayName" Type="nvarchar" MaxLength="500" />
           <Property Name="ImageData" Type="varbinary(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="IsGm" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCampaign">
           <Key>
@@ -1625,7 +1625,6 @@
           <NavigationProperty Name="Pages1" Relationship="WarhammerModel.FK_Page_Player" FromRole="Player" ToRole="Page" />
           <NavigationProperty Name="PageViews" Relationship="WarhammerModel.FK_PageView_Player" FromRole="Player" ToRole="PageView" />
           <NavigationProperty Name="People" Relationship="WarhammerModel.FK_Person_Player" FromRole="Player" ToRole="Person" />
-          <Property Name="IsGm" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Player" FromRole="Player" ToRole="Post" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
           <NavigationProperty Name="UserSettings" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="Player" ToRole="UserSetting" />
@@ -2376,6 +2375,7 @@
           <Property Name="CurrentGameDate" Type="DateTime" Precision="3" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="CampaignDetail" ToRole="PlayerCampaign" />
+          <Property Name="GmId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Rumour">
           <Key>
@@ -2613,7 +2613,6 @@
           <EntitySetMapping Name="Players">
             <EntityTypeMapping TypeName="WarhammerModel.Player">
               <MappingFragment StoreEntitySet="Player">
-                <ScalarProperty Name="IsGm" ColumnName="IsGm" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ImageData" ColumnName="ImageData" />
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
@@ -2921,6 +2920,7 @@
           <EntitySetMapping Name="CampaignDetails">
             <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
               <MappingFragment StoreEntitySet="CampaignDetails">
+                <ScalarProperty Name="GmId" ColumnName="GmId" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="CurrentGameDate" ColumnName="CurrentGameDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

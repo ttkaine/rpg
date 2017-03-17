@@ -216,7 +216,7 @@ namespace Warhammer.Mvc.Controllers
         private SimpleHitPointsViewModel MakeSimpleHitPointsViewModel(Person person)
         {
 
-            bool userCanBuy = person.PlayerId == CurrentPlayer.Id || !person.PlayerId.HasValue && CurrentPlayer.IsGm;
+            bool userCanBuy = person.PlayerId == CurrentPlayer.Id || !person.PlayerId.HasValue && CurrentPlayerIsGm;
 
             int baseCost = person.SimpleHitPoints.Count(h => h.Purchased.HasValue);
 
@@ -876,7 +876,7 @@ namespace Warhammer.Mvc.Controllers
             PersonDetailsViewModel model = new PersonDetailsViewModel
             {
                 PersonId = person.Id,
-                AllowEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.Id
+                AllowEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.Id
             };
 
             if (person.TotalPennies != 0)

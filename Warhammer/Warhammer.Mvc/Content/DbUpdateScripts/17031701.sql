@@ -26,6 +26,9 @@ ALTER TABLE Rumour ADD CampaignId int NOT NULL CONSTRAINT DefaultCampaign_Rumour
 ALTER TABLE Comment ADD CampaignId int NOT NULL CONSTRAINT DefaultCampaign_Comment DEFAULT 1
 ALTER TABLE Post ADD CampaignId int NOT NULL CONSTRAINT DefaultCampaign_Post DEFAULT 1
 ALTER TABLE Asset ADD CampaignId int NOT NULL CONSTRAINT DefaultCampaign_Asset DEFAULT 1
+ALTER TABLE CampaignDetails ADD GmId int NOT NULL CONSTRAINT DefaultGm_CampaignDetails DEFAULT 1
+ALTER TABLE Player DROP [DF_Player_IsGm]
+ALTER TABLE Player DROP Column IsGM;
 
 CREATE TABLE [dbo].[PlayerCampaign](
 	[Id] [int] IDENTITY(1,1) NOT NULL,

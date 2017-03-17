@@ -33,7 +33,6 @@ namespace Warhammer.Core.Entities
         public string DisplayName { get; set; }
         public byte[] ImageData { get; set; }
         public string Description { get; set; }
-        public bool IsGm { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

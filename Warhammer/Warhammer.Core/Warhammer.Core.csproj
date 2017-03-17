@@ -310,6 +310,7 @@
     <Compile Include="Entities\UserSetting.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\WarhammerDataEntities.cs" />
     <Compile Include="Entities\_AdminSetting.cs" />
     <Compile Include="Entities\_Asset.cs" />
     <Compile Include="Entities\_Comment.cs" />
