@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public int Upkeep { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Person Person { get; set; }
     }

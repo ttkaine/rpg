@@ -155,6 +155,7 @@
     <Compile Include="Abstract\IApplicationInitalizeHandler.cs" />
     <Compile Include="Abstract\IAuthenticatedDataProvider.cs" />
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
+    <Compile Include="Abstract\ICurrentCampaignProvider.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
     <Compile Include="Abstract\IEmailHandler.cs" />
     <Compile Include="Abstract\IExceptionLogHandler.cs" />
@@ -265,6 +266,9 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Player.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PlayerCampaign.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Post.cs">

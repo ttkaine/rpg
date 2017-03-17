@@ -21,6 +21,7 @@ namespace Warhammer.Core.Entities
         public Nullable<int> PersonId { get; set; }
         public int PageId { get; set; }
         public bool IsAdmin { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Page Page { get; set; }
         public virtual Person Person { get; set; }

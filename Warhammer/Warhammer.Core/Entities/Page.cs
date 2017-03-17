@@ -37,6 +37,7 @@ namespace Warhammer.Core.Entities
         public System.DateTime SignificantUpdate { get; set; }
         public bool Pinned { get; set; }
         public string PlainText { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Player ModifiedBy { get; set; }

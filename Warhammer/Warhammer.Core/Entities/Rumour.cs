@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public Nullable<int> PlaceId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Place Place { get; set; }
     }

@@ -12,16 +12,14 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class SimpleHitPoint
+    public partial class PlayerCampaign
     {
         public int Id { get; set; }
-        public int PersonId { get; set; }
-        public int HitPointTypeId { get; set; }
-        public int HitPointLevelId { get; set; }
-        public Nullable<System.DateTime> Purchased { get; set; }
-        public int XpCost { get; set; }
-        public int CampaignId { get; set; }
+        public int PlayerId { get; set; }
+        public int CampaginId { get; set; }
+        public int PlayerModeEnum { get; set; }
     
-        public virtual Person Person { get; set; }
+        public virtual CampaignDetail CampaignDetail { get; set; }
+        public virtual Player Player { get; set; }
     }
 }

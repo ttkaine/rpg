@@ -51,10 +51,8 @@
         <EntityTypeShape EntityType="WarhammerModel.AspNetUserClaim" Width="1.5" PointX="15.25" PointY="1" />
         <EntityTypeShape EntityType="WarhammerModel.AspNetUserLogin" Width="1.5" PointX="15.25" PointY="3.75" />
         <EntityTypeShape EntityType="WarhammerModel.AspNetUser" Width="1.5" PointX="13" PointY="1.375" />
-        <EntityTypeShape EntityType="WarhammerModel.Setting" Width="1.5" PointX="1.125" PointY="15.5" />
         <AssociationConnector Association="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
-        <AssociationConnector Association="WarhammerModel.FK_UserSetting_Setting" />
         <AssociationConnector Association="WarhammerModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="WarhammerModel.ScoreHistory" Width="1.5" PointX="8.25" PointY="23.625" />
         <AssociationConnector Association="WarhammerModel.FK_ScoreHistory_Person" />
@@ -88,6 +86,10 @@
         <AssociationConnector Association="WarhammerModel.FK_Rumour_Place" />
         <EntityTypeShape EntityType="WarhammerModel.Asset" Width="1.5" PointX="8.25" PointY="45.625" />
         <AssociationConnector Association="WarhammerModel.FK_Asset_Person" />
+        <EntityTypeShape EntityType="WarhammerModel.PlayerCampaign" Width="1.5" PointX="13.625" PointY="11.25" />
+        <AssociationConnector Association="WarhammerModel.FK_PlayerCampaign_CampaignDetails" />
+        <AssociationConnector Association="WarhammerModel.FK_PlayerCampaign_Player" />
+        <EntityTypeShape EntityType="WarhammerModel.Setting" Width="1.5" PointX="13.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

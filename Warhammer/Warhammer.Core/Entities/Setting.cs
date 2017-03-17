@@ -14,11 +14,6 @@ namespace Warhammer.Core.Entities
     
     public partial class Setting
     {
-        public Setting()
-        {
-            this.UserSettings = new HashSet<UserSetting>();
-        }
-    
         public int Id { get; set; }
         public int SectionId { get; set; }
         public string Name { get; set; }
@@ -26,7 +21,5 @@ namespace Warhammer.Core.Entities
         public string Description { get; set; }
         public string TrueText { get; set; }
         public string FalseText { get; set; }
-    
-        public virtual ICollection<UserSetting> UserSettings { get; set; }
     }
 }

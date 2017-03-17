@@ -24,6 +24,7 @@ namespace Warhammer.Core.Entities
         public string Name { get; set; }
         public Nullable<decimal> PriceInPence { get; set; }
         public string Description { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual ICollection<PriceListItem> Children { get; set; }
         public virtual PriceListItem Parent { get; set; }

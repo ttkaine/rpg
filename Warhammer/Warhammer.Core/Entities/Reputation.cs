@@ -23,6 +23,7 @@ namespace Warhammer.Core.Entities
         public Nullable<int> PersonId { get; set; }
         public Nullable<int> OrganisationId { get; set; }
         public Nullable<int> CreatureId { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Creature Creature { get; set; }
         public virtual Organisation Organisation { get; set; }

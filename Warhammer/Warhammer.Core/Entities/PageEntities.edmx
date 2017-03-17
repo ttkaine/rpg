@@ -22,6 +22,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SettingId" Type="int" Nullable="false" />
           <Property Name="SettingValue" Type="nvarchar(max)" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -83,6 +84,7 @@
           <Property Name="Title" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Upkeep" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Award">
           <Key>
@@ -95,6 +97,7 @@
           <Property Name="AwardedOn" Type="datetime" Nullable="false" />
           <Property Name="NominatedById" Type="int" />
           <Property Name="NominatedDate" Type="datetime" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CampaignDetails">
           <Key>
@@ -102,6 +105,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CurrentGameDate" Type="datetime" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -122,6 +126,7 @@
           <Property Name="PersonId" Type="int" />
           <Property Name="PageId" Type="int" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Creature">
           <Key>
@@ -140,6 +145,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="AbilityThreatLevelId" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ExceptionLog">
           <Key>
@@ -167,6 +173,7 @@
           <Property Name="AspectType" Type="int" Nullable="false" />
           <Property Name="AspectName" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="IsVisible" Type="bit" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FateStat">
           <Key>
@@ -177,6 +184,7 @@
           <Property Name="StatType" Type="int" Nullable="false" />
           <Property Name="StatValue" Type="int" Nullable="false" />
           <Property Name="IsVisible" Type="bit" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FateStunt">
           <Key>
@@ -187,6 +195,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="IsVisible" Type="bit" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Organisation">
           <Key>
@@ -213,6 +222,7 @@
           <Property Name="SignificantUpdate" Type="datetime" Nullable="false" />
           <Property Name="Pinned" Type="bit" Nullable="false" />
           <Property Name="PlainText" Type="nvarchar(max)" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PageImage">
           <Key>
@@ -222,6 +232,7 @@
           <Property Name="PageId" Type="int" Nullable="false" />
           <Property Name="IsPrimary" Type="bit" Nullable="false" />
           <Property Name="Data" Type="varbinary(max)" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -231,6 +242,7 @@
           <Property Name="PageId" Type="int" Nullable="false" />
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="Viewed" Type="datetime" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -272,6 +284,7 @@
           <Property Name="InitialValue" Type="int" Nullable="false" />
           <Property Name="CurrentValue" Type="int" Nullable="false" />
           <Property Name="XpSpent" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Place">
           <Key>
@@ -291,6 +304,15 @@
           <Property Name="ImageData" Type="varbinary(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="IsGm" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlayerCampaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="CampaginId" Type="int" Nullable="false" />
+          <Property Name="PlayerModeEnum" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -315,6 +337,7 @@
           <Property Name="LastEdited" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PostOrder">
           <Key>
@@ -324,6 +347,7 @@
           <Property Name="SessionId" Type="int" Nullable="false" />
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="LastTurnEnded" Type="datetime" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PriceListItem">
           <Key>
@@ -334,6 +358,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="500" />
           <Property Name="PriceInPence" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Reputation">
           <Key>
@@ -348,6 +373,7 @@
           <Property Name="PersonId" Type="int" />
           <Property Name="OrganisationId" Type="int" />
           <Property Name="CreatureId" Type="int" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Rumour">
           <Key>
@@ -358,6 +384,7 @@
           <Property Name="PlaceId" Type="int" />
           <Property Name="Title" Type="nvarchar" MaxLength="500" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ScoreHistory">
           <Key>
@@ -368,6 +395,7 @@
           <Property Name="PersonId" Type="int" Nullable="false" />
           <Property Name="ScoreTypeId" Type="int" Nullable="false" />
           <Property Name="PointsValue" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Session">
           <Key>
@@ -413,6 +441,7 @@
           <Property Name="HitPointLevelId" Type="int" Nullable="false" />
           <Property Name="Purchased" Type="datetime" />
           <Property Name="XpCost" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SiteFeature">
           <Key>
@@ -422,6 +451,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Trophy">
           <Key>
@@ -815,6 +845,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PlayerCampaign_CampaignDetails">
+          <End Role="CampaignDetails" Type="Self.CampaignDetails" Multiplicity="1" />
+          <End Role="PlayerCampaign" Type="Self.PlayerCampaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CampaignDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerCampaign">
+              <PropertyRef Name="CampaginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerCampaign_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerCampaign" Type="Self.PlayerCampaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerCampaign">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_Player">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -1035,6 +1089,7 @@
           <EntitySet Name="PersonStat" EntityType="Self.PersonStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Place" EntityType="Self.Place" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerCampaign" EntityType="Self.PlayerCampaign" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceListItem" EntityType="Self.PriceListItem" Schema="dbo" store:Type="Tables" />
@@ -1167,6 +1222,14 @@
           <AssociationSet Name="FK_Place_Place" Association="Self.FK_Place_Place">
             <End Role="Place" EntitySet="Place" />
             <End Role="Place1" EntitySet="Place" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerCampaign_CampaignDetails" Association="Self.FK_PlayerCampaign_CampaignDetails">
+            <End Role="CampaignDetails" EntitySet="CampaignDetails" />
+            <End Role="PlayerCampaign" EntitySet="PlayerCampaign" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerCampaign_Player" Association="Self.FK_PlayerCampaign_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerCampaign" EntitySet="PlayerCampaign" />
           </AssociationSet>
           <AssociationSet Name="FK_Post_Player" Association="Self.FK_Post_Player">
             <End Role="Player" EntitySet="Player" />
@@ -1339,7 +1402,6 @@
           <EntitySet Name="AspNetUserClaims" EntityType="WarhammerModel.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="WarhammerModel.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="WarhammerModel.AspNetUser" />
-          <EntitySet Name="Settings" EntityType="WarhammerModel.Setting" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
@@ -1347,10 +1409,6 @@
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserSetting_Setting" Association="WarhammerModel.FK_UserSetting_Setting">
-            <End Role="Setting" EntitySet="Settings" />
-            <End Role="UserSetting" EntitySet="UserSettings" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="WarhammerModel.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
@@ -1426,6 +1484,16 @@
             <End Role="Person" EntitySet="Pages" />
             <End Role="Asset" EntitySet="Assets" />
           </AssociationSet>
+          <EntitySet Name="PlayerCampaigns" EntityType="WarhammerModel.PlayerCampaign" />
+          <AssociationSet Name="FK_PlayerCampaign_CampaignDetails" Association="WarhammerModel.FK_PlayerCampaign_CampaignDetails">
+            <End Role="CampaignDetail" EntitySet="CampaignDetails" />
+            <End Role="PlayerCampaign" EntitySet="PlayerCampaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerCampaign_Player" Association="WarhammerModel.FK_PlayerCampaign_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="PlayerCampaign" EntitySet="PlayerCampaigns" />
+          </AssociationSet>
+          <EntitySet Name="Settings" EntityType="WarhammerModel.Setting" />
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1441,6 +1509,7 @@
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Award_Person" FromRole="Award" ToRole="Person" />
           <NavigationProperty Name="NominatedBy" Relationship="WarhammerModel.FK_Award_Player" FromRole="Award" ToRole="Player" />
           <NavigationProperty Name="Trophy" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Award" ToRole="Trophy" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -1464,6 +1533,7 @@
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_Comment_Page" FromRole="Comment" ToRole="Page" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Comment_Person" FromRole="Comment" ToRole="Person" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Comment_Player" FromRole="Comment" ToRole="Player" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Page">
           <Key>
@@ -1490,6 +1560,7 @@
           <NavigationProperty Name="Pages" Relationship="WarhammerModel.PersonAtSession" FromRole="Page1" ToRole="Page" />
           <Property Name="PlainText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PageImages" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="Page" ToRole="PageImage" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -1501,6 +1572,7 @@
           <Property Name="Viewed" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageView_Page" FromRole="PageView" ToRole="Page" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PageView_Player" FromRole="PageView" ToRole="Player" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Person" BaseType="WarhammerModel.Page">
           <Property Name="IsDead" Type="Boolean" Nullable="false" />
@@ -1557,6 +1629,7 @@
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Player" FromRole="Player" ToRole="Post" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
           <NavigationProperty Name="UserSettings" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="Player" ToRole="UserSetting" />
+          <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_Player" FromRole="Player" ToRole="PlayerCampaign" />
         </EntityType>
         <EntityType Name="Session" BaseType="WarhammerModel.Page">
           <Property Name="DateTime" Type="DateTime" Precision="3" />
@@ -1787,6 +1860,7 @@
           <Property Name="DeletedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Post_Player" FromRole="Post" ToRole="Player" />
           <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_Post_Session" FromRole="Post" ToRole="Session" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Post_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -1822,6 +1896,7 @@
           <Property Name="LastTurnEnded" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="PostOrder" ToRole="Player" />
           <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="PostOrder" ToRole="Session" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_PostOrder_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -1855,6 +1930,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonStat">
           <Key>
@@ -1867,6 +1943,7 @@
           <Property Name="CurrentValue" Type="Int32" Nullable="false" />
           <Property Name="XpSpent" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_PersonStat_Person" FromRole="PersonStat" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_PersonStat_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -1890,7 +1967,6 @@
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_UserSetting_Player" FromRole="UserSetting" ToRole="Player" />
-          <NavigationProperty Name="Setting" Relationship="WarhammerModel.FK_UserSetting_Setting" FromRole="UserSetting" ToRole="Setting" />
         </EntityType>
         <Association Name="FK_UserSetting_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -1963,19 +2039,6 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="WarhammerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
-        <EntityType Name="Setting">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SectionId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="DisplayName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TrueText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FalseText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserSettings" Relationship="WarhammerModel.FK_UserSetting_Setting" FromRole="Setting" ToRole="UserSetting" />
-        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="WarhammerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2004,18 +2067,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserSetting_Setting">
-          <End Type="WarhammerModel.Setting" Role="Setting" Multiplicity="1" />
-          <End Type="WarhammerModel.UserSetting" Role="UserSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Setting">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserSetting">
-              <PropertyRef Name="SettingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="AspNetUserRoles">
           <End Type="WarhammerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="WarhammerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
@@ -2030,6 +2081,7 @@
           <Property Name="ScoreTypeId" Type="Int32" Nullable="false" />
           <Property Name="PointsValue" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="ScoreHistory" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_ScoreHistory_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -2053,6 +2105,7 @@
           <Property Name="AspectName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsVisible" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_FateAspect_Person" FromRole="FateAspect" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FateStat">
           <Key>
@@ -2064,6 +2117,7 @@
           <Property Name="StatValue" Type="Int32" Nullable="false" />
           <Property Name="IsVisible" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_FateStat_Person" FromRole="FateStat" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FateStunt">
           <Key>
@@ -2075,6 +2129,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsVisible" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_FateStunt_Person" FromRole="FateStunt" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_FateAspect_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -2123,6 +2178,7 @@
           <Property Name="Purchased" Type="DateTime" Precision="3" />
           <Property Name="XpCost" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_SimpleHitPoints_Person" FromRole="SimpleHitPoint" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_SimpleHitPoints_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -2143,6 +2199,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SettingId" Type="Int32" Nullable="false" />
           <Property Name="SettingValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ExceptionLog">
           <Key>
@@ -2170,6 +2227,7 @@
           <Property Name="IsPrimary" Type="Boolean" Nullable="false" />
           <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="PageImage" ToRole="Page" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_PageImage_Page">
           <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
@@ -2201,6 +2259,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AbilityThreatLevelId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Creature" Relationship="WarhammerModel.FK_CreatureAbility_Creature" FromRole="CreatureAbility" ToRole="Creature" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Organisation" BaseType="WarhammerModel.Page">
           <Property Name="OrganisationType" Type="Int32" Nullable="false" />
@@ -2222,6 +2281,7 @@
           <NavigationProperty Name="Creature" Relationship="WarhammerModel.FK_Reputation_Creature" FromRole="Reputation" ToRole="Creature" />
           <NavigationProperty Name="Organisation" Relationship="WarhammerModel.FK_Reputation_Organisation" FromRole="Reputation" ToRole="Organisation" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Reputation_Person" FromRole="Reputation" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Creature_Creature">
           <End Type="WarhammerModel.Creature" Role="Creature" Multiplicity="0..1" />
@@ -2294,6 +2354,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Children" Relationship="WarhammerModel.FK_PriceListItem_PriceListItem" FromRole="PriceListItem" ToRole="PriceListItem1" />
           <NavigationProperty Name="Parent" Relationship="WarhammerModel.FK_PriceListItem_PriceListItem" FromRole="PriceListItem1" ToRole="PriceListItem" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_PriceListItem_PriceListItem">
           <End Type="WarhammerModel.PriceListItem" Role="PriceListItem" Multiplicity="0..1" />
@@ -2313,6 +2374,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CurrentGameDate" Type="DateTime" Precision="3" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="CampaignDetail" ToRole="PlayerCampaign" />
         </EntityType>
         <EntityType Name="Rumour">
           <Key>
@@ -2324,6 +2387,7 @@
           <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Place" Relationship="WarhammerModel.FK_Rumour_Place" FromRole="Rumour" ToRole="Place" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Rumour_Place">
           <End Type="WarhammerModel.Place" Role="Place" Multiplicity="0..1" />
@@ -2347,6 +2411,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Upkeep" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Asset_Person" FromRole="Asset" ToRole="Person" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Asset_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="0..1">
@@ -2362,6 +2427,53 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PlayerCampaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="CampaginId" Type="Int32" Nullable="false" />
+          <Property Name="PlayerModeEnum" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CampaignDetail" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="PlayerCampaign" ToRole="CampaignDetail" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PlayerCampaign_Player" FromRole="PlayerCampaign" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK_PlayerCampaign_CampaignDetails">
+          <End Type="WarhammerModel.CampaignDetail" Role="CampaignDetail" Multiplicity="1" />
+          <End Type="WarhammerModel.PlayerCampaign" Role="PlayerCampaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CampaignDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerCampaign">
+              <PropertyRef Name="CampaginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerCampaign_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.PlayerCampaign" Role="PlayerCampaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerCampaign">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrueText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FalseText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2371,6 +2483,7 @@
           <EntitySetMapping Name="Awards">
             <EntityTypeMapping TypeName="WarhammerModel.Award">
               <MappingFragment StoreEntitySet="Award">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="NominatedDate" ColumnName="NominatedDate" />
                 <ScalarProperty Name="NominatedById" ColumnName="NominatedById" />
                 <ScalarProperty Name="AwardedOn" ColumnName="AwardedOn" />
@@ -2393,6 +2506,7 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="WarhammerModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
@@ -2406,6 +2520,7 @@
           <EntitySetMapping Name="Pages">
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="PlainText" ColumnName="PlainText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Pinned" ColumnName="Pinned" />
@@ -2487,6 +2602,7 @@
           <EntitySetMapping Name="PageViews">
             <EntityTypeMapping TypeName="WarhammerModel.PageView">
               <MappingFragment StoreEntitySet="PageView">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Viewed" ColumnName="Viewed" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
@@ -2530,6 +2646,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="WarhammerModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="LastEdited" ColumnName="LastEdited" />
@@ -2555,6 +2672,7 @@
           <EntitySetMapping Name="PostOrders">
             <EntityTypeMapping TypeName="WarhammerModel.PostOrder">
               <MappingFragment StoreEntitySet="PostOrder">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="LastTurnEnded" ColumnName="LastTurnEnded" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
@@ -2565,6 +2683,7 @@
           <EntitySetMapping Name="SiteFeatures">
             <EntityTypeMapping TypeName="WarhammerModel.SiteFeature">
               <MappingFragment StoreEntitySet="SiteFeature">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2575,6 +2694,7 @@
           <EntitySetMapping Name="PersonStats">
             <EntityTypeMapping TypeName="WarhammerModel.PersonStat">
               <MappingFragment StoreEntitySet="PersonStat">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="XpSpent" ColumnName="XpSpent" />
                 <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
                 <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
@@ -2650,19 +2770,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Settings">
-            <EntityTypeMapping TypeName="WarhammerModel.Setting">
-              <MappingFragment StoreEntitySet="Setting">
-                <ScalarProperty Name="FalseText" ColumnName="FalseText" />
-                <ScalarProperty Name="TrueText" ColumnName="TrueText" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="WarhammerModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetUser">
               <ScalarProperty Name="Id" ColumnName="UserId" />
@@ -2674,6 +2781,7 @@
           <EntitySetMapping Name="ScoreHistories">
             <EntityTypeMapping TypeName="WarhammerModel.ScoreHistory">
               <MappingFragment StoreEntitySet="ScoreHistory">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
                 <ScalarProperty Name="ScoreTypeId" ColumnName="ScoreTypeId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
@@ -2685,6 +2793,7 @@
           <EntitySetMapping Name="FateAspects">
             <EntityTypeMapping TypeName="WarhammerModel.FateAspect">
               <MappingFragment StoreEntitySet="FateAspect">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
                 <ScalarProperty Name="AspectName" ColumnName="AspectName" />
                 <ScalarProperty Name="AspectType" ColumnName="AspectType" />
@@ -2696,6 +2805,7 @@
           <EntitySetMapping Name="FateStats">
             <EntityTypeMapping TypeName="WarhammerModel.FateStat">
               <MappingFragment StoreEntitySet="FateStat">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
                 <ScalarProperty Name="StatValue" ColumnName="StatValue" />
                 <ScalarProperty Name="StatType" ColumnName="StatType" />
@@ -2707,6 +2817,7 @@
           <EntitySetMapping Name="FateStunts">
             <EntityTypeMapping TypeName="WarhammerModel.FateStunt">
               <MappingFragment StoreEntitySet="FateStunt">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -2718,6 +2829,7 @@
           <EntitySetMapping Name="SimpleHitPoints">
             <EntityTypeMapping TypeName="WarhammerModel.SimpleHitPoint">
               <MappingFragment StoreEntitySet="SimpleHitPoints">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="XpCost" ColumnName="XpCost" />
                 <ScalarProperty Name="Purchased" ColumnName="Purchased" />
                 <ScalarProperty Name="HitPointLevelId" ColumnName="HitPointLevelId" />
@@ -2730,6 +2842,7 @@
           <EntitySetMapping Name="AdminSettings">
             <EntityTypeMapping TypeName="WarhammerModel.AdminSetting">
               <MappingFragment StoreEntitySet="AdminSetting">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -2757,6 +2870,7 @@
           <EntitySetMapping Name="PageImages">
             <EntityTypeMapping TypeName="WarhammerModel.PageImage">
               <MappingFragment StoreEntitySet="PageImage">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
@@ -2767,6 +2881,7 @@
           <EntitySetMapping Name="CreatureAbilities">
             <EntityTypeMapping TypeName="WarhammerModel.CreatureAbility">
               <MappingFragment StoreEntitySet="CreatureAbility">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="AbilityThreatLevelId" ColumnName="AbilityThreatLevelId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2778,6 +2893,7 @@
           <EntitySetMapping Name="Reputations">
             <EntityTypeMapping TypeName="WarhammerModel.Reputation">
               <MappingFragment StoreEntitySet="Reputation">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="CreatureId" ColumnName="CreatureId" />
                 <ScalarProperty Name="OrganisationId" ColumnName="OrganisationId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
@@ -2793,6 +2909,7 @@
           <EntitySetMapping Name="PriceListItems">
             <EntityTypeMapping TypeName="WarhammerModel.PriceListItem">
               <MappingFragment StoreEntitySet="PriceListItem">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PriceInPence" ColumnName="PriceInPence" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2804,6 +2921,7 @@
           <EntitySetMapping Name="CampaignDetails">
             <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
               <MappingFragment StoreEntitySet="CampaignDetails">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="CurrentGameDate" ColumnName="CurrentGameDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -2812,6 +2930,7 @@
           <EntitySetMapping Name="Rumours">
             <EntityTypeMapping TypeName="WarhammerModel.Rumour">
               <MappingFragment StoreEntitySet="Rumour">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
@@ -2823,10 +2942,34 @@
           <EntitySetMapping Name="Assets">
             <EntityTypeMapping TypeName="WarhammerModel.Asset">
               <MappingFragment StoreEntitySet="Asset">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Upkeep" ColumnName="Upkeep" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerCampaigns">
+            <EntityTypeMapping TypeName="WarhammerModel.PlayerCampaign">
+              <MappingFragment StoreEntitySet="PlayerCampaign">
+                <ScalarProperty Name="PlayerModeEnum" ColumnName="PlayerModeEnum" />
+                <ScalarProperty Name="CampaginId" ColumnName="CampaginId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="WarhammerModel.Setting">
+              <MappingFragment StoreEntitySet="Setting">
+                <ScalarProperty Name="FalseText" ColumnName="FalseText" />
+                <ScalarProperty Name="TrueText" ColumnName="TrueText" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

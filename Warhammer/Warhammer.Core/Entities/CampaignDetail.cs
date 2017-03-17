@@ -14,7 +14,15 @@ namespace Warhammer.Core.Entities
     
     public partial class CampaignDetail
     {
+        public CampaignDetail()
+        {
+            this.PlayerCampaigns = new HashSet<PlayerCampaign>();
+        }
+    
         public int Id { get; set; }
         public Nullable<System.DateTime> CurrentGameDate { get; set; }
+        public int CampaignId { get; set; }
+    
+        public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
     }
 }
