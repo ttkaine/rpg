@@ -22,6 +22,11 @@ namespace Warhammer.Mvc.Concrete
                     return 1;
                 }
 
+                if (domain == "warhammer.ttk")
+                {
+                    return 1;
+                }
+
                 if (domain == "crowhammer.sendingofeight.co.uk")
                 {
                     return 1;

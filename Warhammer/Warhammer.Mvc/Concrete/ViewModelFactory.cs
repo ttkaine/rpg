@@ -247,11 +247,6 @@ namespace Warhammer.Mvc.Concrete
             {
                 model.SectionsIds.Add(SettingSection.EmailNotifications);
             }
-            if (_data.SiteHasFeature(Feature.NightlyEmailer))
-            {
-                model.SectionsIds.Add(SettingSection.DailySummaryEmails);
-            }
-
 
             return model;
 
