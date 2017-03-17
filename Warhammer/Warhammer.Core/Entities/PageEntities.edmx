@@ -1414,11 +1414,6 @@
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="ScoreHistories" EntityType="WarhammerModel.ScoreHistory" />
-          <AssociationSet Name="FK_ScoreHistory_Person" Association="WarhammerModel.FK_ScoreHistory_Person">
-            <End Role="Person" EntitySet="Pages" />
-            <End Role="ScoreHistory" EntitySet="ScoreHistories" />
-          </AssociationSet>
           <EntitySet Name="FateAspects" EntityType="WarhammerModel.FateAspect" />
           <EntitySet Name="FateStats" EntityType="WarhammerModel.FateStat" />
           <EntitySet Name="FateStunts" EntityType="WarhammerModel.FateStunt" />
@@ -1494,6 +1489,11 @@
             <End Role="PlayerCampaign" EntitySet="PlayerCampaigns" />
           </AssociationSet>
           <EntitySet Name="Settings" EntityType="WarhammerModel.Setting" />
+          <EntitySet Name="ScoreHistories" EntityType="WarhammerModel.ScoreHistory" />
+          <AssociationSet Name="FK_ScoreHistory_Person" Association="WarhammerModel.FK_ScoreHistory_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="ScoreHistory" EntitySet="ScoreHistories" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1602,6 +1602,7 @@
           <Property Name="Height" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Upkeep" Type="Int32" />
           <NavigationProperty Name="Assets" Relationship="WarhammerModel.FK_Asset_Person" FromRole="Person" ToRole="Asset" />
+          <NavigationProperty Name="ScoreHistories" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="Person" ToRole="ScoreHistory" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2070,30 +2071,6 @@
           <End Type="WarhammerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="WarhammerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
-        <EntityType Name="ScoreHistory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <Property Name="ScoreTypeId" Type="Int32" Nullable="false" />
-          <Property Name="PointsValue" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
-          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="ScoreHistory" ToRole="Person" />
-          <Property Name="CampaignId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_ScoreHistory_Person">
-          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
-          <End Type="WarhammerModel.ScoreHistory" Role="ScoreHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ScoreHistory">
-              <PropertyRef Name="PersonId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="FateAspect">
           <Key>
             <PropertyRef Name="Id" />
@@ -2474,6 +2451,30 @@
           <Property Name="TrueText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FalseText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ScoreHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="ScoreTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PointsValue" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="ScoreHistory" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_ScoreHistory_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.ScoreHistory" Role="ScoreHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScoreHistory">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2777,18 +2778,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="ScoreHistories">
-            <EntityTypeMapping TypeName="WarhammerModel.ScoreHistory">
-              <MappingFragment StoreEntitySet="ScoreHistory">
-                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
-                <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
-                <ScalarProperty Name="ScoreTypeId" ColumnName="ScoreTypeId" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FateAspects">
             <EntityTypeMapping TypeName="WarhammerModel.FateAspect">
               <MappingFragment StoreEntitySet="FateAspect">
@@ -2970,6 +2959,18 @@
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScoreHistories">
+            <EntityTypeMapping TypeName="WarhammerModel.ScoreHistory">
+              <MappingFragment StoreEntitySet="ScoreHistory">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
+                <ScalarProperty Name="ScoreTypeId" ColumnName="ScoreTypeId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

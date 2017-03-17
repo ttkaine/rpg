@@ -18,6 +18,7 @@ namespace Warhammer.Core.Concrete
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
+        private readonly IScoreCalculator _score;
 
         private int UpliftId
         {
@@ -53,12 +54,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
+            _score = score;
         }
 
         public Player CurrentPlayer
@@ -357,6 +359,12 @@ namespace Warhammer.Core.Concrete
                 {
                     NotifyEditPage(pageId);
                 }
+            }
+
+            Person person  = page as Person;
+            if (person != null)
+            {
+                _score.UpdatePersonScore(pageId);
             }
 
             return pageId;
@@ -1173,7 +1181,7 @@ namespace Warhammer.Core.Concrete
 
         public List<ScoreHistory> GetCurrentScoresForPerson(int id)
         {
-            return _repository.ScoreHistories().Where(s => s.PersonId == id).Where(a => a.DateTime == DateTime.Today).OrderBy(s => s.ScoreTypeId).ToList();
+            return _repository.ScoreHistories().Where(s => s.PersonId == id).OrderBy(s => s.ScoreTypeId).ToList();
 
         }
 

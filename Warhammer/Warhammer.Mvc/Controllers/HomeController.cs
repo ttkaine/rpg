@@ -249,7 +249,7 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult OverrideCss()
         {
             //this probably shouldn't be here - but, hey, I'll put it someplace better when I get round to it... okay?
-            _scoreCalculator.UpdateScoreHistories();
+            _scoreCalculator.UpdateScores();
 
 
             if (!string.IsNullOrWhiteSpace(CssOverride))

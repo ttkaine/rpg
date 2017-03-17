@@ -11,10 +11,10 @@
         <EntityTypeShape EntityType="WarhammerModel.Page" Width="1.5" PointX="3" PointY="8.625" />
         <EntityTypeShape EntityType="WarhammerModel.PageView" Width="1.5" PointX="8.25" PointY="10.25" />
         <EntityTypeShape EntityType="WarhammerModel.Person" Width="1.5" PointX="6" PointY="9.625" />
-        <EntityTypeShape EntityType="WarhammerModel.Place" Width="1.5" PointX="5.25" PointY="15.625" />
+        <EntityTypeShape EntityType="WarhammerModel.Place" Width="1.5" PointX="4.125" PointY="15.625" />
         <EntityTypeShape EntityType="WarhammerModel.Player" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="WarhammerModel.Session" Width="1.5" PointX="5.25" PointY="18.625" />
-        <EntityTypeShape EntityType="WarhammerModel.SessionLog" Width="1.5" PointX="7.625" PointY="14.5" />
+        <EntityTypeShape EntityType="WarhammerModel.SessionLog" Width="1.5" PointX="8.375" PointY="14.25" />
         <EntityTypeShape EntityType="WarhammerModel.Trophy" Width="1.5" PointX="8.25" PointY="17" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Person" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Player" />
@@ -54,8 +54,6 @@
         <AssociationConnector Association="WarhammerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="WarhammerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="WarhammerModel.AspNetUserRoles" />
-        <EntityTypeShape EntityType="WarhammerModel.ScoreHistory" Width="1.5" PointX="8.25" PointY="23.625" />
-        <AssociationConnector Association="WarhammerModel.FK_ScoreHistory_Person" />
         <EntityTypeShape EntityType="WarhammerModel.FateAspect" Width="1.5" PointX="8.25" PointY="29.75" />
         <EntityTypeShape EntityType="WarhammerModel.FateStat" Width="1.5" PointX="8.25" PointY="32.75" />
         <EntityTypeShape EntityType="WarhammerModel.FateStunt" Width="1.5" PointX="8.25" PointY="26.875" />
@@ -90,6 +88,8 @@
         <AssociationConnector Association="WarhammerModel.FK_PlayerCampaign_CampaignDetails" />
         <AssociationConnector Association="WarhammerModel.FK_PlayerCampaign_Player" />
         <EntityTypeShape EntityType="WarhammerModel.Setting" Width="1.5" PointX="13.375" PointY="14.75" />
+        <EntityTypeShape EntityType="WarhammerModel.ScoreHistory" Width="1.5" PointX="8.25" PointY="23.625" />
+        <AssociationConnector Association="WarhammerModel.FK_ScoreHistory_Person" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
