@@ -11,7 +11,7 @@ namespace Warhammer.Tests.Smoke.UnitTests
         [Test]
         public void RegularSessionWorthPointFive()
         {
-            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null);
+            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null, null);
             Session page = new Session();
             int sessionId;
             decimal xp = data.GetDefaultXpForPage(page, out sessionId);
@@ -22,7 +22,7 @@ namespace Warhammer.Tests.Smoke.UnitTests
         [Test]
         public void TextSessionWorthPointTwoFive()
         {
-            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null);
+            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null, null);
             Session page = new Session
             {
                 IsTextSession = true,
@@ -37,7 +37,7 @@ namespace Warhammer.Tests.Smoke.UnitTests
         [Test]
         public void RegualrLogSessionWorthPointOneIfEmpty()
         {
-            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null);
+            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null, null);
             SessionLog page = new SessionLog
             {
                 Session = new Session(),
@@ -51,7 +51,7 @@ namespace Warhammer.Tests.Smoke.UnitTests
         [Test]
         public void TextLogSessionWorthPointOneIfEmpty()
         {
-            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null);
+            AuthenticatedDataProvider data = new AuthenticatedDataProvider(null, null, null, null, null);
             SessionLog page = new SessionLog
             {
                 Session = new Session { IsTextSession = true , IsClosed = true},

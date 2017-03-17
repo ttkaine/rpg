@@ -247,11 +247,6 @@ namespace Warhammer.Mvc.Concrete
             {
                 model.SectionsIds.Add(SettingSection.EmailNotifications);
             }
-            if (_data.SiteHasFeature(Feature.NightlyEmailer))
-            {
-                model.SectionsIds.Add(SettingSection.DailySummaryEmails);
-            }
-
 
             return model;
 
@@ -274,9 +269,10 @@ namespace Warhammer.Mvc.Concrete
             PersonAssetsViewModel model = new PersonAssetsViewModel();
             model.PersonId = person.Id;
             model.Assets = person.Assets.ToList();
-            model.AllowEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.Id;
+            model.AllowEdit = _data.CurrentPlayerIsGm || CurrentPlayer.Id == person.Id;
             return model;
         }
+
 
         private string GetSettingTitle(SettingSection section)
         {

@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public int StatType { get; set; }
         public int StatValue { get; set; }
         public bool IsVisible { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Person Person { get; set; }
     }

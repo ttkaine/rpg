@@ -27,7 +27,7 @@ namespace Warhammer.Mvc.Controllers
 
                 if (person != null)
                 {
-                    if (person.PlayerId.HasValue || CurrentPlayer.IsGm)
+                    if (person.PlayerId.HasValue || CurrentPlayerIsGm)
                     {
                         PersonStatViewModel model = _factory.MakeStatModel(person);
                         if (model.ShowStats && model.Stats.Sum(s => s.Value) > 3)
@@ -40,5 +40,6 @@ namespace Warhammer.Mvc.Controllers
             return null;
 
         }
+
     }
 }

@@ -17,10 +17,10 @@ namespace Warhammer.Core.Concrete
 
 	    private int GetGmId()
 	    {
-		    Player player = Repo.Players().FirstOrDefault(p => p.IsGm);
-		    if (player != null)
+		    CampaignDetail campaign = Repo.CampaignDetails().FirstOrDefault();
+		    if (campaign != null)
 		    {
-			    return player.Id;
+			    return campaign.GmId;
 		    }
 		    else
 		    {
@@ -59,9 +59,10 @@ namespace Warhammer.Core.Concrete
 			    PlayerViewModel viewModel = new PlayerViewModel();
 			    viewModel.ID = player.Id;
 			    viewModel.Name = player.DisplayName;
-			    viewModel.IsGM = player.IsGm;
+		        viewModel.IsGM = player.Id == GetGmId();
 
-			    return viewModel;
+
+                return viewModel;
 		    }
 		    else
 		    {
@@ -78,9 +79,9 @@ namespace Warhammer.Core.Concrete
 				PlayerViewModel viewModel = new PlayerViewModel();
 				viewModel.ID = player.Id;
 				viewModel.Name = player.DisplayName;
-				viewModel.IsGM = player.IsGm;
+				viewModel.IsGM = player.Id == GetGmId();
 
-				return viewModel;
+                return viewModel;
 			}
 			else
 			{
@@ -103,8 +104,8 @@ namespace Warhammer.Core.Concrete
 						PlayerViewModel viewModel = new PlayerViewModel();
 						viewModel.ID = player.Id;
 						viewModel.Name = player.DisplayName;
-						viewModel.IsGM = player.IsGm;
-						viewModels.Add(viewModel);
+						viewModel.IsGM = player.Id == GetGmId();
+                        viewModels.Add(viewModel);
 					}
 				}
 			}

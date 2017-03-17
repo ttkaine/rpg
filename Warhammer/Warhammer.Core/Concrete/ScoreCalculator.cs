@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -8,60 +9,12 @@ namespace Warhammer.Core.Concrete
 {
     public class ScoreCalculator : IScoreCalculator
     {
+        private int _scoreUpdateInterval = 10000;
         readonly IRepository _repo;
         private static readonly object _lock = new object();
         public ScoreCalculator(IRepository repo)
         {
             _repo = repo;
-        }
-
-        public void UpdateScoreHistories()
-        {
-            lock (_lock)
-            {
-                DateTime lastCalculated = DateTime.Now.Date.AddDays(-1);
-
-                ScoreHistory mostRecent = _repo.ScoreHistories().OrderByDescending(d => d.DateTime).FirstOrDefault();
-                if (mostRecent != null)
-                {
-                    lastCalculated = mostRecent.DateTime;
-                }
-
-                if (lastCalculated >= DateTime.Now.Date)
-                {
-                    return;
-                }
-
-
-                while (lastCalculated < DateTime.Now.Date)
-                {
-                    List<ScoreHistory> scores = new List<ScoreHistory>();
-                    lastCalculated = lastCalculated.AddDays(1);
-                    scores.AddRange(CalculateScores(lastCalculated));
-                    if (scores.Any())
-                    {
-                        _repo.BulkInsert(scores);
-                    }
-                }
-
-                List<Person> people = _repo.People().ToList();
-                List<ScoreHistory> currentScores =
-                    _repo.ScoreHistories()
-                        .Where(s => s.DateTime == DateTime.Today && s.ScoreTypeId == (int) ScoreType.Total)
-                        .ToList();
-
-                foreach (Person person in people)
-                {
-                    ScoreHistory score = currentScores.FirstOrDefault(c => c.PersonId == person.Id);
-                    if (score != null)
-                    {
-                        person.CurrentScore = score.PointsValue;
-                        _repo.Save(person);
-                    }
-                }
-
-
-            }
         }
 
         private List<ScoreHistory> CalculateScores(DateTime scoreDate)
@@ -96,7 +49,7 @@ namespace Warhammer.Core.Concrete
                     ScoreType = ScoreType.Sessions,
                     DateTime = scoreDate,
                     PersonId = person.Id,
-                    PointsValue = (decimal) sessions.Where(l => l.DateTime < scoreDate).Sum(l => l.BaseScore)
+                    PointsValue = (decimal) sessions.Where(l => l.DateTime < scoreDate).Sum(l => l.BaseScore)       
                 });
 
                 scoreHistories.Add(new ScoreHistory
@@ -243,6 +196,51 @@ namespace Warhammer.Core.Concrete
 
             }
             return scoreHistories;
+        }
+
+        public void UpdatePersonScore(int personId)
+        {
+            
+            Person person = _repo.People()
+                .Include(p => p.Awards.Select(a => a.Trophy))
+                .Include(p => p.PersonStats)
+                .Include(p => p.Pages)
+                
+                .FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                List<ScoreHistory> scores = CalculateScoreForPerson(person, DateTime.Now).ToList();
+                decimal current = scores.Where(s => s.ScoreType == ScoreType.Total).Sum(s => s.PointsValue);
+                person.CurrentScore = current;
+
+                List<ScoreHistory> original = _repo.ScoreHistories().Where(s => s.PersonId == personId).ToList();
+
+                foreach (ScoreHistory scoreHistory in original)
+                {
+                    _repo.Delete(scoreHistory);
+                }
+
+                foreach (ScoreHistory scoreHistory in scores)
+                {
+                    _repo.Save(scoreHistory);
+                }
+
+                _repo.Save(person);
+            }
+        }
+
+        public void UpdateScores()
+        {
+            DateTime cutOff = DateTime.Now.AddMinutes(-_scoreUpdateInterval);
+            List<int> personIds = _repo.People()
+                .Where(p => p.ScoreHistories.All(s => s.DateTime < cutOff))
+                .OrderByDescending(s => s.ScoreHistories.Count==0)
+                .ThenBy(p => p.ScoreHistories.Min(s => s.DateTime))
+                .Take(3).Select(p => p.Id).ToList();
+            foreach (var id in personIds)
+            {
+                UpdatePersonScore(id);
+            }
         }
     }
 }

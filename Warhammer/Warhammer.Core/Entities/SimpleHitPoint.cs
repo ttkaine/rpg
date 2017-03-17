@@ -20,6 +20,7 @@ namespace Warhammer.Core.Entities
         public int HitPointLevelId { get; set; }
         public Nullable<System.DateTime> Purchased { get; set; }
         public int XpCost { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Person Person { get; set; }
     }

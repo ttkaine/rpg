@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public int AspectType { get; set; }
         public string AspectName { get; set; }
         public bool IsVisible { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Person Person { get; set; }
     }

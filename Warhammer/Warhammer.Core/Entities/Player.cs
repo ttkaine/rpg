@@ -25,6 +25,7 @@ namespace Warhammer.Core.Entities
             this.Posts = new HashSet<Post>();
             this.PostOrders = new HashSet<PostOrder>();
             this.UserSettings = new HashSet<UserSetting>();
+            this.PlayerCampaigns = new HashSet<PlayerCampaign>();
         }
     
         public int Id { get; set; }
@@ -32,7 +33,6 @@ namespace Warhammer.Core.Entities
         public string DisplayName { get; set; }
         public byte[] ImageData { get; set; }
         public string Description { get; set; }
-        public bool IsGm { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
@@ -43,5 +43,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<PostOrder> PostOrders { get; set; }
         public virtual ICollection<UserSetting> UserSettings { get; set; }
+        public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
     }
 }

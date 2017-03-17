@@ -17,5 +17,6 @@ namespace Warhammer.Core.Entities
         public int Id { get; set; }
         public int SettingId { get; set; }
         public string SettingValue { get; set; }
+        public int CampaignId { get; set; }
     }
 }

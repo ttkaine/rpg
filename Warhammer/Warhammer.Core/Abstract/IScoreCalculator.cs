@@ -2,6 +2,8 @@
 {
     public interface IScoreCalculator
     {
-        void UpdateScoreHistories();
+       // void UpdateScoreHistories();
+        void UpdatePersonScore(int personId);
+        void UpdateScores();
     }
 }

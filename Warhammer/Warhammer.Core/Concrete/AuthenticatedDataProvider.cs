@@ -18,6 +18,7 @@ namespace Warhammer.Core.Concrete
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
+        private readonly IScoreCalculator _score;
 
         private int UpliftId
         {
@@ -53,12 +54,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
+            _score = score;
         }
 
         public Player CurrentPlayer
@@ -71,6 +73,32 @@ namespace Warhammer.Core.Concrete
                     throw new Exception("User is not Authenticated");
                 }
                 return _repository.Players().FirstOrDefault(p => p.UserName == _authenticatedUser.UserName);
+            }
+        }
+
+        public Player Gm
+        {
+            get
+            {
+                CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
+                if (campaign != null)
+                {
+                    return _repository.Players().FirstOrDefault(p => p.Id == campaign.GmId);
+                }
+                return null;
+            }
+        }
+
+        public bool CurrentPlayerIsGm
+        {
+            get
+            {
+                CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
+                if (campaign?.GmId == CurrentPlayer.Id)
+                {
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -153,7 +181,7 @@ namespace Warhammer.Core.Concrete
                 FullName = longName,
                 Description = description,
             };
-            if (!CurrentPlayer.IsGm && !personCreateAsNpc)
+            if (!CurrentPlayerIsGm && !personCreateAsNpc)
             {
                 person.PlayerId = CurrentPlayer.Id;
             }
@@ -331,6 +359,12 @@ namespace Warhammer.Core.Concrete
                 {
                     NotifyEditPage(pageId);
                 }
+            }
+
+            Person person  = page as Person;
+            if (person != null)
+            {
+                _score.UpdatePersonScore(pageId);
             }
 
             return pageId;
@@ -790,7 +824,7 @@ namespace Warhammer.Core.Concrete
                 return false;
             }
 
-            if (!CurrentPlayer.IsGm)
+            if (!CurrentPlayerIsGm)
             {
                 Person person = GetPerson(personId);
                 if (person.PlayerId != CurrentPlayer.Id)
@@ -1147,7 +1181,7 @@ namespace Warhammer.Core.Concrete
 
         public List<ScoreHistory> GetCurrentScoresForPerson(int id)
         {
-            return _repository.ScoreHistories().Where(s => s.PersonId == id).Where(a => a.DateTime == DateTime.Today).OrderBy(s => s.ScoreTypeId).ToList();
+            return _repository.ScoreHistories().Where(s => s.PersonId == id).OrderBy(s => s.ScoreTypeId).ToList();
 
         }
 
@@ -1758,6 +1792,11 @@ namespace Warhammer.Core.Concrete
 
         }
 
+        public int GetGmId()
+        {
+            return Gm.Id;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -1945,7 +1984,7 @@ namespace Warhammer.Core.Concrete
                  _repository.Pages()
                      .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed).ToList();
 
-            if (!CurrentPlayer.IsGm)
+            if (!CurrentPlayerIsGm)
             {
                 //pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
                 pages = pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)).ToList();
@@ -1967,7 +2006,7 @@ namespace Warhammer.Core.Concrete
                      .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed)
                         .ToList();
 
-            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayer.IsGm)).OrderBy(p => p.LastPostTime).ToList();
+            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayerIsGm)).OrderBy(p => p.LastPostTime).ToList();
         }
 
         public List<Session> TextSessionsContainingMyCharacters()
@@ -1976,7 +2015,7 @@ namespace Warhammer.Core.Concrete
                  _repository.Pages()
                      .OfType<Session>().Where(p => p.IsTextSession).ToList();
 
-            return pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id || CurrentPlayer.IsGm)).OrderBy(p => p.LastPostTime).ToList();
+            return pages.Where(p => p.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id || CurrentPlayerIsGm)).OrderBy(p => p.LastPostTime).ToList();
         }
 
         public void EnsurePostOrders(int sessionId)
@@ -2139,7 +2178,7 @@ namespace Warhammer.Core.Concrete
             {
                 if (session.IsGmTurn)
                 {
-                    return _repository.Players().FirstOrDefault(p => p.IsGm);
+                    return Gm;
                 }
                 else
                 {
@@ -2163,7 +2202,7 @@ namespace Warhammer.Core.Concrete
         {
             return
                 OpenTextSessions()
-                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayer.IsGm).ToList();
+                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm).ToList();
         }
 
         public List<Session> ModifiedTextSessions()

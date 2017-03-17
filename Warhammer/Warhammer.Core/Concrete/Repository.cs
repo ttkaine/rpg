@@ -17,8 +17,19 @@ namespace Warhammer.Core.Concrete
     public class Repository : IRepository, IDisposable
     {
         private readonly WarhammerDataEntities _entities = new WarhammerDataEntities();
+        private readonly ICurrentCampaignProvider _campaign;
+
+        public Repository(ICurrentCampaignProvider campaign)
+        {
+            _campaign = campaign;
+        }
 
         #region Accessors
+
+        public int CurrentCampaignId
+        {
+            get { return _campaign.CurrentCampaignId; }
+        }
 
         //public IQueryable<ChangeLog> ChangeLogs()
         //{
@@ -32,7 +43,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Person> People()
         {
-            return _entities.Pages.OfType<Person>();
+            return _entities.Pages.OfType<Person>().Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public IQueryable<Player> Players()
@@ -57,7 +68,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Page> Pages()
         {
-            return _entities.Pages;
+            return _entities.Pages.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public void Delete(Page page)
@@ -94,12 +105,12 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Award> Awards()
         {
-            return _entities.Awards;
+            return _entities.Awards.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public IQueryable<PageView> PageViews()
         {
-            return _entities.PageViews;
+            return _entities.PageViews.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public void Delete(PageView pageView)
@@ -125,7 +136,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Post> Posts()
         {
-            return _entities.Posts;
+            return _entities.Posts.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public void Delete(Post post)
@@ -136,7 +147,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Comment> Comments()
         {
-            return _entities.Comments;
+            return _entities.Comments.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public void Delete(Comment comment)
@@ -147,7 +158,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<SiteFeature> SiteFeatures()
         {
-            return _entities.SiteFeatures;
+            return _entities.SiteFeatures.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(SiteFeature feature)
@@ -207,7 +218,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<ScoreHistory> ScoreHistories()
         {
-            return _entities.ScoreHistories;
+            return _entities.ScoreHistories.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(ScoreHistory scoreHistory)
@@ -234,14 +245,14 @@ namespace Warhammer.Core.Concrete
                 .Include("PersonStats")
                 .Include("FateAspects")
                 .Include("FateStats")
-                .Include("FateStunts")
-            
+                .Include("FateStunts").Where(e => e.CampaignId == CurrentCampaignId)
+
                 .AsNoTracking();
         }
 
         public IQueryable<PageImage> PageImages()
         {
-            return _entities.PageImages;
+            return _entities.PageImages.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         #endregion
@@ -276,7 +287,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<FateAspect> FateAspects()
         {
-            return _entities.FateAspects;
+            return _entities.FateAspects.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(FateAspect fateAspect)
@@ -304,7 +315,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<FateStat> FateStats()
         {
-            return _entities.FateStats;
+            return _entities.FateStats.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(FateStat fateStat)
@@ -325,7 +336,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<FateStunt> FateStunts()
         {
-            return _entities.FateStunts;
+            return _entities.FateStunts.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(FateStunt fateStunt)
@@ -352,7 +363,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<AdminSetting> AdminSettings()
         {
-            return _entities.AdminSettings;
+            return _entities.AdminSettings.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(AdminSetting setting)
@@ -455,7 +466,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<PriceListItem> PriceListItems()
         {
-            return _entities.PriceListItems;
+            return _entities.PriceListItems.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(PriceListItem priceListItem)
@@ -475,12 +486,12 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<CampaignDetail> CampaignDetails()
         {
-            return _entities.CampaignDetails;
+            return _entities.CampaignDetails.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public IQueryable<Rumour> Rumours()
         {
-            return _entities.Rumours;
+            return _entities.Rumours.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public int Save(Rumour rumour)
@@ -542,7 +553,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Asset> Assets()
         {
-            return _entities.Assets;
+            return _entities.Assets.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)

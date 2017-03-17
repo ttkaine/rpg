@@ -7,6 +7,7 @@ namespace Warhammer.Core.Abstract
 {
     public interface IAuthenticatedDataProvider
     {
+        bool CurrentPlayerIsGm { get; }
         string VersionInfo();
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
@@ -147,5 +148,6 @@ namespace Warhammer.Core.Abstract
         void AddAsset(int personId, string title, string description, int upkeep);
         void SpendMoney(int personId, int spendCrowns, int spendShillings, int spendPence);
         void AddMoney(int personId, int addCrowns, int addShillings, int addPence);
+        int GetGmId();
     }
 }

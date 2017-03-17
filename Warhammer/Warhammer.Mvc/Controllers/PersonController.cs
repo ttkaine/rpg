@@ -216,7 +216,7 @@ namespace Warhammer.Mvc.Controllers
         private SimpleHitPointsViewModel MakeSimpleHitPointsViewModel(Person person)
         {
 
-            bool userCanBuy = person.PlayerId == CurrentPlayer.Id || !person.PlayerId.HasValue && CurrentPlayer.IsGm;
+            bool userCanBuy = person.PlayerId == CurrentPlayer.Id || !person.PlayerId.HasValue && CurrentPlayerIsGm;
 
             int baseCost = person.SimpleHitPoints.Count(h => h.Purchased.HasValue);
 
@@ -470,109 +470,6 @@ namespace Warhammer.Mvc.Controllers
             }
 
             return null;
-        }
-
-        public ActionResult ScoreHistory(int id)
-        {
-            if (DataProvider.SiteHasFeature(Feature.ScoreHistory))
-            {
-                Person person = DataProvider.GetPerson(id);
-                if (person != null)
-                {
-                    if (!DataProvider.SiteHasFeature(Feature.PublicLeague))
-                    {
-                        if (person.PlayerId.HasValue && person.PlayerId != CurrentPlayer.Id)
-                        {
-                            return null;
-                        }
-                    }
-
-                    List<ScoreHistory> scores = DataProvider.PersonScoreHistory(person.Id);//person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
-                    if (scores.Any())
-                    {
-
-                        List<DateTime> dates = scores.Select(s => s.DateTime).ToList();
-                          dates = dates.Distinct().ToList();
-
-                        var vals = Enum.GetValues(typeof (ScoreType));
-
-                        List<int> types = vals.Cast<int>().OrderByDescending(i => i).ToList();
-
-                        types.Remove((int)ScoreType.Total);
-                        if (!DataProvider.SiteHasFeature(Feature.SimpleStats))
-                        {
-                            types.Remove((int) ScoreType.Roles);
-                            types.Remove((int)ScoreType.Descriptors);
-                            }
-
-                        if (!DataProvider.SiteHasFeature(Feature.SimpleStats) & !DataProvider.SiteHasFeature(Feature.FateStats))
-                        {
-                            types.Remove((int)ScoreType.Stats);
-                        }
-
-                        List<Series> allSeries = new List<Series>();
-
-                        foreach (int type in types)
-                        {
-                            Series series = new Series();
-                            series.Name = ((ScoreType)type).ToString();
-                            series.Color = GetColorForScoreType((ScoreType) type);
-                            decimal[] points = dates.Select(dateTime => scores.Where(s => s.DateTime == dateTime && s.ScoreTypeId == type).Sum(t => t.PointsValue)).ToArray();
-
-                            series.Data = new Data(points.Cast<object>().ToArray());
-
-                            allSeries.Add(series);
-                        }
-
-
-                        DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("Points_History")
-                           .InitChart(new Chart
-                           {
-                               DefaultSeriesType = ChartTypes.Area
-                           })
-                                .SetTitle(new Title { Text = "Points History" })
-                                
-                            .SetTooltip(new Tooltip
-                            {
-                                Shared = false,
-                                ValueSuffix = " Points"
-                            })
-                 .SetXAxis(new XAxis
-                 {
-                     Categories = dates.Select(d => d.ToShortDateString()).ToArray(),
-                     Title = new XAxisTitle { Text = "Date" }
-                     }).SetYAxis(new YAxis
-                     {
-                         Title = new YAxisTitle {  Text = "Points" }
-                     })
-                 .SetPlotOptions(new PlotOptions
-                 {
-                     Area = new PlotOptionsArea
-                     {
-                         
-                         Stacking = Stackings.Normal,
-
-                         ConnectNulls = true,
-                         ConnectEnds = true,
-                         LineColor = Color.AliceBlue,
-                         LineWidth = 1,
-                         Marker = new PlotOptionsAreaMarker
-                         {
-                             Enabled = false
-                         }
-                         
-                     }
-                 })
-                 .SetSeries(allSeries.ToArray());
-
-                return PartialView("Chart", chart);
-
-                      //  return PartialView(scores);
-                    }
-                }
-            }
-            return null;
-
         }
 
         private Color GetColorForScoreType(ScoreType scoreType)
@@ -876,7 +773,7 @@ namespace Warhammer.Mvc.Controllers
             PersonDetailsViewModel model = new PersonDetailsViewModel
             {
                 PersonId = person.Id,
-                AllowEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.Id
+                AllowEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.Id
             };
 
             if (person.TotalPennies != 0)

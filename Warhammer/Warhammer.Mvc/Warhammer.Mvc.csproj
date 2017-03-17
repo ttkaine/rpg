@@ -198,6 +198,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Concrete\AuthenticatedUserProvider.cs" />
+    <Compile Include="Concrete\CurrentCampaignProvider.cs" />
     <Compile Include="Concrete\EditModeFilterAttribute.cs" />
     <Compile Include="Concrete\LinkGenerator.cs" />
     <Compile Include="Concrete\RoleplayHub.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\darknet.css" />
     <Content Include="Content\DbUpdateScripts\16112501.sql" />
     <Content Include="Content\DbUpdateScripts\16112701.sql" />
     <Content Include="Content\DbUpdateScripts\17012001.sql" />
@@ -272,6 +274,10 @@
     <Content Include="Content\DbUpdateScripts\17020402.sql" />
     <Content Include="Content\DbUpdateScripts\17021301.sql" />
     <Content Include="Content\DbUpdateScripts\17030301.sql" />
+    <Content Include="Content\DbUpdateScripts\17031701.sql" />
+    <Content Include="Content\DbUpdateScripts\17031702.sql" />
+    <Content Include="Content\DbUpdateScripts\17031703.sql" />
+    <Content Include="Content\DbUpdateScripts\17031704.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -280,6 +286,7 @@
     <Content Include="Content\Images\bg-small.jpg" />
     <Content Include="Content\Images\coin.png" />
     <Content Include="Content\Images\crown.jpg" />
+    <Content Include="Content\Images\darknet_background.jpg" />
     <Content Include="Content\Images\edited.png" />
     <Content Include="Content\Images\fate_background.jpg" />
     <Content Include="Content\Images\features.png" />

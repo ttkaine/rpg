@@ -26,6 +26,7 @@ namespace Warhammer.Core.Entities
             this.SimpleHitPoints = new HashSet<SimpleHitPoint>();
             this.Reputations = new HashSet<Reputation>();
             this.Assets = new HashSet<Asset>();
+            this.ScoreHistories = new HashSet<ScoreHistory>();
         }
     
         public bool IsDead { get; set; }
@@ -56,5 +57,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<SimpleHitPoint> SimpleHitPoints { get; set; }
         public virtual ICollection<Reputation> Reputations { get; set; }
         public virtual ICollection<Asset> Assets { get; set; }
+        public virtual ICollection<ScoreHistory> ScoreHistories { get; set; }
     }
 }

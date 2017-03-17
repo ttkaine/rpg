@@ -18,6 +18,7 @@ namespace Warhammer.Core.Entities
         public int SessionId { get; set; }
         public int PlayerId { get; set; }
         public System.DateTime LastTurnEnded { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Player Player { get; set; }
         public virtual Session Session { get; set; }

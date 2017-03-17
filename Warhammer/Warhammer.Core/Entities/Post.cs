@@ -33,6 +33,7 @@ namespace Warhammer.Core.Entities
         public Nullable<System.DateTime> LastEdited { get; set; }
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Player Player { get; set; }
         public virtual Session Session { get; set; }

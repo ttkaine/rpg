@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public int PersonId { get; set; }
         public int ScoreTypeId { get; set; }
         public decimal PointsValue { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Person Person { get; set; }
     }

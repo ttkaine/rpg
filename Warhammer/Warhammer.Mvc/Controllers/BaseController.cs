@@ -12,6 +12,12 @@ namespace Warhammer.Mvc.Controllers
         private readonly IAuthenticatedDataProvider _data;
         private IViewModelFactory _factory;
 
+
+        protected bool CurrentPlayerIsGm
+        {
+            get { return _data.CurrentPlayerIsGm; }
+        }
+
         protected bool IsEditMode
         {
             get { return ViewBag.EditMode; }

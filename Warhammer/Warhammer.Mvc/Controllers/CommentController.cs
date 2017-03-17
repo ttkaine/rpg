@@ -28,7 +28,7 @@ namespace Warhammer.Mvc.Controllers
 
                 Player player = CurrentPlayer;
                 List<Person> people;
-                if (player.IsGm)
+                if (CurrentPlayerIsGm)
                 {
                     people = DataProvider.AllNpcs().OrderBy(p => p.FullName).ToList();
                 }

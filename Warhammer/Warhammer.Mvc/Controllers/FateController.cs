@@ -38,7 +38,7 @@ namespace Warhammer.Mvc.Controllers
             List<FateAspectViewModel> aspects = DataProvider.GetAspects(person.Id).Select(a => new FateAspectViewModel
             {
                 Aspect = a,
-                ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                ShowHidden = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
             }).ToList();
 
             List<int> allTypes = AspectType.Concept.Numbers().OrderBy(i => i).ToList();
@@ -54,7 +54,7 @@ namespace Warhammer.Mvc.Controllers
                             AspectType = i,
                             PersonId = person.Id,
                         },
-                        ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                        ShowHidden = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
                     });
                 }
             }
@@ -141,8 +141,8 @@ namespace Warhammer.Mvc.Controllers
             {
                 Stat = f,
                 Options = new SelectList(values.Select(v => new { value = v, display = GetLevelDisplayName(v) }).ToList(), "value", "display"),
-                ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId,
-                CanEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                ShowHidden = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId,
+                CanEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
             }).ToList();
 
 
@@ -158,11 +158,11 @@ namespace Warhammer.Mvc.Controllers
                         {
                             StatType = i,
                             PersonId = person.Id,
-                            IsVisible = IsEditMode && !CurrentPlayer.IsGm
+                            IsVisible = IsEditMode && !CurrentPlayerIsGm
                         },
                         Options = new SelectList(values.Select(v => new { value = v, display = GetLevelDisplayName(v) }).ToList(), "value", "display"),
-                        ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId,
-                        CanEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                        ShowHidden = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId,
+                        CanEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
                     });
                 }
             }
@@ -204,13 +204,13 @@ namespace Warhammer.Mvc.Controllers
             List<FateStuntViewModel> models = stunts.Select(s => new FateStuntViewModel
             {
                 Stunt = s,
-                ShowHidden = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                ShowHidden = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
             }).ToList();
             FateStuntsViewModel viewModel = new FateStuntsViewModel
             {
                 StuntModels = models,
                 PersonId = person.Id,
-                CanEdit = CurrentPlayer.IsGm || CurrentPlayer.Id == person.PlayerId
+                CanEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
             };
             return viewModel;
         }
@@ -221,7 +221,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                stunt.IsVisible = !CurrentPlayer.IsGm;
+                stunt.IsVisible = !CurrentPlayerIsGm;
                 DataProvider.SaveStunt(stunt);
                 Person person = DataProvider.GetPerson(stunt.PersonId);
                 if (person != null)
