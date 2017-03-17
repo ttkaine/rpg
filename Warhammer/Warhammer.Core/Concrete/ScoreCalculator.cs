@@ -17,6 +17,8 @@ namespace Warhammer.Core.Concrete
 
         public void UpdateScoreHistories()
         {
+            return; //Temp Dispable Score calc until we get a nicer wat to do it! TODO MAke Scores SENSIBLE!
+            
             lock (_lock)
             {
                 DateTime lastCalculated = DateTime.Now.Date.AddDays(-1);
@@ -96,7 +98,7 @@ namespace Warhammer.Core.Concrete
                     ScoreType = ScoreType.Sessions,
                     DateTime = scoreDate,
                     PersonId = person.Id,
-                    PointsValue = (decimal) sessions.Where(l => l.DateTime < scoreDate).Sum(l => l.BaseScore)
+                    PointsValue = (decimal) sessions.Where(l => l.DateTime < scoreDate).Sum(l => l.BaseScore)       
                 });
 
                 scoreHistories.Add(new ScoreHistory
