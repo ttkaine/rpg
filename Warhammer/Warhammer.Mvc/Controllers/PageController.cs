@@ -5,10 +5,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using Microsoft.AspNet.SignalR;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
+using Warhammer.Mvc.Concrete;
 using Warhammer.Mvc.Models;
 using Page = Warhammer.Core.Entities.Page;
 
@@ -60,8 +62,10 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+
         [HttpPost, ValidateInput(false)]
-        [Authorize(Roles = "Player")]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult Index(Page page)
         {
             if (ModelState.IsValid)
@@ -123,7 +127,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Player")]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult DeleteLink(int id, int linkToDeleteId)
         {
             if (ModelState.IsValid)
@@ -197,7 +201,7 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
-        [Authorize(Roles = "Player")]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult ChangeImage(int? id)
         {
             if (id.HasValue)
@@ -213,7 +217,7 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("index", "home");
         }
 
-        [Authorize(Roles = "Player")]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditLinks(int? id)
         {
             if (id.HasValue)
@@ -236,7 +240,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Player")]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditLinks(EditLinksViewModel model)
         {
             if (ModelState.IsValid)
@@ -257,7 +261,7 @@ namespace Warhammer.Mvc.Controllers
         
 
         [HttpPost]
-        [Authorize(Roles = "Player")]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         [ValidateInput(false)]
         public ActionResult ChangeImage(string saveAction, int id, HttpPostedFileBase profileImageFile, double? y1, double? x1, double? h, double? w)
         {
@@ -297,6 +301,79 @@ namespace Warhammer.Mvc.Controllers
             }
 
             return new Rectangle();
+        }
+
+        public ActionResult PlayerSessionControls(int? id)
+        {
+            if (id.HasValue)
+            {
+                Page page = DataProvider.GetPage(id.Value);
+                if (page is Session)
+                {
+                    PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, CurrentPlayerIsGm);
+
+                    return PartialView(model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult UnSuspendPlayer(int playerId, int sessionId)
+        {
+            Page page = DataProvider.GetPage(sessionId);
+            if (page is Session)
+            {
+                if (playerId == CurrentPlayer.Id || CurrentPlayerIsGm)
+                {
+                    if (playerId == CurrentPlayer.Id && CurrentPlayerIsGm)
+                    {
+                        DataProvider.SetGmSuspended(page.Id, 0);
+                    }
+                    else
+                    {
+                        DataProvider.SetPlayerSuspended(page.Id, playerId, 0);
+                    }
+                    UpdateRoleplayHub();
+                }
+
+                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, CurrentPlayerIsGm);
+                return PartialView("PlayerSessionControls", model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult SuspendPlayer(int playerId, int sessionId)
+        {
+            Page page = DataProvider.GetPage(sessionId);
+            if (page is Session)
+            {
+                if (playerId == CurrentPlayer.Id || CurrentPlayerIsGm)
+                {
+                    if (playerId == CurrentPlayer.Id && CurrentPlayerIsGm)
+                    {
+                        DataProvider.SetGmSuspended(page.Id, 1);
+                    }
+                    else
+                    {
+                        DataProvider.SetPlayerSuspended(page.Id, playerId, 1);
+                    }
+                    UpdateRoleplayHub();
+                }
+
+                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, CurrentPlayerIsGm);
+                return PartialView("PlayerSessionControls", model);
+            }
+            return null;
+        }
+
+        private void UpdateRoleplayHub()
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<RoleplayHub>();
+            hubContext.Clients.All.updateSession();
+            hubContext.Clients.All.updateTextSessionsOnHomePage();
+
         }
     }
 }

@@ -1797,6 +1797,30 @@ namespace Warhammer.Core.Concrete
             return Gm.Id;
         }
 
+        public void SetGmSuspended(int sessionId, int suspended)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                session.GmIsSuspended = suspended;
+                Save(session);
+            }
+        }
+
+        public void SetPlayerSuspended(int sessionId, int playerId, int suspended)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                PostOrder postOrder = session.PostOrders.FirstOrDefault(p => p.PlayerId == playerId);
+                if (postOrder != null)
+                {
+                    postOrder.IsSuspended = suspended;
+                    Save(session);
+                }                
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -2001,12 +2025,22 @@ namespace Warhammer.Core.Concrete
 
         public List<Session> TextSessionsWhereItisMyTurn()
         {
+            bool isGm = CurrentPlayerIsGm;
             List<Session> pages =
                  _repository.Pages()
-                     .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed)
+                     .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && p.PostOrders.Any(po => po.PlayerId == CurrentPlayer.Id && po.IsSuspended == 0 || isGm))
                         .ToList();
 
-            return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && CurrentPlayerIsGm)).OrderBy(p => p.LastPostTime).ToList();
+            if (isGm)
+            {
+                return pages.Where(p => p.IsGmTurn && p.GmIsSuspended == 0).OrderBy(p => p.LastPostTime).ToList();
+            }
+            else
+            {
+                return pages.OrderBy(p => p.LastPostTime).ToList();
+            }
+
+            //return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && isGm && p.GmIsSuspended == 0)).OrderBy(p => p.LastPostTime).ToList();
         }
 
         public List<Session> TextSessionsContainingMyCharacters()
@@ -2176,13 +2210,17 @@ namespace Warhammer.Core.Concrete
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
-                if (session.IsGmTurn)
+                if (session.IsGmTurn && session.GmIsSuspended == 0)
                 {
                     return Gm;
                 }
                 else
                 {
-                    PostOrder postOrder = session.PostOrders.OrderBy(po => po.LastTurnEnded).FirstOrDefault();
+                    PostOrder postOrder = session.PostOrders.Where(p => p.IsSuspended == 0).OrderBy(po => po.LastTurnEnded).FirstOrDefault();
+                    if (postOrder == null && session.GmIsSuspended == 0)
+                    {
+                        return Gm;
+                    }
 
                     return postOrder != null ? postOrder.Player : null;
                 }

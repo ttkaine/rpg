@@ -259,9 +259,9 @@ namespace Warhammer.Core.Concrete
 
 	    private int GetCurrentPlayerId(Session session)
         {
-            if (!session.IsGmTurn)
+            if (!session.IsGmTurn || (session.IsGmTurn && session.GmIsSuspended > 0))
             { 
-                PostOrder order = session.PostOrders.OrderBy(p => p.LastTurnEnded).FirstOrDefault();
+                PostOrder order = session.PostOrders.Where(p => p.IsSuspended == 0).OrderBy(p => p.LastTurnEnded).FirstOrDefault();
                 if (order != null)
                 {
                     return order.PlayerId;
