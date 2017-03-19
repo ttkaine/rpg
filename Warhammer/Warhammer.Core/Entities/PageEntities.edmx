@@ -348,6 +348,7 @@
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="LastTurnEnded" Type="datetime" Nullable="false" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="IsSuspended" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PriceListItem">
           <Key>
@@ -409,6 +410,7 @@
           <Property Name="IsPrivate" Type="bit" Nullable="false" />
           <Property Name="IsGmTurn" Type="bit" Nullable="false" />
           <Property Name="XpAwarded" Type="datetime" />
+          <Property Name="GmIsSuspended" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SessionLog">
           <Key>
@@ -1642,6 +1644,7 @@
           <Property Name="IsGmTurn" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="Session" ToRole="PostOrder" />
           <Property Name="XpAwarded" Type="DateTime" Precision="3" />
+          <Property Name="GmIsSuspended" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="SessionLog" BaseType="WarhammerModel.Page">
           <Property Name="PersonId" Type="Int32" />
@@ -1897,6 +1900,7 @@
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="PostOrder" ToRole="Player" />
           <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="PostOrder" ToRole="Session" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <Property Name="IsSuspended" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_PostOrder_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -2569,6 +2573,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="GmIsSuspended" ColumnName="GmIsSuspended" />
                 <ScalarProperty Name="XpAwarded" ColumnName="XpAwarded" />
                 <ScalarProperty Name="IsGmTurn" ColumnName="IsGmTurn" />
                 <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
@@ -2672,6 +2677,7 @@
           <EntitySetMapping Name="PostOrders">
             <EntityTypeMapping TypeName="WarhammerModel.PostOrder">
               <MappingFragment StoreEntitySet="PostOrder">
+                <ScalarProperty Name="IsSuspended" ColumnName="IsSuspended" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="LastTurnEnded" ColumnName="LastTurnEnded" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
