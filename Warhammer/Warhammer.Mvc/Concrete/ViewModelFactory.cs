@@ -273,6 +273,40 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public PlayerSessionControlsViewModel MakePlayerSessionControlsViewModel(Session session, Player player, bool playerIsGm)
+        {
+            PlayerSessionControlsViewModel viewModel = new PlayerSessionControlsViewModel()
+            {
+                Players = new List<SuspendPlayerItemViewModel>()
+            };
+
+            if (playerIsGm)
+            {
+                SuspendPlayerItemViewModel playerModel = new SuspendPlayerItemViewModel()
+                {
+                    SessionId = session.Id,
+                    PlayerId = player.Id,
+                    PlayerName = player.DisplayName + " (GM)",
+                    PlayerSuspended = session.GmIsSuspended > 0
+                };
+                viewModel.Players.Add(playerModel);
+            }
+
+            foreach (PostOrder postOrder in session.PostOrders.Where(p => p.PlayerId == player.Id || playerIsGm))
+            {
+                SuspendPlayerItemViewModel playerModel = new SuspendPlayerItemViewModel()
+                {
+                    SessionId = session.Id,
+                    PlayerId = postOrder.PlayerId,
+                    PlayerName = postOrder.Player.DisplayName,
+                    PlayerSuspended = postOrder.IsSuspended > 0
+                };
+                viewModel.Players.Add(playerModel);
+            }
+
+            return viewModel;            
+        }
+
 
         private string GetSettingTitle(SettingSection section)
         {

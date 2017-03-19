@@ -1797,6 +1797,30 @@ namespace Warhammer.Core.Concrete
             return Gm.Id;
         }
 
+        public void SetGmSuspended(int sessionId, int suspended)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                session.GmIsSuspended = suspended;
+                Save(session);
+            }
+        }
+
+        public void SetPlayerSuspended(int sessionId, int playerId, int suspended)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                PostOrder postOrder = session.PostOrders.FirstOrDefault(p => p.PlayerId == playerId);
+                if (postOrder != null)
+                {
+                    postOrder.IsSuspended = suspended;
+                }
+                Save(session);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -2182,7 +2206,11 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    PostOrder postOrder = session.PostOrders.OrderBy(po => po.LastTurnEnded).FirstOrDefault();
+                    PostOrder postOrder = session.PostOrders.Where(p => p.IsSuspended == 0).OrderBy(po => po.LastTurnEnded).FirstOrDefault();
+                    if (postOrder == null && session.GmIsSuspended == 0)
+                    {
+                        return Gm;
+                    }
 
                     return postOrder != null ? postOrder.Player : null;
                 }

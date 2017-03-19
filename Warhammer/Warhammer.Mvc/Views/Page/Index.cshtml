@@ -139,6 +139,11 @@
                 @Html.ActionLink("Download Transcript", "TextLog", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
             }
 
+            if (session.IsTextSession && !session.IsClosed)
+            {
+                @Html.Action("PlayerSessionControls", "Page", new { id = Model.Id })
+            }
+
             if (session.PlayerCharacters.Any())
             {
                 <h3>Player Characters</h3>

@@ -1,0 +1,18 @@
+﻿@using Warhammer.Mvc.Models
+@model Warhammer.Mvc.Models.PlayerSessionControlsViewModel
+
+<div id="playerTextSessionControls">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="min-width: 100px;">Player</th>
+                <th style="min-width: 80px;"></th>
+                <th style="min-width: 80px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.EditorFor(m => Model.Players)
+        </tbody>
+
+    </table>
+</div>

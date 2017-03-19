@@ -261,7 +261,7 @@ namespace Warhammer.Core.Concrete
         {
             if (!session.IsGmTurn)
             { 
-                PostOrder order = session.PostOrders.OrderBy(p => p.LastTurnEnded).FirstOrDefault();
+                PostOrder order = session.PostOrders.Where(p => p.IsSuspended == 0).OrderBy(p => p.LastTurnEnded).FirstOrDefault();
                 if (order != null)
                 {
                     return order.PlayerId;

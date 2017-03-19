@@ -1,0 +1,39 @@
+﻿@model Warhammer.Mvc.Models.SuspendPlayerItemViewModel
+    
+<tr>
+    <td class="PlayerName">@Model.PlayerName</td>
+
+    @if (!Model.PlayerSuspended)
+    {
+        <td>
+            @using (Ajax.BeginForm("SuspendPlayer", "Page", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "playerTextSessionControls" }))
+            {
+                <input type="hidden" value="@Model.PlayerId" name="playerId" />
+                <input type="hidden" value="@Model.SessionId" name="sessionId" />
+                <input type="submit" value="SUSPENDED" class="btn btn-default btn-block" />
+            }
+        </td>
+        <td>
+            <span class="btn btn-success  btn-block">ACTIVE</span>
+        </td>
+    }
+    else
+    {
+        <td>
+            <span class="btn btn-danger  btn-block">SUSPENDED</span>
+        </td>
+        <td>
+            @using (Ajax.BeginForm("UnSuspendPlayer", "Page", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "playerTextSessionControls" }))
+            {
+                <input type="hidden" value="@Model.PlayerId" name="playerId" />
+                <input type="hidden" value="@Model.SessionId" name="sessionId" />
+                <input type="submit" value="ACTIVE" class="btn btn-default  btn-block" />
+            }
+        </td>
+    }
+
+</tr>
+
+
+
+

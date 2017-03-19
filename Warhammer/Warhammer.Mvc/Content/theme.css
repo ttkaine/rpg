@@ -7246,3 +7246,11 @@ ul.outstanding-xp-list {
   white-space: nowrap;
   overflow: hidden;
 }
+#playerTextSessionControls {
+  margin: 20px 0 50px 0;
+}
+#playerTextSessionControls table td.PlayerName {
+  vertical-align: middle !important;
+  font-weight: bold;
+  padding-right: 5px;
+}

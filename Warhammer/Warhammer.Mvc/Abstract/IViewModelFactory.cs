@@ -12,5 +12,6 @@ namespace Warhammer.Mvc.Abstract
         UserSettingsViewModel MakeUserSettings();
         UserSettingsSectionViewModel Make(List<Setting> settingSection);
         PersonAssetsViewModel MakePersonAssetsViewModel(Person person);
+        PlayerSessionControlsViewModel MakePlayerSessionControlsViewModel(Session session, Player player, bool playerIsGm);
     }
 }

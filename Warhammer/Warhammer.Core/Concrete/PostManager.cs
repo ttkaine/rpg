@@ -354,11 +354,12 @@ namespace Warhammer.Core.Concrete
 	                order.LastTurnEnded = DateTime.Now;
 	            }
 
-	            if (player.Id == GetGmId())
+	            int gmId = GetGmId();
+	            if (player.Id == gmId || session.GmIsSuspended > 0)
 	            {
 	                session.IsGmTurn = false;
 	            }
-	            else
+	            if (player.Id != gmId && session.GmIsSuspended == 0)
 	            {
 	                session.IsGmTurn = true;
 	            }
