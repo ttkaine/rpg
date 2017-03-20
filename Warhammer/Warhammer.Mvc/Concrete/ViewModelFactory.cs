@@ -248,6 +248,11 @@ namespace Warhammer.Mvc.Concrete
                 model.SectionsIds.Add(SettingSection.EmailNotifications);
             }
 
+            if (_data.SiteHasFeature(Feature.ShadowMode))
+            {
+                model.SectionsIds.Add(SettingSection.ShadowMode);
+            }
+
             return model;
 
         }
@@ -316,6 +321,8 @@ namespace Warhammer.Mvc.Concrete
                     return "Email Notification Settings";
                 case SettingSection.DailySummaryEmails:
                     return "Summary Emails";
+                case SettingSection.ShadowMode:
+                    return "Shadow Mode";
                 default:
                     return "UNKNONW SETTING SECTION TITLE";
             }

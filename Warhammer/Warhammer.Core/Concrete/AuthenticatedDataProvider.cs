@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Transactions;
 using LinqKit;
@@ -1819,6 +1821,50 @@ namespace Warhammer.Core.Concrete
                     Save(session);
                 }                
             }
+        }
+
+        public List<PageLinkModel> GetRelatedPages(int id)
+        {
+
+            if (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode))
+            {
+                var myPages = MyPageIds();
+
+                List<PageLinkModel> shadowLinks = _repository.Pages()
+                    .Include(p => p.Pages)
+                    .Single(p => p.Id == id)
+                    .Pages.Where(p => myPages.Contains(p.Id))
+                    .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
+                    .ToList();
+
+                return shadowLinks;
+            }
+
+            List<PageLinkModel> links =
+                _repository.Pages()
+                    .Include(p => p.Pages)
+                    .Single(p => p.Id == id)
+                    .Pages.Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
+                    .ToList();
+            return links;
+        }
+
+        private List<int> MyPageIds()
+        {
+            List<int> myPages =
+                _repository.Pages()
+                    .Where(p => p.CreatedBy.UserName == _authenticatedUser.UserName)
+                    .Select(p => p.Id)
+                    .ToList();
+            return myPages;
+        }
+
+        public bool PlayerSettingEnabled(SettingNames setting)
+        {
+            Player player = CurrentPlayer;
+             Setting theSetting =  _repository.Settings().FirstOrDefault(s => s.Name == setting.ToString());
+
+            return player.SettingIsEnabled(theSetting);
         }
 
         public void RemoveAward(int personId, int awardId)

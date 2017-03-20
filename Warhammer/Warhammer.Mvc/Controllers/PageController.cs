@@ -375,5 +375,11 @@ namespace Warhammer.Mvc.Controllers
             hubContext.Clients.All.updateTextSessionsOnHomePage();
 
         }
+
+        public ActionResult RelatedLinks(int id)
+        {
+            List<PageLinkModel> linkedPages = DataProvider.GetRelatedPages(id);
+            return PartialView(linkedPages);
+        }
     }
 }

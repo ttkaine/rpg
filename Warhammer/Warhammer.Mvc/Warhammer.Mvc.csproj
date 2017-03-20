@@ -685,6 +685,8 @@
     <Content Include="Views\Person\EditorTemplates\Asset.cshtml" />
     <Content Include="Views\Page\PlayerSessionControls.cshtml" />
     <Content Include="Views\Page\EditorTemplates\SuspendPlayerItemViewModel.cshtml" />
+    <Content Include="Views\Page\RelatedLinks.cshtml" />
+    <Content Include="Views\Page\DisplayTemplates\PageLinkModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

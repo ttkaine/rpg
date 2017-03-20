@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Warhammer.Core.Models.PageLinkModel>
+@if (Model.Any())
+{
+    <h3>Related Pages</h3>
+            <ul>
+                    @Html.DisplayFor(m => Model)
+            </ul>
+            <div class="clearfix"></div>
+}

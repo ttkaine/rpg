@@ -151,5 +151,7 @@ namespace Warhammer.Core.Abstract
         int GetGmId();
         void SetGmSuspended(int sessionId, bool suspended);
         void SetPlayerSuspended(int sessionId, int playerId, bool suspended);
+        List<PageLinkModel> GetRelatedPages(int id);
+        bool PlayerSettingEnabled(SettingNames setting);
     }
 }

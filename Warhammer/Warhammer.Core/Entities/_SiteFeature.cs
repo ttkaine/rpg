@@ -37,7 +37,8 @@ namespace Warhammer.Core.Entities
         RumourMill,
         CrowNpcSheet,
         ShowGameDate,
-        Assets
+        Assets,
+        ShadowMode
     }
 
     public partial class SiteFeature

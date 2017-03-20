@@ -239,19 +239,11 @@
                 <div class="clearfix"></div>
             }
         }
-
-
-        @if (Model.Related.Any() && !ViewBag.EditMode)
+        @if (!ViewBag.EditMode)
         {
-            <h3>Related</h3>
-            <ul>
-                @foreach (Page page in Model.Related)
-                {
-                    <li>@Html.ActionLink(page.ShortName, "Index", new {id = page.Id})</li>
-                }
-            </ul>
-            <div class="clearfix"></div>
+            @Html.Action("RelatedLinks", "Page", new { id = Model.Id })
         }
+
 
     </div>
       

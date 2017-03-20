@@ -4,7 +4,8 @@
     public enum SettingSection
     {
         EmailNotifications = 1,
-        DailySummaryEmails = 2
+        DailySummaryEmails = 2,
+        ShadowMode = 3
     }
 
     public enum SettingNames
@@ -13,7 +14,8 @@
         SendEmailOnNewPage,
         SendEmailOnNewComment,
         SendEmailOnUpdatePage,
-        SendDailySummaryEmail
+        SendDailySummaryEmail,
+        ShadowMode
     }
 
     public partial class Setting
