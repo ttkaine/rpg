@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="WarhammerModel.Person" Width="1.5" PointX="6" PointY="9.625" />
         <EntityTypeShape EntityType="WarhammerModel.Place" Width="1.5" PointX="4.125" PointY="15.625" />
         <EntityTypeShape EntityType="WarhammerModel.Player" Width="1.5" PointX="0.75" PointY="9.75" />
-        <EntityTypeShape EntityType="WarhammerModel.Session" Width="1.5" PointX="5.25" PointY="18.625" />
         <EntityTypeShape EntityType="WarhammerModel.SessionLog" Width="1.5" PointX="8.375" PointY="14.25" />
         <EntityTypeShape EntityType="WarhammerModel.Trophy" Width="1.5" PointX="8.25" PointY="17" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Person" />
@@ -29,22 +28,16 @@
         <AssociationConnector Association="WarhammerModel.FK_Person_Player" />
         <AssociationConnector Association="WarhammerModel.FK_SessionLog_Person" />
         <AssociationConnector Association="WarhammerModel.FK_Place_Place" />
-        <AssociationConnector Association="WarhammerModel.FK_SessionLog_Session" />
         <AssociationConnector Association="WarhammerModel.PersonAtSession" />
         <InheritanceConnector EntityType="WarhammerModel.SessionLog" />
         <InheritanceConnector EntityType="WarhammerModel.Person" />
-        <InheritanceConnector EntityType="WarhammerModel.Session" />
         <InheritanceConnector EntityType="WarhammerModel.Place" />
         <EntityTypeShape EntityType="WarhammerModel.Post" Width="1.5" PointX="10.5" PointY="13.75" />
         <AssociationConnector Association="WarhammerModel.FK_Post_Player" />
-        <AssociationConnector Association="WarhammerModel.FK_Post_Session" />
-        <EntityTypeShape EntityType="WarhammerModel.PostOrder" Width="1.5" PointX="7.5" PointY="20.5" />
-        <AssociationConnector Association="WarhammerModel.FK_PostOrder_Player" />
-        <AssociationConnector Association="WarhammerModel.FK_PostOrder_Session" />
         <EntityTypeShape EntityType="WarhammerModel.SiteFeature" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="WarhammerModel.PersonStat" Width="1.5" PointX="8.25" PointY="2.25" />
         <AssociationConnector Association="WarhammerModel.FK_PersonStat_Person" />
-        <EntityTypeShape EntityType="WarhammerModel.UserSetting" Width="1.5" PointX="3" PointY="14.625" />
+        <EntityTypeShape EntityType="WarhammerModel.UserSetting" Width="1.5" PointX="0.5" PointY="16.125" />
         <AssociationConnector Association="WarhammerModel.FK_UserSetting_Player" />
         <EntityTypeShape EntityType="WarhammerModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="WarhammerModel.AspNetRole" Width="1.5" PointX="10.75" PointY="2.5" />
@@ -90,6 +83,13 @@
         <EntityTypeShape EntityType="WarhammerModel.Setting" Width="1.5" PointX="13.375" PointY="14.75" />
         <EntityTypeShape EntityType="WarhammerModel.ScoreHistory" Width="1.5" PointX="8.25" PointY="23.625" />
         <AssociationConnector Association="WarhammerModel.FK_ScoreHistory_Person" />
+        <EntityTypeShape EntityType="WarhammerModel.PostOrder" Width="1.5" PointX="10.5" PointY="20.625" />
+        <EntityTypeShape EntityType="WarhammerModel.Session" Width="1.5" PointX="5.25" PointY="18.625" />
+        <AssociationConnector Association="WarhammerModel.FK_PostOrder_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_Post_Session" />
+        <AssociationConnector Association="WarhammerModel.FK_PostOrder_Session" />
+        <AssociationConnector Association="WarhammerModel.FK_SessionLog_Session" />
+        <InheritanceConnector EntityType="WarhammerModel.Session" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

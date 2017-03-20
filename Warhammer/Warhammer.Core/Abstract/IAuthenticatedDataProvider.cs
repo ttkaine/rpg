@@ -149,7 +149,7 @@ namespace Warhammer.Core.Abstract
         void SpendMoney(int personId, int spendCrowns, int spendShillings, int spendPence);
         void AddMoney(int personId, int addCrowns, int addShillings, int addPence);
         int GetGmId();
-        void SetGmSuspended(int sessionId, int suspended);
-        void SetPlayerSuspended(int sessionId, int playerId, int suspended);
+        void SetGmSuspended(int sessionId, bool suspended);
+        void SetPlayerSuspended(int sessionId, int playerId, bool suspended);
     }
 }

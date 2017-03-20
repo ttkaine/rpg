@@ -287,7 +287,7 @@ namespace Warhammer.Mvc.Concrete
                     SessionId = session.Id,
                     PlayerId = player.Id,
                     PlayerName = player.DisplayName + " (GM)",
-                    PlayerSuspended = session.GmIsSuspended > 0
+                    PlayerSuspended = session.GmIsSuspended
                 };
                 viewModel.Players.Add(playerModel);
             }
@@ -299,7 +299,7 @@ namespace Warhammer.Mvc.Concrete
                     SessionId = session.Id,
                     PlayerId = postOrder.PlayerId,
                     PlayerName = postOrder.Player.DisplayName,
-                    PlayerSuspended = postOrder.IsSuspended > 0
+                    PlayerSuspended = postOrder.IsSuspended
                 };
                 viewModel.Players.Add(playerModel);
             }

@@ -33,7 +33,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<Player> Players { get; set; }
         public virtual DbSet<Trophy> Trophies { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
-        public virtual DbSet<PostOrder> PostOrders { get; set; }
         public virtual DbSet<SiteFeature> SiteFeatures { get; set; }
         public virtual DbSet<PersonStat> PersonStats { get; set; }
         public virtual DbSet<UserSetting> UserSettings { get; set; }
@@ -58,5 +57,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<PlayerCampaign> PlayerCampaigns { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ScoreHistory> ScoreHistories { get; set; }
+        public virtual DbSet<PostOrder> PostOrders { get; set; }
     }
 }

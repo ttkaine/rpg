@@ -23,9 +23,9 @@ namespace Warhammer.Core.Entities
             this.PageViews = new HashSet<PageView>();
             this.People = new HashSet<Person>();
             this.Posts = new HashSet<Post>();
-            this.PostOrders = new HashSet<PostOrder>();
             this.UserSettings = new HashSet<UserSetting>();
             this.PlayerCampaigns = new HashSet<PlayerCampaign>();
+            this.PostOrders = new HashSet<PostOrder>();
         }
     
         public int Id { get; set; }
@@ -41,8 +41,8 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<PageView> PageViews { get; set; }
         public virtual ICollection<Person> People { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
-        public virtual ICollection<PostOrder> PostOrders { get; set; }
         public virtual ICollection<UserSetting> UserSettings { get; set; }
         public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
+        public virtual ICollection<PostOrder> PostOrders { get; set; }
     }
 }

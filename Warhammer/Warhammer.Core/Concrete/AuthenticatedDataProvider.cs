@@ -1797,7 +1797,7 @@ namespace Warhammer.Core.Concrete
             return Gm.Id;
         }
 
-        public void SetGmSuspended(int sessionId, int suspended)
+        public void SetGmSuspended(int sessionId, bool suspended)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
@@ -1807,7 +1807,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void SetPlayerSuspended(int sessionId, int playerId, int suspended)
+        public void SetPlayerSuspended(int sessionId, int playerId, bool suspended)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
@@ -2028,12 +2028,12 @@ namespace Warhammer.Core.Concrete
             bool isGm = CurrentPlayerIsGm;
             List<Session> pages =
                  _repository.Pages()
-                     .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && p.PostOrders.Any(po => po.PlayerId == CurrentPlayer.Id && po.IsSuspended == 0 || isGm))
+                     .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && p.PostOrders.Any(po => po.PlayerId == CurrentPlayer.Id && !po.IsSuspended || isGm))
                         .ToList();
 
             if (isGm)
             {
-                return pages.Where(p => p.IsGmTurn && p.GmIsSuspended == 0).OrderBy(p => p.LastPostTime).ToList();
+                return pages.Where(p => p.IsGmTurn && !p.GmIsSuspended).OrderBy(p => p.LastPostTime).ToList();
             }
             else
             {
@@ -2210,14 +2210,14 @@ namespace Warhammer.Core.Concrete
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
-                if (session.IsGmTurn && session.GmIsSuspended == 0)
+                if (session.IsGmTurn && !session.GmIsSuspended)
                 {
                     return Gm;
                 }
                 else
                 {
-                    PostOrder postOrder = session.PostOrders.Where(p => p.IsSuspended == 0).OrderBy(po => po.LastTurnEnded).FirstOrDefault();
-                    if (postOrder == null && session.GmIsSuspended == 0)
+                    PostOrder postOrder = session.PostOrders.Where(p => !p.IsSuspended).OrderBy(po => po.LastTurnEnded).FirstOrDefault();
+                    if (postOrder == null && !session.GmIsSuspended)
                     {
                         return Gm;
                     }

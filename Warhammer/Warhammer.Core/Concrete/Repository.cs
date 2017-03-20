@@ -178,7 +178,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<UserSetting> UserSettings()
         {
-            return _entities.UserSettings;
+            return _entities.UserSettings.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
         public IQueryable<Setting> Settings()

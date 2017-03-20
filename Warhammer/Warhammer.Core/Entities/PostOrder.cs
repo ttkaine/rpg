@@ -19,7 +19,7 @@ namespace Warhammer.Core.Entities
         public int PlayerId { get; set; }
         public System.DateTime LastTurnEnded { get; set; }
         public int CampaignId { get; set; }
-        public int IsSuspended { get; set; }
+        public bool IsSuspended { get; set; }
     
         public virtual Player Player { get; set; }
         public virtual Session Session { get; set; }

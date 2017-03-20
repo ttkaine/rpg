@@ -355,11 +355,11 @@ namespace Warhammer.Core.Concrete
 	            }
 
 	            int gmId = GetGmId();
-	            if (player.Id == gmId || session.GmIsSuspended > 0)
+	            if (player.Id == gmId || session.GmIsSuspended)
 	            {
 	                session.IsGmTurn = false;
 	            }
-	            if (player.Id != gmId && session.GmIsSuspended == 0)
+	            if (player.Id != gmId && !session.GmIsSuspended)
 	            {
 	                session.IsGmTurn = true;
 	            }

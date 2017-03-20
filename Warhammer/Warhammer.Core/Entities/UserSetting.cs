@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public int SettingId { get; set; }
         public bool Enabled { get; set; }
         public string Data { get; set; }
+        public int CampaignId { get; set; }
     
         public virtual Player Player { get; set; }
     }

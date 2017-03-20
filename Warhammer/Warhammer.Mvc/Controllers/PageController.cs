@@ -328,11 +328,11 @@ namespace Warhammer.Mvc.Controllers
                 {
                     if (playerId == CurrentPlayer.Id && CurrentPlayerIsGm)
                     {
-                        DataProvider.SetGmSuspended(page.Id, 0);
+                        DataProvider.SetGmSuspended(page.Id, false);
                     }
                     else
                     {
-                        DataProvider.SetPlayerSuspended(page.Id, playerId, 0);
+                        DataProvider.SetPlayerSuspended(page.Id, playerId, false);
                     }
                     UpdateRoleplayHub();
                 }
@@ -353,11 +353,11 @@ namespace Warhammer.Mvc.Controllers
                 {
                     if (playerId == CurrentPlayer.Id && CurrentPlayerIsGm)
                     {
-                        DataProvider.SetGmSuspended(page.Id, 1);
+                        DataProvider.SetGmSuspended(page.Id, true);
                     }
                     else
                     {
-                        DataProvider.SetPlayerSuspended(page.Id, playerId, 1);
+                        DataProvider.SetPlayerSuspended(page.Id, playerId, true);
                     }
                     UpdateRoleplayHub();
                 }
