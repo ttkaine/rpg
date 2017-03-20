@@ -123,7 +123,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ManageAwards(int id)
         {
-            Core.Entities.Person person = DataProvider.People().FirstOrDefault(p => p.Id == id);
+            Person person = DataProvider.GetPerson(id);
             List<Trophy> trophies = DataProvider.Trophies().ToList();
             if (person == null)
             {
@@ -155,7 +155,7 @@ namespace Warhammer.Mvc.Controllers
             }
             else
             {
-                Core.Entities.Person person = DataProvider.People().FirstOrDefault(p => p.Id == model.Person.Id);
+                Core.Entities.Person person = DataProvider.GetPerson(model.Person.Id);
                 List<Trophy> trophies = DataProvider.Trophies().ToList();
                 model.Trophies = new SelectList(trophies, "Id", "Name");
                 model.Person = person;
@@ -165,7 +165,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult KillPerson(int id)
         {
-            Core.Entities.Person person = DataProvider.People().FirstOrDefault(p => p.Id == id);
+            Core.Entities.Person person = DataProvider.GetPerson(id);
             if (person == null)
             {
                 return RedirectToAction("Index", "Home");
