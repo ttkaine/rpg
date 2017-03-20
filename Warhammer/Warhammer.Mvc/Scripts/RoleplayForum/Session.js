@@ -436,8 +436,23 @@ function txtPost_keyPress(event)
     updateCurrentPlayerTurn();
 }
 
+function togglePostButtonsEnabled(enabled)
+{
+    if (enabled)
+    {
+        $("#btnPost").prop("disabled", false);
+        $("#btnRoll").prop("disabled", false);
+    }
+    else
+    {
+        $("#btnPost").prop("disabled", true);
+        $("#btnRoll").prop("disabled", true);
+    }
+}
+
 function postSubmitted(text)
 {
+    togglePostButtonsEnabled(false);
     //clearInterval(refreshInterval);
 
     var cleanedText = text.replace(/"/g, '&quote;');
@@ -479,10 +494,12 @@ function postSubmitted(text)
             updateCurrentPlayerTurn();
             roleplaySessionUpdated();
             //refreshInterval = setInterval(pageRefresh, 3000);
+            togglePostButtonsEnabled(true);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to post at this time.");
+            togglePostButtonsEnabled(true);
             //refreshInterval = setInterval(pageRefresh, 3000);
         }
     });
@@ -622,6 +639,7 @@ function btnRollDice_Click()
 
 function postDiceRoll()
 {
+    togglePostButtonsEnabled(false);
     //clearInterval(refreshInterval);
 
     //var sessionId = queryString("id");
@@ -679,10 +697,12 @@ function postDiceRoll()
             handleNewPosts(jsonData, scrollToEnd);
             roleplaySessionUpdated();
             //refreshInterval = setInterval(pageRefresh, 3000);
+            togglePostButtonsEnabled(true);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert("Unable to post at this time.");
+            togglePostButtonsEnabled(true);
             //refreshInterval = setInterval(pageRefresh, 3000);
         }
     });

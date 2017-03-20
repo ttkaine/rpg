@@ -2037,7 +2037,7 @@ namespace Warhammer.Core.Concrete
             }
             else
             {
-                return pages.OrderBy(p => p.LastPostTime).ToList();
+                return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id).OrderBy(p => p.LastPostTime).ToList();
             }
 
             //return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && isGm && p.GmIsSuspended == 0)).OrderBy(p => p.LastPostTime).ToList();
