@@ -2144,7 +2144,17 @@ namespace Warhammer.Core.Concrete
             {
                 if (SiteHasFeature(Feature.PublicLeague) || (SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin))
                 {
-                    people = People().Where(p => p.CurrentScore > 0).OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+                    var query =
+                        _repository.People()
+                            .Where(p => p.CurrentScore > 0);
+                            
+                    if (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode))
+                    {
+                        List<int> myIds = MyPageIds();
+                        query = query.Where(p => myIds.Contains(p.Id) || p.Pages.Any(r => myIds.Contains(r.Id)));
+                    }
+                    people = query.ToList().OrderByDescending(s => s.PointsValue)
+                            .ThenByDescending(s => s.Modified).ToList();
                 }
                 else
                 {
