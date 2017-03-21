@@ -1941,6 +1941,12 @@ namespace Warhammer.Core.Concrete
             string spacedTerm = " " + searchTerm + " ";
             string startedTerm = " " + searchTerm;
             string endedTerm = searchTerm + " ";
+
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+
             return
                query.OrderByDescending(p => p.ShortName == searchTerm)
                     .ThenByDescending(p => p.FullName == searchTerm)
