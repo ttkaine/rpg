@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Transactions;
 using LinqKit;
 using Warhammer.Core.Abstract;
@@ -21,38 +22,20 @@ namespace Warhammer.Core.Concrete
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
         private readonly IScoreCalculator _score;
-
-        private int UpliftId
+        public bool ShadowMode { get; set; }
+        private List<int> _myPageIds;
+        public List<int> MyPageIds
         {
             get
             {
-                if (ConfigurationManager.AppSettings["UpliftId"] != null)
+                if (_myPageIds == null)
                 {
-                    int id;
-                    if (int.TryParse(ConfigurationManager.AppSettings["UpliftId"].ToString(), out id))
-                    {
-                        return id;
-                    }
-
+                    _myPageIds = _repository.Pages()
+                    .Where(p => p.CreatedBy.UserName == _authenticatedUser.UserName)
+                    .Select(p => p.Id)
+                    .ToList();
                 }
-                return 0;
-            }
-        }
-
-        private int NailId
-        {
-            get
-            {
-                if (ConfigurationManager.AppSettings["NailId"] != null)
-                {
-                    int id;
-                    if (int.TryParse(ConfigurationManager.AppSettings["NailId"].ToString(), out id))
-                    {
-                        return id;
-                    }
-
-                }
-                return 0;
+                return _myPageIds;
             }
         }
 
@@ -63,6 +46,7 @@ namespace Warhammer.Core.Concrete
             _factory = factory;
             _email = email;
             _score = score;
+            ShadowMode = SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode);
         }
 
         public Player CurrentPlayer
@@ -386,7 +370,19 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Page> RecentPages()
         {
-            return _repository.Pages().OrderByDescending(p => p.SignificantUpdate).Take(20).ToList();
+            var query = _repository.Pages();
+
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+
+            return query.OrderByDescending(p => p.SignificantUpdate).Take(20).ToList();
+        }
+
+        private IQueryable<Page> ApplyShadow(IQueryable<Page> query)
+        {
+            return query.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)));
         }
 
         public ICollection<Page> MyStuff()
@@ -586,17 +582,34 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Page> PinnedPages()
         {
-            return _repository.Pages().Where(p => p.Pinned).ToList();
+            var query =  _repository.Pages().Where(p => p.Pinned);
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+            return query.ToList();
         }
 
         public ICollection<Page> NewPages()
         {
-            return _repository.Pages().Where(p => p.PageViews.All(v => v.PlayerId != CurrentPlayer.Id)).ToList();
+            var query = _repository.Pages().Where(p => p.PageViews.All(v => v.PlayerId != CurrentPlayer.Id));
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+            return query.ToList();
         }
 
         public ICollection<Page> ModifiedPages()
         {
-            return _repository.Pages().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.SignificantUpdate)).ToList();
+            var query =
+                _repository.Pages()
+                    .Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.SignificantUpdate));
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+            return query.ToList();
         }
 
         public void PinPage(int id)
@@ -856,7 +869,14 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> PeopleInGraveyard()
         {
-            return _repository.People().Where(p => p.IsDead).OrderBy(s => s.FullName).ToList();
+            var query = _repository.People().Where(p => p.IsDead);
+
+            if (ShadowMode)
+            {
+                query = (IQueryable<Person>)ApplyShadow(query);
+            }
+
+            return query.OrderBy(s => s.FullName).ToList();
         }
 
         public bool CurrentUserIsAdmin
@@ -1828,12 +1848,10 @@ namespace Warhammer.Core.Concrete
 
             if (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode))
             {
-                var myPages = MyPageIds();
-
                 List<PageLinkModel> shadowLinks = _repository.Pages()
                     .Include(p => p.Pages)
                     .Single(p => p.Id == id)
-                    .Pages.Where(p => myPages.Contains(p.Id) || p.Pages.Any(r => myPages.Contains(r.Id)))
+                    .Pages.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)))
                     .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
                     .ToList();
 
@@ -1847,16 +1865,6 @@ namespace Warhammer.Core.Concrete
                     .Pages.Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
                     .ToList();
             return links;
-        }
-
-        private List<int> MyPageIds()
-        {
-            List<int> myPages =
-                _repository.Pages()
-                    .Where(p => p.CreatedBy.UserName == _authenticatedUser.UserName)
-                    .Select(p => p.Id)
-                    .ToList();
-            return myPages;
         }
 
         public bool PlayerSettingEnabled(SettingNames setting)
@@ -1965,18 +1973,31 @@ namespace Warhammer.Core.Concrete
 
         public List<Person> TopNpcs()
         {
+            var query = _repository.People()
+                .Where(p => !p.PlayerId.HasValue);
+
+            if (ShadowMode)
+            {
+                query = (IQueryable<Person>)ApplyShadow(query);
+            }
+
             List<Person> people =
-                _repository.People()
-                    .Where(p => !p.PlayerId.HasValue)
-                    .OrderByDescending(p => p.CurrentScore)
-                    .Take(5)
-                    .ToList();
+                    query.OrderByDescending(p => p.CurrentScore)
+                    .Take(5).ToList();
+
             return people;
         }
 
         public List<Person> AllNpcs()
         {
-            return People().Where(p => p.PlayerId == null).ToList();
+            var query = _repository.People().Where(p => !p.PlayerId.HasValue);
+
+            if (ShadowMode)
+            {
+                query = (IQueryable<Person>)ApplyShadow(query);
+            }
+
+            return query.OrderBy(n => n.ShortName).ToList();
         }
 
         public void SetMyAward(int personId, TrophyType trophyType)
@@ -2142,74 +2163,35 @@ namespace Warhammer.Core.Concrete
             List<Person> people = new List<Person>();
             if (SiteHasFeature(Feature.CharacterLeague))
             {
-                if (SiteHasFeature(Feature.PublicLeague) || (SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin))
+                var query =_repository.People().Where(p => p.CurrentScore > 0);
+
+                if (ShadowMode)
                 {
-                    var query =
-                        _repository.People()
-                            .Where(p => p.CurrentScore > 0);
-                            
-                    if (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode))
-                    {
-                        List<int> myIds = MyPageIds();
-                        query = query.Where(p => myIds.Contains(p.Id) || p.Pages.Any(r => myIds.Contains(r.Id)));
-                    }
-                    people = query.ToList().OrderByDescending(s => s.PointsValue)
-                            .ThenByDescending(s => s.Modified).ToList();
+                    query = (IQueryable<Person>) ApplyShadow(query);
                 }
-                else
+
+                if (!SiteHasFeature(Feature.PublicLeague) && !(SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin))
                 {
-                    people =
-                        People().Where(p => p.CurrentScore > 0)
-                            .Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id)
-                            .OrderByDescending(s => s.PointsValue)
-                            .ThenByDescending(s => s.Modified)
-                            .ToList();
-                    people = ApplyUplift(people);
-                    people = ApplyNail(people);
+                    query = query.Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id);
                 }
+
+                people = query.ToList()
+                    .OrderByDescending(s => s.PointsValue)
+                    .ThenByDescending(s => s.Modified).ToList();
             }
             return people;
         }
 
         public List<Person> OtherPCs()
         {
-            return _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id && !p.IsDead).ToList();
-        }
+            var query = _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id && !p.IsDead);
 
-        private List<Person> ApplyNail(List<Person> people)
-        {
-            if (NailId != 0 && people.FirstOrDefault(p => p.Id == NailId) != null)
+            if (ShadowMode)
             {
-                people.First(p => p.Id == NailId).InclueUplift = true;
-                people.First(p => p.Id == NailId).UpliftFactor = 0;
-                people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
+                query = (IQueryable<Person>)ApplyShadow(query);
             }
-            return people;
-        }
 
-        private List<Person> ApplyUplift(List<Person> people)
-        {
-            if (UpliftId != 0 && people.First().Id != UpliftId && people.FirstOrDefault(p => p.Id == UpliftId) != null)
-            {
-                if (people.First(p => p.Id == UpliftId).PlayerId == CurrentPlayer.Id)
-                {
-                    people = Uplift(people);
-                }
-            }
-            return people;
-        }
-
-        private List<Person> Uplift(List<Person> people)
-        {
-            people.First(p => p.Id == UpliftId).InclueUplift = true;
-            people.First(p => p.Id == UpliftId).UpliftFactor = 1.05;
-            people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
-            while (people.First().Id != UpliftId)
-            {
-                people.First(p => p.Id == UpliftId).UpliftFactor = people.First(p => p.Id == UpliftId).UpliftFactor + 0.05;
-                people = people.OrderByDescending(s => s.PointsValue).ThenByDescending(s => s.Modified).ToList();
-            }
-            return people;
+            return query.ToList();
         }
 
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)

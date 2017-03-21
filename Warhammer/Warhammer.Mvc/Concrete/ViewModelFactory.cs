@@ -12,7 +12,6 @@ namespace Warhammer.Mvc.Concrete
     public class ViewModelFactory : IViewModelFactory
     {
         protected Player CurrentPlayer => _data.MyPlayer();
-
         readonly IAuthenticatedDataProvider _data;
         private readonly UrlHelper _urlHelper;
 
@@ -113,6 +112,9 @@ namespace Warhammer.Mvc.Concrete
         public MenuViewModel MakeMenu()
         {
             MenuViewModel model = new MenuViewModel();
+
+
+
 
             List<MenuItemViewModel> usefulSubMenu = MakeUsefulSubmenu();
             List<MenuItemViewModel> featuresMenu = MakeFeaturesSubmenu();
@@ -394,7 +396,6 @@ namespace Warhammer.Mvc.Concrete
                 IconUrl = _urlHelper.Content("~/Content/Images/pages.png")
             });
 
-
             if (_data.SiteHasFeature(Feature.WarhammerMap))
             {
                 items.Add(new MenuItemViewModel
@@ -446,6 +447,7 @@ namespace Warhammer.Mvc.Concrete
                     Url = _urlHelper.Action("Bestiary", "Home"),
                 });
             }
+
             if (_data.SiteHasFeature(Feature.PublicPrices) && _data.SiteHasFeature(Feature.PriceList))
             {
                 items.Add(new MenuItemViewModel

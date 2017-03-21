@@ -88,6 +88,7 @@ namespace Warhammer.Core.Abstract
         bool ShowLeague { get; }
         bool ShowCharacterSheet { get; }
         bool CurrentUserIsGuest { get; }
+        bool ShadowMode { get; set; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         List<Setting> SettingSection(int sectionId);
