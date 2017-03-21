@@ -1833,7 +1833,7 @@ namespace Warhammer.Core.Concrete
                 List<PageLinkModel> shadowLinks = _repository.Pages()
                     .Include(p => p.Pages)
                     .Single(p => p.Id == id)
-                    .Pages.Where(p => myPages.Contains(p.Id))
+                    .Pages.Where(p => myPages.Contains(p.Id) || p.Pages.Any(r => myPages.Contains(r.Id)))
                     .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
                     .ToList();
 
