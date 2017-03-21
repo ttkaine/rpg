@@ -1041,8 +1041,6 @@ namespace Warhammer.Core.Concrete
             List<Award> awards = _repository.Awards().OrderByDescending(a => a.AwardedOn).Take(20).ToList();
             List<Comment> comments = RecentComments();
 
-
-
             Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
 
             foreach (Page page in pages)
@@ -1395,7 +1393,14 @@ namespace Warhammer.Core.Concrete
 
         public List<PageListItemModel> FullPageList()
         {
-            return _repository.Pages().OrderBy(p => p.FullName)
+            var query = _repository.Pages();
+
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+
+            return query.OrderBy(p => p.FullName)
                 .ThenBy(p => p.ShortName)
                 .Select(p => new PageListItemModel
                 {
