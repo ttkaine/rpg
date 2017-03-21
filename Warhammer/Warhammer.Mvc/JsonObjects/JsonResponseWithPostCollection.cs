@@ -6,7 +6,7 @@ namespace Warhammer.Mvc.JsonObjects
 	[Serializable]
 	public class JsonResponseWithPostCollection
 	{
-		public bool IsError { get; set; }
+        public bool IsError { get; set; }
 		public string ErrorMessage { get; set; }
 
 		public int Count { get; set; }
@@ -21,13 +21,16 @@ namespace Warhammer.Mvc.JsonObjects
 		public string PlayerTurnMessage { get; set; }
 		public bool IsCurrentPlayerTurn { get; set; }
 
-		public JsonResponseWithPostCollection()
+        public string NotifyImage { get; set; }
+
+        public JsonResponseWithPostCollection(int campaignId)
 		{
 			Posts = new List<JsonPost>();
 			EditedPosts = new List<JsonPost>();
 			DeletedPosts = new List<int>();
 			ErrorMessage = string.Empty;
 			LastUpdate = DateTime.Now.ToString("dd MMM yyyy HH:mm:ss");
+            NotifyImage = $"/content/images/roleplayforum/notify-icon{campaignId}.jpg";
 		}
 	}
 }

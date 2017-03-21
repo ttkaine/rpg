@@ -24,16 +24,16 @@ namespace Warhammer.Mvc.Controllers
 		public new IModelFactory ModelFactory { get; set; }
 		public IPostManager PostManager { get; set; }
 		public ILogGenerator LogGenerator { get; set; }
+        public ICurrentCampaignProvider CampaignProvider { get; set; }
 		//public ICharacterManager CharacterManager { get; set; }
 
-
-
-        public RoleplayController(IAuthenticatedDataProvider data, IModelFactory modelFactory, IPostManager postManager, ILogGenerator logGenerator) : base(data)
+        public RoleplayController(IAuthenticatedDataProvider data, IModelFactory modelFactory, IPostManager postManager, ILogGenerator logGenerator, ICurrentCampaignProvider campaignProvider) : base(data)
         {
 	        ModelFactory = modelFactory;
 	        PostManager = postManager;
 	        LogGenerator = logGenerator;
-	        //CharacterManager = new CharacterManager(new DataAccess());
+            CampaignProvider = campaignProvider;
+            //CharacterManager = new CharacterManager(new DataAccess());
         }   
 		
 		//
@@ -95,7 +95,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -106,7 +106,7 @@ namespace Warhammer.Mvc.Controllers
 
 		protected JsonResponseWithPostCollection GetRecentPostsForSession(int sessionId, int lastPostId, DateTime lastUpdateTime)
 		{
-			JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+			JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 			bool playerIsGm = false;
 			int playerId = -1;
 			List<PostViewModel> posts = ModelFactory.GetPostsForCurrentUserInSessionSinceLast(sessionId, lastPostId, out playerId, out playerIsGm);
@@ -228,7 +228,7 @@ namespace Warhammer.Mvc.Controllers
 				}
                 //CallSignalRUpdate();
 
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 
 				if (result == PostResult.Success)
 				{
@@ -274,7 +274,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -302,7 +302,7 @@ namespace Warhammer.Mvc.Controllers
 				PostResult result = PostManager.CreateDiceRollPostForUser(sessionId, characterId, dieSize, dieCount, rollType, rollTarget, reRollMaximum, true);
 
                 //CallSignalRUpdate();
-                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 
 				if (result == PostResult.Success)
 				{
@@ -352,7 +352,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -456,7 +456,7 @@ namespace Warhammer.Mvc.Controllers
 			{
 				bool deleted = PostManager.DeletePostForUser(postId);
                 //CallSignalRUpdate();
-                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				if (!deleted)
 				{
 					postCollection.IsError = true;
@@ -472,7 +472,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -493,7 +493,7 @@ namespace Warhammer.Mvc.Controllers
 			{
 				bool markedOoc = PostManager.MarkPostOoc(postId);
                 //CallSignalRUpdate();
-                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				if (!markedOoc)
 				{
 					postCollection.IsError = true;
@@ -509,7 +509,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -534,7 +534,7 @@ namespace Warhammer.Mvc.Controllers
 
 				PostResult result = PostManager.EditTextPostForUser(postId, text);
                 //CallSignalRUpdate();
-                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 
 				if (result == PostResult.Success)
 				{
@@ -584,7 +584,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -605,7 +605,7 @@ namespace Warhammer.Mvc.Controllers
 			{
 				bool reverted = PostManager.RevertPostForUser(postId);
                 //CallSignalRUpdate();
-                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				if (!reverted)
 				{
 					postCollection.IsError = true;
@@ -621,7 +621,7 @@ namespace Warhammer.Mvc.Controllers
 			}
 			else
 			{
-				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection();
+				JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
 				postCollection.IsError = true;
 				postCollection.ErrorMessage = "Session timeout";
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
