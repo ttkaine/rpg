@@ -385,6 +385,12 @@ namespace Warhammer.Core.Concrete
             return query.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)));
         }
 
+        private IQueryable<Comment> ApplyShadow(IQueryable<Comment> query)
+        {
+            return query.Where(c => MyPageIds.Contains(c.PageId) || c.Page.Pages.Any(r => MyPageIds.Contains(r.Id)));
+
+        }
+
         public ICollection<Page> MyStuff()
         {
             return _repository.Pages().Where(p => p.CreatedById == CurrentPlayer.Id).OrderByDescending(p => p.Created).ToList();
@@ -2149,8 +2155,16 @@ namespace Warhammer.Core.Concrete
 
         public List<Comment> RecentComments()
         {
-            return _repository.Comments().OrderByDescending(d => d.Created).Take(20).ToList();
+            var query = _repository.Comments();
+
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+            return query.OrderByDescending(d => d.Created).Take(20).ToList();
         }
+
+
 
         public Player MyPlayer()
         {
