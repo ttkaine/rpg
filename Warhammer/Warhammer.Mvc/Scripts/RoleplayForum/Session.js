@@ -220,7 +220,7 @@ function setSessionTitle()
     });
 }
 
-function generateNotification(message)
+function generateNotification(message, notifyIcon)
 {
     if (initialPostComplete && !document.hasFocus())
     {
@@ -235,9 +235,9 @@ function generateNotification(message)
             {
                 var title = $("#divSessionTitle").html();
                 var options = {
-                    //title: $("#divSessionTitle").html(),
                     body: message,
-                    icon: "/content/images/roleplayforum/notify-icon.jpg"
+                    icon: notifyIcon
+                    //icon: "/content/images/roleplayforum/notify-icon.jpg"
                 };
 
                 var notification = new Notification(title, options);
@@ -276,7 +276,7 @@ function handleNewPosts(jsonData, scrollToEnd)
                 }
             }
 
-            generateNotification("New posts have been added to the session.");
+            generateNotification("New posts have been added to the session.", jsonData.NotifyImage);
         }
 
         if (jsonData.EditedCount > 0)
@@ -287,7 +287,7 @@ function handleNewPosts(jsonData, scrollToEnd)
                 $("#cover" + jsonData.EditedPosts[i].ID).attr("style", "display:none;");
             }
 
-            generateNotification("One or more posts have been edited.");
+            generateNotification("One or more posts have been edited.", jsonData.NotifyImage);
         }
 
         if (jsonData.DeletedCount > 0)
@@ -303,7 +303,7 @@ function handleNewPosts(jsonData, scrollToEnd)
                 }
             }
 
-            generateNotification("One or more posts have been deleted.");
+            generateNotification("One or more posts have been deleted.", jsonData.NotifyImage);
         }
 
         lastUpdateTime = jsonData.LastUpdate;

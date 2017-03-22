@@ -279,7 +279,8 @@
 				    <div class="DiceRollButtonContainer">
 				        @if (User.IsInRole("Player"))
 				        {
-				            <input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="btnRollDice_Click();"/>            }
+				            <input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="btnRollDice_Click();"/>            
+                        }
                         else
                         {
                             <input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="alert('Guest Mode')" />
