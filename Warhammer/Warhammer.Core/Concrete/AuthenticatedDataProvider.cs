@@ -46,7 +46,11 @@ namespace Warhammer.Core.Concrete
             _factory = factory;
             _email = email;
             _score = score;
-            ShadowMode = SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode);
+
+            if (_authenticatedUser.UserIsAuthenticated)
+            {
+                ShadowMode = SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode);
+            }
         }
 
         public Player CurrentPlayer
