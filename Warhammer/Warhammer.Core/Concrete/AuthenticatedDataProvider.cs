@@ -463,7 +463,8 @@ namespace Warhammer.Core.Concrete
             if (setting != null)
             {
                 var players =
-                    _repository.Players().Where(p => p.UserSettings.Any(s => s.Enabled && s.SettingId == setting.Id));
+                    _repository.UserSettings().Where(u => u.Enabled && u.SettingId == setting.Id).Select(s => s.Player);
+
                 if (!includeSelf)
                 {
                     players = players.Where(p => p.Id != CurrentPlayer.Id);
