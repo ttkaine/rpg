@@ -388,7 +388,6 @@ namespace Warhammer.Core.Concrete
         private IQueryable<Comment> ApplyShadow(IQueryable<Comment> query)
         {
             return query.Where(c => MyPageIds.Contains(c.PageId) || c.Page.Pages.Any(r => MyPageIds.Contains(r.Id)));
-
         }
 
         public ICollection<Page> MyStuff()
