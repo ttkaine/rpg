@@ -69,5 +69,6 @@ namespace Warhammer.Core.Abstract
         void Delete(Asset asset);
         int Save(Asset asset);
         IQueryable<Asset> Assets();
+        IQueryable<PersonAttribute> PersonAttributes();
     }
 }

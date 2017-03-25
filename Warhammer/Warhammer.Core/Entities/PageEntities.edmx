@@ -266,6 +266,7 @@
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="Height" Type="nvarchar(max)" />
           <Property Name="Upkeep" Type="int" />
+          <Property Name="TotalAdvancesTaken" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -274,6 +275,20 @@
           </Key>
           <Property Name="SessionId" Type="int" Nullable="false" />
           <Property Name="PersonId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonAttribute">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="PersonAttributeTypeEnum" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="InitialValue" Type="int" Nullable="false" />
+          <Property Name="CurrentValue" Type="int" Nullable="false" />
+          <Property Name="XpSpent" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonStat">
           <Key>
@@ -812,6 +827,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PersonAttribute_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonAttribute" Type="Self.PersonAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonAttribute">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PersonStat_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="PersonStat" Type="Self.PersonStat" Multiplicity="*" />
@@ -1089,6 +1116,7 @@
           <EntitySet Name="PageView" EntityType="Self.PageView" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonAtSession" EntityType="Self.PersonAtSession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonAttribute" EntityType="Self.PersonAttribute" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonStat" EntityType="Self.PersonStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Place" EntityType="Self.Place" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
@@ -1213,6 +1241,10 @@
           <AssociationSet Name="FK_PersonAtSession_Session" Association="Self.FK_PersonAtSession_Session">
             <End Role="Page" EntitySet="Page" />
             <End Role="PersonAtSession" EntitySet="PersonAtSession" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonAttribute_Person" Association="Self.FK_PersonAttribute_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonAttribute" EntitySet="PersonAttribute" />
           </AssociationSet>
           <AssociationSet Name="FK_PersonStat_Person" Association="Self.FK_PersonStat_Person">
             <End Role="Person" EntitySet="Person" />
@@ -1497,6 +1529,11 @@
             <End Role="Session" EntitySet="Pages" />
             <End Role="SessionLog" EntitySet="Pages" />
           </AssociationSet>
+          <EntitySet Name="PersonAttributes" EntityType="WarhammerModel.PersonAttribute" />
+          <AssociationSet Name="FK_PersonAttribute_Person" Association="WarhammerModel.FK_PersonAttribute_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="PersonAttribute" EntitySet="PersonAttributes" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1606,6 +1643,8 @@
           <Property Name="Upkeep" Type="Int32" />
           <NavigationProperty Name="Assets" Relationship="WarhammerModel.FK_Asset_Person" FromRole="Person" ToRole="Asset" />
           <NavigationProperty Name="ScoreHistories" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="Person" ToRole="ScoreHistory" />
+          <Property Name="TotalAdvancesTaken" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PersonAttributes" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="Person" ToRole="PersonAttribute" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2481,6 +2520,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PersonAttribute">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="PersonAttributeTypeEnum" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InitialValue" Type="Int32" Nullable="false" />
+          <Property Name="CurrentValue" Type="Int32" Nullable="false" />
+          <Property Name="XpSpent" Type="Int32" Nullable="false" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="PersonAttribute" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_PersonAttribute_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.PersonAttribute" Role="PersonAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonAttribute">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2554,6 +2620,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="TotalAdvancesTaken" ColumnName="TotalAdvancesTaken" />
                 <ScalarProperty Name="Upkeep" ColumnName="Upkeep" />
                 <ScalarProperty Name="Height" ColumnName="Height" />
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
@@ -2980,6 +3047,21 @@
                 <ScalarProperty Name="LastTurnEnded" ColumnName="LastTurnEnded" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonAttributes">
+            <EntityTypeMapping TypeName="WarhammerModel.PersonAttribute">
+              <MappingFragment StoreEntitySet="PersonAttribute">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="XpSpent" ColumnName="XpSpent" />
+                <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+                <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PersonAttributeTypeEnum" ColumnName="PersonAttributeTypeEnum" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

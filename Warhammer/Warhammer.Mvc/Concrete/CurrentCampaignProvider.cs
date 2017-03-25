@@ -42,6 +42,11 @@ namespace Warhammer.Mvc.Concrete
                     return 3;
                 }
 
+                if (domain == "playground.sendingofeight.co.uk")
+                {
+                    return 4;
+                }
+
                 return 0;
 
             }

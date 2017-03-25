@@ -10,6 +10,7 @@ using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
 using Warhammer.Core.Helpers;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 
@@ -18,6 +19,7 @@ namespace Warhammer.Mvc.Controllers
     public class PersonController : BaseController
     {
         readonly IViewModelFactory _factory;
+        private readonly ICharacterAttributeManager _attributeManager;
 
         [HttpPost, ValidateInput(false)]
         [Authorize(Roles = "Player")]
@@ -64,9 +66,10 @@ namespace Warhammer.Mvc.Controllers
             return model;
         }
 
-        public PersonController(IAuthenticatedDataProvider data, IViewModelFactory factory) : base(data)
+        public PersonController(IAuthenticatedDataProvider data, IViewModelFactory factory, ICharacterAttributeManager attributeManager) : base(data)
         {
             _factory = factory;
+            _attributeManager = attributeManager;
         }
 
         [HttpPost]
@@ -762,6 +765,36 @@ namespace Warhammer.Mvc.Controllers
                     CampaignDetail campagin = DataProvider.GetCampaginDetails();
                     PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
                     return PartialView(updatedModel);
+                }
+            }
+            return null;
+        }
+
+        public ActionResult AttributesPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(id);
+                if (model != null)
+                {
+                    return PartialView(model);
+                }
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult BuyAttributeAdvance(int personId, int attributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.BuyAttributeAdvance(personId, attributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
                 }
             }
             return null;

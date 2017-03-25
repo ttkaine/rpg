@@ -43,4 +43,12 @@
 		So82013Standard = 1,
 		So82013Fantasy = 2
 	}
+
+    public enum AttributeType
+    {
+        Stat = 0,
+        Skill = 1,
+        Role = 2,
+        Descriptor,
+    }
 }

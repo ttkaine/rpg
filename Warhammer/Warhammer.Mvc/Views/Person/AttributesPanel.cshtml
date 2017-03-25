@@ -1,0 +1,89 @@
+﻿@using Warhammer.Core
+@model Warhammer.Core.Models.CharacterAttributeModel
+
+<div id="characterattributes"  class="content-block">
+
+    @if (ViewBag.EditMode)
+    {
+        <h3>Character Attributes</h3>
+            <h4>@Model.PersonName</h4>
+
+            <div class="alert alert-info">
+                <h4>Stats</h4>
+                @Html.EditorFor(m => m.Stats)
+            </div>
+
+            <div class="alert alert-success">
+                <h4>Roles</h4>
+                @Html.EditorFor(m => m.Roles)
+                
+                @if (Model.CanAddNew(AttributeType.Role))
+                {
+                    <text>Add Role</text>
+                }
+            </div>
+
+            <div class="alert alert-warning">
+                <h4>Skills</h4>
+                @Html.EditorFor(m => m.Skills)
+
+                @if (Model.CanAddNew(AttributeType.Skill))
+                {
+                    <text>Add Skill</text>
+}
+            </div>
+
+            <div class="alert alert-danger">
+                <h4>Descriptors</h4>
+                @Html.EditorFor(m => m.Descriptors)
+                
+                @if (Model.CanAddNew(AttributeType.Descriptor))
+                {
+                    <text>Add Descriptor</text>
+}
+            </div>
+    }
+    else
+    {
+        <h3>Character Attributes</h3>
+
+        if (Model.Stats.Any())
+         {
+             <div class="alert alert-info">
+                 <h4>Stats</h4>
+                 <table class="table attribute-table">
+                     @Html.DisplayFor(m => m.Stats)
+                 </table>
+             </div>
+         }
+        if (Model.Roles.Any())
+         {
+             <div class="alert alert-success">
+                 <h4>Roles</h4>
+                 <table class="table attribute-table">
+                     @Html.DisplayFor(m => m.Roles)
+                 </table>
+             </div>
+         }
+
+        if (Model.Skills.Any())
+         {
+             <div class="alert alert-warning">
+                 <h4>Skills</h4>
+                 <table class="table attribute-table">
+                     @Html.DisplayFor(m => m.Skills)
+                 </table>
+             </div>
+        }
+
+        if (Model.Descriptors.Any())
+        {
+            <div class="alert alert-danger">
+                <h4>Descriptors</h4>
+                <table class="table attribute-table">
+                    @Html.DisplayFor(m => m.Descriptors)
+                </table>
+            </div>
+        }
+    }
+</div>   

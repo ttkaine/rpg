@@ -272,6 +272,7 @@
     <Content Include="Content\DbUpdateScripts\17032001.sql" />
     <Content Include="Content\DbUpdateScripts\17032002.sql" />
     <Content Include="Content\DbUpdateScripts\17032003.sql" />
+    <Content Include="Content\DbUpdateScripts\17032501.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -301,6 +302,7 @@
     <Content Include="Content\Images\pennies.png" />
     <Content Include="Content\Images\penny.jpg" />
     <Content Include="Content\Images\pirate_background.jpg" />
+    <Content Include="Content\Images\playground_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
     <Content Include="Content\Images\RoleplayForum\dice_control.jpg" />
@@ -314,6 +316,7 @@
     <Content Include="Content\Images\RoleplayForum\notify-icon3.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon2.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon1.jpg" />
+    <Content Include="Content\Images\RoleplayForum\notify-icon4.jpg" />
     <Content Include="Content\Images\RoleplayForum\post_strip.jpg" />
     <Content Include="Content\Images\RoleplayForum\trait_checked.png" />
     <Content Include="Content\Images\RoleplayForum\trait_unchecked.png" />
@@ -347,6 +350,7 @@
       <DependentUpon>jcrop.css</DependentUpon>
     </Content>
     <Content Include="Content\Pirate.css" />
+    <Content Include="Content\playground.css" />
     <Content Include="Content\RoleplayCss\CharacterSheet.css" />
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
@@ -690,6 +694,8 @@
     <Content Include="Views\Page\EditorTemplates\SuspendPlayerItemViewModel.cshtml" />
     <Content Include="Views\Page\RelatedLinks.cshtml" />
     <Content Include="Views\Page\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Person\AttributesPanel.cshtml" />
+    <Content Include="Views\Person\DisplayTemplates\PersonAttributeAdvanceModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -38,7 +38,8 @@ namespace Warhammer.Core.Entities
         CrowNpcSheet,
         ShowGameDate,
         Assets,
-        ShadowMode
+        ShadowMode,
+        PersonAttributes
     }
 
     public partial class SiteFeature

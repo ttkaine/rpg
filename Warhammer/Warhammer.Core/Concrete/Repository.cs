@@ -556,6 +556,11 @@ namespace Warhammer.Core.Concrete
             return _entities.Assets.Where(e => e.CampaignId == CurrentCampaignId);
         }
 
+        public IQueryable<PersonAttribute> PersonAttributes()
+        {
+            return _entities.PersonAttributes.Where(e => e.CampaignId == CurrentCampaignId);
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))
