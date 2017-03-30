@@ -59,7 +59,9 @@ namespace Warhammer.Core.Abstract
         void ToggleSetAsTextSession(int id);
         List<Session> UpdatedTextSessions();
         List<Session> TextSessionsWhereItisMyTurn();
-		List<Session> TextSessionsContainingMyCharacters();
+
+        [Obsolete("Seriously... just no...", true)]
+        List<Session> TextSessionsContainingMyCharacters();
         void EnsurePostOrders(int sessionId);
         List<Comment> RecentComments();
         Player MyPlayer();
@@ -69,7 +71,8 @@ namespace Warhammer.Core.Abstract
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();
 		List<Session> MyOpenTextSessions();
-		List<Session> ModifiedTextSessions();
+        [Obsolete("Seriously... just no...", true)]
+        List<Session> ModifiedTextSessions();
         bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);

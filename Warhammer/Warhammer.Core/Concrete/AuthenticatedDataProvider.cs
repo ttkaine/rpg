@@ -53,29 +53,50 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        private Player _currentPlayer = null;
         public Player CurrentPlayer
         {
             get
             {
-
-                if (!_authenticatedUser.UserIsAuthenticated)
+                if (_currentPlayer == null)
                 {
-                    throw new Exception("User is not Authenticated");
+                    if (!_authenticatedUser.UserIsAuthenticated)
+                    {
+                        throw new Exception("User is not Authenticated");
+                    }
+                    _currentPlayer = _repository.Players().Single(p => p.UserName == _authenticatedUser.UserName);
                 }
-                return _repository.Players().FirstOrDefault(p => p.UserName == _authenticatedUser.UserName);
+                return _currentPlayer;
             }
         }
 
+        private Player _gm = null;
+        private CampaignDetail _campaign = null;
+
+        public CampaignDetail Campaign
+        {
+            get
+            {
+                if (_campaign == null)
+                {
+                    _campaign = _repository.CampaignDetails().Single();
+                }
+                return _campaign;
+            }
+        }
         public Player Gm
         {
             get
             {
-                CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
-                if (campaign != null)
+                if (_gm == null)
                 {
-                    return _repository.Players().FirstOrDefault(p => p.Id == campaign.GmId);
+
+                    if (Campaign != null)
+                    {
+                        _gm = _repository.Players().Single(p => p.Id == Campaign.GmId);
+                    }
                 }
-                return null;
+                return _gm;
             }
         }
 
@@ -83,8 +104,7 @@ namespace Warhammer.Core.Concrete
         {
             get
             {
-                CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
-                if (campaign?.GmId == CurrentPlayer.Id)
+                if (Campaign?.GmId == CurrentPlayer.Id)
                 {
                     return true;
                 }
@@ -109,7 +129,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Person> MyPeople()
         {
-            return _repository.People().Where(p => p.Player.UserName == _authenticatedUser.UserName).ToList();
+            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
@@ -2131,6 +2151,7 @@ namespace Warhammer.Core.Concrete
             //return pages.Where(p => _factory.GetSession(p.Id).CurrentPlayerId == CurrentPlayer.Id || (p.IsGmTurn && isGm && p.GmIsSuspended == 0)).OrderBy(p => p.LastPostTime).ToList();
         }
 
+        [Obsolete("Seriously... just no...", true)]
         public List<Session> TextSessionsContainingMyCharacters()
         {
             List<Session> pages =
@@ -2300,7 +2321,11 @@ namespace Warhammer.Core.Concrete
 
         public List<Session> OpenTextSessions()
         {
-            return _repository.Pages().OfType<Session>().Where(s => s.IsTextSession && !s.IsClosed).ToList();
+            return _repository.Pages()
+                .OfType<Session>()
+                .Include(s => s.Posts)
+                .Include(s => s.PageViews)
+                .Where(s => s.IsTextSession && !s.IsClosed).ToList();
         }
 
         public List<Session> MyOpenTextSessions()
@@ -2310,8 +2335,9 @@ namespace Warhammer.Core.Concrete
                     .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm).ToList();
         }
 
+        [Obsolete("Seriously... just no...", true)]
         public List<Session> ModifiedTextSessions()
-        {
+        {           
             return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
         }
 
