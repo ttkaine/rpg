@@ -195,3 +195,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 Warhammer/WebEssentials2015-Settings.json
+*.orig

@@ -48,8 +48,7 @@ namespace Warhammer.Mvc.Controllers
 					Session session = page as Session;
 					if (session != null && session.IsTextSession)
 					{
-						List<Session> sessionsForCurrentPlayer = DataProvider.TextSessionsContainingMyCharacters();
-						if (session.IsPrivate && sessionsForCurrentPlayer.All(s => s.Id != session.Id))
+						if (!CurrentPlayerIsGm && session.IsPrivate && session.PlayerCharacters.All(c => c.PlayerId != CurrentPlayer.Id))
 						{
 							return RedirectToAction("Index", "Page", new {id = id});
 						}
@@ -766,10 +765,10 @@ namespace Warhammer.Mvc.Controllers
 			    if (page is Session)
 			    {
 				    Session session = (Session) page;
-					List<Session> sessionsForCurrentPlayer = DataProvider.TextSessionsContainingMyCharacters();
-				    if (session.IsPrivate && sessionsForCurrentPlayer.All(s => s.Id != session.Id))
-				    {
-					    return RedirectToAction("Index", "Page", new {id = id});
+                    //List<Session> sessionsForCurrentPlayer = DataProvider.TextSessionsContainingMyCharacters();
+                    if (!CurrentPlayerIsGm && session.IsPrivate && session.PlayerCharacters.All(c => c.PlayerId != CurrentPlayer.Id))
+                    {
+                        return RedirectToAction("Index", "Page", new {id = id});
 				    }
 				    else
 				    {

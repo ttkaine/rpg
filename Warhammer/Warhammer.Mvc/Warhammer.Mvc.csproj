@@ -84,6 +84,10 @@
       <HintPath>..\packages\RazorGenerator.Mvc.2.4.9\lib\net40\RazorGenerator.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StackifyHttpTracer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93c44ce23f2048dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackifyHttpModule.1.0.28.0\lib\net45\StackifyHttpTracer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -697,6 +701,7 @@
     <Content Include="Views\Page\EditorTemplates\SuspendPlayerItemViewModel.cshtml" />
     <Content Include="Views\Page\RelatedLinks.cshtml" />
     <Content Include="Views\Page\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\PageLinkModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
