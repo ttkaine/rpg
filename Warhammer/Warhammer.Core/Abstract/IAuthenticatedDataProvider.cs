@@ -16,7 +16,7 @@ namespace Warhammer.Core.Abstract
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
         Page GetPage(int id);
-        ICollection<Page> RecentPages();
+        ICollection<PageLinkWithUpdateDateModel> RecentPages();
         ICollection<Page> MyStuff();
         ICollection<Session> Sessions();
         ICollection<Person> People();
@@ -32,9 +32,9 @@ namespace Warhammer.Core.Abstract
         bool PageExists(string shortName, string fullName);
         bool PageExists(string shortName);
         Page GetPage(string shortName);
-        ICollection<Page> PinnedPages();
-        ICollection<Page> NewPages();
-        ICollection<Page> ModifiedPages();
+        ICollection<PageLinkModel> PinnedPages();
+        ICollection<PageLinkModel> NewPages();
+        ICollection<PageLinkModel> ModifiedPages();
         void PinPage(int id);
         void MarkAsSeen(int id);
         void ResurrectPerson(int id);
@@ -46,12 +46,12 @@ namespace Warhammer.Core.Abstract
         ICollection<Trophy> Trophies();
         void AwardTrophy(int personId, int trophyId, string reason);
         void RemoveAward(int personId, int awardId);
-        Person PersonWithMyAward(TrophyType awardType);
+        PageLinkModel PersonWithMyAward(TrophyType awardType);
         List<Page> Search(string searchTerm);
         int AddComment(int pageId, string description);
         int AddComment(int pageId, string description, int personId);
         int AddComment(int pageId, string description, bool isAdmin);
-        List<Person> TopNpcs();
+        List<PageLinkModel> TopNpcs();
         List<Person> AllNpcs();
         void SetMyAward(int personId, TrophyType trophyType);
 	    bool IsLoggedIn();
@@ -59,17 +59,20 @@ namespace Warhammer.Core.Abstract
         void ToggleSetAsTextSession(int id);
         List<Session> UpdatedTextSessions();
         List<Session> TextSessionsWhereItisMyTurn();
-		List<Session> TextSessionsContainingMyCharacters();
+
+        [Obsolete("Seriously... just no...", true)]
+        List<Session> TextSessionsContainingMyCharacters();
         void EnsurePostOrders(int sessionId);
         List<Comment> RecentComments();
         Player MyPlayer();
         void DeleteComment(int commentId);
         List<Person> GetLeague();
-        List<Person> OtherPCs();
+        List<PageLinkModel> OtherPCs();
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();
 		List<Session> MyOpenTextSessions();
-		List<Session> ModifiedTextSessions();
+        [Obsolete("Seriously... just no...", true)]
+        List<Session> ModifiedTextSessions();
         bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);

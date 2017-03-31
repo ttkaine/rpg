@@ -33,44 +33,5 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
-        public ActionResult Index()
-        {
-            throw new Exception("Test Exception!");
-            List<EnumDefinition> definitions = new List<EnumDefinition>();
-            string assemblyName = "Warhammer.Core";
-
-            Assembly assembly = System.Reflection.Assembly.Load(assemblyName);
-
-            var things = assembly.GetTypes();
-
-            string @namespace = "Warhammer.Core.Entities";
-
-            var allEnums = from t in assembly.GetTypes() 
-                    where t.IsEnum && t.Namespace == @namespace
-                    select t;
-
-            foreach (Type type in allEnums)
-            {
-                List<string> values = Enum.GetNames(type).ToList();
-                foreach (string name in values)
-                {
-                  object o = Enum.Parse(type, name);
-                  int value = Convert.ToInt32(o);
-                    definitions.Add(new EnumDefinition
-                    {
-                        Area = type.Name,
-                        Name = name,
-                        Value = value  
-                    });
-                }
-            }
-
-            List<string> names = allEnums.Select(p => p.Name).ToList();
-
-
-            List<Page> pages = DataProvider.RecentPages().ToList();
-            return null;
-        }
     }
 }
