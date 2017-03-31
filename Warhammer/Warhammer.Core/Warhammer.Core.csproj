@@ -347,6 +347,7 @@
     <Compile Include="Models\CreateCreatureViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\PageLinkModel.cs" />
+    <Compile Include="Models\PageLinkWithUpdateDateModel.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
     <Compile Include="Models\PersonAttributeAdvanceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

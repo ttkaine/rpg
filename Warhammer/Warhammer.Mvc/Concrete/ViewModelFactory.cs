@@ -31,7 +31,7 @@ namespace Warhammer.Mvc.Concrete
             {
                 OpenSessionViewModel sessionViewModel = new OpenSessionViewModel {Session = myOpenTestSession, Status = OpenSessionStatus.Stale };
 
-                if (_data.ModifiedTextSessions().Contains(myOpenTestSession))
+                if(myOpenTestSession.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < myOpenTestSession.LastPostTime))
                 {
                     sessionViewModel.Status = OpenSessionStatus.Updated;
                     sessionViewModel.IsUpdated = true;
