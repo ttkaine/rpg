@@ -1,7 +1,8 @@
-﻿@model IEnumerable<Warhammer.Core.Entities.Page>
+﻿@using Warhammer.Core.Models
+@model IEnumerable< PageLinkModel>
 @if (Model.Any())
 {
-    foreach (Warhammer.Core.Entities.Page page in Model)
+    foreach (PageLinkModel page in Model)
     {
         <li>@Html.ActionLink(page.FullName, "Index", "Page", new {id = page.Id}, null)</li>
     }

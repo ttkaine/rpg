@@ -48,8 +48,8 @@ namespace Warhammer.Mvc.Controllers
             {
 
                 SiteName = SiteName, 
-                NewPages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate),
-                UpdatedPages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate),
+                NewPages = DataProvider.NewPages(),
+                UpdatedPages = DataProvider.ModifiedPages(),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 OtherPeople = DataProvider.OtherPCs(),
             };
@@ -63,12 +63,6 @@ namespace Warhammer.Mvc.Controllers
                         $"Current Game Date: The {detail.CurrentGameDate.Value.ToWarhammerDateString()} ({detail.CurrentGameDate:dddd dd MMMM yyyy})";
                     model.GameDate = detail.CurrentGameDate;
                 }
-            }
-
-
-            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
-            {
-                model.NpcWithXp = DataProvider.NpcWithXp();
             }
 
             if (DataProvider.SiteHasFeature(Feature.CharacterLeague))
@@ -93,7 +87,7 @@ namespace Warhammer.Mvc.Controllers
 
         public PartialViewResult PinnedItems()
         {
-            List<Page> pages = DataProvider.PinnedPages().OrderBy(p => p.FullName).ToList();
+            List<PageLinkModel> pages = DataProvider.PinnedPages().OrderBy(p => p.FullName).ToList();
             return PartialView(pages);
         }
 
@@ -349,8 +343,8 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Player")]
         public ActionResult MarkAllRead()
         {
-            List<Page> pages = DataProvider.NewPages().OrderByDescending(p => p.SignificantUpdate).ToList();
-            foreach (Page page in pages)
+            List<PageLinkModel> pages = DataProvider.NewPages().ToList();
+            foreach (PageLinkModel page in pages)
             {
                 DataProvider.MarkAsSeen(page.Id);
             }
@@ -360,8 +354,8 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Player")]
         public ActionResult MarkAllModifiedRead()
         {
-            List<Page> pages = DataProvider.ModifiedPages().OrderByDescending(p => p.SignificantUpdate).ToList();
-            foreach (Page page in pages)
+            List<PageLinkModel> pages = DataProvider.ModifiedPages().ToList();
+            foreach (PageLinkModel page in pages)
             {
                 DataProvider.MarkAsSeen(page.Id);
             }

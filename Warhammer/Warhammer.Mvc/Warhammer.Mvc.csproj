@@ -694,6 +694,7 @@
     <Content Include="Views\Page\EditorTemplates\SuspendPlayerItemViewModel.cshtml" />
     <Content Include="Views\Page\RelatedLinks.cshtml" />
     <Content Include="Views\Page\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\PageLinkModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

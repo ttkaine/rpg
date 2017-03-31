@@ -392,7 +392,7 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().FirstOrDefault(p => p.Id == id);
         }
 
-        public ICollection<Page> RecentPages()
+        public ICollection<PageLinkWithUpdateDateModel> RecentPages()
         {
             var query = _repository.Pages();
 
@@ -401,7 +401,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyShadow(query);
             }
 
-            return query.OrderByDescending(p => p.SignificantUpdate).Take(20).ToList();
+            return query.Select(p => new PageLinkWithUpdateDateModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, LastUpdate = p.SignificantUpdate }).Take(20).ToList();
         }
 
         private IQueryable<Page> ApplyShadow(IQueryable<Page> query)
@@ -610,27 +610,27 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().FirstOrDefault(p => p.ShortName == shortName);
         }
 
-        public ICollection<Page> PinnedPages()
+        public ICollection<PageLinkModel> PinnedPages()
         {
             var query =  _repository.Pages().Where(p => p.Pinned);
             if (ShadowMode)
             {
                 query = ApplyShadow(query);
             }
-            return query.ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName}).ToList();
         }
 
-        public ICollection<Page> NewPages()
+        public ICollection<PageLinkModel> NewPages()
         {
             var query = _repository.Pages().Where(p => p.PageViews.All(v => v.PlayerId != CurrentPlayer.Id));
             if (ShadowMode)
             {
                 query = ApplyShadow(query);
             }
-            return query.ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
-        public ICollection<Page> ModifiedPages()
+        public ICollection<PageLinkModel> ModifiedPages()
         {
             var query =
                 _repository.Pages()
@@ -639,7 +639,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public void PinPage(int id)
@@ -1067,17 +1067,17 @@ namespace Warhammer.Core.Concrete
 
         public List<object> RecentActivity()
         {
-            List<Page> pages = RecentPages().ToList();
+            List<PageLinkWithUpdateDateModel> pages = RecentPages().ToList();
             List<Award> awards = _repository.Awards().OrderByDescending(a => a.AwardedOn).Take(20).ToList();
             List<Comment> comments = RecentComments();
 
             Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
 
-            foreach (Page page in pages)
+            foreach (PageLinkWithUpdateDateModel page in pages)
             {
-                if (!dateObject.ContainsKey(page.SignificantUpdate))
+                if (!dateObject.ContainsKey(page.LastUpdate))
                 {
-                    dateObject.Add(page.SignificantUpdate, page);
+                    dateObject.Add(page.LastUpdate, page);
                 }
             }
 
@@ -1923,10 +1923,16 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public Person PersonWithMyAward(TrophyType awardType)
+        public PageLinkModel PersonWithMyAward(TrophyType awardType)
         {
-            return _repository.People().FirstOrDefault(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
-                                                                  && a.Trophy.TypeId == (int)awardType));
+           return _repository.People().Where(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
+                                                                  && a.Trophy.TypeId == (int)awardType)).Select(p => new PageLinkModel
+            {
+                FullName = p.FullName,
+                Id = p.Id,
+                ShortName = p.ShortName
+            }).FirstOrDefault();
+
         }
 
         public List<Page> Search(string searchTerm)
@@ -2012,7 +2018,7 @@ namespace Warhammer.Core.Concrete
             return AddComment(pageId, description, isAdmin, null);
         }
 
-        public List<Person> TopNpcs()
+        public List<PageLinkModel> TopNpcs()
         {
             var query = _repository.People()
                 .Where(p => !p.PlayerId.HasValue);
@@ -2022,11 +2028,10 @@ namespace Warhammer.Core.Concrete
                 query = (IQueryable<Person>)ApplyShadow(query);
             }
 
-            List<Person> people =
-                    query.OrderByDescending(p => p.CurrentScore)
-                    .Take(5).ToList();
+            query = query.OrderByDescending(p => p.CurrentScore).Take(5);
 
-            return people;
+
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public List<Person> AllNpcs()
@@ -2232,7 +2237,7 @@ namespace Warhammer.Core.Concrete
             return people;
         }
 
-        public List<Person> OtherPCs()
+        public List<PageLinkModel> OtherPCs()
         {
             var query = _repository.People().Where(p => p.PlayerId.HasValue && p.PlayerId != CurrentPlayer.Id && !p.IsDead);
 
@@ -2241,7 +2246,7 @@ namespace Warhammer.Core.Concrete
                 query = (IQueryable<Person>)ApplyShadow(query);
             }
 
-            return query.ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
@@ -2341,10 +2346,24 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
         }
 
+        private List<Feature> _enabledFeatures = null;
+
         public bool SiteHasFeature(Feature feature)
         {
-            string featureName = feature.ToString();
-            return _repository.SiteFeatures().Any(f => f.Name == featureName && f.IsEnabled);
+            if (_enabledFeatures == null)
+            {
+                List<string> names = _repository.SiteFeatures().Where(e => e.IsEnabled).Select(e => e.Name).ToList();
+                _enabledFeatures = new List<Feature>();
+                foreach (string name in names)
+                {
+                    Feature f;
+                    if (Enum.TryParse(name, true, out f))
+                    {
+                        _enabledFeatures.Add(f);
+                    }
+                }
+            }
+            return _enabledFeatures.Contains(feature);
         }
 
         public void EnableFeature(string featureName)
