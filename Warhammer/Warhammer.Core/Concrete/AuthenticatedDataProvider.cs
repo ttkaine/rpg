@@ -84,6 +84,7 @@ namespace Warhammer.Core.Concrete
                 return _campaign;
             }
         }
+
         public Player Gm
         {
             get
