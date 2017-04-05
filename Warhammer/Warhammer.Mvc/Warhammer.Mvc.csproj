@@ -292,6 +292,7 @@
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
     <Content Include="Content\Images\coin.png" />
+    <Content Include="Content\Images\cowboy_background.jpg" />
     <Content Include="Content\Images\crown.jpg" />
     <Content Include="Content\Images\darknet_background.jpg" />
     <Content Include="Content\Images\edited.png" />
