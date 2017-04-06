@@ -410,6 +410,11 @@ namespace Warhammer.Core.Concrete
             return query.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)));
         }
 
+        private IQueryable<Person> ApplyPeopleShadow(IQueryable<Person> query)
+        {
+            return query.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)));
+        }
+
         private IQueryable<Comment> ApplyShadow(IQueryable<Comment> query)
         {
             return query.Where(c => MyPageIds.Contains(c.PageId) || c.Page.Pages.Any(r => MyPageIds.Contains(r.Id)));
@@ -2244,11 +2249,13 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
+
+
 
         private List<int> GetExlusiveTrophyTypes(TrophyType trophyType)
         {
