@@ -420,6 +420,11 @@ namespace Warhammer.Core.Concrete
             return query.Where(c => MyPageIds.Contains(c.PageId) || c.Page.Pages.Any(r => MyPageIds.Contains(r.Id)));
         }
 
+        private IQueryable<Award> ApplyShadow(IQueryable<Award> query)
+        {
+            return query.Where(c => MyPageIds.Contains(c.PersonId) || c.Person.Pages.Any(r => MyPageIds.Contains(r.Id)));
+        }
+
         public ICollection<Page> MyStuff()
         {
             return _repository.Pages().Where(p => p.CreatedById == CurrentPlayer.Id).OrderByDescending(p => p.Created).ToList();
@@ -1074,7 +1079,8 @@ namespace Warhammer.Core.Concrete
         public List<object> RecentActivity()
         {
             List<PageLinkWithUpdateDateModel> pages = RecentPages().ToList();
-            List<Award> awards = _repository.Awards().OrderByDescending(a => a.AwardedOn).Take(20).ToList();
+
+            List<Award> awards = RecentAwards();
             List<Comment> comments = RecentComments();
 
             Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
@@ -1138,6 +1144,20 @@ namespace Warhammer.Core.Concrete
 
             return results;
         }
+
+        private List<Award> RecentAwards()
+        {
+            var awardQuery = _repository.Awards().Include(a => a.Person).Include(a => a.Trophy);
+
+            if (ShadowMode)
+            {
+                awardQuery = ApplyShadow(awardQuery);
+            }
+
+            List<Award> awards = awardQuery.OrderByDescending(a => a.AwardedOn).Take(20).ToList();
+            return awards;
+        }
+
 
         public void ToggleSessionPrivacy(int id)
         {
@@ -2046,7 +2066,7 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             return query.OrderBy(n => n.ShortName).ToList();
