@@ -2066,7 +2066,7 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             return query.OrderBy(n => n.ShortName).ToList();
