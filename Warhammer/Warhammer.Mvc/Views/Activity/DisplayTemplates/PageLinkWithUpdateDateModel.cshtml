@@ -1,0 +1,19 @@
+﻿
+
+@model Warhammer.Core.Models.PageLinkWithUpdateDateModel
+
+<tr>
+    <td>
+        @Html.Action("PageImage", "Page", new { id = Model.Id })
+    </td>
+    <td></td>
+    <td>
+        <span><a href="@Url.Action("Index", "Page", new { id = Model.Id })">@Model.FullName</a> Updated</span>
+    </td>
+
+</tr>
+<tr>
+    <td colspan="3">
+        <span class="note">@Model.LastUpdate.ToLongDateString() @Model.LastUpdate.ToShortTimeString()</span>
+    </td>
+</tr>

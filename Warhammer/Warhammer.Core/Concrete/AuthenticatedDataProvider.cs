@@ -84,6 +84,7 @@ namespace Warhammer.Core.Concrete
                 return _campaign;
             }
         }
+
         public Player Gm
         {
             get
@@ -401,7 +402,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyShadow(query);
             }
 
-            return query.Select(p => new PageLinkWithUpdateDateModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, LastUpdate = p.SignificantUpdate }).Take(20).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkWithUpdateDateModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, LastUpdate = p.SignificantUpdate }).Take(20).ToList();
         }
 
         private IQueryable<Page> ApplyShadow(IQueryable<Page> query)

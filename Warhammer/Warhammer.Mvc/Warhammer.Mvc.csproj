@@ -15,7 +15,7 @@
     <AssemblyName>Warhammer.Mvc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-	<PrecompileRazorFiles>true</PrecompileRazorFiles>
+    <PrecompileRazorFiles>true</PrecompileRazorFiles>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -279,11 +279,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\cowboy.css" />
     <Content Include="Content\darknet.css" />
     <Content Include="Content\DbUpdateScripts\17032001.sql" />
     <Content Include="Content\DbUpdateScripts\17032002.sql" />
     <Content Include="Content\DbUpdateScripts\17032003.sql" />
     <Content Include="Content\DbUpdateScripts\17032501.sql" />
+    <Content Include="Content\DbUpdateScripts\17040501.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -291,6 +293,7 @@
     <Content Include="Content\Images\bg-medium.jpg" />
     <Content Include="Content\Images\bg-small.jpg" />
     <Content Include="Content\Images\coin.png" />
+    <Content Include="Content\Images\cowboy_background.jpg" />
     <Content Include="Content\Images\crown.jpg" />
     <Content Include="Content\Images\darknet_background.jpg" />
     <Content Include="Content\Images\edited.png" />
@@ -708,6 +711,7 @@
     <Content Include="Views\Person\AttributesPanel.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\PageLinkModel.cshtml" />
     <Content Include="Views\Person\DisplayTemplates\PersonAttributeAdvanceModel.cshtml" />
+    <Content Include="Views\Activity\DisplayTemplates\PageLinkWithUpdateDateModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -834,7 +838,7 @@
       <Content Remove="Views\**\*.cshtml" />
       <None Include="Views\**\*.cshtml" />
     </ItemGroup>
-</Target>
+  </Target>
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
@@ -842,7 +846,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57423</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
