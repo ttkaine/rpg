@@ -1,0 +1,25 @@
+﻿@model Warhammer.Core.Models.PersonAttributeAdvanceModel
+    
+
+<tr>
+    <td class="personAttribute" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
+    <td class="personAttribute"><span class="personAttribute label label-default">@Model.DisplayValue</span></td>
+    <td class="personAttribute">
+        @if (Model.CanAdvance)
+        {
+            if (Model.CanBuy)
+            {
+                using (Ajax.BeginForm("BuyAttributeAdvance", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                {
+                    <input type="hidden" value="@Model.PersonAttribute.PersonId" name="personId"/>
+                    <input type="hidden" value="@Model.PersonAttribute.Id" name="attributeId" />
+                    <input type="submit" value="Buy for @(Model.Cost) XP" class="btn btn-block btn-success"/>
+                }
+            }
+            else
+            {
+                <span class="note">Cost @(Model.Cost) XP</span>
+            }
+        }
+    </td>
+</tr>

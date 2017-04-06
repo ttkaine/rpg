@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Helpers;
 using DotNet.Highcharts.Options;
+using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
@@ -783,7 +784,6 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
-
         [HttpPost]
         [Authorize(Roles = "Player")]
         public ActionResult BuyAttributeAdvance(int personId, int attributeId)
@@ -800,6 +800,37 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult BuyNewAttribute(int personId, AttributeType attributeType, string name, string description)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.BuyNewAttribute(personId, attributeType, name, description);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.MoveAttributePoint(personId, sourceAttributeId, targetAttributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
 
         private PersonDetailsViewModel MakePersonDetailsViewModel(Person person, CampaignDetail campagin)
         {

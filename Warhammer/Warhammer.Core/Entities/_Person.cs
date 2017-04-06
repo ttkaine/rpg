@@ -362,6 +362,9 @@ namespace Warhammer.Core.Entities
         [Display(Name = "NPC or Player Character?")]
         public bool CreateAsNpc { get; set; }
 
+        public bool HasAttributeMoveAvailable => true;
+        public bool AttributeMoveTaken { get; set; }
+
         public void DeductMoney(int penniesDeducted)
         {
             if (TotalPennies > 0 && Pennies.HasValue && Shillings.HasValue && Crowns.HasValue)

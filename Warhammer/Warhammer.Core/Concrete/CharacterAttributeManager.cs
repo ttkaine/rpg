@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -85,7 +86,63 @@ namespace Warhammer.Core.Concrete
 
         public bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description)
         {
-            throw new System.NotImplementedException();
+            CharacterAttributeModel model = GetCharacterAttributes(personId);
+
+            if (!model.CanAddNew(attributeType))
+            {
+                return false;
+            }
+
+            if (model.PersonAttributes.Any(a => a.PersonAttribute.Name == name && a.PersonAttribute.AttributeType == attributeType))
+            {
+                return false;
+            }
+
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                PersonAttribute personAttribute = new PersonAttribute
+                {
+                    AttributeType = attributeType,
+                    Name = name,
+                    Description = description,
+                    CurrentValue = 1,
+                    InitialValue = 1,
+                };
+
+                personAttribute.XpSpent += model.NewCost(attributeType);
+                person.XpSpent += model.NewCost(attributeType);
+                person.TotalAdvancesTaken++;
+                person.PersonAttributes.Add(personAttribute);
+                _repo.Save(person);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                if (person.HasAttributeMoveAvailable)
+                {
+                    PersonAttribute sourceAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == sourceAttributeId && a.AttributeType == AttributeType.Stat);
+                    PersonAttribute targetAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == targetAttributeId && a.AttributeType == AttributeType.Stat);
+
+                    if (sourceAttribute != null && targetAttribute != null)
+                    {
+                        sourceAttribute.CurrentValue--;
+                        targetAttribute.CurrentValue++;
+                        person.AttributeMoveTaken = true;
+                        _repo.Save(person);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
