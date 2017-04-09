@@ -1,0 +1,15 @@
+﻿
+    body {
+        background: url('images/playground_background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+
+#roleplayContent,
+.core-content,
+.banner-content,
+.main-content,
+.side-bar
+{
+    opacity: 0.90;
+}

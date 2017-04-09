@@ -6,10 +6,12 @@ using System.Web.Mvc;
 using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Helpers;
 using DotNet.Highcharts.Options;
+using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
 using Warhammer.Core.Helpers;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 
@@ -18,6 +20,7 @@ namespace Warhammer.Mvc.Controllers
     public class PersonController : BaseController
     {
         readonly IViewModelFactory _factory;
+        private readonly ICharacterAttributeManager _attributeManager;
 
         [HttpPost, ValidateInput(false)]
         [Authorize(Roles = "Player")]
@@ -64,9 +67,10 @@ namespace Warhammer.Mvc.Controllers
             return model;
         }
 
-        public PersonController(IAuthenticatedDataProvider data, IViewModelFactory factory) : base(data)
+        public PersonController(IAuthenticatedDataProvider data, IViewModelFactory factory, ICharacterAttributeManager attributeManager) : base(data)
         {
             _factory = factory;
+            _attributeManager = attributeManager;
         }
 
         [HttpPost]
@@ -767,6 +771,96 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        public ActionResult AttributesPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(id);
+                if (model != null)
+                {
+                    if (model.HasStats)
+                    {
+                        return PartialView(model);
+                    }
+                    else
+                    {
+                        if (model.CharacterInfo.CanEdit)
+                        {
+                            CharacterInitialStatsModel initModel = _attributeManager.GetDefaultStats(id);
+                            return PartialView("InitStats", initModel);
+                        }
+
+                    }
+                    
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult InitAttributes(CharacterInitialStatsModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.InitializeStats(model);
+                CharacterAttributeModel updatedModel = _attributeManager.GetCharacterAttributes(model.PersonId);
+                if (updatedModel != null)
+                {
+                    return PartialView("AttributesPanel", updatedModel);
+                }
+            }
+
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult BuyAttributeAdvance(int personId, int attributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.BuyAttributeAdvance(personId, attributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult BuyNewAttribute(int personId, AttributeType attributeType, string name, string description)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.BuyNewAttribute(personId, attributeType, name, description);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.MoveAttributePoint(personId, sourceAttributeId, targetAttributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
 
         private PersonDetailsViewModel MakePersonDetailsViewModel(Person person, CampaignDetail campagin)
         {
@@ -820,6 +914,7 @@ namespace Warhammer.Mvc.Controllers
 
             return model;
         }
+
 
 
     }

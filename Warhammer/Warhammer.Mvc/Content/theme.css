@@ -6788,8 +6788,12 @@ body {
 #statTotal,
 #xptotal,
 .personDetail,
+.personAttribute,
 #stattable .label-info {
   font-size: larger;
+}
+td.personAttribute {
+  width: 50%;
 }
 #personmoney img {
   width: 25px;

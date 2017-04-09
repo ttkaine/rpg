@@ -27,6 +27,7 @@ namespace Warhammer.Core.Entities
             this.Reputations = new HashSet<Reputation>();
             this.Assets = new HashSet<Asset>();
             this.ScoreHistories = new HashSet<ScoreHistory>();
+            this.PersonAttributes = new HashSet<PersonAttribute>();
         }
     
         public bool IsDead { get; set; }
@@ -45,6 +46,8 @@ namespace Warhammer.Core.Entities
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Height { get; set; }
         public Nullable<int> Upkeep { get; set; }
+        public int TotalAdvancesTaken { get; set; }
+        public bool HasAttributeMoveAvailable { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }
@@ -58,5 +61,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Reputation> Reputations { get; set; }
         public virtual ICollection<Asset> Assets { get; set; }
         public virtual ICollection<ScoreHistory> ScoreHistories { get; set; }
+        public virtual ICollection<PersonAttribute> PersonAttributes { get; set; }
     }
 }

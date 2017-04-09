@@ -1,0 +1,130 @@
+﻿@using Warhammer.Core
+@model Warhammer.Core.Models.CharacterAttributeModel
+
+<div id="characterattributes"  class="content-block">
+    @if (Model.CharacterInfo.CanEdit)
+    {
+        <div class="alert alert-info">
+                <table class="table attribute-table">
+                    <tr>
+                        <td>Current XP</td>
+                        <td ><span class="personAttribute label label-success">@Model.CurrentXp</span></td>
+                    </tr>
+                    <tr>
+                        <td>XP Spent</td>
+                        <td><span class="personAttribute label label-danger">@Model.XpSpent</span></td>
+                    </tr>
+                </table>   
+        </div>
+    } 
+
+    @if (ViewBag.EditMode && Model.CharacterInfo.CanEdit)
+    {
+            <div class="alert alert-info">
+                <h4>Stats</h4>
+                <table class="table">
+                    @Html.EditorFor(m => m.Stats)
+                </table>
+            </div>
+
+            <div class="alert alert-success">
+                <h4>Roles</h4>
+                <table class="table attribute-table">
+                    @Html.EditorFor(m => m.Roles)
+                </table>
+
+                
+                @if (Model.CanAddNew(AttributeType.Role))
+                {
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="hidden" value="@AttributeType.Role" name="attributeType" />
+                        <input type="text" value="" placeholder="Role Name" name="name" class="form-control" />
+                        <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                        <input type="submit" value="Add Role for @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-success" />
+                    }
+                }
+            </div>
+
+            <div class="alert alert-success">
+                <h4>Skills</h4>
+                <table class="table attribute-table">
+                    @Html.EditorFor(m => m.Skills)
+                </table>
+
+                @if (Model.CanAddNew(AttributeType.Skill))
+                {
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="hidden" value="@AttributeType.Skill" name="attributeType" />
+                        <input type="text" value="" placeholder="Skill Name" name="name" class="form-control" />
+                        <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                        <input type="submit" value="Add Skill for @(Model.NewCost(AttributeType.Skill)) XP" class="btn btn-block btn-success" />
+                    }
+                }
+            </div>
+
+            <div class="alert alert-warning">
+                <h4>Descriptors</h4>
+                <table class="table">
+                    @Html.EditorFor(m => m.Descriptors)
+                </table>
+                
+                @if (Model.CanAddNew(AttributeType.Descriptor))
+                {
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="hidden" value="@AttributeType.Descriptor" name="attributeType" />
+                        <input type="text" value="" placeholder="Descriptor Name" name="name" class="form-control" />
+                        <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                        <input type="submit" value="Add Descriptor for @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-success" />
+                    }
+                }
+            </div>
+    }
+    else
+    {
+        if (Model.Stats.Any())
+         {
+             <div class="alert alert-info">
+                 <h4>Stats</h4>
+                 <table class="table attribute-table">
+                     @Html.DisplayFor(m => m.Stats)
+                 </table>
+             </div>
+         }
+        if (Model.Roles.Any() || Model.Skills.Any())
+         {
+             <div class="alert alert-success">
+                 @if (Model.Roles.Any())
+                 {
+                     <h4>Roles</h4>
+                     <table class="table attribute-table">
+                         @Html.DisplayFor(m => m.Roles)
+                     </table>
+                 }
+                 @if (Model.Skills.Any())
+                 {
+                     <h4>Skills</h4>
+                     <table class="table attribute-table">
+                         @Html.DisplayFor(m => m.Skills)
+                     </table>
+                }
+             </div>
+         }
+
+        if (Model.Descriptors.Any())
+        {
+            <div class="alert alert-warning">
+                <h4>Descriptors</h4>
+                <table class="table attribute-table">
+                    @Html.DisplayFor(m => m.Descriptors)
+                </table>
+            </div>
+        }
+    }
+</div>   
+  

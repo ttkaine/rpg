@@ -12,19 +12,18 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CampaignDetail
+    public partial class PersonAttribute
     {
-        public CampaignDetail()
-        {
-            this.PlayerCampaigns = new HashSet<PlayerCampaign>();
-        }
-    
         public int Id { get; set; }
-        public Nullable<System.DateTime> CurrentGameDate { get; set; }
+        public int PersonId { get; set; }
+        public int PersonAttributeTypeEnum { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int InitialValue { get; set; }
+        public int CurrentValue { get; set; }
+        public int XpSpent { get; set; }
         public int CampaignId { get; set; }
-        public int GmId { get; set; }
-        public Nullable<int> AverageStat { get; set; }
     
-        public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
+        public virtual Person Person { get; set; }
     }
 }

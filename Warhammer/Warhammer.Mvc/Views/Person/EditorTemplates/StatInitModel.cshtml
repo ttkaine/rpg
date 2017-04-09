@@ -1,0 +1,10 @@
+﻿@model Warhammer.Core.Models.StatInitModel
+    
+<tr>
+    <td class="personAttribute" title="@Model.StatName.ToString()">@Model.StatName.ToString()</td>
+    <td class="personAttribute">
+        @Html.HiddenFor(m => m.StatName)
+        @Html.EditorFor(s => s.CurrentValue)
+    </td>
+</tr>
+
