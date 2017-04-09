@@ -11,6 +11,7 @@ namespace Warhammer.Core.Models
         public string PersonName { get; set; }
 
         public decimal CurrentXp => CharacterInfo.CurrentXp;
+        public int XpSpent => CharacterInfo.XpSpent;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
         public int TotalStats => CharacterInfo.TotalStats;
         public int TotalRoles => CharacterInfo.TotalRoles;
@@ -50,11 +51,25 @@ namespace Warhammer.Core.Models
                 case AttributeType.Stat:
                     break;
                 case AttributeType.Skill:
-                    return TotalAdvancesTaken + TotalSkills + 1;
+                    int skillCost = TotalAdvancesTaken + 1;
+
+                    if (skillCost < 1)
+                    {
+                        skillCost = 1;
+                    }
+
+                    return skillCost;
                 case AttributeType.Role:
-                    return (TotalAdvancesTaken + TotalRoles + 1);
+                    int roleCost = TotalAdvancesTaken + 2;
+
+                    if (roleCost < 1)
+                    {
+                        roleCost = 1;
+                    }
+
+                    return roleCost;
                 case AttributeType.Descriptor:
-                    return TotalAdvancesTaken + (TotalDescriptors*3) + 3;
+                    return TotalAdvancesTaken + TotalDescriptors + 3;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -63,5 +78,6 @@ namespace Warhammer.Core.Models
 
         public CampaignDetail CampaignDetail { get; set; }
         public bool HasStats => Stats.Any();
+
     }
 }

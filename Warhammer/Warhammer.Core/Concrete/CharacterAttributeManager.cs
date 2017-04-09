@@ -26,22 +26,27 @@ namespace Warhammer.Core.Concrete
 
             CampaignDetail campaignDetail = _repo.CampaignDetails().FirstOrDefault();
 
-            if (person != null)
+            Player player = _repo.Players().FirstOrDefault(p => p.UserName == _user.UserName);
+
+            if (person != null && player != null && campaignDetail != null)
             {
                 int totalRoles = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Role).Sum(p => p.CurrentValue);
                 int totalSkills = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Skill).Sum(p => p.CurrentValue);
                 int totalStats = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Stat).Sum(p => p.CurrentValue);
                 int totalDescriptors = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Descriptor).Sum(p => p.CurrentValue);
-
+                var averageStat = GetAverageStatValue();
                 CharacterLevelInfo info = new CharacterLevelInfo
                 {
                     TotalAdvancesTaken = person.TotalAdvancesTaken,
                     CurrentXp = person.CurrentXp,
+                    XpSpent = person.XpSpent,
                     TotalRoles = totalRoles,
                     TotalStats = totalStats,
                     TotalSkills = totalSkills,
                     TotalDescriptors = totalDescriptors,
-                    CanEdit = person.Player?.UserName == _user.UserName || _user.IsAdmin
+                    CanEdit = person.Player?.UserName == player.UserName || campaignDetail.GmId == player.Id,
+                    AverageStatValue = averageStat,
+                    NumberOfStats =  person.PersonAttributes.Count(c => c.AttributeType == AttributeType.Stat)
                 };
 
                 CharacterAttributeModel model = new CharacterAttributeModel
@@ -190,17 +195,10 @@ namespace Warhammer.Core.Concrete
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == model.PersonId);
             if (person != null)
             {
-                int? averageStatDefault = _repo.CampaignDetails().Select(c => c.AverageStat).FirstOrDefault();
-
-                int averageStat = 3;
-
-                if (averageStatDefault.HasValue)
-                {
-                    averageStat = averageStatDefault.Value;
-                }
+                var averageStat = GetAverageStatValue();
 
                 int expectedTotal = model.AverageStat * model.Stats.Count;
-                if (!_user.IsAdmin && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
+                if (_user.IsAdmin && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
                 {
                     return false;
                 }
@@ -309,6 +307,19 @@ namespace Warhammer.Core.Concrete
             return false;
         }
 
+        private int GetAverageStatValue()
+        {
+            int? averageStatDefault = _repo.CampaignDetails().Select(c => c.AverageStat).FirstOrDefault();
+
+            int averageStat = 3;
+
+            if (averageStatDefault.HasValue)
+            {
+                averageStat = averageStatDefault.Value;
+            }
+            return averageStat;
+        }
+
         public void ResetAttributes(int id)
         {
             if (_user.IsAdmin)
@@ -322,6 +333,7 @@ namespace Warhammer.Core.Concrete
                     }
 
                     person.XpSpent = 0;
+                    person.TotalAdvancesTaken = 0;
                     _repo.Save(person);
                 }
             }

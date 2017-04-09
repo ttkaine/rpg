@@ -9,5 +9,9 @@
         public int TotalSkills { get; set; }
         public int TotalDescriptors { get; set; }
         public bool CanEdit { get; set; }
+        public int AverageStatValue { get; set; }
+        public int NumberOfStats { get; set; }
+        public int TotalAverageStatValue => AverageStatValue*NumberOfStats;
+        public int XpSpent { get; set; }
     }
 }

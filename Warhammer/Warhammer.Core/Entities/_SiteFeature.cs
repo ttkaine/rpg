@@ -39,7 +39,8 @@ namespace Warhammer.Core.Entities
         ShowGameDate,
         Assets,
         ShadowMode,
-        PersonAttributes
+        PersonAttributes,
+        SoloXp
     }
 
     public partial class SiteFeature

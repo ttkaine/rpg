@@ -23,11 +23,32 @@ namespace Warhammer.Core.Models
                 switch (PersonAttribute.AttributeType)
                 {
                     case AttributeType.Stat:
-                        return TotalStats;
+                        int totalValue = TotalAdvancesTaken + TotalStats;
+                        totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
+                        if (totalValue < 1)
+                        {
+                            totalValue = 1;
+                        }
+                        return totalValue;
                     case AttributeType.Skill:
-                        return PersonAttribute.CurrentValue + TotalAdvancesTaken + TotalSkills;
+                        int skillAdvance = PersonAttribute.CurrentValue;
+                        skillAdvance = skillAdvance/2;
+
+                        skillAdvance = skillAdvance + TotalAdvancesTaken;
+
+                        if (skillAdvance < 1)
+                        {
+                            skillAdvance = 1;
+                        }
+                        return skillAdvance;
                     case AttributeType.Role:
-                        return ((PersonAttribute.CurrentValue + TotalAdvancesTaken + 1)*4) + TotalRoles;
+                        int roleAdvance = PersonAttribute.CurrentValue * 2;
+                        roleAdvance = roleAdvance + TotalAdvancesTaken;
+                        if (roleAdvance < 1)
+                        {
+                            roleAdvance = 1;
+                        }
+                        return roleAdvance;
                     case AttributeType.Descriptor:
                         return -1;
                     default:

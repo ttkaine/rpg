@@ -2,12 +2,24 @@
 @model Warhammer.Core.Models.CharacterAttributeModel
 
 <div id="characterattributes"  class="content-block">
+    @if (Model.CharacterInfo.CanEdit)
+    {
+        <div class="alert alert-info">
+                <table class="table attribute-table">
+                    <tr>
+                        <td>Current XP</td>
+                        <td ><span class="personAttribute label label-success">@Model.CurrentXp</span></td>
+                    </tr>
+                    <tr>
+                        <td>XP Spent</td>
+                        <td><span class="personAttribute label label-danger">@Model.XpSpent</span></td>
+                    </tr>
+                </table>   
+        </div>
+    } 
 
     @if (ViewBag.EditMode && Model.CharacterInfo.CanEdit)
     {
-        <h3>Character Attributes</h3>
-            <h4>@Model.PersonName</h4>
-
             <div class="alert alert-info">
                 <h4>Stats</h4>
                 <table class="table">
@@ -17,7 +29,10 @@
 
             <div class="alert alert-success">
                 <h4>Roles</h4>
-                @Html.EditorFor(m => m.Roles)
+                <table class="table attribute-table">
+                    @Html.EditorFor(m => m.Roles)
+                </table>
+
                 
                 @if (Model.CanAddNew(AttributeType.Role))
                 {
@@ -72,13 +87,11 @@
     }
     else
     {
-        <h3>Character Attributes</h3>
-
         if (Model.Stats.Any())
          {
              <div class="alert alert-info">
                  <h4>Stats</h4>
-                 <table class="table">
+                 <table class="table attribute-table">
                      @Html.DisplayFor(m => m.Stats)
                  </table>
              </div>
@@ -114,3 +127,4 @@
         }
     }
 </div>   
+  

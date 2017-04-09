@@ -47,6 +47,7 @@ namespace Warhammer.Core.Entities
         public string Height { get; set; }
         public Nullable<int> Upkeep { get; set; }
         public int TotalAdvancesTaken { get; set; }
+        public bool HasAttributeMoveAvailable { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }

@@ -268,6 +268,7 @@
           <Property Name="Height" Type="nvarchar(max)" />
           <Property Name="Upkeep" Type="int" />
           <Property Name="TotalAdvancesTaken" Type="int" Nullable="false" />
+          <Property Name="HasAttributeMoveAvailable" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -1648,6 +1649,7 @@
           <NavigationProperty Name="ScoreHistories" Relationship="WarhammerModel.FK_ScoreHistory_Person" FromRole="Person" ToRole="ScoreHistory" />
           <Property Name="TotalAdvancesTaken" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonAttributes" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="Person" ToRole="PersonAttribute" />
+          <Property Name="HasAttributeMoveAvailable" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2626,6 +2628,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="HasAttributeMoveAvailable" ColumnName="HasAttributeMoveAvailable" />
                 <ScalarProperty Name="TotalAdvancesTaken" ColumnName="TotalAdvancesTaken" />
                 <ScalarProperty Name="Upkeep" ColumnName="Upkeep" />
                 <ScalarProperty Name="Height" ColumnName="Height" />

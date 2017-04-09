@@ -1307,18 +1307,22 @@ namespace Warhammer.Core.Concrete
 
         public void AddXpForSession(int sessionId, decimal xpAwarded)
         {
-            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            Session session = _repository.Pages().OfType<Session>().Include(p => p.Pages).FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
                 List<Person> people = session.People.Where(p => !p.IsDead).ToList();
 
-                //always award all players regardless - just to be fair
-                List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).ToList();
-                foreach (Person person in playerCharacters)
+                if (!SiteHasFeature(Feature.SoloXp))
                 {
-                    if (people.All(p => p.Id != person.Id))
+                    //always award all players regardless - just to be fair
+                    List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).ToList();
+
+                    foreach (Person person in playerCharacters)
                     {
-                        people.Add(person);
+                        if (people.All(p => p.Id != person.Id))
+                        {
+                            people.Add(person);
+                        }
                     }
                 }
 
