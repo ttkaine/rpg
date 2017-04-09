@@ -8,5 +8,6 @@
         public int TotalStats { get; set; }
         public int TotalSkills { get; set; }
         public int TotalDescriptors { get; set; }
+        public bool CanEdit { get; set; }
     }
 }

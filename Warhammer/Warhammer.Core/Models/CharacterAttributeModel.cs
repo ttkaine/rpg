@@ -62,6 +62,6 @@ namespace Warhammer.Core.Models
         }
 
         public CampaignDetail CampaignDetail { get; set; }
-
+        public bool HasStats => Stats.Any();
     }
 }

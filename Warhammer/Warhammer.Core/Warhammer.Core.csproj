@@ -343,6 +343,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Models\CharacterAttributeModel.cs" />
+    <Compile Include="Models\CharacterInitialStatsModel.cs" />
     <Compile Include="Models\CharacterLevelInfo.cs" />
     <Compile Include="Models\CreateCreatureViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />

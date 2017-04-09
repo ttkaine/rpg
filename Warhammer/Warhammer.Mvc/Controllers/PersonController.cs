@@ -778,9 +778,39 @@ namespace Warhammer.Mvc.Controllers
                 CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(id);
                 if (model != null)
                 {
-                    return PartialView(model);
+                    if (model.HasStats)
+                    {
+                        return PartialView(model);
+                    }
+                    else
+                    {
+                        if (model.CharacterInfo.CanEdit)
+                        {
+                            CharacterInitialStatsModel initModel = _attributeManager.GetDefaultStats(id);
+                            return PartialView("InitStats", initModel);
+                        }
+
+                    }
+                    
                 }
             }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult InitAttributes(CharacterInitialStatsModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.InitializeStats(model);
+                CharacterAttributeModel updatedModel = _attributeManager.GetCharacterAttributes(model.PersonId);
+                if (updatedModel != null)
+                {
+                    return PartialView("AttributesPanel", updatedModel);
+                }
+            }
+
             return null;
         }
 
@@ -884,6 +914,7 @@ namespace Warhammer.Mvc.Controllers
 
             return model;
         }
+
 
 
     }

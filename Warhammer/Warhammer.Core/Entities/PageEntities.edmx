@@ -107,6 +107,7 @@
           <Property Name="CurrentGameDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="GmId" Type="int" Nullable="false" />
+          <Property Name="AverageStat" Type="int" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -828,7 +829,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PersonAttribute_Person">
-          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PersonAttribute" Type="Self.PersonAttribute" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -2324,6 +2327,7 @@
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="CampaignDetail" ToRole="PlayerCampaign" />
           <Property Name="GmId" Type="Int32" Nullable="false" />
+          <Property Name="AverageStat" Type="Int32" />
         </EntityType>
         <EntityType Name="Rumour">
           <Key>
@@ -2536,7 +2540,9 @@
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="PersonAttribute" ToRole="Person" />
         </EntityType>
         <Association Name="FK_PersonAttribute_Person">
-          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="WarhammerModel.PersonAttribute" Role="PersonAttribute" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Person">
@@ -2973,6 +2979,7 @@
           <EntitySetMapping Name="CampaignDetails">
             <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
               <MappingFragment StoreEntitySet="CampaignDetails">
+                <ScalarProperty Name="AverageStat" ColumnName="AverageStat" />
                 <ScalarProperty Name="GmId" ColumnName="GmId" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="CurrentGameDate" ColumnName="CurrentGameDate" />

@@ -10,15 +10,18 @@ namespace Warhammer.Core.Concrete
     public class CharacterAttributeManager : ICharacterAttributeManager
     {
         private readonly IRepository _repo;
+        private readonly IAuthenticatedUserProvider _user;
 
-        public CharacterAttributeManager(IRepository repo)
+        public CharacterAttributeManager(IRepository repo, IAuthenticatedUserProvider user)
         {
             _repo = repo;
+            _user = user;
         }
 
         public CharacterAttributeModel GetCharacterAttributes(int personId)
         {
             Person person = _repo.People().Where(p => p.Id == personId)
+                .Include(p => p.Player)
                 .Include(p => p.PersonAttributes).FirstOrDefault();
 
             CampaignDetail campaignDetail = _repo.CampaignDetails().FirstOrDefault();
@@ -37,7 +40,8 @@ namespace Warhammer.Core.Concrete
                     TotalRoles = totalRoles,
                     TotalStats = totalStats,
                     TotalSkills = totalSkills,
-                    TotalDescriptors = totalDescriptors
+                    TotalDescriptors = totalDescriptors,
+                    CanEdit = person.Player?.UserName == _user.UserName || _user.IsAdmin
                 };
 
                 CharacterAttributeModel model = new CharacterAttributeModel
@@ -143,6 +147,184 @@ namespace Warhammer.Core.Concrete
             }
 
             return false;
+        }
+
+        public CharacterInitialStatsModel GetDefaultStats(int personId)
+        {
+            CharacterInitialStatsModel model = new CharacterInitialStatsModel();
+            model.PersonId = personId;
+
+            foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
+            {
+                if (statId < 100)
+                {
+                    StatName stat = (StatName)statId;
+                    model.Stats.Add(new StatInitModel
+                    {
+                            CurrentValue = 3,
+                            InitialValue = 3,
+                            MinValue = 1,
+                            StatName = stat
+                    });
+                }
+            }
+
+            int? averageStatDefault = _repo.CampaignDetails().Select(c => c.AverageStat).FirstOrDefault();
+
+            if (averageStatDefault.HasValue)
+            {
+                model.AverageStat = averageStatDefault.Value;
+            }
+            else
+            {
+                model.AverageStat = 3;
+            }
+
+            model.TotalStats = model.AverageStat*model.Stats.Count;
+
+            return model;
+        }
+
+        public bool InitializeStats(CharacterInitialStatsModel model)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == model.PersonId);
+            if (person != null)
+            {
+                int? averageStatDefault = _repo.CampaignDetails().Select(c => c.AverageStat).FirstOrDefault();
+
+                int averageStat = 3;
+
+                if (averageStatDefault.HasValue)
+                {
+                    averageStat = averageStatDefault.Value;
+                }
+
+                int expectedTotal = model.AverageStat * model.Stats.Count;
+                if (!_user.IsAdmin && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
+                {
+                    return false;
+                }
+
+                int skillLevel = averageStat;
+
+                if (skillLevel < 1)
+                {
+                    skillLevel = 1;
+                }
+
+                ResetAttributes(person.Id);
+
+                foreach (StatInitModel statInitModel in model.Stats)
+                {
+                    PersonAttribute addedStat = new PersonAttribute
+                    {
+                        AttributeType = AttributeType.Stat,
+                        Name = statInitModel.StatName.ToString(),
+                        Description = statInitModel.StatName.ToString(),
+                        CurrentValue = statInitModel.CurrentValue,
+                        InitialValue = statInitModel.CurrentValue
+                    };
+                    person.PersonAttributes.Add(addedStat);
+                }
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Role,
+                    Name = model.InitialRoleName,
+                    Description = model.InitialRoleName,
+                    InitialValue = skillLevel,
+                    CurrentValue = skillLevel
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Skill,
+                    Name = model.InitialFirstSkillName,
+                    Description = model.InitialFirstSkillName,
+                    InitialValue = skillLevel,
+                    CurrentValue = skillLevel
+                });
+
+                if (skillLevel > 1)
+                {
+                    skillLevel--;
+                }
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Skill,
+                    Name = model.InitialSecondSkillName,
+                    Description = model.InitialSecondSkillName,
+                    InitialValue = skillLevel,
+                    CurrentValue = skillLevel
+                });
+
+                if (skillLevel > 1)
+                {
+                    skillLevel--;
+                }
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Skill,
+                    Name = model.InitialThirdSkillName,
+                    Description = model.InitialThirdSkillName,
+                    InitialValue = skillLevel,
+                    CurrentValue = skillLevel
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Descriptor,
+                    Name = model.InitialFirstDescriptorName,
+                    Description = model.InitialFirstSkillName,
+                    InitialValue = 1,
+                    CurrentValue = 1
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Descriptor,
+                    Name = model.InitialSecondSkillName,
+                    Description = model.InitialSecondDescriptorName,
+                    InitialValue = 1,
+                    CurrentValue = 1
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Descriptor,
+                    Name = model.InitialThirdSkillName,
+                    Description = model.InitialThirdDescriptorName,
+                    InitialValue = 1,
+                    CurrentValue = 1
+                });
+
+                _repo.Save(person);
+
+                return true;
+
+            }
+
+            return false;
+        }
+
+        public void ResetAttributes(int id)
+        {
+            if (_user.IsAdmin)
+            {
+                Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == id);
+                if (person != null)
+                {
+                    foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.ToList())
+                    {
+                        _repo.Delete(personPersonAttribute);
+                    }
+
+                    person.XpSpent = 0;
+                    _repo.Save(person);
+                }
+            }
         }
     }
 }

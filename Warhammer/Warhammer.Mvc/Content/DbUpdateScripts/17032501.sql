@@ -26,6 +26,8 @@ CREATE TABLE [dbo].[PersonAttribute](
 
 ALTER TABLE [dbo].[PersonAttribute]  WITH CHECK ADD  CONSTRAINT [FK_PersonAttribute_Person] FOREIGN KEY([PersonId])
 REFERENCES [dbo].[Person] ([Id])
+ON UPDATE  CASCADE 
+	 ON DELETE  CASCADE 
 
 
 ALTER TABLE [dbo].[PersonAttribute] CHECK CONSTRAINT [FK_PersonAttribute_Person]

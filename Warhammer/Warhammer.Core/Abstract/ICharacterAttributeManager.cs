@@ -8,5 +8,8 @@ namespace Warhammer.Core.Abstract
         bool BuyAttributeAdvance(int personId, int attributeId);
         bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description);
         bool MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId);
+        CharacterInitialStatsModel GetDefaultStats(int id);
+        bool InitializeStats(CharacterInitialStatsModel model);
+        void ResetAttributes(int id);
     }
 }

@@ -7,8 +7,11 @@ namespace Warhammer.Mvc.Controllers
 {
     public class AdminPageControlsController : BaseController
     {
-        public AdminPageControlsController(IAuthenticatedDataProvider data) : base(data)
+        private ICharacterAttributeManager _attributeManager;
+
+        public AdminPageControlsController(IAuthenticatedDataProvider data, ICharacterAttributeManager attributeManager) : base(data)
         {
+            _attributeManager = attributeManager;
         }
 
         public ActionResult Index(int? id)
@@ -143,6 +146,18 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.SimpleStats))
             {
                 DataProvider.ResetNpcStats(id);
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ResetNpcPersonAttributes(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                _attributeManager.ResetAttributes(id);
             }
             return null;
         }
