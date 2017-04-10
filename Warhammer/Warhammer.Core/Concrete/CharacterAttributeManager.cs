@@ -159,22 +159,9 @@ namespace Warhammer.Core.Concrete
             CharacterInitialStatsModel model = new CharacterInitialStatsModel();
             model.PersonId = personId;
 
-            foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
-            {
-                if (statId < 100)
-                {
-                    StatName stat = (StatName)statId;
-                    model.Stats.Add(new StatInitModel
-                    {
-                            CurrentValue = 3,
-                            InitialValue = 3,
-                            MinValue = 1,
-                            StatName = stat
-                    });
-                }
-            }
 
             int? averageStatDefault = _repo.CampaignDetails().Select(c => c.AverageStat).FirstOrDefault();
+
 
             if (averageStatDefault.HasValue)
             {
@@ -183,6 +170,21 @@ namespace Warhammer.Core.Concrete
             else
             {
                 model.AverageStat = 3;
+            }
+
+            foreach (int statId in Enum.GetValues(typeof(StatName)).AsQueryable())
+            {
+                if (statId < 100)
+                {
+                    StatName stat = (StatName)statId;
+                    model.Stats.Add(new StatInitModel
+                    {
+                            CurrentValue = model.AverageStat,
+                            InitialValue = model.AverageStat,
+                            MinValue = 1,
+                            StatName = stat
+                    });
+                }
             }
 
             model.TotalStats = model.AverageStat*model.Stats.Count;

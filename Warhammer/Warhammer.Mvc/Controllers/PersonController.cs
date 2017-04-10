@@ -776,7 +776,7 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(id);
-                if (model != null)
+                if (model != null && model.CharacterInfo.CanEdit)
                 {
                     if (model.HasStats)
                     {
@@ -789,9 +789,7 @@ namespace Warhammer.Mvc.Controllers
                             CharacterInitialStatsModel initModel = _attributeManager.GetDefaultStats(id);
                             return PartialView("InitStats", initModel);
                         }
-
-                    }
-                    
+                    }                 
                 }
             }
             return null;
