@@ -39,7 +39,7 @@
                                     </ul>
                                 </td>
                                 <td class="description" style="display: none">@Html.Raw(person.SearchString)</td>
-                                <td class="name" style="display: none">@person.FullName</td>
+                                <td class="name no-break" style="display: none">@person.FullName</td>
                             </tr>
                             <tr>
                                 <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
