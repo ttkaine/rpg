@@ -199,8 +199,8 @@ namespace Warhammer.Core.Concrete
             {
                 var averageStat = GetAverageStatValue();
 
-                int expectedTotal = model.AverageStat * model.Stats.Count;
-                if (_user.IsAdmin && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
+                int expectedTotal = averageStat * model.Stats.Count;
+                if (!_user.IsAdmin && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
                 {
                     return false;
                 }
