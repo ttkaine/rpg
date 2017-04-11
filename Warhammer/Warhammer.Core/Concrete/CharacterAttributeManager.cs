@@ -194,13 +194,18 @@ namespace Warhammer.Core.Concrete
 
         public bool InitializeStats(CharacterInitialStatsModel model)
         {
+            Player player = _repo.Players().Single(p => p.UserName == _user.UserName);
+            CampaignDetail campaignDetail = _repo.CampaignDetails().FirstOrDefault();
+
+            bool playerIsGm = player.Id == campaignDetail?.GmId;
+
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == model.PersonId);
             if (person != null)
             {
                 var averageStat = GetAverageStatValue();
 
                 int expectedTotal = averageStat * model.Stats.Count;
-                if (!_user.IsAdmin && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
+                if (!playerIsGm && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
                 {
                     return false;
                 }
@@ -236,77 +241,77 @@ namespace Warhammer.Core.Concrete
                     CurrentValue = skillLevel
                 });
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Skill,
-                    Name = model.InitialFirstSkillName,
-                    Description = model.InitialFirstSkillName,
-                    InitialValue = skillLevel,
-                    CurrentValue = skillLevel
-                });
+                SetInitialSkill(model.InitialFirstSkillName, playerIsGm, person, skillLevel);
 
                 if (skillLevel > 1)
                 {
                     skillLevel--;
                 }
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Skill,
-                    Name = model.InitialSecondSkillName,
-                    Description = model.InitialSecondSkillName,
-                    InitialValue = skillLevel,
-                    CurrentValue = skillLevel
-                });
+                SetInitialSkill(model.InitialSecondSkillName, playerIsGm, person, skillLevel);
 
                 if (skillLevel > 1)
                 {
                     skillLevel--;
                 }
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Skill,
-                    Name = model.InitialThirdSkillName,
-                    Description = model.InitialThirdSkillName,
-                    InitialValue = skillLevel,
-                    CurrentValue = skillLevel
-                });
+                SetInitialSkill(model.InitialThirdSkillName, playerIsGm, person, skillLevel);
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Descriptor,
-                    Name = model.InitialFirstDescriptorName,
-                    Description = model.InitialFirstDescriptorName,
-                    InitialValue = 1,
-                    CurrentValue = 1
-                });
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Descriptor,
-                    Name = model.InitialSecondDescriptorName,
-                    Description = model.InitialSecondDescriptorName,
-                    InitialValue = 1,
-                    CurrentValue = 1
-                });
-
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Descriptor,
-                    Name = model.InitialThirdDescriptorName,
-                    Description = model.InitialThirdDescriptorName,
-                    InitialValue = 1,
-                    CurrentValue = 1
-                });
+                SetInitialDescriptor(model.InitialFirstDescriptorName, playerIsGm, person);
+                SetInitialDescriptor(model.InitialSecondDescriptorName, playerIsGm, person);
+                SetInitialDescriptor(model.InitialThirdDescriptorName, playerIsGm, person);
 
                 _repo.Save(person);
 
                 return true;
-
             }
 
             return false;
+        }
+
+        private static void SetInitialSkill(string skillName, bool playerIsGm, Person person, int skillLevel)
+        {
+            if (string.IsNullOrEmpty(skillName))
+            {
+                if (!playerIsGm)
+                {
+                    skillName = "Unknown Skill";
+                }
+            }
+            if (!string.IsNullOrEmpty(skillName))
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Skill,
+                    Name = skillName,
+                    Description = skillName,
+                    InitialValue = skillLevel,
+                    CurrentValue = skillLevel
+                });
+            }
+        }
+
+        private static void SetInitialDescriptor(string descriptor, bool playerIsGm, Person person)
+        {
+            if (string.IsNullOrEmpty(descriptor))
+            {
+                if (!playerIsGm)
+                {
+                    descriptor = "Unknown Descriptor";
+                }
+            }
+            if (!string.IsNullOrEmpty(descriptor))
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Descriptor,
+                    Name = descriptor,
+                    Description = descriptor,
+                    InitialValue = 1,
+                    CurrentValue = 1
+                });
+            }
         }
 
         private int GetAverageStatValue()
