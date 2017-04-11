@@ -285,7 +285,7 @@ namespace Warhammer.Core.Concrete
                 person.PersonAttributes.Add(new PersonAttribute
                 {
                     AttributeType = AttributeType.Descriptor,
-                    Name = model.InitialSecondSkillName,
+                    Name = model.InitialSecondDescriptorName,
                     Description = model.InitialSecondDescriptorName,
                     InitialValue = 1,
                     CurrentValue = 1
@@ -294,7 +294,7 @@ namespace Warhammer.Core.Concrete
                 person.PersonAttributes.Add(new PersonAttribute
                 {
                     AttributeType = AttributeType.Descriptor,
-                    Name = model.InitialThirdSkillName,
+                    Name = model.InitialThirdDescriptorName,
                     Description = model.InitialThirdDescriptorName,
                     InitialValue = 1,
                     CurrentValue = 1
