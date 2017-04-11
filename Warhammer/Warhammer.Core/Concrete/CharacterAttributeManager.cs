@@ -277,7 +277,7 @@ namespace Warhammer.Core.Concrete
                 {
                     AttributeType = AttributeType.Descriptor,
                     Name = model.InitialFirstDescriptorName,
-                    Description = model.InitialFirstSkillName,
+                    Description = model.InitialFirstDescriptorName,
                     InitialValue = 1,
                     CurrentValue = 1
                 });
