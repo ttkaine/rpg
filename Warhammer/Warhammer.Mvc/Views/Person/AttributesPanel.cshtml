@@ -87,7 +87,7 @@
     }
     else
     {
-        if (Model.Stats.Any())
+        if (Model.Stats.Any() && Model.CharacterInfo.CanEdit)
          {
              <div class="alert alert-info">
                  <h4>Stats</h4>
@@ -95,8 +95,8 @@
                      @Html.DisplayFor(m => m.Stats)
                  </table>
              </div>
-         }
-        if (Model.Roles.Any() || Model.Skills.Any())
+        }
+        if (Model.Roles.Any() || (Model.Skills.Any() && Model.CharacterInfo.CanEdit))
          {
              <div class="alert alert-success">
                  @if (Model.Roles.Any())
@@ -106,7 +106,7 @@
                          @Html.DisplayFor(m => m.Roles)
                      </table>
                  }
-                 @if (Model.Skills.Any())
+                 @if (Model.Skills.Any() && Model.CharacterInfo.CanEdit)
                  {
                      <h4>Skills</h4>
                      <table class="table attribute-table">

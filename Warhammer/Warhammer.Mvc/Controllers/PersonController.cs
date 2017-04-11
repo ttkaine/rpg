@@ -776,7 +776,7 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(id);
-                if (model != null && model.CharacterInfo.CanEdit)
+                if (model != null)
                 {
                     if (model.HasStats)
                     {
