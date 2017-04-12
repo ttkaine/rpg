@@ -24,16 +24,7 @@
 
             <table class="table table-striped">
 
-                @foreach (Award award in Model.Awards.OrderByDescending(a => a.AwardedOn))
-                {
-                    <tr>
-                        <td><a href="@Url.Action("Index", "Page", new {id = award.PersonId})"><img src="@Url.Action("Image", "Page", new {id = award.PersonId}, null)" title="@award.Person.FullName" alt="Picture of @award.Person.FullName" class="mini-profile-image"/></a></td>
-                        <td>@award.Person.FullName</td>
-                        <td>
-                            @award.Reason
-                        </td>
-                    </tr>
-                }
+                @Html.Action("AwardsForTrophy", "Home", new {id = Model.Id })
             </table>
         </div>
     </div>
@@ -42,15 +33,7 @@
         <div class="content-block">
             <h3>@Model.Name</h3>
 
-                @if (Model.Awards.Any())
-                {
-                    <p>Awarded @Model.Awards.Count time@(Model.Awards.Count > 1 ? "s" : "")</p>
-                    <p>First Awarded @Model.Awards.OrderBy(m => m.AwardedOn).First().AwardedOn.ToLongDateString()</p>
-                }
-                else
-                {
-                    <p>Never Awarded.</p>
-                }
+
 
         </div>
     </div>

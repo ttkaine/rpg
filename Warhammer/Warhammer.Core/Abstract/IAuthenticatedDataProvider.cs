@@ -157,5 +157,6 @@ namespace Warhammer.Core.Abstract
         void SetPlayerSuspended(int sessionId, int playerId, bool suspended);
         List<PageLinkModel> GetRelatedPages(int id);
         bool PlayerSettingEnabled(SettingNames setting);
+        List<Award> AwardsForTrophy(int id);
     }
 }

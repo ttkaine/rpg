@@ -718,6 +718,7 @@
     <Content Include="Views\Person\EditorTemplates\PersonAttributeAdvanceModel.cshtml" />
     <Content Include="Views\Person\InitStats.cshtml" />
     <Content Include="Views\Person\EditorTemplates\StatInitModel.cshtml" />
+    <Content Include="Views\Home\AwardsForTrophy.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

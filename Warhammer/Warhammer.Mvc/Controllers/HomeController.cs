@@ -395,5 +395,11 @@ namespace Warhammer.Mvc.Controllers
             List<Creature> creatures = DataProvider.Creatures().OrderBy(l => l.Breadcrumb).ToList();
             return View(creatures);
         }
+
+        public ActionResult AwardsForTrophy(int id)
+        {
+            List<Award> awards = DataProvider.AwardsForTrophy(id);
+            return PartialView(awards);
+        }
     }
 }

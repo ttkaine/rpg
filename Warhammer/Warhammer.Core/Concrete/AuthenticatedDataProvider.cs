@@ -1940,6 +1940,12 @@ namespace Warhammer.Core.Concrete
             return player.SettingIsEnabled(theSetting);
         }
 
+        public List<Award> AwardsForTrophy(int id)
+        {
+            List<Award> awards = _repository.Awards().Where(t => t.TrophyId == id).ToList();
+            return awards;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
