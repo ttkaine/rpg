@@ -432,7 +432,12 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Session> Sessions()
         {
-            return _repository.Pages().OfType<Session>().ToList();
+            var query = _repository.Pages();
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+            return query.OfType<Session>().ToList();
         }
 
         public ICollection<Person> People()
