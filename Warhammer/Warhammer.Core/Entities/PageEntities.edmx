@@ -483,6 +483,7 @@
           <Property Name="MimeType" Type="nvarchar" MaxLength="150" />
           <Property Name="PointsValue" Type="int" Nullable="false" />
           <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" />
         </EntityType>
         <EntityType Name="UserSetting">
           <Key>
@@ -1697,6 +1698,7 @@
           <Property Name="PointsValue" Type="Int32" Nullable="false" />
           <Property Name="TypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Trophy" ToRole="Award" />
+          <Property Name="CampaignId" Type="Int32" />
         </EntityType>
         <Association Name="FK_Award_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -2708,6 +2710,7 @@
           <EntitySetMapping Name="Trophies">
             <EntityTypeMapping TypeName="WarhammerModel.Trophy">
               <MappingFragment StoreEntitySet="Trophy">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
                 <ScalarProperty Name="MimeType" ColumnName="MimeType" />

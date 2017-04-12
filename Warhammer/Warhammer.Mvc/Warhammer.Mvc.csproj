@@ -288,6 +288,7 @@
     <Content Include="Content\DbUpdateScripts\17040501.sql" />
     <Content Include="Content\DbUpdateScripts\17040901.sql" />
     <Content Include="Content\DbUpdateScripts\17040902.sql" />
+    <Content Include="Content\DbUpdateScripts\17041201.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />

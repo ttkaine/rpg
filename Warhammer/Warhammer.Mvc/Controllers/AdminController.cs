@@ -42,7 +42,8 @@ namespace Warhammer.Mvc.Controllers
             Trophy trophy = null;
             if (id.HasValue)
             {
-                trophy = DataProvider.GetTrophy(id.Value);    
+                trophy = DataProvider.GetTrophy(id.Value);
+                trophy.SaveAsCurrentCampaignOnly = trophy.CurrentCampaignOnly;
             }
 
             if (trophy == null)
@@ -72,18 +73,18 @@ namespace Warhammer.Mvc.Controllers
 
                 if (trophy.Id == 0)
                 {
-                    DataProvider.AddTrophy(trophy.Name, trophy.Description, trophy.PointsValue, imageData,"image/jpeg");
+                    DataProvider.AddTrophy(trophy.Name, trophy.Description, trophy.PointsValue, imageData,"image/jpeg", trophy.SaveAsCurrentCampaignOnly);
                 }
                 else
                 {
                     if (imageData != null)
                     {
                         DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue,
-                            imageData, "image/jpeg");
+                            imageData, "image/jpeg", trophy.SaveAsCurrentCampaignOnly);
                     }
                     else
                     {
-                        DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue);                      
+                        DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue, trophy.SaveAsCurrentCampaignOnly);                      
                     }
                 }
                 return RedirectToAction("Trophies", "Home");

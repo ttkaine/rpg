@@ -40,9 +40,9 @@ namespace Warhammer.Core.Abstract
         void ResurrectPerson(int id);
         void KillPerson(int id, string obiturary, string causeOfDeath);
         Trophy GetTrophy(int id);
-        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType);
-        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType);
-        void UpdateTrophy(int id, string name, string description, int pointsValue);
+        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
+        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
+        void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly);
         ICollection<Trophy> Trophies();
         void AwardTrophy(int personId, int trophyId, string reason);
         void RemoveAward(int personId, int awardId);

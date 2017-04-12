@@ -79,7 +79,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Trophy> Trophies()
         {
-            return _entities.Trophies;
+            return _entities.Trophies.Where(t => t.CampaignId == null || t.CampaignId == CurrentCampaignId);
         }
 
         public int Save(Trophy trophy)

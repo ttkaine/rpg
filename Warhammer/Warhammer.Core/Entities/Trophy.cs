@@ -26,6 +26,7 @@ namespace Warhammer.Core.Entities
         public string MimeType { get; set; }
         public int PointsValue { get; set; }
         public int TypeId { get; set; }
+        public Nullable<int> CampaignId { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
     }
