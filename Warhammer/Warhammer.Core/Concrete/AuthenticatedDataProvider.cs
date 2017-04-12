@@ -914,7 +914,7 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             return query.OrderBy(s => s.FullName).ToList();
@@ -2055,7 +2055,7 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             query = query.OrderByDescending(p => p.CurrentScore).Take(5);
@@ -2252,7 +2252,7 @@ namespace Warhammer.Core.Concrete
 
                 if (ShadowMode)
                 {
-                    query = (IQueryable<Person>) ApplyShadow(query);
+                    query = ApplyPeopleShadow(query);
                 }
 
                 if (!SiteHasFeature(Feature.PublicLeague) && !(SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin))
