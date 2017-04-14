@@ -10,22 +10,45 @@ namespace Warhammer.Core.Concrete
 {
     public class ModelFactory : IModelFactory
     {
-		//private bool PlayerIsGm(Player player)
-		//{
-		//	return player.Id == 1;
-		//}
+        private Player _gm = null;
+        private CampaignDetail _campaign = null;
 
-	    private int GetGmId()
+        public CampaignDetail Campaign
+        {
+            get
+            {
+                if (_campaign == null)
+                {
+                    _campaign = _repository.CampaignDetails().Single();
+                }
+                return _campaign;
+            }
+        }
+
+        public Player Gm
+        {
+            get
+            {
+                if (_gm == null)
+                {
+
+                    if (Campaign != null)
+                    {
+                        _gm = _repository.Players().Single(p => p.Id == Campaign.GmId);
+                    }
+                }
+                return _gm;
+            }
+        }
+
+        private int GetGmId(int sessionId)
 	    {
-		    CampaignDetail campaign = Repo.CampaignDetails().FirstOrDefault();
-		    if (campaign != null)
-		    {
-			    return campaign.GmId;
-		    }
-		    else
-		    {
-			    return 0;
-		    }
+            int? sessionGm = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId)?.GmId;
+            if (sessionGm.HasValue)
+            {
+                return sessionGm.Value;
+            }
+	        return Gm.Id;
 	    }
 
 	    private readonly IAuthenticatedUserProvider _userProvider;
@@ -40,26 +63,24 @@ namespace Warhammer.Core.Concrete
 		    get { return _repository;  }
 	    }
 
-	    public ModelFactory()
-	    {		    
-	    }
 
 	    public ModelFactory(IAuthenticatedUserProvider userProvider, IRepository repository)
 	    {
 		    _userProvider = userProvider;
 		    _repository = repository;
+	
 	    }
 
-	    public PlayerViewModel GetPlayerForCurrentUser()
+	    public PlayerViewModel GetPlayerForCurrentUser(int sessionId)
 	    {
 		    Player player = Repo.Players().FirstOrDefault(p => p.UserName == UserProvider.UserName);
-
+            
 		    if (player != null)
 		    {
 			    PlayerViewModel viewModel = new PlayerViewModel();
 			    viewModel.ID = player.Id;
 			    viewModel.Name = player.DisplayName;
-		        viewModel.IsGM = player.Id == GetGmId();
+		        viewModel.IsGM = player.Id == GetGmId(sessionId);
 
 
                 return viewModel;
@@ -70,7 +91,7 @@ namespace Warhammer.Core.Concrete
 		    }
 	    }
 
-	    public PlayerViewModel GetPlayer(int playerId)
+	    public PlayerViewModel GetPlayer(int playerId, int sessionId)
 	    {
 			Player player = Repo.Players().FirstOrDefault(p => p.Id == playerId);
 
@@ -79,7 +100,7 @@ namespace Warhammer.Core.Concrete
 				PlayerViewModel viewModel = new PlayerViewModel();
 				viewModel.ID = player.Id;
 				viewModel.Name = player.DisplayName;
-				viewModel.IsGM = player.Id == GetGmId();
+				viewModel.IsGM = player.Id == GetGmId(sessionId);
 
                 return viewModel;
 			}
@@ -93,7 +114,7 @@ namespace Warhammer.Core.Concrete
 	    {
 			List<PlayerViewModel> viewModels = new List<PlayerViewModel>();
 		    Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-		    PlayerViewModel currentPlayer = GetPlayerForCurrentUser();
+		    PlayerViewModel currentPlayer = GetPlayerForCurrentUser(sessionId);
 
 			if (session != null && currentPlayer != null)
 			{
@@ -104,20 +125,20 @@ namespace Warhammer.Core.Concrete
 						PlayerViewModel viewModel = new PlayerViewModel();
 						viewModel.ID = player.Id;
 						viewModel.Name = player.DisplayName;
-						viewModel.IsGM = player.Id == GetGmId();
+						viewModel.IsGM = player.Id == GetGmId(sessionId);
                         viewModels.Add(viewModel);
 					}
 				}
 			}
 
-		    gmId = GetGmId();
+		    gmId = GetGmId(sessionId);
 
 			return viewModels;
 	    }
 
-	    public CharacterViewModel GetCharacterForCurrentUser(int characterId)
+	    public CharacterViewModel GetCharacterForCurrentUser(int characterId, int sessionId)
 	    {
-			PlayerViewModel currentPlayer = GetPlayerForCurrentUser();
+			PlayerViewModel currentPlayer = GetPlayerForCurrentUser(sessionId);
 		    Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == currentPlayer.ID || (p.PlayerId == null && currentPlayer.IsGM)));
 
 			if (character != null)
@@ -166,7 +187,7 @@ namespace Warhammer.Core.Concrete
 	    public List<CharacterViewModel> GetCharactersForCurrentUserInSession(int sessionId)
 	    {
 			Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-			PlayerViewModel player = GetPlayerForCurrentUser();
+			PlayerViewModel player = GetPlayerForCurrentUser(sessionId);
 
 			List<CharacterViewModel> viewModels = new List<CharacterViewModel>();
 			if (player != null && session != null)
@@ -198,7 +219,7 @@ namespace Warhammer.Core.Concrete
 				viewModel.IsClosed = session.IsClosed;
 				viewModel.StartDate = session.DateTime.GetValueOrDefault();
 				viewModel.Title = session.ShortName;
-				viewModel.GmId = GetGmId();
+				viewModel.GmId = GetGmId(sessionId);
 			    viewModel.CurrentPlayerId = GetCurrentPlayerId(session);
 				return viewModel;
 			}
@@ -208,22 +229,24 @@ namespace Warhammer.Core.Concrete
 
 		public PostViewModel GetPost(int postId, out int playerId, out bool playerIsGm)
 	    {
-			PlayerViewModel player = GetPlayerForCurrentUser();
 			Post post = Repo.Posts().FirstOrDefault(p => p.Id == postId);
-			int gmId = GetGmId();
-			playerId = player.ID;
-			playerIsGm = player.IsGM;
+	        playerIsGm = false;
+	        playerId = 0;
 
-		    if (post != null)
+            if (post != null)
 		    {
-				List<int> playerIds = new List<int>();
+                PlayerViewModel player = GetPlayerForCurrentUser(post.SessionId);
+                int gmId = GetGmId(post.SessionId);
+                playerId = player.ID;
+                playerIsGm = player.IsGM;
+                List<int> playerIds = new List<int>();
 				StringBuilder names = new StringBuilder();
 				if (post.TargetPlayerIds != null)
 				{
 					playerIds.AddRange(GetIntsFromString(post.TargetPlayerIds));
 					foreach (int id in playerIds)
 					{
-						PlayerViewModel targetPlayer = GetPlayer(id);
+						PlayerViewModel targetPlayer = GetPlayer(id, post.SessionId);
 						if (targetPlayer != null)
 						{
 							if (names.Length > 0)
@@ -267,7 +290,7 @@ namespace Warhammer.Core.Concrete
                     return order.PlayerId;
                 }
             }
-            return GetGmId();
+            return GetGmId(session.Id);
         }
 
         public List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId)
@@ -296,11 +319,11 @@ namespace Warhammer.Core.Concrete
 	    {
 		    playerIsGm = false;
 			playerId = -1;
-		    int gmId = GetGmId();
+		    int gmId = GetGmId(sessionId);
 			//PlayerModel player = Data.GetPlayerDataForUserId(currentUserId);
 			//SessionModel session = Data.GetSession(sessionId);
 			Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-			PlayerViewModel player = GetPlayerForCurrentUser();
+			PlayerViewModel player = GetPlayerForCurrentUser(sessionId);
 
 			List<PostViewModel> viewModels = new List<PostViewModel>();
 			if (player != null && session != null)
@@ -317,7 +340,7 @@ namespace Warhammer.Core.Concrete
 						playerIds.AddRange(GetIntsFromString(post.TargetPlayerIds));
 						foreach (int id in playerIds)
 						{
-							PlayerViewModel targetPlayer = GetPlayer(id);
+							PlayerViewModel targetPlayer = GetPlayer(id, sessionId);
 							if (targetPlayer != null)
 							{
 								if (names.Length > 0)
@@ -437,7 +460,7 @@ namespace Warhammer.Core.Concrete
 				}
 			}
 
-			PlayerViewModel player = GetPlayer(post.PlayerId);
+			PlayerViewModel player = GetPlayer(post.PlayerId, post.SessionId);
 			if (player != null)
 			{
 				viewModel.PlayerName = player.Name;
@@ -453,8 +476,8 @@ namespace Warhammer.Core.Concrete
 			//PlayerModel player = Data.GetPlayerDataForUserId(currentUserId);
 			//SessionModel session = Data.GetSession(sessionId);
 			Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-			PlayerViewModel player = GetPlayerForCurrentUser();
-		    int gmId = GetGmId();
+			PlayerViewModel player = GetPlayerForCurrentUser(sessionId);
+		    int gmId = GetGmId(sessionId);
 
 			List<PostViewModel> viewModels = new List<PostViewModel>();
 			if (player != null && session != null)
@@ -469,7 +492,7 @@ namespace Warhammer.Core.Concrete
 						playerIds.AddRange(GetIntsFromString(post.TargetPlayerIds));
 						foreach (int id in playerIds)
 						{
-							PlayerViewModel targetPlayer = GetPlayer(id);
+							PlayerViewModel targetPlayer = GetPlayer(id, sessionId);
 							if (targetPlayer != null)
 							{
 								if (names.Length > 0)

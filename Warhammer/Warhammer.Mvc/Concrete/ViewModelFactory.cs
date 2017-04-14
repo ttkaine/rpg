@@ -314,6 +314,16 @@ namespace Warhammer.Mvc.Concrete
             return viewModel;            
         }
 
+        public SessionGmViewModel MakeSessionGmViewModel(int id, List<Player> players, int gmId)
+        {
+            SessionGmViewModel model = new SessionGmViewModel();
+
+            model.SessionId = id;
+            model.Players = new SelectList(players, "Id", "DisplayName");
+            model.SelectedGm = gmId;
+            return model;
+        }
+
 
         private string GetSettingTitle(SettingSection section)
         {

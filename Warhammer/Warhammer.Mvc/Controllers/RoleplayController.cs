@@ -379,7 +379,7 @@ namespace Warhammer.Mvc.Controllers
 				{
 					if (DataProvider.IsLoggedIn())
 					{
-						PlayerViewModel player = ModelFactory.GetPlayerForCurrentUser();
+						PlayerViewModel player = ModelFactory.GetPlayerForCurrentUser(sessionId);
 						SessionViewModel session = ModelFactory.GetSession(sessionId);
 
 						if (player != null && session != null)

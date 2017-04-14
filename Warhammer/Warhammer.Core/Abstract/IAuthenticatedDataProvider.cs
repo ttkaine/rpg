@@ -12,6 +12,7 @@ namespace Warhammer.Core.Abstract
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
         int AddSession(string title, string name, string description, DateTime dateTime);
+        int GetGmId(int sessionId);
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc);
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
@@ -158,5 +159,7 @@ namespace Warhammer.Core.Abstract
         List<PageLinkModel> GetRelatedPages(int id);
         bool PlayerSettingEnabled(SettingNames setting);
         List<Award> AwardsForTrophy(int id);
+        List<Player> GetAllPlayers();
+        void SetSessionGm(int sessionId, int? selectedGm);
     }
 }

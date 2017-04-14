@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Models;
@@ -158,6 +159,36 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 _attributeManager.ResetAttributes(id);
+            }
+            return null;
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult SessionGmControl(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.VariableSessionGm))
+            {
+                List<Player> players = DataProvider.GetAllPlayers();
+                int gmId = DataProvider.GetGmId(id);
+                SessionGmViewModel model = ModelFactory.MakeSessionGmViewModel(id, players, gmId);
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult SessionGmControl(SessionGmViewModel postedModel)
+        {
+            if (DataProvider.SiteHasFeature(Feature.VariableSessionGm))
+            {
+                DataProvider.SetSessionGm(postedModel.SessionId, postedModel.SelectedGm);
+
+                List<Player> players = DataProvider.GetAllPlayers();
+                int gmId = DataProvider.GetGmId(postedModel.SessionId);
+                SessionGmViewModel model = ModelFactory.MakeSessionGmViewModel(postedModel.SessionId, players, gmId);
+                model.GmJustSet = true;
+                return PartialView(model);
             }
             return null;
         }

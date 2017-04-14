@@ -428,6 +428,7 @@
           <Property Name="IsGmTurn" Type="bit" Nullable="false" />
           <Property Name="XpAwarded" Type="datetime" />
           <Property Name="GmIsSuspended" Type="bit" Nullable="false" />
+          <Property Name="GmId" Type="int" />
         </EntityType>
         <EntityType Name="SessionLog">
           <Key>
@@ -2479,6 +2480,7 @@
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_Session" FromRole="Session" ToRole="Post" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="Session" ToRole="PostOrder" />
           <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Session" FromRole="Session" ToRole="SessionLog" />
+          <Property Name="GmId" Type="Int32" />
         </EntityType>
         <Association Name="FK_PostOrder_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -2673,6 +2675,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="GmId" ColumnName="GmId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="Length" ColumnName="Length" />

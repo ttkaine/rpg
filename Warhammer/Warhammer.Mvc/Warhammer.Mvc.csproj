@@ -270,6 +270,7 @@
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\PlayerSessionControlsViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
+    <Compile Include="Models\SessionGmViewModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
     <Compile Include="Models\SessionXpModel.cs" />
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
@@ -289,6 +290,7 @@
     <Content Include="Content\DbUpdateScripts\17040901.sql" />
     <Content Include="Content\DbUpdateScripts\17040902.sql" />
     <Content Include="Content\DbUpdateScripts\17041201.sql" />
+    <Content Include="Content\DbUpdateScripts\17041401.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -720,6 +722,7 @@
     <Content Include="Views\Person\InitStats.cshtml" />
     <Content Include="Views\Person\EditorTemplates\StatInitModel.cshtml" />
     <Content Include="Views\Home\AwardsForTrophy.cshtml" />
+    <Content Include="Views\AdminPageControls\SessionGmControl.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

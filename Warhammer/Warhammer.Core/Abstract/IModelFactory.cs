@@ -6,12 +6,12 @@ namespace Warhammer.Core.Abstract
 {
     public interface IModelFactory
     {
-		PlayerViewModel GetPlayerForCurrentUser();
-		PlayerViewModel GetPlayer(int playerId);
+		PlayerViewModel GetPlayerForCurrentUser(int sessionId);
+		PlayerViewModel GetPlayer(int playerId, int sessionId);
 		List<PlayerViewModel> GetPlayersForSessionExcludingUser(int sessionId, out int gmId);
 
 		//List<CharacterViewModel> GetCharactersForCurrentUser();
-		CharacterViewModel GetCharacterForCurrentUser(int characterId);
+		CharacterViewModel GetCharacterForCurrentUser(int characterId, int sessionId);
 		CharacterViewModel GetCharacter(int characterId);
 		//List<CharacterViewModel> GetCharactersForCurrentUserInCampaign(int campaignId);
 		//List<CharacterViewModel> GetCharactersForCurrentUserNotInCampaign(int campaignId);

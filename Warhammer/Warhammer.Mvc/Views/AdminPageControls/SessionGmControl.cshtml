@@ -1,0 +1,17 @@
+﻿@model Warhammer.Mvc.Models.SessionGmViewModel
+
+<div class="alert alert-info" id="gmBox">
+    <h3>Set Session GM</h3>
+    @if (Model.GmJustSet)
+    {
+        <div class="alert alert-success">
+            <h3>GM SET!</h3>
+        </div> 
+    }
+    @using (Ajax.BeginForm("SessionGmControl", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "gmBox" }))
+    {
+        @Html.HiddenFor(m => m.SessionId)
+        @Html.DropDownListFor(m => m.SelectedGm, Model.Players, "--Default--", new { @class = "form-control" })
+        <input type="submit" value="Set GM for this Session" class="btn btn-warning btn-block" />
+    }
+</div>

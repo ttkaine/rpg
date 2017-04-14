@@ -183,6 +183,16 @@ namespace Warhammer.Core.Concrete
             return id;
         }
 
+        public int GetGmId(int sessionId)
+        {
+            int? sessionGm = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId)?.GmId;
+            if (sessionGm.HasValue)
+            {
+                return sessionGm.Value;
+            }
+            return GetGmId();
+        }
+
         public int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc)
         {
 
@@ -1979,6 +1989,21 @@ namespace Warhammer.Core.Concrete
         {
             List<Award> awards = _repository.Awards().Where(t => t.TrophyId == id).ToList();
             return awards;
+        }
+
+        public List<Player> GetAllPlayers()
+        {
+            return _repository.Players().OrderBy(p => p.DisplayName).ToList();
+        }
+
+        public void SetSessionGm(int sessionId, int? selectedGm)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                session.GmId = selectedGm;
+                Save(session);
+            }
         }
 
         public void RemoveAward(int personId, int awardId)
