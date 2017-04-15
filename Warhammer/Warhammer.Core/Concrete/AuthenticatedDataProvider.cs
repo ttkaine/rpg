@@ -34,8 +34,26 @@ namespace Warhammer.Core.Concrete
                     .Where(p => p.CreatedBy.UserName == _authenticatedUser.UserName)
                     .Select(p => p.Id)
                     .ToList();
+                    _myPageIds.AddRange(MySessionIds);
+                    _myPageIds = _myPageIds.Distinct().ToList();
                 }
                 return _myPageIds;
+            }
+        }
+
+        private List<int> _mySessionIds;
+        public List<int> MySessionIds
+        {
+            get
+            {
+                if (_mySessionIds == null)
+                {
+                    _mySessionIds = _repository.Pages().OfType<Session>()
+                    .Where(p => p.Related.OfType<Person>().Any(r => r.Player.UserName == _authenticatedUser.UserName))
+                    .Select(p => p.Id)
+                    .ToList();
+                }
+                return _mySessionIds;
             }
         }
 
