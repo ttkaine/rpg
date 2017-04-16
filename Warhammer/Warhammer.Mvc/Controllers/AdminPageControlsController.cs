@@ -101,7 +101,7 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SessionXpControl(int id)
         {
-            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats) || DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 Page page = DataProvider.GetPage(id);
                 SessionXpModel model = new SessionXpModel
@@ -118,7 +118,7 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SessionXpControl(SessionXpModel model)
         {
-            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats) || DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 if (ModelState.IsValid)
                 {

@@ -2470,7 +2470,7 @@ namespace Warhammer.Core.Concrete
         {
             return
                 OpenTextSessions()
-                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm).ToList();
+                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id).ToList();
         }
 
         [Obsolete("Seriously... just no...", true)]
