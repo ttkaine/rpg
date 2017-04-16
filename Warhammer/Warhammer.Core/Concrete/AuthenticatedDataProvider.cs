@@ -2416,8 +2416,6 @@ namespace Warhammer.Core.Concrete
             return 0;
         }
 
-
-
         public Player PlayerToPostInSession(int sessionId)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
@@ -2425,14 +2423,14 @@ namespace Warhammer.Core.Concrete
             {
                 if (session.IsGmTurn && !session.GmIsSuspended)
                 {
-                    return Gm;
+                    return SessionGm(session);
                 }
                 else
                 {
                     PostOrder postOrder = session.PostOrders.Where(p => !p.IsSuspended).OrderBy(po => po.LastTurnEnded).FirstOrDefault();
                     if (postOrder == null && !session.GmIsSuspended)
                     {
-                        return Gm;
+                        return SessionGm(session);
                     }
 
                     return postOrder != null ? postOrder.Player : null;
@@ -2442,6 +2440,21 @@ namespace Warhammer.Core.Concrete
             {
                 return null;
             }
+        }
+
+        private Player SessionGm(Session session)
+        {
+            if (session.GmId.HasValue)
+            {
+                return GetPlayer(session.GmId.Value);
+            }
+
+            return Gm;
+        }
+
+        private Player GetPlayer(int playerId)
+        {
+            return _repository.Players().FirstOrDefault(p => p.Id == playerId);
         }
 
         public List<Session> OpenTextSessions()
