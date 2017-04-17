@@ -1395,7 +1395,18 @@ namespace Warhammer.Core.Concrete
 
                 foreach (Person person in people)
                 {
-                    AddXp(person.Id, xpAwarded);
+                    if (SiteHasFeature(Feature.PostBonusXp))
+                    {
+                        decimal postBonus =
+                            _repository.Posts().Count(p => p.CharacterId == person.Id && p.SessionId == sessionId)*0.01m;
+                        AddXp(person.Id, xpAwarded + postBonus);
+                    }
+                    else
+                    {
+                        AddXp(person.Id, xpAwarded);
+                    }
+
+                    
                 }
 
                 Save(session);

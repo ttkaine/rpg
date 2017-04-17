@@ -41,7 +41,8 @@ namespace Warhammer.Core.Entities
         ShadowMode,
         PersonAttributes,
         SoloXp,
-        VariableSessionGm
+        VariableSessionGm,
+        PostBonusXp
     }
 
     public partial class SiteFeature
