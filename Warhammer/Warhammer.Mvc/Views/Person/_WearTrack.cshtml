@@ -2,7 +2,19 @@
 @model CharacterAttributeModel
 
 <div class="alert alert-info">
+    
+    @if (!Model.Wear.Any())
+    {
+        using (Ajax.BeginForm("SetDefaultWearAndHarm", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+        {
+            <input type="hidden" value="@Model.PersonId" name="personId" />
+            <input type="submit" value="Set Up Wear and Harm Slots" class="btn btn-block btn-success" />
+        }
+    }
+    
+
     <table class="table attribute-table">
+
 
         @foreach (PersonAttributeAdvanceModel wear in Model.Wear)
         {
@@ -18,11 +30,11 @@
                 <tr>
                     <td>Apply Wear:</td>
                     <td>
-                        @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
                         {
-                            <input type="hidden" value="@Model.PersonId" name="personId" />
-                                    <input type="hidden" value="@wear.PersonAttribute.Id" name="attributeId" />
-                                    <input type="submit" value="@wear.DisplayValue" class="btn btn-block btn-success" />
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@wear.PersonAttribute.Id" name="attributeId"/>
+                            <input type="submit" value="@wear.DisplayValue" class="btn btn-block btn-success"/>
                         }
                     </td>
                 </tr>
@@ -34,10 +46,10 @@
 
     @if (Model.Wear.Any(e => e.Exhausted))
     {
-        using (Ajax.BeginForm("RefreshWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+        using (Ajax.BeginForm("RefreshWear", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
         {
-            <input type="hidden" value="@Model.PersonId" name="personId" />
-                    <input type="submit" value="Refresh Wear" class="btn btn-block btn-success" />
+            <input type="hidden" value="@Model.PersonId" name="personId"/>
+            <input type="submit" value="Refresh Wear" class="btn btn-block btn-success"/>
         }
     }
 

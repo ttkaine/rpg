@@ -270,41 +270,7 @@ namespace Warhammer.Core.Concrete
                 SetInitialDescriptor(model.InitialSecondDescriptorName, playerIsGm, person);
                 SetInitialDescriptor(model.InitialThirdDescriptorName, playerIsGm, person);
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Wear,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 2,
-                    CurrentValue = 2
-                });
-
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Wear,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 4,
-                    CurrentValue = 4
-                });
-
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Harm,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 2,
-                    CurrentValue = 2
-                });
-
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Harm,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 4,
-                    CurrentValue = 4
-                });
+                AddDefaultWearAndHarm(person);
 
                 _repo.Save(person);
 
@@ -422,6 +388,64 @@ namespace Warhammer.Core.Concrete
                 return true;
             }
             return false;
+        }
+
+        public bool SetDefaultWearAndHarm(int personId)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Harm || a.AttributeType == AttributeType.Wear).ToList())
+                {
+                    _repo.Delete(personPersonAttribute);
+                }
+
+                AddDefaultWearAndHarm(person);
+                _repo.Save(person);
+                return true;
+            }
+
+
+            return false;
+        }
+
+        private void AddDefaultWearAndHarm(Person person)
+        {
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Wear,
+                Name = "",
+                Description = "",
+                InitialValue = 2,
+                CurrentValue = 2
+            });
+
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Wear,
+                Name = "",
+                Description = "",
+                InitialValue = 4,
+                CurrentValue = 4
+            });
+
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "",
+                InitialValue = 2,
+                CurrentValue = 2
+            });
+
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "",
+                InitialValue = 4,
+                CurrentValue = 4
+            });
         }
     }
 }

@@ -944,5 +944,21 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SetDefaultWearAndHarm(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.SetDefaultWearAndHarm(personId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
     }
 }

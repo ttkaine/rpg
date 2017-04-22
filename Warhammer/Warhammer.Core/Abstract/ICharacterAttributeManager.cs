@@ -13,5 +13,6 @@ namespace Warhammer.Core.Abstract
         void ResetAttributes(int id);
         bool RefreshWear(int personId);
         bool ApplyWear(int personId, int attributeId);
+        bool SetDefaultWearAndHarm(int personId);
     }
 }
