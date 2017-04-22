@@ -34,6 +34,10 @@ namespace Warhammer.Core.Concrete
                 int totalSkills = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Skill).Sum(p => p.CurrentValue);
                 int totalStats = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Stat).Sum(p => p.CurrentValue);
                 int totalDescriptors = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Descriptor).Sum(p => p.CurrentValue);
+                int totalWear = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Wear).Sum(p => p.CurrentValue);
+                int totalHarm = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Harm).Sum(p => p.CurrentValue);
+                int numberOfWear = person.PersonAttributes.Count(p => p.AttributeType == AttributeType.Wear);
+                int numbeOfHarm = person.PersonAttributes.Count(p => p.AttributeType == AttributeType.Harm);
                 var averageStat = GetAverageStatValue();
                 CharacterLevelInfo info = new CharacterLevelInfo
                 {
@@ -43,6 +47,10 @@ namespace Warhammer.Core.Concrete
                     TotalRoles = totalRoles,
                     TotalStats = totalStats,
                     TotalSkills = totalSkills,
+                    TotalWear = totalWear,
+                    TotalHarm = totalHarm,
+                    NumberOfWear = numberOfWear,
+                    NumberOfHarm = numbeOfHarm,
                     TotalDescriptors = totalDescriptors,
                     CanEdit = person.Player?.UserName == player.UserName || campaignDetail.GmId == player.Id,
                     AverageStatValue = averageStat,
@@ -261,6 +269,42 @@ namespace Warhammer.Core.Concrete
                 SetInitialDescriptor(model.InitialFirstDescriptorName, playerIsGm, person);
                 SetInitialDescriptor(model.InitialSecondDescriptorName, playerIsGm, person);
                 SetInitialDescriptor(model.InitialThirdDescriptorName, playerIsGm, person);
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Wear,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 2,
+                    CurrentValue = 2
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Wear,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 4,
+                    CurrentValue = 4
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Harm,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 2,
+                    CurrentValue = 2
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Harm,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 4,
+                    CurrentValue = 4
+                });
 
                 _repo.Save(person);
 
