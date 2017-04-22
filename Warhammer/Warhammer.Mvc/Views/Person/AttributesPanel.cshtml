@@ -1,9 +1,16 @@
 ﻿@using Warhammer.Core
+@using Warhammer.Core.Models
 @model Warhammer.Core.Models.CharacterAttributeModel
 
 <div id="characterattributes"  class="content-block">
     @if (Model.CharacterInfo.CanEdit)
     {
+
+        @Html.Partial("_WearTrack", Model)
+
+
+
+
         <div class="alert alert-info">
                 <table class="table attribute-table">
                     <tr>
@@ -86,7 +93,7 @@
         </div>
 
         <div class="alert alert-danger">
-            <h4>Wear and Harm</h4>
+            <h4>Wear</h4>
             <table class="table">
                 @Html.EditorFor(m => m.Wear)
             </table>
@@ -101,7 +108,7 @@
                 }
             }
             
-            
+            <h4>Harm</h4>
             <table class="table">
                 @Html.EditorFor(m => m.Harm)
             </table>

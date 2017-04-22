@@ -389,5 +389,39 @@ namespace Warhammer.Core.Concrete
                 }
             }
         }
+
+        public bool RefreshWear(int personId)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Wear))
+                {
+                    personPersonAttribute.Name = null;
+                }
+
+                _repo.Save(person);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool ApplyWear(int personId, int attributeId)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Wear && a.Id == attributeId))
+                {
+                    personPersonAttribute.Name = "Exhausted";
+                }
+
+                _repo.Save(person);
+
+                return true;
+            }
+            return false;
+        }
     }
 }

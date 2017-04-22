@@ -723,6 +723,7 @@
     <Content Include="Views\Person\EditorTemplates\StatInitModel.cshtml" />
     <Content Include="Views\Home\AwardsForTrophy.cshtml" />
     <Content Include="Views\AdminPageControls\SessionGmControl.cshtml" />
+    <Content Include="Views\Person\_WearTrack.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
