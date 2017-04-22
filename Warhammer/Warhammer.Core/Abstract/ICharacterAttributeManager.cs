@@ -11,5 +11,8 @@ namespace Warhammer.Core.Abstract
         CharacterInitialStatsModel GetDefaultStats(int id);
         bool InitializeStats(CharacterInitialStatsModel model);
         void ResetAttributes(int id);
+        bool RefreshWear(int personId);
+        bool ApplyWear(int personId, int attributeId);
+        bool SetDefaultWearAndHarm(int personId);
     }
 }

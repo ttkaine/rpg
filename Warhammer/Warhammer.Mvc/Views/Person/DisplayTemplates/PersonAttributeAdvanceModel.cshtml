@@ -2,7 +2,7 @@
 
 <tr>
     <td class="personAttribute" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
-    <td class="personAttribute"><span class="personAttribute label label-default">@Model.DisplayValue</span></td>
+    <td class="personAttribute"><span class="personAttribute label @(Model.Exhausted ? "label-danger" : "label-default")">@Model.DisplayValue</span></td>
 </tr>
 
 

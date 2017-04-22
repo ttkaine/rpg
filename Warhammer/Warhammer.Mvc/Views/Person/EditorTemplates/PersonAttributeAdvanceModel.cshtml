@@ -4,7 +4,7 @@
 <tr>
     <td class="personAttribute" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
     <td class="personAttribute"><span class="personAttribute label label-default">@Model.DisplayValue</span></td>
-    <td class="personAttribute">
+    <td class="personAttribute no-break">
         @if (Model.CanAdvance)
         {
             if (Model.CanBuy)
@@ -18,7 +18,7 @@
             }
             else
             {
-                <span class="note">Cost @(Model.Cost) XP</span>
+                <span class="no-break label label-warning label-block">Cost @(Model.Cost) XP</span>
             }
         }
     </td>

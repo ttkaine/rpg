@@ -1,0 +1,57 @@
+﻿@using Warhammer.Core.Models
+@model CharacterAttributeModel
+
+<div class="alert alert-info">
+    
+    @if (!Model.Wear.Any())
+    {
+        using (Ajax.BeginForm("SetDefaultWearAndHarm", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+        {
+            <input type="hidden" value="@Model.PersonId" name="personId" />
+            <input type="submit" value="Set Up Wear and Harm Slots" class="btn btn-block btn-success" />
+        }
+    }
+    
+
+    <table class="table attribute-table">
+
+
+        @foreach (PersonAttributeAdvanceModel wear in Model.Wear)
+        {
+            if (wear.Exhausted)
+            {
+                <tr>
+                    <td>@wear.PersonAttribute.Name</td>
+                    <td><span class="personAttribute label label-danger">@wear.DisplayValue</span></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>Apply Wear:</td>
+                    <td>
+                        @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@wear.PersonAttribute.Id" name="attributeId"/>
+                            <input type="submit" value="@wear.DisplayValue" class="btn btn-block btn-success"/>
+                        }
+                    </td>
+                </tr>
+            }
+
+        }
+
+    </table>
+
+    @if (Model.Wear.Any(e => e.Exhausted))
+    {
+        using (Ajax.BeginForm("RefreshWear", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+        {
+            <input type="hidden" value="@Model.PersonId" name="personId"/>
+            <input type="submit" value="Refresh Wear" class="btn btn-block btn-success"/>
+        }
+    }
+
+
+</div>

@@ -22,10 +22,12 @@ namespace Warhammer.Core.Models
 
         public List<PersonAttributeAdvanceModel> PersonAttributes { get; set; }
 
-        public List<PersonAttributeAdvanceModel> Stats => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Stat).ToList();
-        public List<PersonAttributeAdvanceModel> Skills => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Skill).ToList();
-        public List<PersonAttributeAdvanceModel> Roles => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Role).ToList();
-        public List<PersonAttributeAdvanceModel> Descriptors => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Descriptor).ToList();
+        public List<PersonAttributeAdvanceModel> Stats => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Stat).OrderBy(a => a.PersonAttribute.Id).ToList();
+        public List<PersonAttributeAdvanceModel> Skills => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Skill).OrderBy(a => a.PersonAttribute.Name).ToList();
+        public List<PersonAttributeAdvanceModel> Roles => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Role).OrderBy(a => a.PersonAttribute.Name).ToList();
+        public List<PersonAttributeAdvanceModel> Descriptors => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Descriptor).OrderBy(a => a.PersonAttribute.Name).ToList();
+        public List<PersonAttributeAdvanceModel> Wear => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Wear).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
+        public List<PersonAttributeAdvanceModel> Harm => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Harm).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
 
         public bool CanAddNew(AttributeType type)
         {
@@ -34,10 +36,10 @@ namespace Warhammer.Core.Models
                 case AttributeType.Stat:
                     return false;
                 case AttributeType.Skill:
-                    return NewCost(type) <= CurrentXp;
                 case AttributeType.Role:
-                    return NewCost(type) <= CurrentXp;
                 case AttributeType.Descriptor:
+                case AttributeType.Harm:
+                case AttributeType.Wear:
                     return NewCost(type) <= CurrentXp;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -70,6 +72,10 @@ namespace Warhammer.Core.Models
                     return roleCost;
                 case AttributeType.Descriptor:
                     return TotalAdvancesTaken + TotalDescriptors + 3;
+                case AttributeType.Wear:
+                    return TotalAdvancesTaken + (CharacterInfo.NumberOfWear * 2);
+                case AttributeType.Harm:
+                    return TotalAdvancesTaken + (CharacterInfo.NumberOfHarm * 2);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

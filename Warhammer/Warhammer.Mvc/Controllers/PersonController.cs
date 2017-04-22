@@ -865,7 +865,7 @@ namespace Warhammer.Mvc.Controllers
             PersonDetailsViewModel model = new PersonDetailsViewModel
             {
                 PersonId = person.Id,
-                AllowEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.Id
+                AllowEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
             };
 
             if (person.TotalPennies != 0)
@@ -913,7 +913,52 @@ namespace Warhammer.Mvc.Controllers
             return model;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult RefreshWear(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.RefreshWear(personId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult ApplyWear(int personId, int attributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.ApplyWear(personId, attributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SetDefaultWearAndHarm(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.SetDefaultWearAndHarm(personId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
     }
 }

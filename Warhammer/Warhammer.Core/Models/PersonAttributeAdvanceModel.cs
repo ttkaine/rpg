@@ -42,7 +42,7 @@ namespace Warhammer.Core.Models
                         }
                         return skillAdvance;
                     case AttributeType.Role:
-                        int roleAdvance = PersonAttribute.CurrentValue * 2;
+                        int roleAdvance = PersonAttribute.CurrentValue*2;
                         roleAdvance = roleAdvance + TotalAdvancesTaken;
                         if (roleAdvance < 1)
                         {
@@ -51,6 +51,9 @@ namespace Warhammer.Core.Models
                         return roleAdvance;
                     case AttributeType.Descriptor:
                         return -1;
+                    case AttributeType.Wear:
+                    case AttributeType.Harm:
+                        return (PersonAttribute.CurrentValue + TotalAdvancesTaken)/2;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -59,6 +62,18 @@ namespace Warhammer.Core.Models
 
         public CharacterLevelInfo CharacterInfo { get; set; }
         public string DisplayPrefix => PersonAttribute.CurrentValue >= 0 ? "+" : "-";
-        public string DisplayValue  => $"{DisplayPrefix}{PersonAttribute.CurrentValue}";
+        public string DisplayValue => $"{DisplayPrefix}{PersonAttribute.CurrentValue}";
+
+        public bool Exhausted
+        {
+            get
+            {
+                if (PersonAttribute.AttributeType == AttributeType.Wear || PersonAttribute.AttributeType == AttributeType.Harm)
+                {
+                    return !string.IsNullOrWhiteSpace(PersonAttribute.Name);
+                }
+                return false;
+            }
+        }
     }
 }
