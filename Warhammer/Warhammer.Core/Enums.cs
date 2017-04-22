@@ -49,6 +49,8 @@
         Stat = 0,
         Skill = 1,
         Role = 2,
-        Descriptor,
+        Descriptor = 3,
+        Wear = 4,
+        Harm = 5,
     }
 }
