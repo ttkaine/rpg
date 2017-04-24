@@ -42,7 +42,8 @@ namespace Warhammer.Core.Entities
         PersonAttributes,
         SoloXp,
         VariableSessionGm,
-        PostBonusXp
+        PostBonusXp,
+        XpCatchup
     }
 
     public partial class SiteFeature

@@ -922,14 +922,16 @@ namespace Warhammer.Core.Concrete
             Person person = GetPerson(personId);
             person.XPAwarded = person.XPAwarded + xpValue;
 
-
-            decimal playerXpLevel = CurrentMaxPlayerXp();
-            if (person.PlayerId.HasValue && person.XPAwarded < playerXpLevel)
+            if (SiteHasFeature(Feature.XpCatchup))
             {
-                person.XPAwarded = person.XPAwarded + xpValue;
-                if (person.XPAwarded > playerXpLevel)
+                decimal playerXpLevel = CurrentMaxPlayerXp();
+                if (person.PlayerId.HasValue && person.XPAwarded < playerXpLevel)
                 {
-                    person.XPAwarded = playerXpLevel;
+                    person.XPAwarded = person.XPAwarded + xpValue;
+                    if (person.XPAwarded > playerXpLevel)
+                    {
+                        person.XPAwarded = playerXpLevel;
+                    }
                 }
             }
 
