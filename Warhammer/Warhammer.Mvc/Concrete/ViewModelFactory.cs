@@ -185,6 +185,11 @@ namespace Warhammer.Mvc.Concrete
                     Name = "Outstanding Xp",
                     Url = _urlHelper.Action("OutstandingXp", "Admin"),
                 });
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Xp To Spend",
+                    Url = _urlHelper.Action("XpToSpend", "Admin"),
+                });
 
                 items.Add(new MenuItemViewModel
                 {
