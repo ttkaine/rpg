@@ -269,6 +269,9 @@
           <Property Name="Upkeep" Type="int" />
           <Property Name="TotalAdvancesTaken" Type="int" Nullable="false" />
           <Property Name="HasAttributeMoveAvailable" Type="bit" Nullable="false" />
+          <Property Name="LastScoreCalculation" Type="datetime" />
+          <Property Name="XpSpendAvailable" Type="bit" Nullable="false" />
+          <Property Name="WishingWell" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -1652,6 +1655,9 @@
           <Property Name="TotalAdvancesTaken" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PersonAttributes" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="Person" ToRole="PersonAttribute" />
           <Property Name="HasAttributeMoveAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="LastScoreCalculation" Type="DateTime" Precision="3" />
+          <Property Name="XpSpendAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="WishingWell" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2632,6 +2638,9 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="WishingWell" ColumnName="WishingWell" />
+                <ScalarProperty Name="XpSpendAvailable" ColumnName="XpSpendAvailable" />
+                <ScalarProperty Name="LastScoreCalculation" ColumnName="LastScoreCalculation" />
                 <ScalarProperty Name="HasAttributeMoveAvailable" ColumnName="HasAttributeMoveAvailable" />
                 <ScalarProperty Name="TotalAdvancesTaken" ColumnName="TotalAdvancesTaken" />
                 <ScalarProperty Name="Upkeep" ColumnName="Upkeep" />

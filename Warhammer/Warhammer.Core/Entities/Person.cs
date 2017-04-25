@@ -48,6 +48,9 @@ namespace Warhammer.Core.Entities
         public Nullable<int> Upkeep { get; set; }
         public int TotalAdvancesTaken { get; set; }
         public bool HasAttributeMoveAvailable { get; set; }
+        public Nullable<System.DateTime> LastScoreCalculation { get; set; }
+        public bool XpSpendAvailable { get; set; }
+        public int WishingWell { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }
