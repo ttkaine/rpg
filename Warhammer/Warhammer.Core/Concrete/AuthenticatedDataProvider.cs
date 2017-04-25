@@ -148,7 +148,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Person> MyPeople()
         {
-            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id).ToList();
+            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
