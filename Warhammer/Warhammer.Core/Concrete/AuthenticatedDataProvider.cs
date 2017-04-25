@@ -2040,6 +2040,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<PageLinkModel> PeopleWithXpToSpend()
+        {
+            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName } ).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

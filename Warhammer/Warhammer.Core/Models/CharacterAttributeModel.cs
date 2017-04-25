@@ -85,5 +85,13 @@ namespace Warhammer.Core.Models
         public CampaignDetail CampaignDetail { get; set; }
         public bool HasStats => Stats.Any();
 
+        public bool CanBuyAll
+        {
+            get
+            {
+                int max = PersonAttributes.Max(a => a.Cost);
+                return CharacterInfo.CurrentXp >= max;         
+            }
+        }
     }
 }

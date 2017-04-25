@@ -724,6 +724,8 @@
     <Content Include="Views\Home\AwardsForTrophy.cshtml" />
     <Content Include="Views\AdminPageControls\SessionGmControl.cshtml" />
     <Content Include="Views\Person\_WearTrack.cshtml" />
+    <Content Include="Views\Admin\XpToSpend.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PageLinkModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

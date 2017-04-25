@@ -1,0 +1,12 @@
+﻿@model Warhammer.Core.Models.PageLinkModel
+<tr>
+    <td>
+        @Html.Action("PageImage", "Page", new { id = Model.Id })
+    </td>
+    <td>
+        @Model.FullName
+        @if (Model.ShortName != Model.FullName)
+        {<span class="note">(@Model.ShortName)</span>}
+    </td>
+</tr>
+

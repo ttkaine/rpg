@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
@@ -217,7 +218,11 @@ namespace Warhammer.Core.Concrete
                 }
 
                 person.LastScoreCalculation = DateTime.Now;
-
+                CharacterAttributeModel attributes = _attributeManager.GetCharacterAttributes(personId);
+                if (attributes.CanBuyAll)
+                {
+                    person.XpSpendAvailable = true;
+                }
                 _repo.Save(person);
             }
         }

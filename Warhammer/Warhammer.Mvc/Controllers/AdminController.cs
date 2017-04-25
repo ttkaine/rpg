@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -287,6 +288,12 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult OutstandingXp()
         {
             List<Page> pages = DataProvider.PagesWithOutstandingXp();
+            return View(pages);
+        }
+
+        public ActionResult XpToSpend()
+        {
+            List<PageLinkModel> pages = DataProvider.PeopleWithXpToSpend();
             return View(pages);
         }
 

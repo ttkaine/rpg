@@ -161,5 +161,6 @@ namespace Warhammer.Core.Abstract
         List<Award> AwardsForTrophy(int id);
         List<Player> GetAllPlayers();
         void SetSessionGm(int sessionId, int? selectedGm);
+        List<PageLinkModel> PeopleWithXpToSpend();
     }
 }
