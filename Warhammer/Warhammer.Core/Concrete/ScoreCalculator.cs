@@ -218,11 +218,13 @@ namespace Warhammer.Core.Concrete
                 }
 
                 person.LastScoreCalculation = DateTime.Now;
+ 
                 CharacterAttributeModel attributes = _attributeManager.GetCharacterAttributes(personId);
-                if (attributes.CanBuyAll)
+                if (attributes.HasStats && attributes.CanBuyAll)
                 {
                     person.XpSpendAvailable = true;
                 }
+
                 _repo.Save(person);
             }
         }
