@@ -23,6 +23,7 @@ namespace Warhammer.Core.Entities
         public int CurrentValue { get; set; }
         public int XpSpent { get; set; }
         public int CampaignId { get; set; }
+        public bool IsPrivate { get; set; }
     
         public virtual Person Person { get; set; }
     }

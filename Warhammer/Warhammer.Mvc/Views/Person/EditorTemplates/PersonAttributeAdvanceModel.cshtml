@@ -1,10 +1,15 @@
-﻿@model Warhammer.Core.Models.PersonAttributeAdvanceModel
+﻿@using Warhammer.Core
+@model Warhammer.Core.Models.PersonAttributeAdvanceModel
     
+@{
+    string privateClass = Model.PersonAttribute.IsPrivate ? "private" : "";
+}
+
 
 <tr>
-    <td class="personAttribute" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
-    <td class="personAttribute"><span class="personAttribute label label-default">@Model.DisplayValue</span></td>
-    <td class="personAttribute no-break">
+    <td class="personAttribute no-break @privateClass" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
+    <td class="personAttribute @privateClass"><span class="personAttribute label label-default">@Model.DisplayValue</span></td>
+    <td class="personAttribute no-break @privateClass">
         @if (Model.CanAdvance)
         {
             if (Model.CanBuy)
@@ -21,5 +26,29 @@
                 <span class="no-break label label-warning label-block">Cost @(Model.Cost) XP</span>
             }
         }
+    </td>
+    <td class="personAttribute no-break @privateClass">
+        @if (Model.PersonAttribute.AttributeType != AttributeType.Wear && Model.PersonAttribute.AttributeType != AttributeType.Harm)
+        {
+            if (Model.PersonAttribute.IsPrivate)
+             {
+                 using (Ajax.BeginForm("ShowAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                 {
+                     <input type="hidden" value="@Model.PersonAttribute.PersonId" name="personId"/>
+                     <input type="hidden" value="@Model.PersonAttribute.Id" name="attributeId"/>
+                     <input type="submit" value="Show" class="btn btn-block btn-warning"/>
+                 }
+             }
+             else
+             {
+                 using (Ajax.BeginForm("HideAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                 {
+                     <input type="hidden" value="@Model.PersonAttribute.PersonId" name="personId"/>
+                     <input type="hidden" value="@Model.PersonAttribute.Id" name="attributeId"/>
+                     <input type="submit" value="Hide" class="btn btn-block btn-info"/>
+                 }
+             }
+        }
+
     </td>
 </tr>

@@ -192,7 +192,7 @@ namespace Warhammer.Core.Concrete
                             CurrentValue = model.AverageStat,
                             InitialValue = model.AverageStat,
                             MinValue = 1,
-                            StatName = stat
+                            StatName = stat,           
                     });
                 }
             }
@@ -237,7 +237,8 @@ namespace Warhammer.Core.Concrete
                         Name = statInitModel.StatName.ToString(),
                         Description = statInitModel.StatName.ToString(),
                         CurrentValue = statInitModel.CurrentValue,
-                        InitialValue = statInitModel.CurrentValue
+                        InitialValue = statInitModel.CurrentValue,
+                        IsPrivate = true
                     };
                     person.PersonAttributes.Add(addedStat);
                 }
@@ -299,7 +300,8 @@ namespace Warhammer.Core.Concrete
                     Name = skillName,
                     Description = skillName,
                     InitialValue = skillLevel,
-                    CurrentValue = skillLevel
+                    CurrentValue = skillLevel,
+                    IsPrivate = true
                 });
             }
         }
@@ -408,6 +410,20 @@ namespace Warhammer.Core.Concrete
             }
 
 
+            return false;
+        }
+
+        public bool SetAttributeVisibility(int personId, int attributeId, bool isVisible)
+        {
+            PersonAttribute attribute = _repo.PersonAttributes().FirstOrDefault(a => a.Id == attributeId);
+            if (attribute != null)
+            {
+                attribute.IsPrivate = !isVisible;
+
+                _repo.Save(attribute);
+
+                return true;
+            }
             return false;
         }
 
