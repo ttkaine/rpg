@@ -848,9 +848,25 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Player")]
         public ActionResult MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId)
         {
-            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes) && sourceAttributeId != targetAttributeId)
             {
                 bool success = _attributeManager.MoveAttributePoint(personId, sourceAttributeId, targetAttributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult RenameAttribute(int personId, int attributeId, string name, string description)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.RenameAttribute(personId, attributeId, name, description);
                 CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
                 if (model != null)
                 {
@@ -1020,5 +1036,7 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+
     }
 }

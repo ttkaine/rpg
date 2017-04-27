@@ -54,7 +54,8 @@ namespace Warhammer.Core.Concrete
                     TotalDescriptors = totalDescriptors,
                     CanEdit = person.Player?.UserName == player.UserName || campaignDetail.GmId == player.Id,
                     AverageStatValue = averageStat,
-                    NumberOfStats =  person.PersonAttributes.Count(c => c.AttributeType == AttributeType.Stat)
+                    NumberOfStats =  person.PersonAttributes.Count(c => c.AttributeType == AttributeType.Stat),
+                    HasAttributeMoveAvailable = person.HasAttributeMoveAvailable
                 };
 
                 CharacterAttributeModel model = new CharacterAttributeModel
@@ -155,7 +156,30 @@ namespace Warhammer.Core.Concrete
                     {
                         sourceAttribute.CurrentValue--;
                         targetAttribute.CurrentValue++;
-                        person.AttributeMoveTaken = true;
+                        person.HasAttributeMoveAvailable = false;
+                        _repo.Save(person);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool RenameAttribute(int personId, int attributeId, string name, string description)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                if (person.HasAttributeMoveAvailable)
+                {
+                    PersonAttribute attribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == attributeId);
+
+                    if (attribute != null)
+                    {
+                        attribute.Name = name;
+                        attribute.Description = description;
+                        person.HasAttributeMoveAvailable = false;
                         _repo.Save(person);
                         return true;
                     }

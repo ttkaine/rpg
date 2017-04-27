@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using Warhammer.Core.Entities;
 
 namespace Warhammer.Core.Models
@@ -17,6 +18,30 @@ namespace Warhammer.Core.Models
         public int TotalRoles => CharacterInfo.TotalRoles;
         public int TotalSkills => CharacterInfo.TotalSkills;
         public int TotalDescriptors => CharacterInfo.TotalDescriptors;
+
+        public SelectList RenamableAttributes
+        {
+            get
+            {
+                return new SelectList(PersonAttributes
+                    .Where(p => p.PersonAttribute.AttributeType == AttributeType.Skill || p.PersonAttribute.AttributeType == AttributeType.Role || p.PersonAttribute.AttributeType == AttributeType.Descriptor).Select(p => p), "Id", "Name");
+            }
+        }
+
+        public SelectList PossibleSourceAttributes
+        {
+            get
+            {
+                return new SelectList(PersonAttributes.Where(p => p.PersonAttribute.AttributeType == AttributeType.Stat && p.PersonAttribute.CurrentValue > CharacterInfo.AverageStatValue - 2), "Id", "Name");
+            }
+        }
+        public SelectList PossibleTargetAttributes
+        {
+            get
+            {
+                return new SelectList(PersonAttributes.Where(p => p.PersonAttribute.AttributeType == AttributeType.Stat), "Id", "Name");
+            }
+        }
 
         public CharacterLevelInfo CharacterInfo { get; set; }
 
@@ -96,5 +121,6 @@ namespace Warhammer.Core.Models
 
         public int WishingWell { get; set; }
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
+
     }
 }

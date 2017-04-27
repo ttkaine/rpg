@@ -2215,6 +2215,19 @@ namespace Warhammer.Core.Concrete
                 {
                     ApplyXpForSession(session);
                 }
+                if (SiteHasFeature(Feature.PersonAttributes) && session.IsClosed)
+                {
+                    RefreshAttributeMoves(session);
+                }                      
+            }
+        }
+
+        private void RefreshAttributeMoves(Session session)
+        {
+            foreach (Person person in session.People)
+            {
+                person.HasAttributeMoveAvailable = true;
+                Save(person);
             }
         }
 

@@ -5,6 +5,9 @@ namespace Warhammer.Core.Models
 {
     public class PersonAttributeAdvanceModel
     {
+        public int Id => PersonAttribute.Id;
+        public string Name => PersonAttribute.Name;
+
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
         public int TotalStats => CharacterInfo.TotalStats;

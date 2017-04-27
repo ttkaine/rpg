@@ -729,6 +729,7 @@
     <Content Include="Views\Person\_WearTrack.cshtml" />
     <Content Include="Views\Admin\XpToSpend.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Person\_AttributeEdit.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

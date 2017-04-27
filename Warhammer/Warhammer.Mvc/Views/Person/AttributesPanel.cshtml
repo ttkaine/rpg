@@ -10,7 +10,7 @@
 
             @Html.Partial("_WearTrack", Model)
 
-
+            @Html.Partial("_AttributeEdit", Model)
 
 
             <div class="alert alert-info">
@@ -21,8 +21,23 @@
                     </tr>
                     <tr>
                         <td>XP Spent</td>
-                        <td><span class="personAttribute label label-danger">@Model.XpSpent</span></td>
+                        <td><span class="personAttribute label label-danger">@(Model.XpSpent).00</span></td>
                     </tr>
+                    @if (Model.CharacterInfo.HasAttributeMoveAvailable)
+                    {
+                        <tr>
+                            <td>Shift Available</td>
+                            <td><span class="personAttribute label label-info">&#10004;</span></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Shift Available</td>
+                            <td><span class="personAttribute label label-default">&#10008;</span></td>
+                        </tr>
+                        
+                    }
                 </table>
             </div>
         }
