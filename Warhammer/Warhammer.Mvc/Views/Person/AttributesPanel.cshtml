@@ -2,16 +2,18 @@
 @using Warhammer.Core.Models
 @model Warhammer.Core.Models.CharacterAttributeModel
 
-<div id="characterattributes"  class="content-block">
-    @if (Model.CharacterInfo.CanEdit)
-    {
+@if (Model.CharacterInfo.CanEdit || Model.PersonAttributes.Any(a => !a.PersonAttribute.IsPrivate))
+{
+    <div id="characterattributes" class="content-block">
+        @if (Model.CharacterInfo.CanEdit)
+        {
 
-        @Html.Partial("_WearTrack", Model)
+            @Html.Partial("_WearTrack", Model)
 
 
 
 
-        <div class="alert alert-info">
+            <div class="alert alert-info">
                 <table class="table attribute-table">
                     <tr>
                         <td>Current XP</td>
@@ -21,12 +23,12 @@
                         <td>XP Spent</td>
                         <td><span class="personAttribute label label-danger">@Model.XpSpent</span></td>
                     </tr>
-                </table>   
-        </div>
-    } 
+                </table>
+            </div>
+        }
 
-    @if (ViewBag.EditMode && Model.CharacterInfo.CanEdit)
-    {
+        @if (ViewBag.EditMode && Model.CharacterInfo.CanEdit)
+        {
             <div class="alert alert-info">
                 <h4>Stats</h4>
                 <table class="table">
@@ -40,16 +42,16 @@
                     @Html.EditorFor(m => m.Roles)
                 </table>
 
-                
+
                 @if (Model.CanAddNew(AttributeType.Role))
                 {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="hidden" value="@AttributeType.Role" name="attributeType" />
-                        <input type="text" value="" placeholder="Role Name" name="name" class="form-control" />
+                        <input type="hidden" value="@Model.PersonId" name="personId"/>
+                        <input type="hidden" value="@AttributeType.Role" name="attributeType"/>
+                        <input type="text" value="" placeholder="Role Name" name="name" class="form-control"/>
                         <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Role for @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-success" />
+                        <input type="submit" value="Add Role for @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-success"/>
                     }
                 }
             </div>
@@ -62,129 +64,128 @@
 
                 @if (Model.CanAddNew(AttributeType.Skill))
                 {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="hidden" value="@AttributeType.Skill" name="attributeType" />
-                        <input type="text" value="" placeholder="Skill Name" name="name" class="form-control" />
+                        <input type="hidden" value="@Model.PersonId" name="personId"/>
+                        <input type="hidden" value="@AttributeType.Skill" name="attributeType"/>
+                        <input type="text" value="" placeholder="Skill Name" name="name" class="form-control"/>
                         <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Skill for @(Model.NewCost(AttributeType.Skill)) XP" class="btn btn-block btn-success" />
+                        <input type="submit" value="Add Skill for @(Model.NewCost(AttributeType.Skill)) XP" class="btn btn-block btn-success"/>
                     }
                 }
             </div>
 
-        <div class="alert alert-warning">
-            <h4>Descriptors</h4>
-            <table class="table">
-                @Html.EditorFor(m => m.Descriptors)
-            </table>
-                
-            @if (Model.CanAddNew(AttributeType.Descriptor))
-            {
-                using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                {
-                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                    <input type="hidden" value="@AttributeType.Descriptor" name="attributeType" />
-                    <input type="text" value="" placeholder="Descriptor Name" name="name" class="form-control" />
-                    <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                    <input type="submit" value="Add Descriptor for @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-success" />
-                }
-            }
-        </div>
-
-        <div class="alert alert-danger">
-            <h4>Wear</h4>
-            <table class="table">
-                @Html.EditorFor(m => m.Wear)
-            </table>
-
-            @if (Model.CanAddNew(AttributeType.Wear))
-            {
-                using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                {
-                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                    <input type="hidden" value="@AttributeType.Wear" name="attributeType" />
-                    <input type="submit" value="Add New Wear slot for @(Model.NewCost(AttributeType.Wear)) XP" class="btn btn-block btn-success" />
-                }
-            }
-            
-            <h4>Harm</h4>
-            <table class="table">
-                @Html.EditorFor(m => m.Harm)
-            </table>
-
-            @if (Model.CanAddNew(AttributeType.Wear))
-            {
-                using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                {
-                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                    <input type="hidden" value="@AttributeType.Harm" name="attributeType" />
-                    <input type="submit" value="Add New Harm slot for @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-success" />
-                }
-            }
-        </div>
-    }
-    else
-    {
-        if (Model.Stats.Any() && Model.CharacterInfo.CanEdit)
-        {
-             <div class="alert alert-info">
-                 <h4>Stats</h4>
-                 <table class="table attribute-table">
-                     @Html.DisplayFor(m => m.Stats)
-                 </table>
-             </div>
-        }
-        if (Model.Roles.Any() || (Model.Skills.Any() && Model.CharacterInfo.CanEdit))
-         {
-             <div class="alert alert-success">
-                 @if (Model.Roles.Any())
-                 {
-                     <h4>Roles</h4>
-                     <table class="table attribute-table">
-                         @Html.DisplayFor(m => m.Roles)
-                     </table>
-                 }
-                 @if (Model.Skills.Any() && Model.CharacterInfo.CanEdit)
-                 {
-                     <h4>Skills</h4>
-                     <table class="table attribute-table">
-                         @Html.DisplayFor(m => m.Skills)
-                     </table>
-                }
-             </div>
-         }
-
-        if (Model.Descriptors.Any())
-        {
             <div class="alert alert-warning">
                 <h4>Descriptors</h4>
-                <table class="table attribute-table">
-                    @Html.DisplayFor(m => m.Descriptors)
+                <table class="table">
+                    @Html.EditorFor(m => m.Descriptors)
                 </table>
-            </div>
-        }
 
-        if ((Model.Wear.Any() || Model.Harm.Any()) && Model.CharacterInfo.CanEdit)
-        {
+                @if (Model.CanAddNew(AttributeType.Descriptor))
+                {
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId"/>
+                        <input type="hidden" value="@AttributeType.Descriptor" name="attributeType"/>
+                        <input type="text" value="" placeholder="Descriptor Name" name="name" class="form-control"/>
+                        <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                        <input type="submit" value="Add Descriptor for @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-success"/>
+                    }
+                }
+            </div>
+
             <div class="alert alert-danger">
-                @if (Model.Wear.Any())
+                <h4>Wear</h4>
+                <table class="table">
+                    @Html.EditorFor(m => m.Wear)
+                </table>
+
+                @if (Model.CanAddNew(AttributeType.Wear))
                 {
-                    <h4>Wear</h4>
-                    <table class="table attribute-table">
-                        @Html.DisplayFor(m => m.Wear)
-                    </table>
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId"/>
+                        <input type="hidden" value="@AttributeType.Wear" name="attributeType"/>
+                        <input type="submit" value="Add New Wear slot for @(Model.NewCost(AttributeType.Wear)) XP" class="btn btn-block btn-success"/>
+                    }
                 }
-                @if (Model.Harm.Any())
+
+                <h4>Harm</h4>
+                <table class="table">
+                    @Html.EditorFor(m => m.Harm)
+                </table>
+
+                @if (Model.CanAddNew(AttributeType.Wear))
                 {
-                    <h4>Harm</h4>
-                    <table class="table attribute-table">
-                        @Html.DisplayFor(m => m.Harm)
-                    </table>
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId"/>
+                        <input type="hidden" value="@AttributeType.Harm" name="attributeType"/>
+                        <input type="submit" value="Add New Harm slot for @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-success"/>
+                    }
                 }
             </div>
         }
+        else
+        {
+            if ((Model.Stats.Any() && Model.CharacterInfo.CanEdit) || Model.Stats.Any(s => !s.PersonAttribute.IsPrivate))
+            {
+                <div class="alert alert-info">
+                    <h4>Stats</h4>
+                    <table class="table attribute-table">
+                        @Html.DisplayFor(m => m.Stats)
+                    </table>
+                </div>
+            }
+            if ((Model.Roles.Any() || Model.Skills.Any()) && Model.CharacterInfo.CanEdit || (Model.Roles.Any(s => !s.PersonAttribute.IsPrivate) || Model.Skills.Any(s => !s.PersonAttribute.IsPrivate)))
+            {
+                <div class="alert alert-success">
+                    @if (Model.Roles.Any() && Model.CharacterInfo.CanEdit || Model.Roles.Any(s => !s.PersonAttribute.IsPrivate))
+                    {
+                        <h4>Roles</h4>
+                        <table class="table attribute-table">
+                            @Html.DisplayFor(m => m.Roles)
+                        </table>
+                    }
+                    @if (Model.Skills.Any() && Model.CharacterInfo.CanEdit || Model.Skills.Any(s => !s.PersonAttribute.IsPrivate))
+                    {
+                        <h4>Skills</h4>
+                        <table class="table attribute-table">
+                            @Html.DisplayFor(m => m.Skills)
+                        </table>
+                    }
+                </div>
+            }
 
-    }
-</div>   
-  
+            if (Model.Descriptors.Any() && Model.CharacterInfo.CanEdit || Model.Descriptors.Any(s => !s.PersonAttribute.IsPrivate))
+            {
+                <div class="alert alert-warning">
+                    <h4>Descriptors</h4>
+                    <table class="table attribute-table">
+                        @Html.DisplayFor(m => m.Descriptors)
+                    </table>
+                </div>
+            }
+
+            if ((Model.Wear.Any() || Model.Harm.Any()) && Model.CharacterInfo.CanEdit)
+            {
+                <div class="alert alert-danger">
+                    @if (Model.Wear.Any())
+                    {
+                        <h4>Wear</h4>
+                        <table class="table attribute-table">
+                            @Html.DisplayFor(m => m.Wear)
+                        </table>
+                    }
+                    @if (Model.Harm.Any())
+                    {
+                        <h4>Harm</h4>
+                        <table class="table attribute-table">
+                            @Html.DisplayFor(m => m.Harm)
+                        </table>
+                    }
+                </div>
+            }
+        }
+    </div>
+}

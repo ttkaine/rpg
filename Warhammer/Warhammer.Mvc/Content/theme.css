@@ -7212,13 +7212,15 @@ div.commentdetail {
 #adminPageControls input {
   margin-top: 5px;
 }
+td.private,
 .seenAsHidden {
   border-style: dashed;
-  opacity: 0.7;
+  opacity: 0.6;
 }
+td.private,
 .hiddenStat {
-  border: 1px dashed #aaaaaa;
-  background-color: #d9edf7;
+  border: 1px dashed #555555;
+  background-color: #eeeeee;
 }
 hr {
   opacity: 0;

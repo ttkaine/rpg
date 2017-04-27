@@ -11,10 +11,33 @@
             <input type="submit" value="Set Up Wear and Harm Slots" class="btn btn-block btn-success" />
         }
     }
-    
 
     <table class="table attribute-table">
+        
+        <tr>
+            <td>Wishing Well</td>
+            <td><span class="personAttribute label label-info">@Model.WishingWell</span></td>
+        </tr>
 
+        @if (Model.PlayerIsGm)
+        {
+            <tr>
+                <td>
+                    @using (Ajax.BeginForm("AddToWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="submit" value="+1" class="btn btn-block btn-success" />
+                    }
+                </td>
+                <td>
+                    @using (Ajax.BeginForm("SubtractFromWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="submit" value="-1" class="btn btn-block btn-danger" />
+                    }
+                </td>
+            </tr>
+        }
 
         @foreach (PersonAttributeAdvanceModel wear in Model.Wear)
         {

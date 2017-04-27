@@ -225,6 +225,7 @@
           <Property Name="Pinned" Type="bit" Nullable="false" />
           <Property Name="PlainText" Type="nvarchar(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="GmNotes" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PageImage">
           <Key>
@@ -294,6 +295,7 @@
           <Property Name="CurrentValue" Type="int" Nullable="false" />
           <Property Name="XpSpent" Type="int" Nullable="false" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="IsPrivate" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonStat">
           <Key>
@@ -1610,6 +1612,7 @@
           <Property Name="PlainText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PageImages" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="Page" ToRole="PageImage" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <Property Name="GmNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -2550,6 +2553,7 @@
           <Property Name="XpSpent" Type="Int32" Nullable="false" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="PersonAttribute" ToRole="Person" />
+          <Property Name="IsPrivate" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_PersonAttribute_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1">
@@ -2611,6 +2615,7 @@
           <EntitySetMapping Name="Pages">
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="GmNotes" ColumnName="GmNotes" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="PlainText" ColumnName="PlainText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -3079,6 +3084,7 @@
           <EntitySetMapping Name="PersonAttributes">
             <EntityTypeMapping TypeName="WarhammerModel.PersonAttribute">
               <MappingFragment StoreEntitySet="PersonAttribute">
+                <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="XpSpent" ColumnName="XpSpent" />
                 <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />

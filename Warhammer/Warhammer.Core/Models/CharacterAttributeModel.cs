@@ -9,7 +9,7 @@ namespace Warhammer.Core.Models
     {
         public int PersonId { get; set; }
         public string PersonName { get; set; }
-
+        public int PlayerId { get; set; }
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int XpSpent => CharacterInfo.XpSpent;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
@@ -93,5 +93,8 @@ namespace Warhammer.Core.Models
                 return CharacterInfo.CurrentXp >= max;         
             }
         }
+
+        public int WishingWell { get; set; }
+        public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
     }
 }

@@ -67,7 +67,8 @@ namespace Warhammer.Core.Concrete
                         PersonAttribute = a,
                         CharacterInfo = info
                     }).ToList(),
-
+                    WishingWell =  person.WishingWell,
+                    PlayerId = player.Id,
                     CampaignDetail = campaignDetail
                 };
 
@@ -192,7 +193,7 @@ namespace Warhammer.Core.Concrete
                             CurrentValue = model.AverageStat,
                             InitialValue = model.AverageStat,
                             MinValue = 1,
-                            StatName = stat
+                            StatName = stat,           
                     });
                 }
             }
@@ -237,7 +238,8 @@ namespace Warhammer.Core.Concrete
                         Name = statInitModel.StatName.ToString(),
                         Description = statInitModel.StatName.ToString(),
                         CurrentValue = statInitModel.CurrentValue,
-                        InitialValue = statInitModel.CurrentValue
+                        InitialValue = statInitModel.CurrentValue,
+                        IsPrivate = true
                     };
                     person.PersonAttributes.Add(addedStat);
                 }
@@ -299,7 +301,8 @@ namespace Warhammer.Core.Concrete
                     Name = skillName,
                     Description = skillName,
                     InitialValue = skillLevel,
-                    CurrentValue = skillLevel
+                    CurrentValue = skillLevel,
+                    IsPrivate = true
                 });
             }
         }
@@ -407,6 +410,33 @@ namespace Warhammer.Core.Concrete
                 return true;
             }
 
+
+            return false;
+        }
+
+        public bool SetAttributeVisibility(int personId, int attributeId, bool isVisible)
+        {
+            PersonAttribute attribute = _repo.PersonAttributes().FirstOrDefault(a => a.Id == attributeId);
+            if (attribute != null)
+            {
+                attribute.IsPrivate = !isVisible;
+
+                _repo.Save(attribute);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool AlterWishingWell(int personId, int amount)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                person.WishingWell = person.WishingWell + amount;
+                _repo.Save(person);
+                return true;
+            }
 
             return false;
         }
