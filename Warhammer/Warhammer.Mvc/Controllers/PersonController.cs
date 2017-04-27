@@ -992,5 +992,33 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult AddToWishingWell(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.AlterWishingWell(personId, 1);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        public ActionResult SubtractFromWishingWell(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.AlterWishingWell(personId, -1);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
     }
 }

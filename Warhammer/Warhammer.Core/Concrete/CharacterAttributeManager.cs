@@ -67,7 +67,8 @@ namespace Warhammer.Core.Concrete
                         PersonAttribute = a,
                         CharacterInfo = info
                     }).ToList(),
-
+                    WishingWell =  person.WishingWell,
+                    PlayerId = player.Id,
                     CampaignDetail = campaignDetail
                 };
 
@@ -424,6 +425,19 @@ namespace Warhammer.Core.Concrete
 
                 return true;
             }
+            return false;
+        }
+
+        public bool AlterWishingWell(int personId, int amount)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                person.WishingWell = person.WishingWell + amount;
+                _repo.Save(person);
+                return true;
+            }
+
             return false;
         }
 
