@@ -130,24 +130,17 @@
                 <h4>Edge</h4>
                 <table class="table">
                     @Html.EditorFor(m => m.Edge)
-                    @if (Model.CanAddNew(AttributeType.Edge))
-                    {
-                        <tr>
-                            <td class="personAttribute no-break">Add New:</td>
-                            <td><span class="personAttribute label label-info">(+1)</span></td>
-                            <td>
-                                @using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
-                                {
-                                    <input type="hidden" value="@Model.PersonId" name="personId"/>
-                                    <input type="hidden" value="@AttributeType.Edge" name="attributeType"/>
-                                    <input type="submit" value="Buy for @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-success"/>
-                                }
-
-                            </td>
-                        </tr>
-                    }
                 </table>
-                
+
+                @if (Model.CanAddNew(AttributeType.Edge))
+                {
+                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="hidden" value="@AttributeType.Edge" name="attributeType" />
+                        <input type="submit" value="Add New Edge slot for @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-success" />
+                    }
+                }
 
                 <h4>Wear</h4>
                 <table class="table">
@@ -169,7 +162,7 @@
                     @Html.EditorFor(m => m.Harm)
                 </table>
 
-                @if (Model.CanAddNew(AttributeType.Wear))
+                @if (Model.CanAddNew(AttributeType.Harm))
                 {
                     using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
                     {
@@ -228,7 +221,7 @@
                     {
                         <h4>Edge</h4>
                         <table class="table attribute-table">
-                            @Html.DisplayFor(m => m.Wear)
+                            @Html.DisplayFor(m => m.Edge)
                         </table>
                     }
                     @if (Model.Wear.Any())
