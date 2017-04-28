@@ -7,9 +7,10 @@
     <div id="characterattributes" class="content-block">
         @if (Model.CharacterInfo.CanEdit)
         {
-
-            @Html.Partial("_WearTrack", Model)
-
+            if (Model.ShowWearTrack)
+             {
+                 @Html.Partial("_WearTrack", Model)
+             }
             @Html.Partial("_AttributeEdit", Model)
 
 
@@ -125,6 +126,29 @@
             </div>
 
             <div class="alert alert-danger">
+                
+                <h4>Edge</h4>
+                <table class="table">
+                    @Html.EditorFor(m => m.Edge)
+                    @if (Model.CanAddNew(AttributeType.Edge))
+                    {
+                        <tr>
+                            <td class="personAttribute no-break">Add New:</td>
+                            <td><span class="personAttribute label label-info">(+1)</span></td>
+                            <td>
+                                @using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                                {
+                                    <input type="hidden" value="@Model.PersonId" name="personId"/>
+                                    <input type="hidden" value="@AttributeType.Edge" name="attributeType"/>
+                                    <input type="submit" value="Buy for @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-success"/>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </table>
+                
+
                 <h4>Wear</h4>
                 <table class="table">
                     @Html.EditorFor(m => m.Wear)

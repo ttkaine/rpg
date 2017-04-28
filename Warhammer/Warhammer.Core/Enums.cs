@@ -52,5 +52,6 @@
         Descriptor = 3,
         Wear = 4,
         Harm = 5,
+        Edge = 6
     }
 }

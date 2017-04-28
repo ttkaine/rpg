@@ -40,7 +40,9 @@ namespace Warhammer.Core.Concrete
                 int totalHarm = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Harm).Sum(p => p.CurrentValue);
                 int numberOfWear = person.PersonAttributes.Count(p => p.AttributeType == AttributeType.Wear);
                 int numbeOfHarm = person.PersonAttributes.Count(p => p.AttributeType == AttributeType.Harm);
+                int numberOfEdge = person.PersonAttributes.Count(p => p.AttributeType == AttributeType.Edge);
                 var averageStat = GetAverageStatValue();
+
                 CharacterLevelInfo info = new CharacterLevelInfo
                 {
                     TotalAdvancesTaken = person.TotalAdvancesTaken,
@@ -53,6 +55,7 @@ namespace Warhammer.Core.Concrete
                     TotalHarm = totalHarm,
                     NumberOfWear = numberOfWear,
                     NumberOfHarm = numbeOfHarm,
+                    NumberOfEdge = numberOfEdge,
                     TotalDescriptors = totalDescriptors,
                     CanEdit = person.Player?.UserName == player.UserName || campaignDetail.GmId == player.Id,
                     AverageStatValue = averageStat,
@@ -73,7 +76,8 @@ namespace Warhammer.Core.Concrete
                     WishingWell =  person.WishingWell,
                     PlayerId = player.Id,
                     CampaignDetail = campaignDetail,
-                    CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode)
+                    CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
+                    ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack)
                 };
 
                 return model;
@@ -112,11 +116,6 @@ namespace Warhammer.Core.Concrete
             CharacterAttributeModel model = GetCharacterAttributes(personId);
 
             if (!model.CanAddNew(attributeType))
-            {
-                return false;
-            }
-
-            if (model.PersonAttributes.Any(a => a.PersonAttribute.Name == name && a.PersonAttribute.AttributeType == attributeType))
             {
                 return false;
             }
@@ -393,7 +392,7 @@ namespace Warhammer.Core.Concrete
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
-                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Wear))
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Wear || a.AttributeType == AttributeType.Edge))
                 {
                     personPersonAttribute.Name = null;
                 }
@@ -410,7 +409,7 @@ namespace Warhammer.Core.Concrete
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
-                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Wear && a.Id == attributeId))
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.Id == attributeId))
                 {
                     personPersonAttribute.Name = "Exhausted";
                 }
@@ -494,11 +493,11 @@ namespace Warhammer.Core.Concrete
 
             person.PersonAttributes.Add(new PersonAttribute
             {
-                AttributeType = AttributeType.Wear,
+                AttributeType = AttributeType.Edge,
                 Name = "",
                 Description = "",
-                InitialValue = 4,
-                CurrentValue = 4
+                InitialValue = 1,
+                CurrentValue = 1
             });
 
             person.PersonAttributes.Add(new PersonAttribute

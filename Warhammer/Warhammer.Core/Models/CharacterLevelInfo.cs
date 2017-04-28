@@ -17,6 +17,8 @@
         public int TotalHarm { get; set; }
         public int NumberOfWear { get; set; }
         public int NumberOfHarm { get; set; }
+        public int NumberOfEdge { get; set; }
         public bool HasAttributeMoveAvailable { get; set; }
+
     }
 }

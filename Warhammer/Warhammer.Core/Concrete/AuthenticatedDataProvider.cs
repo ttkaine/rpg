@@ -2052,6 +2052,19 @@ namespace Warhammer.Core.Concrete
             return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName } ).ToList();
         }
 
+        public void AwardShiftForSession(int id)
+        {
+            Session session = _repository.Pages().OfType<Session>().Include(s => s.Pages).FirstOrDefault(s => s.Id == id);
+            if (session != null)
+            {
+                foreach (Person person in session.People.ToList())
+                {
+                    person.HasAttributeMoveAvailable = true;
+                    Save(person);
+                }
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

@@ -53,6 +53,7 @@ namespace Warhammer.Core.Models
         public List<PersonAttributeAdvanceModel> Descriptors => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Descriptor).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Wear => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Wear).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
         public List<PersonAttributeAdvanceModel> Harm => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Harm).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
+        public List<PersonAttributeAdvanceModel> Edge => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Edge).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
 
         public bool CanAddNew(AttributeType type)
         {
@@ -65,6 +66,7 @@ namespace Warhammer.Core.Models
                 case AttributeType.Descriptor:
                 case AttributeType.Harm:
                 case AttributeType.Wear:
+                case AttributeType.Edge:
                     return NewCost(type) <= CurrentXp;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -98,7 +100,8 @@ namespace Warhammer.Core.Models
                 case AttributeType.Descriptor:
                     return TotalAdvancesTaken + TotalDescriptors + 3;
                 case AttributeType.Wear:
-                    return TotalAdvancesTaken + (CharacterInfo.NumberOfWear * 2);
+                case AttributeType.Edge:
+                    return TotalAdvancesTaken + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * 2);
                 case AttributeType.Harm:
                     return TotalAdvancesTaken + (CharacterInfo.NumberOfHarm * 2);
                 default:
@@ -122,5 +125,6 @@ namespace Warhammer.Core.Models
         public int WishingWell { get; set; }
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
         public bool CanAddXp { get; set; }
+        public bool ShowWearTrack { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Warhammer.Core.Models
 
         public PersonAttribute PersonAttribute { get; set; }
         public bool CanBuy => CanAdvance && Cost <= CurrentXp;
-        public bool CanAdvance => PersonAttribute.AttributeType != AttributeType.Descriptor;
+        public bool CanAdvance => PersonAttribute.AttributeType != AttributeType.Descriptor && PersonAttribute.AttributeType != AttributeType.Edge;
 
         public int Cost
         {
@@ -53,6 +53,7 @@ namespace Warhammer.Core.Models
                         }
                         return roleAdvance;
                     case AttributeType.Descriptor:
+                    case AttributeType.Edge:
                         return -1;
                     case AttributeType.Wear:
                     case AttributeType.Harm:
@@ -71,7 +72,7 @@ namespace Warhammer.Core.Models
         {
             get
             {
-                if (PersonAttribute.AttributeType == AttributeType.Wear || PersonAttribute.AttributeType == AttributeType.Harm)
+                if (PersonAttribute.AttributeType == AttributeType.Wear || PersonAttribute.AttributeType == AttributeType.Harm || PersonAttribute.AttributeType == AttributeType.Edge)
                 {
                     return !string.IsNullOrWhiteSpace(PersonAttribute.Name);
                 }

@@ -192,5 +192,23 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AwardShift(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                DataProvider.AwardShiftForSession(id);
+
+                DataProvider.ToggleSetAsTextSession(id);
+                Page page = DataProvider.GetPage(id);
+                if (page != null && IsEditMode)
+                {
+                    return PartialView("Index", page);
+                }
+            }
+            return null;
+        }
     }
 }

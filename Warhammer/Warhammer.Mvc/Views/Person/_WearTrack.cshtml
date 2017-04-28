@@ -39,6 +39,32 @@
             </tr>
         }
 
+
+        @foreach (PersonAttributeAdvanceModel edge in Model.Edge)
+        {
+            if (edge.Exhausted)
+            {
+                <tr>
+                    <td>@edge.PersonAttribute.Name</td>
+                    <td><span class="personAttribute label label-danger">@edge.DisplayValue</span></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>Apply Edge:</td>
+                    <td>
+                        @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="hidden" value="@edge.PersonAttribute.Id" name="attributeId" />
+                            <input type="submit" value="@edge.DisplayValue" class="btn btn-block btn-info" />
+                        }
+                    </td>
+                </tr>
+            }
+        }
+
         @foreach (PersonAttributeAdvanceModel wear in Model.Wear)
         {
             if (wear.Exhausted)
@@ -62,17 +88,16 @@
                     </td>
                 </tr>
             }
-
         }
 
     </table>
 
-    @if (Model.Wear.Any(e => e.Exhausted))
+    @if (Model.Wear.Any(e => e.Exhausted) || Model.Edge.Any(e => e.Exhausted))
     {
         using (Ajax.BeginForm("RefreshWear", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
         {
             <input type="hidden" value="@Model.PersonId" name="personId"/>
-            <input type="submit" value="Refresh Wear" class="btn btn-block btn-success"/>
+            <input type="submit" value="Refresh" class="btn btn-block btn-success"/>
         }
     }
 
