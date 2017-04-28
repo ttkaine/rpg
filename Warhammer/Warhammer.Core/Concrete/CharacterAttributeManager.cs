@@ -482,23 +482,35 @@ namespace Warhammer.Core.Concrete
 
         private void AddDefaultWearAndHarm(Person person)
         {
-            person.PersonAttributes.Add(new PersonAttribute
+            if (!person.IsNpc)
             {
-                AttributeType = AttributeType.Wear,
-                Name = "",
-                Description = "",
-                InitialValue = 2,
-                CurrentValue = 2
-            });
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Wear,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 2,
+                    CurrentValue = 2
+                });
 
-            person.PersonAttributes.Add(new PersonAttribute
-            {
-                AttributeType = AttributeType.Edge,
-                Name = "",
-                Description = "",
-                InitialValue = 1,
-                CurrentValue = 1
-            });
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Edge,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 1,
+                    CurrentValue = 1
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Harm,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 4,
+                    CurrentValue = 4
+                });
+            }
 
             person.PersonAttributes.Add(new PersonAttribute
             {
@@ -509,14 +521,6 @@ namespace Warhammer.Core.Concrete
                 CurrentValue = 2
             });
 
-            person.PersonAttributes.Add(new PersonAttribute
-            {
-                AttributeType = AttributeType.Harm,
-                Name = "",
-                Description = "",
-                InitialValue = 4,
-                CurrentValue = 4
-            });
         }
     }
 }
