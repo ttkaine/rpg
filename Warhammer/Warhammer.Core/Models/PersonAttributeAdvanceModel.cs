@@ -38,7 +38,7 @@ namespace Warhammer.Core.Models
 
                         skillAdvance = skillAdvance + TotalAdvancesTaken;
 
-                        skillAdvance = skillAdvance / 3;
+                        skillAdvance = skillAdvance / 2;
 
                         if (skillAdvance < 1)
                         {

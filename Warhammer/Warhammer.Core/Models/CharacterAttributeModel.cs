@@ -80,7 +80,7 @@ namespace Warhammer.Core.Models
                 case AttributeType.Stat:
                     break;
                 case AttributeType.Skill:
-                    int skillCost = TotalAdvancesTaken + 1;
+                    int skillCost = TotalAdvancesTaken;
 
                     if (skillCost < 1)
                     {
@@ -98,7 +98,14 @@ namespace Warhammer.Core.Models
 
                     return roleCost;
                 case AttributeType.Descriptor:
-                    return TotalAdvancesTaken + TotalDescriptors + 3;
+                    int descCost = TotalAdvancesTaken + TotalDescriptors - 3;
+
+                    if (descCost < 1)
+                    {
+                        descCost = 1;
+                    }
+
+                    return descCost;
                 case AttributeType.Wear:
                 case AttributeType.Edge:
                     return TotalAdvancesTaken + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * 2);
