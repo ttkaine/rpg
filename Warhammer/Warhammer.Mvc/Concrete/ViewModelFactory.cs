@@ -281,7 +281,7 @@ namespace Warhammer.Mvc.Concrete
             PersonAssetsViewModel model = new PersonAssetsViewModel();
             model.PersonId = person.Id;
             model.Assets = person.Assets.ToList();
-            model.AllowEdit = _data.CurrentPlayerIsGm || CurrentPlayer.Id == person.Id;
+            model.AllowEdit = _data.CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId;
             return model;
         }
 
