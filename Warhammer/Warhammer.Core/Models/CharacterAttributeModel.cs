@@ -81,37 +81,25 @@ namespace Warhammer.Core.Models
                 case AttributeType.Stat:
                     break;
                 case AttributeType.Skill:
-                    int skillCost = CharacterLevel;
-
-                    if (skillCost < 1)
-                    {
-                        skillCost = 1;
-                    }
-
-                    return skillCost;
+                    int skillCost = 1;
+                    return skillCost + CharacterLevel;
                 case AttributeType.Role:
-                    int roleCost = CharacterLevel + 4;
-
-                    if (roleCost < 1)
-                    {
-                        roleCost = 1;
-                    }
-
-                    return roleCost;
+                    int roleCost = 4;
+                    return roleCost + CharacterLevel;
                 case AttributeType.Descriptor:
-                    int descCost = CharacterLevel + TotalDescriptors - 3;
+                    int descCost = TotalDescriptors - 3;
 
                     if (descCost < 1)
                     {
                         descCost = 1;
                     }
 
-                    return descCost;
+                    return descCost + CharacterLevel;
                 case AttributeType.Wear:
                 case AttributeType.Edge:
-                    return CharacterLevel + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * (CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge));
+                    return CharacterLevel + CharacterInfo.NumberOfEdge + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * (CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge));
                 case AttributeType.Harm:
-                    return CharacterLevel + (CharacterInfo.NumberOfHarm * CharacterInfo.NumberOfHarm);
+                    return CharacterLevel + CharacterInfo.NumberOfHarm + (CharacterInfo.NumberOfHarm * CharacterInfo.NumberOfHarm);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

@@ -39,21 +39,15 @@ namespace Warhammer.Core.Models
                         int skillAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
 
                         skillAdvance = skillAdvance / 4;
-                        skillAdvance = skillAdvance + CharacterLevel;
 
                         if (skillAdvance < 1)
                         {
                             skillAdvance = 1;
                         }
-                        return skillAdvance;
+                        return skillAdvance + CharacterLevel;
                     case AttributeType.Role:
                         int roleAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
-                        roleAdvance = roleAdvance + CharacterLevel;
-                        if (roleAdvance < 1)
-                        {
-                            roleAdvance = 1;
-                        }
-                        return roleAdvance;
+                        return roleAdvance + CharacterLevel;
                     case AttributeType.Descriptor:
                     case AttributeType.Edge:
                         return -1;
