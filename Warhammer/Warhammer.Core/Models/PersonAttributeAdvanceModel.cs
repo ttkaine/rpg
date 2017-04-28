@@ -36,9 +36,8 @@ namespace Warhammer.Core.Models
                     case AttributeType.Skill:
                         int skillAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
 
-                        skillAdvance = skillAdvance + CharacterLevel;
-
                         skillAdvance = skillAdvance / 4;
+                        skillAdvance = skillAdvance + CharacterLevel;
 
                         if (skillAdvance < 1)
                         {
