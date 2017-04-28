@@ -98,11 +98,12 @@ namespace Warhammer.Core.Concrete
                 PersonAttribute personAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == attributeId);
                 if (personAttribute != null)
                 {
-                    personAttribute.CurrentValue++;
                     personAttribute.XpSpent += attribute.Cost;
                     person.XpSpent += attribute.Cost;
+                    personAttribute.CurrentValue++;
                     person.TotalAdvancesTaken++;
                     person.XpSpendAvailable = model.CanBuyAll;
+
                     _repo.Save(person);
                     return true;
                 }
