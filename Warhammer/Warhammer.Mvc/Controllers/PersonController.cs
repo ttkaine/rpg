@@ -1038,5 +1038,18 @@ namespace Warhammer.Mvc.Controllers
         }
 
 
+        public ActionResult AddXp(int personId, decimal amount)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.AddXp(personId, amount);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
     }
 }

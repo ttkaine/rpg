@@ -22,6 +22,7 @@ namespace Warhammer.Core.Concrete
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
         private readonly IScoreCalculator _score;
+        private readonly ISiteFeatureProvider _feature;
         public bool ShadowMode { get; set; }
         private List<int> _myPageIds;
         public List<int> MyPageIds
@@ -57,13 +58,14 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score, ISiteFeatureProvider feature)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
             _score = score;
+            _feature = feature;
 
             if (_authenticatedUser.UserIsAuthenticated)
             {
@@ -850,6 +852,11 @@ namespace Warhammer.Core.Concrete
                 person.Awards.Add(award);
                 Save(person);
             }
+        }
+
+        public void DisableFeature(string featureName)
+        {
+            _feature.DisableFeature(featureName);
         }
 
         public Person GetPerson(int personId)
@@ -2509,54 +2516,15 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
         }
 
-        private List<Feature> _enabledFeatures = null;
-
-        public bool SiteHasFeature(Feature feature)
+        public bool SiteHasFeature(Feature featureName)
         {
-            if (_enabledFeatures == null)
-            {
-                List<string> names = _repository.SiteFeatures().Where(e => e.IsEnabled).Select(e => e.Name).ToList();
-                _enabledFeatures = new List<Feature>();
-                foreach (string name in names)
-                {
-                    Feature f;
-                    if (Enum.TryParse(name, true, out f))
-                    {
-                        _enabledFeatures.Add(f);
-                    }
-                }
-            }
-            return _enabledFeatures.Contains(feature);
+            return _feature.SiteHasFeature(featureName);
+
         }
 
         public void EnableFeature(string featureName)
         {
-            SiteFeature feature = _repository.SiteFeatures().FirstOrDefault(f => f.Name == featureName);
-
-            if (feature == null)
-            {
-                feature = new SiteFeature { Name = featureName, Description = featureName };
-            }
-
-            if (!feature.IsEnabled)
-            {
-                feature.IsEnabled = true;
-                _repository.Save(feature);
-            }
-        }
-
-        public void DisableFeature(string featureName)
-        {
-            SiteFeature feature = _repository.SiteFeatures().FirstOrDefault(f => f.Name == featureName);
-
-            if (feature != null)
-            {
-                if (feature.IsEnabled)
-                {
-                    feature.IsEnabled = false;
-                    _repository.Save(feature);
-                }
-            }
+            _feature.EnableFeature(featureName);
         }
     }
 }

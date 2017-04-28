@@ -121,6 +121,6 @@ namespace Warhammer.Core.Models
 
         public int WishingWell { get; set; }
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
-
+        public bool CanAddXp { get; set; }
     }
 }

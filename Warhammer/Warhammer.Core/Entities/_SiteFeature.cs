@@ -43,7 +43,8 @@ namespace Warhammer.Core.Entities
         SoloXp,
         VariableSessionGm,
         PostBonusXp,
-        XpCatchup
+        XpCatchup,
+        PlaygroundMode
     }
 
     public partial class SiteFeature

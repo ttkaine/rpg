@@ -11,11 +11,13 @@ namespace Warhammer.Core.Concrete
     {
         private readonly IRepository _repo;
         private readonly IAuthenticatedUserProvider _user;
+        private readonly ISiteFeatureProvider _featureProvider;
 
-        public CharacterAttributeManager(IRepository repo, IAuthenticatedUserProvider user)
+        public CharacterAttributeManager(IRepository repo, IAuthenticatedUserProvider user, ISiteFeatureProvider featureProvider)
         {
             _repo = repo;
             _user = user;
+            _featureProvider = featureProvider;
         }
 
         public CharacterAttributeModel GetCharacterAttributes(int personId)
@@ -70,7 +72,8 @@ namespace Warhammer.Core.Concrete
                     }).ToList(),
                     WishingWell =  person.WishingWell,
                     PlayerId = player.Id,
-                    CampaignDetail = campaignDetail
+                    CampaignDetail = campaignDetail,
+                    CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode)
                 };
 
                 return model;
@@ -454,10 +457,23 @@ namespace Warhammer.Core.Concrete
 
         public bool AlterWishingWell(int personId, int amount)
         {
-            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            Person person = _repo.People().FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
                 person.WishingWell = person.WishingWell + amount;
+                _repo.Save(person);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AddXp(int personId, decimal amount)
+        {
+            Person person = _repo.People().FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                person.XPAwarded = person.XPAwarded + amount;
                 _repo.Save(person);
                 return true;
             }
