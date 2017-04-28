@@ -64,9 +64,5 @@ else
 
 @Html.Action("SessionXpControl", "AdminPageControls", new { id = Model.Id })
 
-@using (Ajax.BeginForm("AwardShift", "AdminPageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "adminPageControls" }))
-{
-    <input type="hidden" value="@Model.Id" name="id" />
-        <input type="submit" value="Award Shift" class="btn btn-default btn-block" />
-}
+
 
