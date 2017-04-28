@@ -26,13 +26,15 @@ namespace Warhammer.Core.Models
                 switch (PersonAttribute.AttributeType)
                 {
                     case AttributeType.Stat:
-                        int totalValue = CharacterLevel + TotalStats;
+                        int totalValue = TotalStats;
                         totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
                         if (totalValue < 1)
                         {
                             totalValue = 1;
                         }
-                        return totalValue * totalValue;
+                        totalValue = totalValue* totalValue;
+
+                        return totalValue + CharacterLevel;
                     case AttributeType.Skill:
                         int skillAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
 

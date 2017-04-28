@@ -7263,6 +7263,10 @@ ul.outstanding-xp-list {
   vertical-align: middle !important;
   font-weight: bold;
 }
+img.AttributeStar {
+  width: 25px;
+  height: 25px;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

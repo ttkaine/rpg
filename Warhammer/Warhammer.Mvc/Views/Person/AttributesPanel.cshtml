@@ -7,14 +7,22 @@
     <div id="characterattributes" class="content-block">
         @if (Model.CharacterInfo.CanEdit)
         {
+
+
             if (Model.ShowWearTrack)
-             {
+            {
                  @Html.Partial("_WearTrack", Model)
              }
             @Html.Partial("_AttributeEdit", Model)
 
 
             <div class="alert alert-info">
+                
+                @for (int i = 0; i < Model.CharacterLevel; i++)
+                {
+                    <img class="AttributeStar" src="@Url.Content("~/Content/Images/gold-star.png")" alt="Level @Model.CharacterLevel" title="Level @Model.CharacterLevel" />
+                }
+
                 <table class="table attribute-table">
                     <tr>
                         <td>Current XP</td>
@@ -37,7 +45,7 @@
                             <td>Shift Available</td>
                             <td><span class="personAttribute label label-default">&#10008;</span></td>
                         </tr>
-                        
+
                     }
                     @if (ViewBag.EditMode && Model.CanAddXp)
                     {
@@ -46,9 +54,9 @@
                             <td>
                                 @using (Ajax.BeginForm("AddXp", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
                                 {
-                                    <input type="hidden" value="@Model.PersonId" name="personId" />
+                                    <input type="hidden" value="@Model.PersonId" name="personId"/>
                                     <input type="number" class="form-control" name="amount"/>
-                                    <input type="submit" value="+ Add" class="btn btn-block btn-success" />
+                                    <input type="submit" value="+ Add" class="btn btn-block btn-success"/>
                                 }
                             </td>
                         </tr>

@@ -7263,3 +7263,7 @@ ul.outstanding-xp-list {
   vertical-align: middle !important;
   font-weight: bold;
 }
+img.AttributeStar {
+  width: 25px;
+  height: 25px;
+}

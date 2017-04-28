@@ -309,6 +309,7 @@
     <Content Include="Content\Images\fate_background.jpg" />
     <Content Include="Content\Images\features.png" />
     <Content Include="Content\Images\globe.png" />
+    <Content Include="Content\Images\gold-star.png" />
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\home.png" />
