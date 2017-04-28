@@ -221,9 +221,16 @@
                 </div>
             }
 
-            if ((Model.Wear.Any() || Model.Harm.Any()) && Model.CharacterInfo.CanEdit)
+            if ((Model.Wear.Any() || Model.Harm.Any() || Model.Edge.Any()) && Model.CharacterInfo.CanEdit)
             {
                 <div class="alert alert-danger">
+                    @if (Model.Edge.Any())
+                    {
+                        <h4>Edge</h4>
+                        <table class="table attribute-table">
+                            @Html.DisplayFor(m => m.Wear)
+                        </table>
+                    }
                     @if (Model.Wear.Any())
                     {
                         <h4>Wear</h4>
