@@ -7,7 +7,7 @@ namespace Warhammer.Core.Models
     {
         public int Id => PersonAttribute.Id;
         public string Name => PersonAttribute.Name;
-
+        public int CharacterLevel => CharacterInfo.CharacterLevel;
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
         public int TotalStats => CharacterInfo.TotalStats;
@@ -26,19 +26,19 @@ namespace Warhammer.Core.Models
                 switch (PersonAttribute.AttributeType)
                 {
                     case AttributeType.Stat:
-                        int totalValue = TotalAdvancesTaken + TotalStats;
+                        int totalValue = CharacterLevel + TotalStats;
                         totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
                         if (totalValue < 1)
                         {
                             totalValue = 1;
                         }
-                        return totalValue;
+                        return totalValue * totalValue;
                     case AttributeType.Skill:
-                        int skillAdvance = PersonAttribute.CurrentValue;
+                        int skillAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
 
-                        skillAdvance = skillAdvance + TotalAdvancesTaken;
+                        skillAdvance = skillAdvance + CharacterLevel;
 
-                        skillAdvance = skillAdvance / 2;
+                        skillAdvance = skillAdvance / 4;
 
                         if (skillAdvance < 1)
                         {
@@ -46,8 +46,8 @@ namespace Warhammer.Core.Models
                         }
                         return skillAdvance;
                     case AttributeType.Role:
-                        int roleAdvance = PersonAttribute.CurrentValue*2;
-                        roleAdvance = roleAdvance + TotalAdvancesTaken;
+                        int roleAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
+                        roleAdvance = roleAdvance + CharacterLevel;
                         if (roleAdvance < 1)
                         {
                             roleAdvance = 1;
@@ -58,7 +58,7 @@ namespace Warhammer.Core.Models
                         return -1;
                     case AttributeType.Wear:
                     case AttributeType.Harm:
-                        return (PersonAttribute.CurrentValue + TotalAdvancesTaken)/2;
+                        return PersonAttribute.CurrentValue + CharacterLevel;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

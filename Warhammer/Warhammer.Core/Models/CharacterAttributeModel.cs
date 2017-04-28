@@ -14,6 +14,7 @@ namespace Warhammer.Core.Models
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int XpSpent => CharacterInfo.XpSpent;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
+        public int CharacterLevel => CharacterInfo.CharacterLevel;
         public int TotalStats => CharacterInfo.TotalStats;
         public int TotalRoles => CharacterInfo.TotalRoles;
         public int TotalSkills => CharacterInfo.TotalSkills;
@@ -80,7 +81,7 @@ namespace Warhammer.Core.Models
                 case AttributeType.Stat:
                     break;
                 case AttributeType.Skill:
-                    int skillCost = TotalAdvancesTaken;
+                    int skillCost = CharacterLevel;
 
                     if (skillCost < 1)
                     {
@@ -89,7 +90,7 @@ namespace Warhammer.Core.Models
 
                     return skillCost;
                 case AttributeType.Role:
-                    int roleCost = TotalAdvancesTaken + 2;
+                    int roleCost = CharacterLevel + 4;
 
                     if (roleCost < 1)
                     {
@@ -98,7 +99,7 @@ namespace Warhammer.Core.Models
 
                     return roleCost;
                 case AttributeType.Descriptor:
-                    int descCost = TotalAdvancesTaken + TotalDescriptors - 3;
+                    int descCost = CharacterLevel + TotalDescriptors - 3;
 
                     if (descCost < 1)
                     {
@@ -108,9 +109,9 @@ namespace Warhammer.Core.Models
                     return descCost;
                 case AttributeType.Wear:
                 case AttributeType.Edge:
-                    return TotalAdvancesTaken + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * 2);
+                    return CharacterLevel + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * (CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge));
                 case AttributeType.Harm:
-                    return TotalAdvancesTaken + (CharacterInfo.NumberOfHarm * 2);
+                    return CharacterLevel + (CharacterInfo.NumberOfHarm * CharacterInfo.NumberOfHarm);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

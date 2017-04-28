@@ -1,7 +1,10 @@
-﻿namespace Warhammer.Core.Models
+﻿using System;
+
+namespace Warhammer.Core.Models
 {
     public class CharacterLevelInfo
     {
+        public int CharacterLevel => (int)Math.Floor(TotalAdvancesTaken/10.0);
         public int TotalAdvancesTaken { get; set; }
         public decimal CurrentXp { get; set; }
         public int TotalRoles { get; set; }
