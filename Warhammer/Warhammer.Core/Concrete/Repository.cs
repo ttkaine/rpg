@@ -582,6 +582,21 @@ namespace Warhammer.Core.Concrete
             return personAttribute.Id;
         }
 
+        public int Save(Award award)
+        {
+            if (award.Id == 0)
+            {
+                _entities.Awards.Add(award);
+            }
+            else
+            {
+                _entities.Entry(award).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return award.Id;
+        }
+
         private void BulkInsert<T>(string connection, string tableName, IList<T> list)
         {
             using (var bulkCopy = new SqlBulkCopy(connection))

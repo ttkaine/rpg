@@ -320,6 +320,7 @@
     <Compile Include="Entities\WarhammerDataEntities.cs" />
     <Compile Include="Entities\_AdminSetting.cs" />
     <Compile Include="Entities\_Asset.cs" />
+    <Compile Include="Entities\_Award.cs" />
     <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_Creature.cs" />
     <Compile Include="Entities\_ExceptionLog.cs" />

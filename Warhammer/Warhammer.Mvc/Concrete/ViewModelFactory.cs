@@ -329,6 +329,37 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public PageControlsViewModel MakePageControlsViewModel(Page page, bool isAdmin, bool playerIsGm, int currentPlayerId, List<Player> players)
+        {
+            PageControlsViewModel model = new PageControlsViewModel
+            {
+                Page = page,
+                PlayerIsAdmin = isAdmin,
+                PlayerIsGm = playerIsGm,
+                CurrentPlayerId = currentPlayerId,
+                Players = new SelectList(players, "Id", "DisplayName")
+            };
+
+            Session session = page as Session;
+            if (session?.GmId != null)
+            {
+                model.SelectedGm = session.GmId;
+            }
+
+            return model;
+        }
+
+        public ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person)
+        {
+            ManageAwardsViewModel model = new ManageAwardsViewModel
+            {
+                Awards = person.Awards.ToList(),
+                PersonId = person.Id,
+                PersonName = person.FullName,
+                Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.QuickName), "Id", "QuickName")
+            };
+            return model;
+        }
 
         private string GetSettingTitle(SettingSection section)
         {

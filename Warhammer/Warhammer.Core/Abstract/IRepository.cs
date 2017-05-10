@@ -72,5 +72,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<PersonAttribute> PersonAttributes();
         void Delete(PersonAttribute personAttribute);
         int Save(PersonAttribute personAttribute);
+        int Save(Award award);
     }
 }

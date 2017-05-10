@@ -133,7 +133,7 @@ namespace Warhammer.Mvc.Controllers
             }
             else
             {
-                ManageAwardsViewModel model = new ManageAwardsViewModel { Trophies = new SelectList(trophies, "Id", "Name"), Person = person };
+                ManageAwardsViewModel model = new ManageAwardsViewModel { Trophies = new SelectList(trophies, "Id", "Name"), Awards = person.Awards.ToList() };
                 return View(model);
             }
         }
@@ -152,17 +152,19 @@ namespace Warhammer.Mvc.Controllers
 
             if (ModelState.IsValid)
             {
-                DataProvider.AwardTrophy(model.Person.Id, model.SelectedTrophy, model.Reason);
-                return RedirectToAction("ManageAwards", "Admin", new { id = model.Person.Id });
+                if (model.SelectedTrophy.HasValue)
+                {
+                    DataProvider.AwardTrophy(model.PersonId, model.SelectedTrophy.Value, model.Reason);
+                    return RedirectToAction("ManageAwards", "Admin", new {id = model.PersonId});
+                }
             }
-            else
-            {
-                Core.Entities.Person person = DataProvider.GetPerson(model.Person.Id);
-                List<Trophy> trophies = DataProvider.Trophies().ToList();
-                model.Trophies = new SelectList(trophies, "Id", "Name");
-                model.Person = person;
-                return View(model);
-            }
+
+            Person person = DataProvider.GetPerson(model.PersonId);
+            List<Trophy> trophies = DataProvider.Trophies().ToList();
+            model.Trophies = new SelectList(trophies, "Id", "Name");
+            model.Awards = person.Awards.ToList();
+            return View(model);
+
         }
 
         public ActionResult KillPerson(int id)

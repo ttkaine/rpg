@@ -376,8 +376,7 @@ namespace Warhammer.Core.Concrete
 
         public void ResetAttributes(int id)
         {
-            if (_user.IsAdmin)
-            {
+
                 Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == id);
                 if (person != null)
                 {
@@ -390,7 +389,7 @@ namespace Warhammer.Core.Concrete
                     person.TotalAdvancesTaken = 0;
                     _repo.Save(person);
                 }
-            }
+
         }
 
         public bool RefreshWear(int personId)

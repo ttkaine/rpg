@@ -265,6 +265,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
+    <Compile Include="Models\PageControlsViewModel.cs" />
     <Compile Include="Models\PersonAssetsViewModel.cs" />
     <Compile Include="Models\PersonDetailsViewModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
@@ -655,9 +656,6 @@
     <Content Include="Views\Activity\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\Comment.cshtml" />
     <Content Include="Views\PageControls\Index.cshtml" />
-    <Content Include="Views\PageControls\DisplayTemplates\Page.cshtml" />
-    <Content Include="Views\PageControls\DisplayTemplates\Person.cshtml" />
-    <Content Include="Views\PageControls\DisplayTemplates\Session.cshtml" />
     <Content Include="Views\AdminPageControls\Index.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Person.cshtml" />
@@ -732,6 +730,9 @@
     <Content Include="Views\Admin\XpToSpend.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PageLinkModel.cshtml" />
     <Content Include="Views\Person\_AttributeEdit.cshtml" />
+    <Content Include="Views\PageControls\KillPerson.cshtml" />
+    <Content Include="Views\PageControls\ManageAwards.cshtml" />
+    <Content Include="Views\PageControls\DisplayTemplates\Award.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -766,6 +767,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
+    <Folder Include="Views\Gm\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

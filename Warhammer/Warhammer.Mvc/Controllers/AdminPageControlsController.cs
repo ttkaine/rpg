@@ -70,7 +70,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (id.HasValue)
             {
-                DataProvider.PinPage(id.Value);
+                DataProvider.TogglePagePin(id.Value);
                 Page page = DataProvider.GetPage(id.Value);
                 if (page != null && IsEditMode)
                 {

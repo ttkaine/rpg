@@ -16,7 +16,7 @@ namespace Warhammer.Core.Abstract
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc);
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
-        Page GetPage(int id);
+        Page GetPage(int id, bool asNoTracking = false);
         ICollection<PageLinkWithUpdateDateModel> RecentPages();
         ICollection<Page> MyStuff();
         ICollection<Session> Sessions();
@@ -36,7 +36,7 @@ namespace Warhammer.Core.Abstract
         ICollection<PageLinkModel> PinnedPages();
         ICollection<PageLinkModel> NewPages();
         ICollection<PageLinkModel> ModifiedPages();
-        void PinPage(int id);
+        void TogglePagePin(int id);
         void MarkAsSeen(int id);
         void ResurrectPerson(int id);
         void KillPerson(int id, string obiturary, string causeOfDeath);
@@ -93,6 +93,7 @@ namespace Warhammer.Core.Abstract
         bool ShowCharacterSheet { get; }
         bool CurrentUserIsGuest { get; }
         bool ShadowMode { get; set; }
+        int CurrentPlayerId { get; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         List<Setting> SettingSection(int sectionId);
@@ -163,5 +164,6 @@ namespace Warhammer.Core.Abstract
         void SetSessionGm(int sessionId, int? selectedGm);
         List<PageLinkModel> PeopleWithXpToSpend();
         void AwardShiftForSession(int id);
+        void UpdateAward(int id, string awardReason);
     }
 }

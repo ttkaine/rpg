@@ -10,7 +10,7 @@ namespace Warhammer.Core.Concrete
     public class EmailHandler : IEmailHandler
     {
         IAuthenticatedUserProvider _user;
-        IAdminSettingsProvider _settings;
+        readonly IAdminSettingsProvider _settings;
 
         private string SendingMailAddress
         {

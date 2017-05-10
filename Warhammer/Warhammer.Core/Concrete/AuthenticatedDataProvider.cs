@@ -24,6 +24,7 @@ namespace Warhammer.Core.Concrete
         private readonly IScoreCalculator _score;
         private readonly ISiteFeatureProvider _feature;
         public bool ShadowMode { get; set; }
+        public int CurrentPlayerId => CurrentPlayer.Id;
         private List<int> _myPageIds;
         public List<int> MyPageIds
         {
@@ -418,9 +419,15 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().Any(p => p.ShortName == shortName && p.Id != id);
         }
 
-        public Page GetPage(int id)
+        public Page GetPage(int id, bool asNoTracking = false)
         {
-            return _repository.Pages().FirstOrDefault(p => p.Id == id);
+            var query = _repository.Pages();
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+                
+            return query.FirstOrDefault(p => p.Id == id);
         }
 
         public ICollection<PageLinkWithUpdateDateModel> RecentPages()
@@ -500,31 +507,40 @@ namespace Warhammer.Core.Concrete
 
         private void NotifyAddPage(int pageId)
         {
-            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewPage);
-            Page page = GetPage(pageId);
-            if (page != null && players.Any())
+            if (SiteHasFeature(Feature.ImmediateEmailer))
             {
-                _email.NotifyNewPage(page, players);
+                List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewPage);
+                Page page = GetPage(pageId);
+                if (page != null && players.Any())
+                {
+                    _email.NotifyNewPage(page, players);
+                }
             }
         }
 
         private void NotifyAddComment(int pageId, string commenterName, string description)
         {
-            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewComment);
-            Page page = GetPage(pageId);
-            if (page != null && players.Any())
+            if (SiteHasFeature(Feature.ImmediateEmailer))
             {
-                _email.NotifyNewComment(commenterName, page, players, description);
+                List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewComment);
+                Page page = GetPage(pageId);
+                if (page != null && players.Any())
+                {
+                    _email.NotifyNewComment(commenterName, page, players, description);
+                }
             }
         }
 
         private void NotifyEditPage(int pageId)
         {
-            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnUpdatePage);
-            Page page = GetPage(pageId);
-            if (page != null && players.Any())
+            if (SiteHasFeature(Feature.ImmediateEmailer))
             {
-                _email.NotifyEditPage(page, players);
+                List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnUpdatePage);
+                Page page = GetPage(pageId);
+                if (page != null && players.Any())
+                {
+                    _email.NotifyEditPage(page, players);
+                }
             }
         }
 
@@ -688,7 +704,7 @@ namespace Warhammer.Core.Concrete
             return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
-        public void PinPage(int id)
+        public void TogglePagePin(int id)
         {
             Page page = _repository.Pages().FirstOrDefault(p => p.Id == id);
             if (page != null)
@@ -2062,6 +2078,16 @@ namespace Warhammer.Core.Concrete
                     person.HasAttributeMoveAvailable = true;
                     Save(person);
                 }
+            }
+        }
+
+        public void UpdateAward(int id, string awardReason)
+        {
+            Award award = _repository.Awards().FirstOrDefault(a => a.Id == id);
+            if (award != null)
+            {
+                award.Reason = awardReason;
+                _repository.Save(award);
             }
         }
 
