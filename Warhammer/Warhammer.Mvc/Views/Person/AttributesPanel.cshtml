@@ -55,7 +55,7 @@
                                 @using (Ajax.BeginForm("AddXp", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
                                 {
                                     <input type="hidden" value="@Model.PersonId" name="personId"/>
-                                    <input type="number" class="form-control" name="amount"/>
+                                    <input type="number" step="any" class="form-control" name="amount"/>
                                     <input type="submit" value="+ Add" class="btn btn-block btn-success"/>
                                 }
                             </td>
