@@ -958,7 +958,7 @@ namespace Warhammer.Core.Concrete
                 }
             }
 
-            Save(person);
+            _repository.Save(person);
         }
 
         public bool CheckStatPermissions(int personId)

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Warhammer.Core.Models.PageLinkModel>
+@{
+    ViewBag.Title = "Xp To Spend";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">People who probably should spend some XP</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+
+            @if (Model.Any())
+            {
+                <div class="alert alert-warning">
+                    <h1>You have @Model.Count() outstanding XP spend@(Model.Count() > 1 ? "s" : "")</h1>
+                    <p>So now you gotta decide if these suckers should spend any XP...</p>
+                </div>
+
+                <table class="table table-striped">
+                    <tbody class="list">
+                    @Html.DisplayForModel()
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    <h1>All XP has been spent.</h1>
+                    <p>You got nothing to do here!</p>
+                </div>
+
+            }
+        </div>
+
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>This is just a reminder to sepnd some of your NPC your Xp...</h3>
+        </div>
+    </div>
+
+</div>

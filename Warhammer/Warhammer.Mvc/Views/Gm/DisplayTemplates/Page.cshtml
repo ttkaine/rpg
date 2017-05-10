@@ -1,0 +1,25 @@
+﻿@model Warhammer.Core.Entities.Page
+
+<li>
+    <div>
+        <div>
+            <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = Model.Id})">
+                <img src="@Url.Content("~/Content/Images/home.png")" alt="Page" title="See The Page" />
+            </a>
+        </div>
+        <div>
+            @using (Html.BeginForm("AwardXp", "DefaultXp", FormMethod.Post))
+            {
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <button class="btn btn-success btn-block" type="submit">Award Default XP for @Model.FullName (@Model.ShortName)</button>
+            }
+        </div>
+        <div class="dismiss-xp-panel">
+            @using (Html.BeginForm("RejectXp", "DefaultXp", FormMethod.Post))
+            {
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <button class="btn btn-danger" type="submit">Dismiss XP</button>
+            }
+        </div>
+    </div>
+</li>

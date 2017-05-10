@@ -225,6 +225,7 @@
     <Compile Include="Controllers\DefaultXpController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FateController.cs" />
+    <Compile Include="Controllers\GmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
@@ -733,6 +734,9 @@
     <Content Include="Views\PageControls\KillPerson.cshtml" />
     <Content Include="Views\PageControls\ManageAwards.cshtml" />
     <Content Include="Views\PageControls\DisplayTemplates\Award.cshtml" />
+    <Content Include="Views\Gm\OutstandingXp.cshtml" />
+    <Content Include="Views\Gm\XpToSpend.cshtml" />
+    <Content Include="Views\Gm\DisplayTemplates\Page.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -767,7 +771,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
-    <Folder Include="Views\Gm\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

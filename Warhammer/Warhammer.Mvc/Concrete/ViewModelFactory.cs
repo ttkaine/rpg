@@ -120,6 +120,7 @@ namespace Warhammer.Mvc.Concrete
             List<MenuItemViewModel> featuresMenu = MakeFeaturesSubmenu();
             List<MenuItemViewModel> peopleSubMenu = MakePeopleSubmenu();
             List<MenuItemViewModel> adminSubMenu = MakeAdminSubmenu();
+            List<MenuItemViewModel> gmSubMenu = MakeGmSubMenu();
 
             if (usefulSubMenu.Any())
             {
@@ -138,6 +139,16 @@ namespace Warhammer.Mvc.Concrete
                     Name = "Features",
                     Url = "#",
                     SubMenu = featuresMenu
+                });
+            }
+
+            if (gmSubMenu.Any())
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "GM Stuff",
+                    Url = "#",
+                    SubMenu = gmSubMenu
                 });
             }
 
@@ -175,22 +186,49 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        private List<MenuItemViewModel> MakeGmSubMenu()
+        {
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+            if (_data.CurrentPlayerIsGm)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Outstanding Xp",
+                    Url = _urlHelper.Action("OutstandingXp", "Gm"),
+                });
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Xp To Spend",
+                    Url = _urlHelper.Action("XpToSpend", "Gm"),
+                });
+
+                if (_data.SiteHasFeature(Feature.PriceList) && !_data.SiteHasFeature(Feature.PublicPrices))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Price List",
+                        Url = _urlHelper.Action("PriceList", "Home"),
+                    });
+                }
+
+                if (_data.SiteHasFeature(Feature.RumourMill))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Manage Rumours",
+                        Url = _urlHelper.Action("Index", "Rumour"),
+                    });
+                }
+            }
+
+            return items;
+        }
+
         private List<MenuItemViewModel> MakeAdminSubmenu()
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
             if (_data.CurrentUserIsAdmin)
             {
-                items.Add(new MenuItemViewModel
-                {
-                    Name = "Outstanding Xp",
-                    Url = _urlHelper.Action("OutstandingXp", "Admin"),
-                });
-                items.Add(new MenuItemViewModel
-                {
-                    Name = "Xp To Spend",
-                    Url = _urlHelper.Action("XpToSpend", "Admin"),
-                });
-
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Edit Features",
@@ -225,8 +263,6 @@ namespace Warhammer.Mvc.Concrete
                         Url = _urlHelper.Action("Index", "Rumour"),
                     });
                 }
-
-
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Campaign Settings",
@@ -240,9 +276,6 @@ namespace Warhammer.Mvc.Concrete
         private List<MenuItemViewModel> MakeFeaturesSubmenu()
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
-
-
-
             return items;
         }
 
