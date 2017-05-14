@@ -121,6 +121,20 @@ namespace Warhammer.Mvc.Concrete
             List<MenuItemViewModel> peopleSubMenu = MakePeopleSubmenu();
             List<MenuItemViewModel> adminSubMenu = MakeAdminSubmenu();
             List<MenuItemViewModel> gmSubMenu = MakeGmSubMenu();
+            List<MenuItemViewModel> createMenu = MakeCreateMenu();
+
+            if (createMenu.Any())
+            {
+                model.CreateMenu = new List<MenuItemViewModel>
+                {
+                    new MenuItemViewModel
+                    {
+                        AltText = "Create Stuff",
+                        Name = "Create New",
+                        SubMenu = createMenu
+                    }
+                };
+            }
 
             if (usefulSubMenu.Any())
             {
@@ -184,6 +198,52 @@ namespace Warhammer.Mvc.Concrete
             }
 
             return model;
+        }
+
+        private List<MenuItemViewModel> MakeCreateMenu()
+        {
+            List<MenuItemViewModel> menu = new List<MenuItemViewModel>();
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Person",
+                Url = _urlHelper.Action("Person", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Session",
+                Url = _urlHelper.Action("GameSession", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Session Log",
+                Url = _urlHelper.Action("SessionLog", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Place / Location",
+                Url = _urlHelper.Action("Place", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "Generic Page",
+                Url = _urlHelper.Action("Page", "Create")
+            });
+
+            if (_data.CurrentPlayerIsGm || _data.CurrentUserIsAdmin)
+            {
+                menu.Add(new MenuItemViewModel
+                {
+                    Name = "New Trophy",
+                    Url = _urlHelper.Action("EditTrophy", "Gm")
+                });
+            }
+
+            return menu;
         }
 
         private List<MenuItemViewModel> MakeGmSubMenu()
@@ -390,6 +450,28 @@ namespace Warhammer.Mvc.Concrete
                 PersonId = person.Id,
                 PersonName = person.FullName,
                 Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.QuickName), "Id", "QuickName")
+            };
+            return model;
+        }
+
+        public EditTrophyViewModel Make(Trophy trophy, bool playerIsGm, bool playerIsAdmin)
+        {
+            EditTrophyViewModel model = new EditTrophyViewModel();
+            model.Trophy = trophy;
+            model.CurrentCampaignOnly = trophy.CurrentCampaignOnly;
+            model.CanEdit = playerIsAdmin || (playerIsGm && trophy.CurrentCampaignOnly);
+            model.CanEditGlobal = playerIsAdmin;
+            return model;
+        }
+
+        public TrophyCabinetViewModel Make(List<Trophy> trophies, bool currentPlayerIsGm, bool playerIsAdmin)
+        {
+            TrophyCabinetViewModel model = new TrophyCabinetViewModel
+            {
+                Trophies = trophies,
+                CanAdd = playerIsAdmin || currentPlayerIsGm,
+                CanEditGlobal = playerIsAdmin,
+                CanEdit = playerIsAdmin || currentPlayerIsGm
             };
             return model;
         }

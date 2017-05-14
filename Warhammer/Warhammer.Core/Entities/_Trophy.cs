@@ -14,7 +14,6 @@
 
     public partial class Trophy
     {
-        public bool SaveAsCurrentCampaignOnly { get; set; }
         public bool CurrentCampaignOnly => CampaignId.HasValue;
 
         public TrophyType TrophyType

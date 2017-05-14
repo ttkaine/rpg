@@ -255,6 +255,7 @@
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
+    <Compile Include="Models\EditTrophyViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\FateAspectViewModel.cs" />
     <Compile Include="Models\FateStatsViewModel.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="Models\SessionXpModel.cs" />
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
     <Compile Include="Models\SuspendPlayerItemViewModel.cs" />
+    <Compile Include="Models\TrophyCabinetViewModel.cs" />
     <Compile Include="Models\UserSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -619,7 +621,6 @@
     <Content Include="Views\Home\Graveyard.cshtml" />
     <Content Include="Views\Admin\KillPerson.cshtml" />
     <Content Include="Views\Home\People.cshtml" />
-    <Content Include="Views\Admin\EditTrophy.cshtml" />
     <Content Include="Views\Home\Trophies.cshtml" />
     <Content Include="Views\Admin\ManageAwards.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Award.cshtml" />
@@ -737,6 +738,7 @@
     <Content Include="Views\Gm\OutstandingXp.cshtml" />
     <Content Include="Views\Gm\XpToSpend.cshtml" />
     <Content Include="Views\Gm\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Gm\EditTrophy.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
