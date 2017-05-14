@@ -94,7 +94,9 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult Trophies()
         {
             List<Trophy> trophies = DataProvider.Trophies().ToList();
-            return View(trophies);
+            TrophyCabinetViewModel model = ModelFactory.Make(trophies, DataProvider.CurrentPlayerIsGm, DataProvider.CurrentUserIsAdmin);
+
+            return View(model);
         }
 
         public ActionResult Trophy(int id)

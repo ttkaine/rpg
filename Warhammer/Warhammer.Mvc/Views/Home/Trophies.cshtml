@@ -1,5 +1,6 @@
 ﻿@using Warhammer.Core.Entities
-@model IEnumerable<Trophy>
+@model Warhammer.Mvc.Models.TrophyCabinetViewModel
+
 @{
     ViewBag.Title = "Trophy Cabinet";
 }
@@ -22,26 +23,30 @@
                 <h2>Trophies</h2>
                 <table class="trophy">
                     <tbody class="list">
-                        @foreach (Trophy trophy in Model)
+                        @foreach (Trophy trophy in Model.Trophies)
                         {
                             <tr>
                                 <td style="display: none">@trophy.PointsValue</td>
                                 <td><a href="@Url.Action("Trophy", "Home", new { id = trophy.Id})"><img src="@Url.Action("TrophyImage", "Home", new { id = trophy.Id }, null)" title="@trophy.Name" alt="Picture of @trophy.Name" class="trophy-image" /></a></td>
                                 <td class="name">@trophy.Name</td>
                                 <td class="description">@Html.Raw(trophy.Description)</td>
-                                @if (User.IsInRole("Admin") && ViewBag.EditMode)
+                                @if (ViewBag.EditMode)
                                 {
-                                    <td>@Html.ActionLink("Edit", "EditTrophy", "Admin", new { id = trophy.Id }, new { @class = "btn btn-block btn-success" })</td>
+                                    if (Model.CanEditGlobal ||(Model.CanAdd && trophy.CurrentCampaignOnly))
+                                    {
+                                        <td>@Html.ActionLink("Edit", "EditTrophy", "Gm", new { id = trophy.Id }, new { @class = "btn btn-block btn-success" })</td>
+                                    }
                                 }
+
                             </tr>
                         }
                     </tbody>
                 </table>
 
-                @if (User.IsInRole("Admin") && ViewBag.EditMode)
+                @if (Model.CanAdd)
                 {
                     <hr />
-                    @Html.ActionLink("+ New", "EditTrophy", "Admin", null, new { @class = "btn btn-block btn-success" })
+                    @Html.ActionLink("+ New", "EditTrophy", "Gm", null, new { @class = "btn btn-block btn-success" })
                 }
 
             </div>

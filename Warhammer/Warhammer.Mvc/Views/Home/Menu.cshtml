@@ -18,19 +18,8 @@
                     {
                         if (ViewBag.EditMode && User.IsInRole("Player"))
                         {
-                            <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create", new {returnUrl = Request.Url.AbsoluteUri}, null)</li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("New Person", "Person", "Create")</li>
-                                    <li>@Html.ActionLink("New Session", "GameSession", "Create")</li>
-                                    <li>@Html.ActionLink("New Session Log", "SessionLog", "Create")</li>
-                                    <li>@Html.ActionLink("Place / Location", "Place", "Create")</li>
-                                   @*<li>@Html.ActionLink("New Creature", "Creature", "Create")</li>
-                                    <li>@Html.ActionLink("New Organisation", "Organisation", "Create")</li>*@ 
-                                    <li>@Html.ActionLink("Page", "Page", "Create")</li>
-                                </ul>
-                            </li>
+                            <li>@Html.ActionLink("Switch to Read Only Mode", "ReadOnlyMode", "Create", new { returnUrl = Request.Url.AbsoluteUri }, null)</li>
+                            @Html.DisplayFor(m=>m.CreateMenu)  
                         }
                         else
                         {
@@ -48,6 +37,8 @@
 
                     }
                 </ul>
+
+
 
                 <ul class="nav navbar-nav navbar-right">
                     @Html.DisplayFor(m => m.RightMenu)

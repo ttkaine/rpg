@@ -6,6 +6,7 @@ using ASP;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
+using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
 {
@@ -13,6 +14,7 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IImageProcessor _imageProcessor;
         private readonly IAuthenticatedUserProvider _user;
+        private readonly ICurrentCampaignProvider _campaignProvider;
 
         public ActionResult OutstandingXp()
         {
@@ -26,35 +28,38 @@ namespace Warhammer.Mvc.Controllers
             return View(pages);
         }
 
-        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user) : base(data)
+        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, ICurrentCampaignProvider campaignProvider) : base(data)
         {
             _imageProcessor = imageProcessor;
             _user = user;
+            _campaignProvider = campaignProvider;
         }
 
         public ActionResult EditTrophy(int? id)
         {
             Trophy trophy = null;
+
             if (id.HasValue)
             {
                 trophy = DataProvider.GetTrophy(id.Value);
-                trophy.SaveAsCurrentCampaignOnly = trophy.CurrentCampaignOnly;
             }
 
             if (trophy == null)
             {
-                trophy = new Trophy();
+                trophy = new Trophy {CampaignId = _campaignProvider.CurrentCampaignId };
             }
 
-            return View(trophy);
+            EditTrophyViewModel model = ModelFactory.Make(trophy, DataProvider.CurrentPlayerIsGm, DataProvider.CurrentUserIsAdmin);
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult EditTrophy(Trophy trophy, HttpPostedFileBase imageFile, double? y1, double? x1, double? h, double? w)
+        public ActionResult EditTrophy(EditTrophyViewModel trophyModel, HttpPostedFileBase imageFile, double? y1, double? x1, double? h, double? w)
         {
             if (ModelState.IsValid && (DataProvider.CurrentPlayerIsGm || _user.IsAdmin))
             {
-                ClearTrophyCache(trophy.Id);
+                ClearTrophyCache(trophyModel.Trophy.Id);
                 byte[] imageData = null;
 
                 if (imageFile != null)
@@ -66,27 +71,27 @@ namespace Warhammer.Mvc.Controllers
                     imageData = _imageProcessor.GetJpegFromImage(croppedImage);
                 }
 
-                if (trophy.Id == 0)
+                if (trophyModel.Trophy.Id == 0)
                 {
-                    DataProvider.AddTrophy(trophy.Name, trophy.Description, trophy.PointsValue, imageData, "image/jpeg", trophy.SaveAsCurrentCampaignOnly);
+                    DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, "image/jpeg", trophyModel.CurrentCampaignOnly);
                 }
                 else
                 {
                     if (imageData != null)
                     {
-                        DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue,
-                            imageData, "image/jpeg", trophy.SaveAsCurrentCampaignOnly);
+                        DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue,
+                            imageData, "image/jpeg", trophyModel.CurrentCampaignOnly);
                     }
                     else
                     {
-                        DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue, trophy.SaveAsCurrentCampaignOnly);
+                        DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, trophyModel.CurrentCampaignOnly);
                     }
                 }
                 return RedirectToAction("Trophies", "Home");
             }
 
-
-            return View(trophy);
+            EditTrophyViewModel model = ModelFactory.Make(trophyModel.Trophy, DataProvider.CurrentPlayerIsGm, DataProvider.CurrentUserIsAdmin);
+            return View(model);
         }
 
         private void ClearTrophyCache(int id)
