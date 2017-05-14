@@ -789,7 +789,7 @@ namespace Warhammer.Core.Concrete
             trophy.ImageData = imageData;
             trophy.MimeType = mimeType;
 
-            if (currentCampaignOnly)
+            if (!_authenticatedUser.IsAdmin || currentCampaignOnly)
             {
                 trophy.CampaignId = Campaign.Id;
             }
@@ -806,6 +806,26 @@ namespace Warhammer.Core.Concrete
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
             {
+                if (!_authenticatedUser.IsAdmin)
+                {
+                    if (!trophy.CurrentCampaignOnly)
+                    {
+                        return;
+                    }
+                }
+
+                if (currentCampaignOnly)
+                {
+                    trophy.CampaignId = Campaign.Id;
+                }
+                else
+                {
+                    if (_authenticatedUser.IsAdmin)
+                    {
+                        trophy.CampaignId = null;
+                    }
+                }
+
                 trophy.Name = name;
                 trophy.Description = description;
                 trophy.PointsValue = pointsValue;
@@ -830,9 +850,13 @@ namespace Warhammer.Core.Concrete
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
             {
-                trophy.Name = name;
-                trophy.Description = description;
-                trophy.PointsValue = pointsValue;
+                if (!_authenticatedUser.IsAdmin)
+                {
+                    if (!trophy.CurrentCampaignOnly)
+                    {
+                        return;
+                    }
+                }
 
                 if (currentCampaignOnly)
                 {
@@ -840,8 +864,17 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    trophy.CampaignId = null;
+                    if (_authenticatedUser.IsAdmin)
+                    {
+                        trophy.CampaignId = null;
+                    }
                 }
+
+                trophy.Name = name;
+                trophy.Description = description;
+                trophy.PointsValue = pointsValue;
+
+
 
                 _repository.Save(trophy);
             }
