@@ -165,5 +165,6 @@ namespace Warhammer.Core.Abstract
         List<PageLinkModel> PeopleWithXpToSpend();
         void AwardShiftForSession(int id);
         void UpdateAward(int id, string awardReason);
+        List<Person> GetNpcSheetPeople();
     }
 }

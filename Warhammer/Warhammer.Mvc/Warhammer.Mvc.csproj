@@ -267,6 +267,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
+    <Compile Include="Models\NpcSheetViewModel.cs" />
     <Compile Include="Models\PageControlsViewModel.cs" />
     <Compile Include="Models\PersonAssetsViewModel.cs" />
     <Compile Include="Models\PersonDetailsViewModel.cs" />
@@ -739,6 +740,8 @@
     <Content Include="Views\Gm\XpToSpend.cshtml" />
     <Content Include="Views\Gm\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Gm\EditTrophy.cshtml" />
+    <Content Include="Views\Gm\NpcSheet.cshtml" />
+    <Content Include="Views\Gm\DisplayTemplates\NpcSheetViewModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

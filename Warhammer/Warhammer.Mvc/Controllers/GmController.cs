@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ASP;
@@ -120,5 +121,14 @@ namespace Warhammer.Mvc.Controllers
 
             return new Rectangle();
         }
+
+        public ActionResult NpcSheet()
+        {
+            List<Person> npcs = DataProvider.GetNpcSheetPeople();
+            List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
+            return View(models);
+        }
     }
+
+
 }

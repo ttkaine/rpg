@@ -18,5 +18,6 @@ namespace Warhammer.Mvc.Abstract
         ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person);
         EditTrophyViewModel Make(Trophy trophy, bool playerIsGm, bool playerIsAdmin);
         TrophyCabinetViewModel Make(List<Trophy> trophies, bool currentPlayerIsGm, bool playerIsAdmin);
+        NpcSheetViewModel MakeNpcSheetViewModel(Person npc);
     }
 }

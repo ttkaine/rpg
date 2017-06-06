@@ -2124,6 +2124,14 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Person> GetNpcSheetPeople()
+        {
+            return _repository.People()
+                .Include(p => p.PersonAttributes)
+                .Include(p => p.Awards)
+                .Where(p => p.PersonAttributes.Any()).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

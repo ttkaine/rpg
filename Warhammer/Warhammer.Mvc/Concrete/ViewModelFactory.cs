@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Abstract;
@@ -262,6 +263,15 @@ namespace Warhammer.Mvc.Concrete
                     Url = _urlHelper.Action("XpToSpend", "Gm"),
                 });
 
+                if (_data.SiteHasFeature(Feature.PersonAttributes))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "NPC Sheet",
+                        Url = _urlHelper.Action("NpcSheet", "Gm"),
+                    });
+                }
+
                 if (_data.SiteHasFeature(Feature.PriceList) && !_data.SiteHasFeature(Feature.PublicPrices))
                 {
                     items.Add(new MenuItemViewModel
@@ -472,6 +482,46 @@ namespace Warhammer.Mvc.Concrete
                 CanAdd = playerIsAdmin || currentPlayerIsGm,
                 CanEditGlobal = playerIsAdmin,
                 CanEdit = playerIsAdmin || currentPlayerIsGm
+            };
+            return model;
+        }
+
+        public NpcSheetViewModel MakeNpcSheetViewModel(Person npc)
+        {
+            Dictionary<string, int> roles = new Dictionary<string, int>();
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Role))
+            {
+                if (!roles.ContainsKey(attribute.Name))
+                {
+                    roles.Add(attribute.Name, attribute.CurrentValue);
+                }
+            }
+
+            Dictionary<string, int> skills = new Dictionary<string, int>();
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Skill))
+            {
+                if (!skills.ContainsKey(attribute.Name))
+                {
+                    skills.Add(attribute.Name, attribute.CurrentValue);
+                }
+            }
+
+            Dictionary<string, int> stats = new Dictionary<string, int>();
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Stat))
+            {
+                if (!stats.ContainsKey(attribute.Name))
+                {
+                    stats.Add(attribute.Name, attribute.CurrentValue);
+                }
+            }
+
+            NpcSheetViewModel model = new NpcSheetViewModel
+            {
+                Person = npc,
+                Skills = skills,
+                Roles = roles,
+                Stats = stats,
+                Descriptors = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Descriptor).Select(s => s.Name).Distinct().ToList()
             };
             return model;
         }
