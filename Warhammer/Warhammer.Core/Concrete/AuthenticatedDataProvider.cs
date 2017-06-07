@@ -2129,7 +2129,9 @@ namespace Warhammer.Core.Concrete
             return _repository.People()
                 .Include(p => p.PersonAttributes)
                 .Include(p => p.Awards)
-                .Where(p => p.PersonAttributes.Any()).ToList();
+                .Where(p => !p.PlayerId.HasValue)
+                .Where(p => p.PersonAttributes.Any())
+                .OrderByDescending(p => p.CurrentScore).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)
