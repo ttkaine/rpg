@@ -584,6 +584,15 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            if (_data.SiteHasFeature(Feature.FavouritesGallery))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Favourites",
+                    Url = _urlHelper.Action("FavouritesGallery", "Home")
+                });
+            }
+
             if (_data.SiteHasFeature(Feature.SimpleStats) && _data.CurrentUserIsAdmin && _data.SiteHasFeature(Feature.CrowNpcSheet))
             {
                 items.Add(new MenuItemViewModel

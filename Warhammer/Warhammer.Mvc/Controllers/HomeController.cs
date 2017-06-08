@@ -113,6 +113,17 @@ namespace Warhammer.Mvc.Controllers
             return View(people);
         }
 
+        public ActionResult FavouritesGallery()
+        {
+            if (DataProvider.SiteHasFeature(Feature.FavouritesGallery))
+            {
+                List<PageLinkModel> favs = DataProvider.GetFavourites();
+
+                return View(favs);
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Graveyard()
         {
             List<Person> people = DataProvider.PeopleInGraveyard().ToList();

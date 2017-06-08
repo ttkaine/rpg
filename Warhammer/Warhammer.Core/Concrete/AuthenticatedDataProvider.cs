@@ -2134,6 +2134,22 @@ namespace Warhammer.Core.Concrete
                 .OrderByDescending(p => p.CurrentScore).ToList();
         }
 
+        public List<PageLinkModel> GetFavourites()
+        {
+            var query = _repository.Pages().OfType<Person>()
+                .Where(p => p.PlayerId == null)
+                .Where(p => p.Awards.Any(a => a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc ||
+                                              a.Trophy.TypeId == (int)TrophyType.SecondFavouriteNpc ||
+                                              a.Trophy.TypeId == (int)TrophyType.ThirdFavouriteNpc));
+
+            if (ShadowMode)
+            {
+                query = ApplyPeopleShadow(query);
+            }
+
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

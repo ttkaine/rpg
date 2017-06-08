@@ -742,6 +742,7 @@
     <Content Include="Views\Gm\EditTrophy.cshtml" />
     <Content Include="Views\Gm\NpcSheet.cshtml" />
     <Content Include="Views\Gm\DisplayTemplates\NpcSheetViewModel.cshtml" />
+    <Content Include="Views\Home\FavouritesGallery.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

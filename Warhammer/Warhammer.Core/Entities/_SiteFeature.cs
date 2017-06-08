@@ -45,7 +45,8 @@ namespace Warhammer.Core.Entities
         PostBonusXp,
         XpCatchup,
         PlaygroundMode,
-        ShowWearTrack
+        ShowWearTrack,
+        FavouritesGallery
     }
 
     public partial class SiteFeature
