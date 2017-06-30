@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Abstract;
@@ -120,6 +121,21 @@ namespace Warhammer.Mvc.Concrete
             List<MenuItemViewModel> featuresMenu = MakeFeaturesSubmenu();
             List<MenuItemViewModel> peopleSubMenu = MakePeopleSubmenu();
             List<MenuItemViewModel> adminSubMenu = MakeAdminSubmenu();
+            List<MenuItemViewModel> gmSubMenu = MakeGmSubMenu();
+            List<MenuItemViewModel> createMenu = MakeCreateMenu();
+
+            if (createMenu.Any())
+            {
+                model.CreateMenu = new List<MenuItemViewModel>
+                {
+                    new MenuItemViewModel
+                    {
+                        AltText = "Create Stuff",
+                        Name = "Create New",
+                        SubMenu = createMenu
+                    }
+                };
+            }
 
             if (usefulSubMenu.Any())
             {
@@ -138,6 +154,16 @@ namespace Warhammer.Mvc.Concrete
                     Name = "Features",
                     Url = "#",
                     SubMenu = featuresMenu
+                });
+            }
+
+            if (gmSubMenu.Any())
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "GM Stuff",
+                    Url = "#",
+                    SubMenu = gmSubMenu
                 });
             }
 
@@ -175,17 +201,104 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        private List<MenuItemViewModel> MakeCreateMenu()
+        {
+            List<MenuItemViewModel> menu = new List<MenuItemViewModel>();
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Person",
+                Url = _urlHelper.Action("Person", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Session",
+                Url = _urlHelper.Action("GameSession", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Session Log",
+                Url = _urlHelper.Action("SessionLog", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "New Place / Location",
+                Url = _urlHelper.Action("Place", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
+                Name = "Generic Page",
+                Url = _urlHelper.Action("Page", "Create")
+            });
+
+            if (_data.CurrentPlayerIsGm || _data.CurrentUserIsAdmin)
+            {
+                menu.Add(new MenuItemViewModel
+                {
+                    Name = "New Trophy",
+                    Url = _urlHelper.Action("EditTrophy", "Gm")
+                });
+            }
+
+            return menu;
+        }
+
+        private List<MenuItemViewModel> MakeGmSubMenu()
+        {
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+            if (_data.CurrentPlayerIsGm)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Outstanding Xp",
+                    Url = _urlHelper.Action("OutstandingXp", "Gm"),
+                });
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Xp To Spend",
+                    Url = _urlHelper.Action("XpToSpend", "Gm"),
+                });
+
+                if (_data.SiteHasFeature(Feature.PersonAttributes))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "NPC Sheet",
+                        Url = _urlHelper.Action("NpcSheet", "Gm"),
+                    });
+                }
+
+                if (_data.SiteHasFeature(Feature.PriceList) && !_data.SiteHasFeature(Feature.PublicPrices))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Price List",
+                        Url = _urlHelper.Action("PriceList", "Home"),
+                    });
+                }
+
+                if (_data.SiteHasFeature(Feature.RumourMill))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Manage Rumours",
+                        Url = _urlHelper.Action("Index", "Rumour"),
+                    });
+                }
+            }
+
+            return items;
+        }
+
         private List<MenuItemViewModel> MakeAdminSubmenu()
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
             if (_data.CurrentUserIsAdmin)
             {
-                items.Add(new MenuItemViewModel
-                {
-                    Name = "Outstanding Xp",
-                    Url = _urlHelper.Action("OutstandingXp", "Admin"),
-                });
-
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Edit Features",
@@ -220,8 +333,6 @@ namespace Warhammer.Mvc.Concrete
                         Url = _urlHelper.Action("Index", "Rumour"),
                     });
                 }
-
-
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Campaign Settings",
@@ -235,9 +346,6 @@ namespace Warhammer.Mvc.Concrete
         private List<MenuItemViewModel> MakeFeaturesSubmenu()
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
-
-
-
             return items;
         }
 
@@ -276,7 +384,7 @@ namespace Warhammer.Mvc.Concrete
             PersonAssetsViewModel model = new PersonAssetsViewModel();
             model.PersonId = person.Id;
             model.Assets = person.Assets.ToList();
-            model.AllowEdit = _data.CurrentPlayerIsGm || CurrentPlayer.Id == person.Id;
+            model.AllowEdit = _data.CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId;
             return model;
         }
 
@@ -314,6 +422,109 @@ namespace Warhammer.Mvc.Concrete
             return viewModel;            
         }
 
+        public SessionGmViewModel MakeSessionGmViewModel(int id, List<Player> players, int gmId)
+        {
+            SessionGmViewModel model = new SessionGmViewModel();
+
+            model.SessionId = id;
+            model.Players = new SelectList(players, "Id", "DisplayName");
+            model.SelectedGm = gmId;
+            return model;
+        }
+
+        public PageControlsViewModel MakePageControlsViewModel(Page page, bool isAdmin, bool playerIsGm, int currentPlayerId, List<Player> players)
+        {
+            PageControlsViewModel model = new PageControlsViewModel
+            {
+                Page = page,
+                PlayerIsAdmin = isAdmin,
+                PlayerIsGm = playerIsGm,
+                CurrentPlayerId = currentPlayerId,
+                Players = new SelectList(players, "Id", "DisplayName")
+            };
+
+            Session session = page as Session;
+            if (session?.GmId != null)
+            {
+                model.SelectedGm = session.GmId;
+            }
+
+            return model;
+        }
+
+        public ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person)
+        {
+            ManageAwardsViewModel model = new ManageAwardsViewModel
+            {
+                Awards = person.Awards.ToList(),
+                PersonId = person.Id,
+                PersonName = person.FullName,
+                Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.QuickName), "Id", "QuickName")
+            };
+            return model;
+        }
+
+        public EditTrophyViewModel Make(Trophy trophy, bool playerIsGm, bool playerIsAdmin)
+        {
+            EditTrophyViewModel model = new EditTrophyViewModel();
+            model.Trophy = trophy;
+            model.CurrentCampaignOnly = trophy.CurrentCampaignOnly;
+            model.CanEdit = playerIsAdmin || (playerIsGm && trophy.CurrentCampaignOnly);
+            model.CanEditGlobal = playerIsAdmin;
+            return model;
+        }
+
+        public TrophyCabinetViewModel Make(List<Trophy> trophies, bool currentPlayerIsGm, bool playerIsAdmin)
+        {
+            TrophyCabinetViewModel model = new TrophyCabinetViewModel
+            {
+                Trophies = trophies,
+                CanAdd = playerIsAdmin || currentPlayerIsGm,
+                CanEditGlobal = playerIsAdmin,
+                CanEdit = playerIsAdmin || currentPlayerIsGm
+            };
+            return model;
+        }
+
+        public NpcSheetViewModel MakeNpcSheetViewModel(Person npc)
+        {
+            Dictionary<string, int> roles = new Dictionary<string, int>();
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Role))
+            {
+                if (!roles.ContainsKey(attribute.Name))
+                {
+                    roles.Add(attribute.Name, attribute.CurrentValue);
+                }
+            }
+
+            Dictionary<string, int> skills = new Dictionary<string, int>();
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Skill))
+            {
+                if (!skills.ContainsKey(attribute.Name))
+                {
+                    skills.Add(attribute.Name, attribute.CurrentValue);
+                }
+            }
+
+            Dictionary<string, int> stats = new Dictionary<string, int>();
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Stat))
+            {
+                if (!stats.ContainsKey(attribute.Name))
+                {
+                    stats.Add(attribute.Name, attribute.CurrentValue);
+                }
+            }
+
+            NpcSheetViewModel model = new NpcSheetViewModel
+            {
+                Person = npc,
+                Skills = skills,
+                Roles = roles,
+                Stats = stats,
+                Descriptors = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Descriptor).Select(s => s.Name).Distinct().ToList()
+            };
+            return model;
+        }
 
         private string GetSettingTitle(SettingSection section)
         {
@@ -370,6 +581,15 @@ namespace Warhammer.Mvc.Concrete
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Download Character Sheet", Url = _urlHelper.Content("~/Content/Documents/character_sheet.docx")
+                });
+            }
+
+            if (_data.SiteHasFeature(Feature.FavouritesGallery))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Favourites",
+                    Url = _urlHelper.Action("FavouritesGallery", "Home")
                 });
             }
 

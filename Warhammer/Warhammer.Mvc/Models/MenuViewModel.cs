@@ -13,6 +13,7 @@ namespace Warhammer.Mvc.Models
 
         public List<MenuItemViewModel> LeftMenu { get; set; }
         public List<MenuItemViewModel> RightMenu { get; set; }
+        public List<MenuItemViewModel> CreateMenu { get; set; }
     }
 
 

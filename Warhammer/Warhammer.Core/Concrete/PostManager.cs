@@ -10,12 +10,11 @@ namespace Warhammer.Core.Concrete
 {
 	public class PostManager : IPostManager
 	{
-	    private readonly IEmailHandler _email;
 	    private readonly IAuthenticatedDataProvider _data;
 
-        private int GetGmId()
+        private int GetGmId(int sessionId)
 		{
-			return _data.GetGmId();
+			return _data.GetGmId(sessionId);
 		}
 
 	    private readonly IRepository _repository;
@@ -33,11 +32,10 @@ namespace Warhammer.Core.Concrete
 		private readonly DiceRoller _diceRoller;
 		private DiceRoller DiceRoller { get { return _diceRoller; } }
 
-		public PostManager(IRepository repository, IAuthenticatedUserProvider userProvider, IEmailHandler email, IAuthenticatedDataProvider data)
+		public PostManager(IRepository repository, IAuthenticatedUserProvider userProvider, IAuthenticatedDataProvider data)
 		{
 			_repository = repository;
 			_userProvider = userProvider;
-		    _email = email;
 		    _data = data;
 		    _diceRoller = DiceRoller.Instance;
 		}
@@ -55,7 +53,7 @@ namespace Warhammer.Core.Concrete
 		public PostResult CreateTextPostForUser(int sessionId, int characterId, bool isOoc, string text, string recipientString)
 		{
 			Player player = GetCurrentPlayer();
-            int gmId = GetGmId();
+            int gmId = GetGmId(sessionId);
 
             Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
 			Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == player.Id || (p.PlayerId == null && player.Id == gmId)));
@@ -120,7 +118,7 @@ namespace Warhammer.Core.Concrete
 		public PostResult CreateDiceRollPostForUser(int sessionId, int characterId, int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximums, bool isPrivate)
 		{
 			Player player = GetCurrentPlayer();
-            int gmId = GetGmId();
+            int gmId = GetGmId(sessionId);
             Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
 			Person character = Repo.People().FirstOrDefault(p => p.Id == characterId && (p.PlayerId == player.Id || (p.PlayerId == null && player.Id == gmId)));
 
@@ -230,7 +228,7 @@ namespace Warhammer.Core.Concrete
 				{
 					if (!session.IsClosed)
 					{
-						if (player.Id == GetGmId() || player.Id == post.PlayerId)
+						if (player.Id == GetGmId(post.SessionId) || player.Id == post.PlayerId)
 						{
 							post.IsDeleted = true;
 							post.DeletedDate = DateTime.Now;
@@ -264,7 +262,7 @@ namespace Warhammer.Core.Concrete
 						return PostResult.SessionClosed;
 					}
 
-					if (player.Id == GetGmId() || post.PlayerId == player.Id)
+					if (player.Id == GetGmId(post.SessionId) || post.PlayerId == player.Id)
 					{
 						post.RevisedContent = text;
 						post.IsRevised = true;
@@ -301,7 +299,7 @@ namespace Warhammer.Core.Concrete
 				{
 					if (!session.IsClosed)
 					{
-						if (player.Id == GetGmId())
+						if (player.Id == GetGmId(post.SessionId))
 						{
 							post.IsRevised = false;
 							post.LastEdited = DateTime.Now;
@@ -327,7 +325,7 @@ namespace Warhammer.Core.Concrete
 				{
 					if (!session.IsClosed)
 					{
-						if (player.Id == GetGmId() || player.Id == post.PlayerId)
+						if (player.Id == GetGmId(post.SessionId) || player.Id == post.PlayerId)
 						{
 							post.PostType = (int) PostType.OutOfCharacter;
 							post.IsRevised = true;
@@ -354,7 +352,7 @@ namespace Warhammer.Core.Concrete
 	                order.LastTurnEnded = DateTime.Now;
 	            }
 
-	            int gmId = GetGmId();
+	            int gmId = GetGmId(sessionId);
 	            if (player.Id == gmId || session.GmIsSuspended)
 	            {
 	                session.IsGmTurn = false;

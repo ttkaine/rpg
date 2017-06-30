@@ -225,6 +225,7 @@
     <Compile Include="Controllers\DefaultXpController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FateController.cs" />
+    <Compile Include="Controllers\GmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
+    <Compile Include="Models\EditTrophyViewModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\FateAspectViewModel.cs" />
     <Compile Include="Models\FateStatsViewModel.cs" />
@@ -265,15 +267,19 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
+    <Compile Include="Models\NpcSheetViewModel.cs" />
+    <Compile Include="Models\PageControlsViewModel.cs" />
     <Compile Include="Models\PersonAssetsViewModel.cs" />
     <Compile Include="Models\PersonDetailsViewModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\PlayerSessionControlsViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
+    <Compile Include="Models\SessionGmViewModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
     <Compile Include="Models\SessionXpModel.cs" />
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
     <Compile Include="Models\SuspendPlayerItemViewModel.cs" />
+    <Compile Include="Models\TrophyCabinetViewModel.cs" />
     <Compile Include="Models\UserSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -284,7 +290,16 @@
     <Content Include="Content\DbUpdateScripts\17032001.sql" />
     <Content Include="Content\DbUpdateScripts\17032002.sql" />
     <Content Include="Content\DbUpdateScripts\17032003.sql" />
+    <Content Include="Content\DbUpdateScripts\17032501.sql" />
     <Content Include="Content\DbUpdateScripts\17040501.sql" />
+    <Content Include="Content\DbUpdateScripts\17040901.sql" />
+    <Content Include="Content\DbUpdateScripts\17040902.sql" />
+    <Content Include="Content\DbUpdateScripts\17041201.sql" />
+    <Content Include="Content\DbUpdateScripts\17041401.sql" />
+    <Content Include="Content\DbUpdateScripts\17042401.sql" />
+    <Content Include="Content\DbUpdateScripts\17042701.sql" />
+    <Content Include="Content\DbUpdateScripts\17042702.sql" />
+    <Content Include="Content\DbUpdateScripts\17042801.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -299,6 +314,7 @@
     <Content Include="Content\Images\fate_background.jpg" />
     <Content Include="Content\Images\features.png" />
     <Content Include="Content\Images\globe.png" />
+    <Content Include="Content\Images\gold-star.png" />
     <Content Include="Content\Images\graveyard.jpg" />
     <Content Include="Content\Images\hallOfFame.jpg" />
     <Content Include="Content\Images\home.png" />
@@ -315,6 +331,7 @@
     <Content Include="Content\Images\pennies.png" />
     <Content Include="Content\Images\penny.jpg" />
     <Content Include="Content\Images\pirate_background.jpg" />
+    <Content Include="Content\Images\playground_background.jpg" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
     <Content Include="Content\Images\RoleplayForum\dice_control.jpg" />
@@ -328,6 +345,7 @@
     <Content Include="Content\Images\RoleplayForum\notify-icon3.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon2.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon1.jpg" />
+    <Content Include="Content\Images\RoleplayForum\notify-icon4.jpg" />
     <Content Include="Content\Images\RoleplayForum\post_strip.jpg" />
     <Content Include="Content\Images\RoleplayForum\trait_checked.png" />
     <Content Include="Content\Images\RoleplayForum\trait_unchecked.png" />
@@ -361,6 +379,7 @@
       <DependentUpon>jcrop.css</DependentUpon>
     </Content>
     <Content Include="Content\Pirate.css" />
+    <Content Include="Content\playground.css" />
     <Content Include="Content\RoleplayCss\CharacterSheet.css" />
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
@@ -603,7 +622,6 @@
     <Content Include="Views\Home\Graveyard.cshtml" />
     <Content Include="Views\Admin\KillPerson.cshtml" />
     <Content Include="Views\Home\People.cshtml" />
-    <Content Include="Views\Admin\EditTrophy.cshtml" />
     <Content Include="Views\Home\Trophies.cshtml" />
     <Content Include="Views\Admin\ManageAwards.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Award.cshtml" />
@@ -641,9 +659,6 @@
     <Content Include="Views\Activity\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\Comment.cshtml" />
     <Content Include="Views\PageControls\Index.cshtml" />
-    <Content Include="Views\PageControls\DisplayTemplates\Page.cshtml" />
-    <Content Include="Views\PageControls\DisplayTemplates\Person.cshtml" />
-    <Content Include="Views\PageControls\DisplayTemplates\Session.cshtml" />
     <Content Include="Views\AdminPageControls\Index.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Person.cshtml" />
@@ -705,8 +720,29 @@
     <Content Include="Views\Page\EditorTemplates\SuspendPlayerItemViewModel.cshtml" />
     <Content Include="Views\Page\RelatedLinks.cshtml" />
     <Content Include="Views\Page\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Person\AttributesPanel.cshtml" />
     <Content Include="Views\Home\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Person\DisplayTemplates\PersonAttributeAdvanceModel.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\PageLinkWithUpdateDateModel.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\PersonAttributeAdvanceModel.cshtml" />
+    <Content Include="Views\Person\InitStats.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\StatInitModel.cshtml" />
+    <Content Include="Views\Home\AwardsForTrophy.cshtml" />
+    <Content Include="Views\AdminPageControls\SessionGmControl.cshtml" />
+    <Content Include="Views\Person\_WearTrack.cshtml" />
+    <Content Include="Views\Admin\XpToSpend.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PageLinkModel.cshtml" />
+    <Content Include="Views\Person\_AttributeEdit.cshtml" />
+    <Content Include="Views\PageControls\KillPerson.cshtml" />
+    <Content Include="Views\PageControls\ManageAwards.cshtml" />
+    <Content Include="Views\PageControls\DisplayTemplates\Award.cshtml" />
+    <Content Include="Views\Gm\OutstandingXp.cshtml" />
+    <Content Include="Views\Gm\XpToSpend.cshtml" />
+    <Content Include="Views\Gm\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Gm\EditTrophy.cshtml" />
+    <Content Include="Views\Gm\NpcSheet.cshtml" />
+    <Content Include="Views\Gm\DisplayTemplates\NpcSheetViewModel.cshtml" />
+    <Content Include="Views\Home\FavouritesGallery.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

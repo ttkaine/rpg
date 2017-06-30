@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -37,90 +38,6 @@ namespace Warhammer.Mvc.Controllers
             return View(result);
         }
 
-        public ActionResult EditTrophy(int? id)
-        {
-            Trophy trophy = null;
-            if (id.HasValue)
-            {
-                trophy = DataProvider.GetTrophy(id.Value);    
-            }
-
-            if (trophy == null)
-            {
-                trophy = new Trophy();
-            }
-
-            return View(trophy); 
-        }
-        
-        [HttpPost]
-        public ActionResult EditTrophy(Trophy trophy, HttpPostedFileBase imageFile, double? y1, double? x1, double? h, double? w)
-        {
-            if (ModelState.IsValid)
-            {
-                ClearTrophyCache(trophy.Id);
-                byte[] imageData = null;
-
-                if (imageFile != null)
-                {
-                    Rectangle cropArea = GetCropArea(y1, x1, h, w);
-                    Image theImage = System.Drawing.Image.FromStream(imageFile.InputStream, true, true);
-                    Image croppedImage = _imageProcessor.Crop(theImage, cropArea);
-                    croppedImage = _imageProcessor.ResizeImage(croppedImage, new Size { Height = 200, Width = 200 });
-                    imageData = _imageProcessor.GetJpegFromImage(croppedImage);
-                }
-
-                if (trophy.Id == 0)
-                {
-                    DataProvider.AddTrophy(trophy.Name, trophy.Description, trophy.PointsValue, imageData,"image/jpeg");
-                }
-                else
-                {
-                    if (imageData != null)
-                    {
-                        DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue,
-                            imageData, "image/jpeg");
-                    }
-                    else
-                    {
-                        DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue);                      
-                    }
-                }
-                return RedirectToAction("Trophies", "Home");
-            }
-
-
-            return View(trophy);
-        }
-
-        private void ClearTrophyCache(int id)
-        {
-            string path = Url.Action("TrophyImage", "Home", new { id });
-
-            if (path != null)
-            {
-                Response.RemoveOutputCacheItem(path);
-            }
-
-            path = Url.Action("Trophies", "Home", new { id });
-
-            if (path != null)
-            {
-                Response.RemoveOutputCacheItem(path);
-            }
-        }
-
-        private Rectangle GetCropArea(double? y1, double? x1, double? h, double? w)
-        {
-            if (y1.HasValue && x1.HasValue && h.HasValue && w.HasValue)
-            {
-                return new Rectangle((int)x1.Value, (int)y1.Value, (int)w.Value, (int)h.Value);
-            }
-
-            return new Rectangle();
-        }
-
-
         public ActionResult ManageAwards(int id)
         {
             Person person = DataProvider.GetPerson(id);
@@ -131,7 +48,7 @@ namespace Warhammer.Mvc.Controllers
             }
             else
             {
-                ManageAwardsViewModel model = new ManageAwardsViewModel { Trophies = new SelectList(trophies, "Id", "Name"), Person = person };
+                ManageAwardsViewModel model = new ManageAwardsViewModel { Trophies = new SelectList(trophies, "Id", "Name"), Awards = person.Awards.ToList() };
                 return View(model);
             }
         }
@@ -150,17 +67,19 @@ namespace Warhammer.Mvc.Controllers
 
             if (ModelState.IsValid)
             {
-                DataProvider.AwardTrophy(model.Person.Id, model.SelectedTrophy, model.Reason);
-                return RedirectToAction("ManageAwards", "Admin", new { id = model.Person.Id });
+                if (model.SelectedTrophy.HasValue)
+                {
+                    DataProvider.AwardTrophy(model.PersonId, model.SelectedTrophy.Value, model.Reason);
+                    return RedirectToAction("ManageAwards", "Admin", new {id = model.PersonId});
+                }
             }
-            else
-            {
-                Core.Entities.Person person = DataProvider.GetPerson(model.Person.Id);
-                List<Trophy> trophies = DataProvider.Trophies().ToList();
-                model.Trophies = new SelectList(trophies, "Id", "Name");
-                model.Person = person;
-                return View(model);
-            }
+
+            Person person = DataProvider.GetPerson(model.PersonId);
+            List<Trophy> trophies = DataProvider.Trophies().ToList();
+            model.Trophies = new SelectList(trophies, "Id", "Name");
+            model.Awards = person.Awards.ToList();
+            return View(model);
+
         }
 
         public ActionResult KillPerson(int id)
@@ -286,6 +205,12 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult OutstandingXp()
         {
             List<Page> pages = DataProvider.PagesWithOutstandingXp();
+            return View(pages);
+        }
+
+        public ActionResult XpToSpend()
+        {
+            List<PageLinkModel> pages = DataProvider.PeopleWithXpToSpend();
             return View(pages);
         }
 

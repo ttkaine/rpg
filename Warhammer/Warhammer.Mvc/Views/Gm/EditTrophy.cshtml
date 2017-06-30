@@ -1,0 +1,184 @@
+﻿@model Warhammer.Mvc.Models.EditTrophyViewModel
+
+@{
+    ViewBag.Title = "Edit Trophy";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            @if (Model.Trophy.Id > 0)
+            {
+                <h1 id="fullName">Edit @Model.Trophy.Name</h1>
+            }
+            else
+            {
+                <h1 id="fullName">Add New Trophy</h1>
+            }
+
+
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+
+            @if (Model.CanEdit)
+            {
+
+                using (Html.BeginForm("EditTrophy", "Gm", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4>Trophy</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Trophy.Id)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Trophy.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Trophy.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Trophy.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Trophy.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Trophy.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Trophy.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Trophy.PointsValue, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Trophy.PointsValue, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Trophy.PointsValue, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @if (Model.CanEditGlobal)
+                        {
+                            <div class="form-group">
+                                @Html.Label("Is this trophy a general one - of for this campaign only?", htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.CheckBoxFor(m => Model.CurrentCampaignOnly, new { data_toggle = "toggle", data_on = "Campagin", data_off = "Global", data_offstyle = "success", data_onstyle = "info" })
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group">
+                            @Html.Label("Image")
+                            <div class="col-md-10">
+                                <input type="file" id="imageFile" name="imageFile" multiple accept="image/*" style="display: none" onchange="handleFiles(this.files)">
+                                <a href="#" id="fileSelect">
+                                    <p>Select New Image</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="preview">
+                            <h3>Choose your square crop</h3>
+                        </div>
+                        <input type="hidden" id="x1" name="x1" />
+                        <input type="hidden" id="h" name="h" />
+                        <input type="hidden" id="y1" name="y1" />
+                        <input type="hidden" id="w" name="w" />
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Save" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                @section Scripts
+{
+                    <script src="@Url.Content("~/scripts/jquery.Jcrop.min.js")"></script>
+                    <script>
+                        var jcrop_api;
+                        var fileSelect = document.getElementById("fileSelect"),
+                            fileElem = document.getElementById("imageFile");
+                        fileSelect.addEventListener("click",
+                            function (e) {
+                                if (fileElem) {
+                                    fileElem.click();
+                                }
+                                e.preventDefault(); // prevent navigation to "#"
+                            },
+                            false);
+
+                        function handleFiles(files) {
+
+
+                            for (var i = 0; i < files.length; i++) {
+                                var file = files[i];
+                                var imageType = /^image\//;
+                                if (!imageType.test(file.type)) {
+
+                                    continue;
+                                }
+
+                                var img = document.createElement("img");
+                                img.classList.add("obj");
+                                img.file = file;
+                                img.id = "PreviewImage";
+
+                                $('#preview').append(img);
+                                // Assuming that "preview" is the div output where the content will be displayed.
+                                var reader = new FileReader();
+                                reader.onload = (function (aImg) {
+                                    return function (e) {
+                                        aImg.src = e.target.result;
+                                        $(aImg)
+                                            .Jcrop({
+                                                boxWidth: 500,
+                                                boxHeight: 400,
+                                                aspectRatio: 1,
+                                                onChange: showCoords,
+                                                onSelect: showCoords
+                                            },
+                                                function () {
+
+                                                    jcrop_api = this;
+                                                    jcrop_api.animateTo([50, 0, 400, 400]);
+                                                });
+                                    };
+                                })
+                                    (img);
+                                reader.readAsDataURL(file);
+                            }
+                        }
+
+                        function showCoords(c) {
+                            $('#x1').val(c.x);
+                            $('#y1').val(c.y);
+                            $('#h').val(c.h);
+                            $('#w').val(c.w);
+                        };
+                    </script>
+                }
+
+            }
+            else
+            {
+                <h3>You must be the GM to edit the trophies...</h3>
+            }
+        </div>
+
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Trophy Editing</h3>
+            <p>You don't have to change the picture every time, you can leave the image stuff blank if you want to keep the current image.</p>
+            <p>Points values show how many points the trophy gives to those characters awarded the trohpy. This only really makes any odds on the Character League.</p>
+        </div>
+    </div>
+
+</div>

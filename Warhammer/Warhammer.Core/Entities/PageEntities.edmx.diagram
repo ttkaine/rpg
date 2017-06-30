@@ -90,6 +90,8 @@
         <AssociationConnector Association="WarhammerModel.FK_PostOrder_Session" />
         <AssociationConnector Association="WarhammerModel.FK_SessionLog_Session" />
         <InheritanceConnector EntityType="WarhammerModel.Session" />
+        <EntityTypeShape EntityType="WarhammerModel.PersonAttribute" Width="1.5" PointX="8.25" PointY="0.75" />
+        <AssociationConnector Association="WarhammerModel.FK_PersonAttribute_Person" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

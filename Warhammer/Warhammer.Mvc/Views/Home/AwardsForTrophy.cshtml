@@ -1,0 +1,28 @@
+﻿@using Warhammer.Core.Entities
+@model IEnumerable<Award>
+    
+<div>
+    
+    @if (Model.Any())
+    {
+        <p>Awarded @Model.Count() time@(Model.Count() > 1 ? "s" : "")</p>
+                    <p>First Awarded @Model.OrderBy(m => m.AwardedOn).First().AwardedOn.ToLongDateString()</p>
+    }
+    else
+    {
+        <p>Never Awarded.</p>
+    }
+
+</div>
+
+@foreach (Award award in Model.OrderByDescending(a => a.AwardedOn))
+{
+    <tr>
+        <td><a href="@Url.Action("Index", "Page", new {id = award.PersonId})"><img src="@Url.Action("Image", "Page", new {id = award.PersonId}, null)" title="@award.Person.FullName" alt="Picture of @award.Person.FullName" class="mini-profile-image" /></a></td>
+        <td>@award.Person.FullName</td>
+        <td>
+            @award.Reason
+        </td>
+    </tr>
+}
+

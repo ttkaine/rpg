@@ -4,28 +4,20 @@ using System.Data.Entity;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
     public class ScoreCalculator : IScoreCalculator
     {
         private int _scoreUpdateInterval = 10000;
-        readonly IRepository _repo;
-        private static readonly object _lock = new object();
-        public ScoreCalculator(IRepository repo)
+        private readonly IRepository _repo;
+        private readonly CharacterAttributeManager _attributeManager;
+
+        public ScoreCalculator(IRepository repo, CharacterAttributeManager attributeManager)
         {
             _repo = repo;
-        }
-
-        private List<ScoreHistory> CalculateScores(DateTime scoreDate)
-        {
-            List<Person> people = _repo.PeopleForScoring().ToList();
-            List<ScoreHistory> scores = new List<ScoreHistory>();
-            foreach (Person person in people)
-            {
-                scores.AddRange(CalculateScoreForPerson(person, scoreDate));
-            }
-            return scores;
+            _attributeManager = attributeManager;
         }
 
         private IEnumerable<ScoreHistory> CalculateScoreForPerson(Person person, DateTime scoreDate)
@@ -223,6 +215,14 @@ namespace Warhammer.Core.Concrete
                 foreach (ScoreHistory scoreHistory in scores)
                 {
                     _repo.Save(scoreHistory);
+                }
+
+                person.LastScoreCalculation = DateTime.Now;
+ 
+                CharacterAttributeModel attributes = _attributeManager.GetCharacterAttributes(personId);
+                if (attributes.HasStats && attributes.CanBuyAll)
+                {
+                    person.XpSpendAvailable = true;
                 }
 
                 _repo.Save(person);

@@ -94,7 +94,9 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult Trophies()
         {
             List<Trophy> trophies = DataProvider.Trophies().ToList();
-            return View(trophies);
+            TrophyCabinetViewModel model = ModelFactory.Make(trophies, DataProvider.CurrentPlayerIsGm, DataProvider.CurrentUserIsAdmin);
+
+            return View(model);
         }
 
         public ActionResult Trophy(int id)
@@ -109,6 +111,17 @@ namespace Warhammer.Mvc.Controllers
             List<Person> people = DataProvider.GetLeague();
 
             return View(people);
+        }
+
+        public ActionResult FavouritesGallery()
+        {
+            if (DataProvider.SiteHasFeature(Feature.FavouritesGallery))
+            {
+                List<PageLinkModel> favs = DataProvider.GetFavourites();
+
+                return View(favs);
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult Graveyard()
@@ -394,6 +407,12 @@ namespace Warhammer.Mvc.Controllers
         {
             List<Creature> creatures = DataProvider.Creatures().OrderBy(l => l.Breadcrumb).ToList();
             return View(creatures);
+        }
+
+        public ActionResult AwardsForTrophy(int id)
+        {
+            List<Award> awards = DataProvider.AwardsForTrophy(id);
+            return PartialView(awards);
         }
     }
 }

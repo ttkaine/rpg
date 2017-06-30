@@ -310,8 +310,9 @@ namespace Warhammer.Mvc.Controllers
                 Page page = DataProvider.GetPage(id.Value);
                 if (page is Session)
                 {
-                    PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, CurrentPlayerIsGm);
-
+                    int currentGmId = DataProvider.GetGmId(page.Id);
+                    bool currentPlayerIsSessionGm = currentGmId == CurrentPlayer.Id;
+                    PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, currentPlayerIsSessionGm);
                     return PartialView(model);
                 }
             }
@@ -324,9 +325,12 @@ namespace Warhammer.Mvc.Controllers
             Page page = DataProvider.GetPage(sessionId);
             if (page is Session)
             {
-                if (playerId == CurrentPlayer.Id || CurrentPlayerIsGm)
+                int currentGmId = DataProvider.GetGmId(sessionId);
+                bool currentPlayerIsSessionGm = currentGmId == CurrentPlayer.Id;
+
+                if (playerId == CurrentPlayer.Id || currentPlayerIsSessionGm)
                 {
-                    if (playerId == CurrentPlayer.Id && CurrentPlayerIsGm)
+                    if (playerId == CurrentPlayer.Id && currentPlayerIsSessionGm)
                     {
                         DataProvider.SetGmSuspended(page.Id, false);
                     }
@@ -337,7 +341,7 @@ namespace Warhammer.Mvc.Controllers
                     UpdateRoleplayHub();
                 }
 
-                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, CurrentPlayerIsGm);
+                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, currentPlayerIsSessionGm);
                 return PartialView("PlayerSessionControls", model);
             }
             return null;
@@ -349,9 +353,12 @@ namespace Warhammer.Mvc.Controllers
             Page page = DataProvider.GetPage(sessionId);
             if (page is Session)
             {
-                if (playerId == CurrentPlayer.Id || CurrentPlayerIsGm)
+                int currentGmId = DataProvider.GetGmId(sessionId);
+                bool currentPlayerIsSessionGm = currentGmId == CurrentPlayer.Id;
+
+                if (playerId == CurrentPlayer.Id || currentPlayerIsSessionGm)
                 {
-                    if (playerId == CurrentPlayer.Id && CurrentPlayerIsGm)
+                    if (playerId == CurrentPlayer.Id && currentPlayerIsSessionGm)
                     {
                         DataProvider.SetGmSuspended(page.Id, true);
                     }
@@ -362,7 +369,7 @@ namespace Warhammer.Mvc.Controllers
                     UpdateRoleplayHub();
                 }
 
-                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, CurrentPlayerIsGm);
+                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, currentPlayerIsSessionGm);
                 return PartialView("PlayerSessionControls", model);
             }
             return null;

@@ -79,9 +79,12 @@
             </div>
             
             @Html.Action("Index", "PageControls", new { id = Model.Id })
-            @Html.Action("Index", "AdminPageControls", new { id = Model.Id })
         </div>
     }
+    
+    
+    @Html.Action("AttributesPanel", "Person", new { id = Model.Id })
+
     @Html.Action("Aspects", "Fate", new {id = Model.Id})
     @Html.Action("Stunts", "Fate", new {id = Model.Id})
     

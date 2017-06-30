@@ -12,10 +12,11 @@ namespace Warhammer.Core.Abstract
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
         int AddSession(string title, string name, string description, DateTime dateTime);
+        int GetGmId(int sessionId);
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc);
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
-        Page GetPage(int id);
+        Page GetPage(int id, bool asNoTracking = false);
         ICollection<PageLinkWithUpdateDateModel> RecentPages();
         ICollection<Page> MyStuff();
         ICollection<Session> Sessions();
@@ -35,14 +36,14 @@ namespace Warhammer.Core.Abstract
         ICollection<PageLinkModel> PinnedPages();
         ICollection<PageLinkModel> NewPages();
         ICollection<PageLinkModel> ModifiedPages();
-        void PinPage(int id);
+        void TogglePagePin(int id);
         void MarkAsSeen(int id);
         void ResurrectPerson(int id);
         void KillPerson(int id, string obiturary, string causeOfDeath);
         Trophy GetTrophy(int id);
-        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType);
-        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType);
-        void UpdateTrophy(int id, string name, string description, int pointsValue);
+        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
+        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
+        void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly);
         ICollection<Trophy> Trophies();
         void AwardTrophy(int personId, int trophyId, string reason);
         void RemoveAward(int personId, int awardId);
@@ -92,6 +93,7 @@ namespace Warhammer.Core.Abstract
         bool ShowCharacterSheet { get; }
         bool CurrentUserIsGuest { get; }
         bool ShadowMode { get; set; }
+        int CurrentPlayerId { get; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         List<Setting> SettingSection(int sectionId);
@@ -157,5 +159,13 @@ namespace Warhammer.Core.Abstract
         void SetPlayerSuspended(int sessionId, int playerId, bool suspended);
         List<PageLinkModel> GetRelatedPages(int id);
         bool PlayerSettingEnabled(SettingNames setting);
+        List<Award> AwardsForTrophy(int id);
+        List<Player> GetAllPlayers();
+        void SetSessionGm(int sessionId, int? selectedGm);
+        List<PageLinkModel> PeopleWithXpToSpend();
+        void AwardShiftForSession(int id);
+        void UpdateAward(int id, string awardReason);
+        List<Person> GetNpcSheetPeople();
+        List<PageLinkModel> GetFavourites();
     }
 }

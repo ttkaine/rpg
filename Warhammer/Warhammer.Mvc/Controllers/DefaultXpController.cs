@@ -14,7 +14,7 @@ namespace Warhammer.Mvc.Controllers
         // GET: DefaultXp
         public ActionResult Index(int? id)
         {
-            if (id.HasValue && User.IsInRole("Admin") && !IsEditMode)
+            if (id.HasValue && DataProvider.CurrentPlayerIsGm && !IsEditMode)
             {
                 Page page = DataProvider.GetPage(id.Value);
 
@@ -27,10 +27,9 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public ActionResult AwardXp(int? id)
         {
-            if (id.HasValue && User.IsInRole("Admin"))
+            if (id.HasValue && DataProvider.CurrentPlayerIsGm)
             {
                 Page page = DataProvider.GetPage(id.Value);
 
@@ -39,14 +38,13 @@ namespace Warhammer.Mvc.Controllers
                     DataProvider.AddDefaultXp(id.Value);
                 }
             }
-            return RedirectToAction("OutstandingXp", "Admin", new { id });
+            return RedirectToAction("OutstandingXp", "Gm", new { id });
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public ActionResult RejectXp(int? id)
         {
-            if (id.HasValue && User.IsInRole("Admin"))
+            if (id.HasValue && DataProvider.CurrentPlayerIsGm)
             {
                 Page page = DataProvider.GetPage(id.Value);
 
@@ -55,7 +53,7 @@ namespace Warhammer.Mvc.Controllers
                     DataProvider.SetPageXpAwarded(page.Id);
                 }
             }
-            return RedirectToAction("OutstandingXp", "Admin", new { id });
+            return RedirectToAction("OutstandingXp", "Gm", new { id });
         }
     }
 }

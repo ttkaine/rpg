@@ -14,10 +14,23 @@
 
     public partial class Trophy
     {
+        public bool CurrentCampaignOnly => CampaignId.HasValue;
+
         public TrophyType TrophyType
         {
             get { return (TrophyType) TypeId; }
             set { TypeId = (int) value; }
+        }
+
+        public string QuickName {
+            get
+            {
+                if (Name.StartsWith("The "))
+                {
+                    return Name.Substring(4, Name.Length - 4);
+                }
+                return Name;
+            }
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Warhammer.Core.Entities.Page>
+@{
+    ViewBag.Title = "Outstanding Xp";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Pages with Outstanding Xp</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            
+            @if (Model.Any())
+            {
+                <div class="alert alert-warning">
+                    <h1>You have @Model.Count() outstanding request@(Model.Count() > 1 ? "s" : "")</h1>
+                    <p>So now you gotta decide if these suckers deserve any XP...</p>
+                </div>
+                <ul class="outstanding-xp-list">
+                    @Html.DisplayForModel()
+                </ul>
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    <h1>All XP has been awarded.</h1>
+                    <p>You got nothing to do here!</p>
+                </div>
+
+            }
+        </div>
+
+    </div>
+    
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Award Xp for things here</h3>
+        </div>
+    </div>
+
+</div>
+

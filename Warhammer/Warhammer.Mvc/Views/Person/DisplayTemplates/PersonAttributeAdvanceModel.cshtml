@@ -1,0 +1,17 @@
+﻿@using Warhammer.Core
+@model Warhammer.Core.Models.PersonAttributeAdvanceModel
+
+@{
+    string privateClass = Model.PersonAttribute.IsPrivate ? "private" : "";
+}
+
+@if (!Model.PersonAttribute.IsPrivate || Model.CharacterInfo.CanEdit)
+{
+    <tr>
+        <td class="personAttribute @privateClass" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
+        <td class="personAttribute @privateClass"><span class="personAttribute label @(Model.Exhausted ? "label-danger" : "label-default")">@Model.DisplayValue</span></td>
+    </tr>
+
+}
+
+

@@ -1,0 +1,40 @@
+﻿
+
+@using Warhammer.Core.Entities
+@model IEnumerable<Warhammer.Core.Models.PageLinkModel>
+@{
+    ViewBag.Title = "Our Favourites";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Key Characters</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            <h2>Favourite People</h2>
+            <p>Here are the people we want to see more...</p>
+            <table class="table table-striped">
+                @Html.DisplayForModel()
+            </table>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Our Favorite NPCs</h3>
+            <p>Here are all the current favourite NPCs. Favourites are the ones that we, as players, want to see more in the game.</p>
+            <p>These are the characters with unreolved story, interesting relationships, or just damn cool hats. These are the ones that we don't want dying from a random dice roll or being used as general cannon fodder. These characters are important to our story.</p>
+            <p>Each player can add three characters to this list using thier Favourite NPC awards. Choose carefully. Choose the characters that <em>you</em> want to see more. (This is often not the same as the ones your PC likes).</p>
+        </div>
+        <div class="content-block">
+            @Html.Action("FavouriteNpcs")
+        </div>
+
+        </div>
+
+</div>

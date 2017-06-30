@@ -162,29 +162,27 @@
 
         }
 
-        @Html.Action("FavouriteNpcs")
+            <div class="content-block">
 
-        <div class="content-block">
-
-            @if (Model.TopNpcs.Any())
+                @if (Model.TopNpcs.Any())
             {
-                <h3>Top NPCs</h3>
+                    <h3>Top NPCs</h3>
 
-                <table class="table table-striped">
-                    <tbody class="list">
-                        @foreach (PageLinkModel person in Model.TopNpcs)
-                        {
-                            <tr>
-                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
-                                <td class="name">@person.FullName</td>
-                            </tr>
+                    <table class="table table-striped">
+                        <tbody class="list">
+                            @foreach (PageLinkModel person in Model.TopNpcs)
+                            {
+                                <tr>
+                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                    <td class="name">@person.FullName</td>
+                                </tr>
 
-                        }
-                    </tbody>
-                </table>
-            }
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
-    </div>
 
     <div class="core-content">
 

@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Mvc.Models;
@@ -7,8 +8,11 @@ namespace Warhammer.Mvc.Controllers
 {
     public class AdminPageControlsController : BaseController
     {
-        public AdminPageControlsController(IAuthenticatedDataProvider data) : base(data)
+        private ICharacterAttributeManager _attributeManager;
+
+        public AdminPageControlsController(IAuthenticatedDataProvider data, ICharacterAttributeManager attributeManager) : base(data)
         {
+            _attributeManager = attributeManager;
         }
 
         public ActionResult Index(int? id)
@@ -66,7 +70,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (id.HasValue)
             {
-                DataProvider.PinPage(id.Value);
+                DataProvider.TogglePagePin(id.Value);
                 Page page = DataProvider.GetPage(id.Value);
                 if (page != null && IsEditMode)
                 {
@@ -97,7 +101,7 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SessionXpControl(int id)
         {
-            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats) || DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 Page page = DataProvider.GetPage(id);
                 SessionXpModel model = new SessionXpModel
@@ -114,7 +118,7 @@ namespace Warhammer.Mvc.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SessionXpControl(SessionXpModel model)
         {
-            if (DataProvider.SiteHasFeature(Feature.SimpleStats))
+            if (DataProvider.SiteHasFeature(Feature.SimpleStats) || DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 if (ModelState.IsValid)
                 {
@@ -143,6 +147,66 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.SimpleStats))
             {
                 DataProvider.ResetNpcStats(id);
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ResetNpcPersonAttributes(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                _attributeManager.ResetAttributes(id);
+            }
+            return null;
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult SessionGmControl(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.VariableSessionGm))
+            {
+                List<Player> players = DataProvider.GetAllPlayers();
+                int gmId = DataProvider.GetGmId(id);
+                SessionGmViewModel model = ModelFactory.MakeSessionGmViewModel(id, players, gmId);
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult SessionGmControl(SessionGmViewModel postedModel)
+        {
+            if (DataProvider.SiteHasFeature(Feature.VariableSessionGm))
+            {
+                DataProvider.SetSessionGm(postedModel.SessionId, postedModel.SelectedGm);
+
+                List<Player> players = DataProvider.GetAllPlayers();
+                int gmId = DataProvider.GetGmId(postedModel.SessionId);
+                SessionGmViewModel model = ModelFactory.MakeSessionGmViewModel(postedModel.SessionId, players, gmId);
+                model.GmJustSet = true;
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult AwardShift(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                DataProvider.AwardShiftForSession(id);
+
+                DataProvider.ToggleSetAsTextSession(id);
+                Page page = DataProvider.GetPage(id);
+                if (page != null && IsEditMode)
+                {
+                    return PartialView("Index", page);
+                }
             }
             return null;
         }

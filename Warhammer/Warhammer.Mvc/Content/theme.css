@@ -6788,8 +6788,12 @@ body {
 #statTotal,
 #xptotal,
 .personDetail,
+.personAttribute,
 #stattable .label-info {
   font-size: larger;
+}
+td.personAttribute {
+  width: 50%;
 }
 #personmoney img {
   width: 25px;
@@ -7208,13 +7212,15 @@ div.commentdetail {
 #adminPageControls input {
   margin-top: 5px;
 }
+td.private,
 .seenAsHidden {
   border-style: dashed;
-  opacity: 0.7;
+  opacity: 0.6;
 }
+td.private,
 .hiddenStat {
-  border: 1px dashed #aaaaaa;
-  background-color: #d9edf7;
+  border: 1px dashed #555555;
+  background-color: #eeeeee;
 }
 hr {
   opacity: 0;
@@ -7256,4 +7262,8 @@ ul.outstanding-xp-list {
 #playerTextSessionControls table td.PlayerName {
   vertical-align: middle !important;
   font-weight: bold;
+}
+img.AttributeStar {
+  width: 25px;
+  height: 25px;
 }

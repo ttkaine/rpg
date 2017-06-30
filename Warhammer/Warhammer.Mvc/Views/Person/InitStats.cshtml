@@ -1,0 +1,58 @@
+﻿@using Warhammer.Core
+@model Warhammer.Core.Models.CharacterInitialStatsModel
+
+<div id="characterattributes" class="content-block">
+
+    @if (ViewBag.EditMode)
+    {
+        using (Ajax.BeginForm("InitAttributes", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+        {
+            @Html.HiddenFor(m => m.PersonId)
+            <h3>Initialize Character Attributes</h3>
+
+            <div class="alert alert-info">
+                <h4>Stats</h4>
+                <p>Stats define your character's core abilities in various aspects of life.</p>
+                <p>Each stat starts at an 'average' level of @(Model.AverageStat). You may alter these from the defaults by removing points from one stat and adding them to another.</p>
+                <p>The total for all your stats must remain at @Model.TotalStats points.</p>
+                <table>
+                    @Html.EditorFor(m => m.Stats)
+                </table>
+
+            </div>
+
+            <div class="alert alert-success">
+                <h4>Roles</h4>
+                <p>Pick your character's main role.This is usually your character's main career, but can be a hobby or previous career if that is more suitable.</p>
+                <p>For example, roles can be things like: Retired Soldier, Airline Pilot, Petty Burglar</p>
+                @Html.TextBoxFor(m => m.InitialRoleName, new {@class = "form-control"})
+            </div>
+
+            <div class="alert alert-success form-group">
+                <h4>Skills</h4>
+                <p>Pick three skills.</p>
+                <p>Skills are specific things the character has learned how to do. For best effect, choose skills that are not covered by your primary role as skills and roles do not stack.</p>
+                <p>Exmaple skills are things like: Pistol Shooting, Library Research, Hiding</p>
+                @Html.TextBoxFor(m => m.InitialFirstSkillName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialSecondSkillName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialThirdSkillName, new {@class = "form-control"})
+            </div>
+
+            <div class="alert alert-warning">
+                <h4>Descriptors</h4>
+                <p>Pick three descriptors that highlight aspects of your character. Examples are things like "Strong", "Beautiful", "Sneaky"</p>
+                @Html.TextBoxFor(m => m.InitialFirstDescriptorName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialSecondDescriptorName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialThirdDescriptorName, new {@class = "form-control"})
+            </div>
+
+            <input type="submit" value="Set My Stats!" class="btn btn-block btn-success"/>
+        }
+    }
+    else
+    {
+        <h3>Character Attributes</h3>
+        <p>This Character doesn't have any attributes set up yet. You'll need to go into EDIT MODE and set your initial attributes.</p>
+    }
+</div>
+

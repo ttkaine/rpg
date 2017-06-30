@@ -22,7 +22,9 @@ namespace Warhammer.Core.Concrete
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
         private readonly IScoreCalculator _score;
+        private readonly ISiteFeatureProvider _feature;
         public bool ShadowMode { get; set; }
+        public int CurrentPlayerId => CurrentPlayer.Id;
         private List<int> _myPageIds;
         public List<int> MyPageIds
         {
@@ -34,18 +36,37 @@ namespace Warhammer.Core.Concrete
                     .Where(p => p.CreatedBy.UserName == _authenticatedUser.UserName)
                     .Select(p => p.Id)
                     .ToList();
+                    _myPageIds.AddRange(MySessionIds);
+                    _myPageIds = _myPageIds.Distinct().ToList();
                 }
                 return _myPageIds;
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score)
+        private List<int> _mySessionIds;
+        public List<int> MySessionIds
+        {
+            get
+            {
+                if (_mySessionIds == null)
+                {
+                    _mySessionIds = _repository.Pages().OfType<Session>()
+                    .Where(p => p.Related.OfType<Person>().Any(r => r.Player.UserName == _authenticatedUser.UserName))
+                    .Select(p => p.Id)
+                    .ToList();
+                }
+                return _mySessionIds;
+            }
+        }
+
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score, ISiteFeatureProvider feature)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
             _score = score;
+            _feature = feature;
 
             if (_authenticatedUser.UserIsAuthenticated)
             {
@@ -130,7 +151,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Person> MyPeople()
         {
-            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id).ToList();
+            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
@@ -181,6 +202,16 @@ namespace Warhammer.Core.Concrete
                 }
             }
             return id;
+        }
+
+        public int GetGmId(int sessionId)
+        {
+            int? sessionGm = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId)?.GmId;
+            if (sessionGm.HasValue)
+            {
+                return sessionGm.Value;
+            }
+            return GetGmId();
         }
 
         public int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc)
@@ -388,9 +419,15 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().Any(p => p.ShortName == shortName && p.Id != id);
         }
 
-        public Page GetPage(int id)
+        public Page GetPage(int id, bool asNoTracking = false)
         {
-            return _repository.Pages().FirstOrDefault(p => p.Id == id);
+            var query = _repository.Pages();
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+                
+            return query.FirstOrDefault(p => p.Id == id);
         }
 
         public ICollection<PageLinkWithUpdateDateModel> RecentPages()
@@ -432,7 +469,12 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Session> Sessions()
         {
-            return _repository.Pages().OfType<Session>().ToList();
+            var query = _repository.Pages();
+            if (ShadowMode)
+            {
+                query = ApplyShadow(query);
+            }
+            return query.OfType<Session>().ToList();
         }
 
         public ICollection<Person> People()
@@ -465,31 +507,40 @@ namespace Warhammer.Core.Concrete
 
         private void NotifyAddPage(int pageId)
         {
-            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewPage);
-            Page page = GetPage(pageId);
-            if (page != null && players.Any())
+            if (SiteHasFeature(Feature.ImmediateEmailer))
             {
-                _email.NotifyNewPage(page, players);
+                List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewPage);
+                Page page = GetPage(pageId);
+                if (page != null && players.Any())
+                {
+                    _email.NotifyNewPage(page, players);
+                }
             }
         }
 
         private void NotifyAddComment(int pageId, string commenterName, string description)
         {
-            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewComment);
-            Page page = GetPage(pageId);
-            if (page != null && players.Any())
+            if (SiteHasFeature(Feature.ImmediateEmailer))
             {
-                _email.NotifyNewComment(commenterName, page, players, description);
+                List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnNewComment);
+                Page page = GetPage(pageId);
+                if (page != null && players.Any())
+                {
+                    _email.NotifyNewComment(commenterName, page, players, description);
+                }
             }
         }
 
         private void NotifyEditPage(int pageId)
         {
-            List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnUpdatePage);
-            Page page = GetPage(pageId);
-            if (page != null && players.Any())
+            if (SiteHasFeature(Feature.ImmediateEmailer))
             {
-                _email.NotifyEditPage(page, players);
+                List<Player> players = GetPlayersWithSetting(SettingNames.SendEmailOnUpdatePage);
+                Page page = GetPage(pageId);
+                if (page != null && players.Any())
+                {
+                    _email.NotifyEditPage(page, players);
+                }
             }
         }
 
@@ -653,7 +704,7 @@ namespace Warhammer.Core.Concrete
             return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
-        public void PinPage(int id)
+        public void TogglePagePin(int id)
         {
             Page page = _repository.Pages().FirstOrDefault(p => p.Id == id);
             if (page != null)
@@ -729,7 +780,7 @@ namespace Warhammer.Core.Concrete
             return _repository.Trophies().FirstOrDefault(t => t.Id == id);
         }
 
-        public int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType)
+        public int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly)
         {
             Trophy trophy = new Trophy();
             trophy.Name = name;
@@ -737,31 +788,94 @@ namespace Warhammer.Core.Concrete
             trophy.PointsValue = pointsValue;
             trophy.ImageData = imageData;
             trophy.MimeType = mimeType;
+
+            if (!_authenticatedUser.IsAdmin || currentCampaignOnly)
+            {
+                trophy.CampaignId = Campaign.Id;
+            }
+            else
+            {
+                trophy.CampaignId = null;
+            }
+
             return _repository.Save(trophy);
         }
 
-        public void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType)
+        public void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly)
         {
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
             {
+                if (!_authenticatedUser.IsAdmin)
+                {
+                    if (!trophy.CurrentCampaignOnly)
+                    {
+                        return;
+                    }
+                }
+
+                if (currentCampaignOnly)
+                {
+                    trophy.CampaignId = Campaign.Id;
+                }
+                else
+                {
+                    if (_authenticatedUser.IsAdmin)
+                    {
+                        trophy.CampaignId = null;
+                    }
+                }
+
                 trophy.Name = name;
                 trophy.Description = description;
                 trophy.PointsValue = pointsValue;
                 trophy.ImageData = imageData;
                 trophy.MimeType = mimeType;
+
+                if (currentCampaignOnly)
+                {
+                    trophy.CampaignId = Campaign.Id;
+                }
+                else
+                {
+                    trophy.CampaignId = null;
+                }
+
                 _repository.Save(trophy);
             }
         }
 
-        public void UpdateTrophy(int id, string name, string description, int pointsValue)
+        public void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly)
         {
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
             {
+                if (!_authenticatedUser.IsAdmin)
+                {
+                    if (!trophy.CurrentCampaignOnly)
+                    {
+                        return;
+                    }
+                }
+
+                if (currentCampaignOnly)
+                {
+                    trophy.CampaignId = Campaign.Id;
+                }
+                else
+                {
+                    if (_authenticatedUser.IsAdmin)
+                    {
+                        trophy.CampaignId = null;
+                    }
+                }
+
                 trophy.Name = name;
                 trophy.Description = description;
                 trophy.PointsValue = pointsValue;
+
+
+
                 _repository.Save(trophy);
             }
         }
@@ -787,6 +901,11 @@ namespace Warhammer.Core.Concrete
                 person.Awards.Add(award);
                 Save(person);
             }
+        }
+
+        public void DisableFeature(string featureName)
+        {
+            _feature.DisableFeature(featureName);
         }
 
         public Person GetPerson(int personId)
@@ -859,18 +978,20 @@ namespace Warhammer.Core.Concrete
             Person person = GetPerson(personId);
             person.XPAwarded = person.XPAwarded + xpValue;
 
-
-            decimal playerXpLevel = CurrentMaxPlayerXp();
-            if (person.PlayerId.HasValue && person.XPAwarded < playerXpLevel)
+            if (SiteHasFeature(Feature.XpCatchup))
             {
-                person.XPAwarded = person.XPAwarded + xpValue;
-                if (person.XPAwarded > playerXpLevel)
+                decimal playerXpLevel = CurrentMaxPlayerXp();
+                if (person.PlayerId.HasValue && person.XPAwarded < playerXpLevel)
                 {
-                    person.XPAwarded = playerXpLevel;
+                    person.XPAwarded = person.XPAwarded + xpValue;
+                    if (person.XPAwarded > playerXpLevel)
+                    {
+                        person.XPAwarded = playerXpLevel;
+                    }
                 }
             }
 
-            Save(person);
+            _repository.Save(person);
         }
 
         public bool CheckStatPermissions(int personId)
@@ -914,7 +1035,7 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             return query.OrderBy(s => s.FullName).ToList();
@@ -1176,9 +1297,13 @@ namespace Warhammer.Core.Concrete
 
         public List<PageListItemModel> NpcList()
         {
-            return
-                _repository.People()
-                    .Where(p => !p.PlayerId.HasValue)
+            var query = _repository.People();
+
+            if (ShadowMode)
+            {
+                query = ApplyPeopleShadow(query);
+            }
+                return query.Where(p => !p.PlayerId.HasValue)
                     .Select(p => new PageListItemModel { Id = p.Id, Fullname = p.FullName })
                     .OrderBy(p => p.Fullname)
                     .ToList();
@@ -1307,24 +1432,39 @@ namespace Warhammer.Core.Concrete
 
         public void AddXpForSession(int sessionId, decimal xpAwarded)
         {
-            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            Session session = _repository.Pages().OfType<Session>().Include(p => p.Pages).FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
                 List<Person> people = session.People.Where(p => !p.IsDead).ToList();
 
-                //always award all players regardless - just to be fair
-                List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).ToList();
-                foreach (Person person in playerCharacters)
+                if (!SiteHasFeature(Feature.SoloXp))
                 {
-                    if (people.All(p => p.Id != person.Id))
+                    //always award all players regardless - just to be fair
+                    List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).ToList();
+
+                    foreach (Person person in playerCharacters)
                     {
-                        people.Add(person);
+                        if (people.All(p => p.Id != person.Id))
+                        {
+                            people.Add(person);
+                        }
                     }
                 }
 
                 foreach (Person person in people)
                 {
-                    AddXp(person.Id, xpAwarded);
+                    if (SiteHasFeature(Feature.PostBonusXp))
+                    {
+                        decimal postBonus =
+                            _repository.Posts().Count(p => p.CharacterId == person.Id && p.SessionId == sessionId)*0.01m;
+                        AddXp(person.Id, xpAwarded + postBonus);
+                    }
+                    else
+                    {
+                        AddXp(person.Id, xpAwarded);
+                    }
+
+                    
                 }
 
                 Save(session);
@@ -1403,9 +1543,8 @@ namespace Warhammer.Core.Concrete
                 if (!session.XpAwarded.HasValue)
                 {
                     session.XpAwarded = DateTime.Now;
-                    xp = session.IsTextSession ? 0.25m : 0.5m;
+                    xp = 0.5m;
                     sessionId = session.Id;
-                    //  Save(session);
                 }
             }
 
@@ -1414,13 +1553,13 @@ namespace Warhammer.Core.Concrete
             {
                 if (!log.XpAwarded.HasValue)
                 {
-                    xp = 0.1m;
+                    xp = 0.25m;
                     sessionId = log.SessionId ?? 0;
 
                     decimal wordBonus = (decimal)log.Session.WordCount / 2000 * (log.Session.IsTextSession ? 1 : 2);
-                    if (wordBonus > 0.1m)
+                    if (wordBonus > 0.75m)
                     {
-                        wordBonus = 0.1m;
+                        wordBonus = 0.75m;
                     }
 
                     xp = xp + wordBonus;
@@ -1936,6 +2075,81 @@ namespace Warhammer.Core.Concrete
             return player.SettingIsEnabled(theSetting);
         }
 
+        public List<Award> AwardsForTrophy(int id)
+        {
+            List<Award> awards = _repository.Awards().Where(t => t.TrophyId == id).ToList();
+            return awards;
+        }
+
+        public List<Player> GetAllPlayers()
+        {
+            return _repository.Players().OrderBy(p => p.DisplayName).ToList();
+        }
+
+        public void SetSessionGm(int sessionId, int? selectedGm)
+        {
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+            if (session != null)
+            {
+                session.GmId = selectedGm;
+                Save(session);
+            }
+        }
+
+        public List<PageLinkModel> PeopleWithXpToSpend()
+        {
+            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName } ).ToList();
+        }
+
+        public void AwardShiftForSession(int id)
+        {
+            Session session = _repository.Pages().OfType<Session>().Include(s => s.Pages).FirstOrDefault(s => s.Id == id);
+            if (session != null)
+            {
+                foreach (Person person in session.People.ToList())
+                {
+                    person.HasAttributeMoveAvailable = true;
+                    Save(person);
+                }
+            }
+        }
+
+        public void UpdateAward(int id, string awardReason)
+        {
+            Award award = _repository.Awards().FirstOrDefault(a => a.Id == id);
+            if (award != null)
+            {
+                award.Reason = awardReason;
+                _repository.Save(award);
+            }
+        }
+
+        public List<Person> GetNpcSheetPeople()
+        {
+            return _repository.People()
+                .Include(p => p.PersonAttributes)
+                .Include(p => p.Awards)
+                .Where(p => !p.PlayerId.HasValue)
+                .Where(p => p.PersonAttributes.Any())
+                .OrderByDescending(p => p.CurrentScore).ToList();
+        }
+
+        public List<PageLinkModel> GetFavourites()
+        {
+            var query = _repository.Pages().OfType<Person>()
+                .Where(p => p.PlayerId == null)
+                .Where(p => p.Awards.Any(a => a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc ||
+                                              a.Trophy.TypeId == (int)TrophyType.SecondFavouriteNpc ||
+                                              a.Trophy.TypeId == (int)TrophyType.ThirdFavouriteNpc));
+
+            if (ShadowMode)
+            {
+                query = ApplyPeopleShadow(query);
+            }
+
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -2051,7 +2265,7 @@ namespace Warhammer.Core.Concrete
 
             if (ShadowMode)
             {
-                query = (IQueryable<Person>)ApplyShadow(query);
+                query = ApplyPeopleShadow(query);
             }
 
             query = query.OrderByDescending(p => p.CurrentScore).Take(5);
@@ -2106,6 +2320,19 @@ namespace Warhammer.Core.Concrete
                 {
                     ApplyXpForSession(session);
                 }
+                if (SiteHasFeature(Feature.PersonAttributes) && session.IsClosed)
+                {
+                    RefreshAttributeMoves(session);
+                }                      
+            }
+        }
+
+        private void RefreshAttributeMoves(Session session)
+        {
+            foreach (Person person in session.People)
+            {
+                person.HasAttributeMoveAvailable = true;
+                Save(person);
             }
         }
 
@@ -2248,7 +2475,7 @@ namespace Warhammer.Core.Concrete
 
                 if (ShadowMode)
                 {
-                    query = (IQueryable<Person>) ApplyShadow(query);
+                    query = ApplyPeopleShadow(query);
                 }
 
                 if (!SiteHasFeature(Feature.PublicLeague) && !(SiteHasFeature(Feature.AdminLeague) && CurrentUserIsAdmin))
@@ -2324,8 +2551,6 @@ namespace Warhammer.Core.Concrete
             return 0;
         }
 
-
-
         public Player PlayerToPostInSession(int sessionId)
         {
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
@@ -2333,14 +2558,14 @@ namespace Warhammer.Core.Concrete
             {
                 if (session.IsGmTurn && !session.GmIsSuspended)
                 {
-                    return Gm;
+                    return SessionGm(session);
                 }
                 else
                 {
                     PostOrder postOrder = session.PostOrders.Where(p => !p.IsSuspended).OrderBy(po => po.LastTurnEnded).FirstOrDefault();
                     if (postOrder == null && !session.GmIsSuspended)
                     {
-                        return Gm;
+                        return SessionGm(session);
                     }
 
                     return postOrder != null ? postOrder.Player : null;
@@ -2350,6 +2575,21 @@ namespace Warhammer.Core.Concrete
             {
                 return null;
             }
+        }
+
+        private Player SessionGm(Session session)
+        {
+            if (session.GmId.HasValue)
+            {
+                return GetPlayer(session.GmId.Value);
+            }
+
+            return Gm;
+        }
+
+        private Player GetPlayer(int playerId)
+        {
+            return _repository.Players().FirstOrDefault(p => p.Id == playerId);
         }
 
         public List<Session> OpenTextSessions()
@@ -2365,7 +2605,7 @@ namespace Warhammer.Core.Concrete
         {
             return
                 OpenTextSessions()
-                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm).ToList();
+                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id).ToList();
         }
 
         [Obsolete("Seriously... just no...", true)]
@@ -2374,54 +2614,15 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
         }
 
-        private List<Feature> _enabledFeatures = null;
-
-        public bool SiteHasFeature(Feature feature)
+        public bool SiteHasFeature(Feature featureName)
         {
-            if (_enabledFeatures == null)
-            {
-                List<string> names = _repository.SiteFeatures().Where(e => e.IsEnabled).Select(e => e.Name).ToList();
-                _enabledFeatures = new List<Feature>();
-                foreach (string name in names)
-                {
-                    Feature f;
-                    if (Enum.TryParse(name, true, out f))
-                    {
-                        _enabledFeatures.Add(f);
-                    }
-                }
-            }
-            return _enabledFeatures.Contains(feature);
+            return _feature.SiteHasFeature(featureName);
+
         }
 
         public void EnableFeature(string featureName)
         {
-            SiteFeature feature = _repository.SiteFeatures().FirstOrDefault(f => f.Name == featureName);
-
-            if (feature == null)
-            {
-                feature = new SiteFeature { Name = featureName, Description = featureName };
-            }
-
-            if (!feature.IsEnabled)
-            {
-                feature.IsEnabled = true;
-                _repository.Save(feature);
-            }
-        }
-
-        public void DisableFeature(string featureName)
-        {
-            SiteFeature feature = _repository.SiteFeatures().FirstOrDefault(f => f.Name == featureName);
-
-            if (feature != null)
-            {
-                if (feature.IsEnabled)
-                {
-                    feature.IsEnabled = false;
-                    _repository.Save(feature);
-                }
-            }
+            _feature.EnableFeature(featureName);
         }
     }
 }

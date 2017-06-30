@@ -5,6 +5,7 @@
 <hr />
 @if (Model.IsTextSession)
 {
+    @Html.Action("SessionGmControl", "AdminPageControls", new { id = Model.Id })
 
     if (Model.IsPrivate)
     {
@@ -59,4 +60,9 @@ else
     }
 }
 
+<br/>
+
 @Html.Action("SessionXpControl", "AdminPageControls", new { id = Model.Id })
+
+
+
