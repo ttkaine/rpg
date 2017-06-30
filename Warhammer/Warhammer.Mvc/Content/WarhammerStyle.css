@@ -7267,6 +7267,63 @@ img.AttributeStar {
   width: 25px;
   height: 25px;
 }
+.BattleTableContainer {
+  width: 400px;
+  padding: 5px;
+  border: 1px solid #bbb;
+  margin: 20px auto;
+}
+.BattleTable {
+  margin: 0;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: sans-serif;
+  font-size: 14px;
+  background: #fff;
+}
+.BattleTable th,
+.BattleTable td {
+  padding: 8px;
+  vertical-align: top;
+}
+.BattleTableHeader .Row {
+  margin: 0 0 8px 0;
+}
+.BattleTableHeader .Row::after {
+  clear: both;
+  display: block;
+  content: " ";
+}
+.BattleTableHeader .Row .Title {
+  float: left;
+  width: 100px;
+  font-weight: bold;
+}
+.BattleTableHeader .Row .Value {
+  float: left;
+  font-weight: normal;
+}
+.BattleTable .HeaderRow td,
+.BattleTable .HeaderRow th {
+  width: 100%;
+  background: #B0C4DE;
+  font-weight: bold;
+  text-align: center;
+}
+.BattleTable .SubHeaderRow td,
+.BattleTable .SubHeaderRow th {
+  width: 100%;
+  background: #dcdcdc;
+  text-align: center;
+  font-weight: normal;
+}
+.BattleTable .NormalRow td {
+  width: 50%;
+}
+.BattleTable .NormalRow td:first-of-type {
+  border-right: 1px dotted #aaa;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance
@@ -7431,80 +7488,4 @@ img.AttributeStar {
 .jcrop-holder img,
 img.jcrop-preview {
   max-width: none;
-}
-
-.BattleTableContainer
-{
-	width: 400px;
-	padding: 5px; 
-	border: 1px solid #bbb;
-	margin: 20px auto;
-}
-	
-.BattleTable
-{
-	margin: 0;
-	width: 100%;
-	border-collapse: collapse;
-	text-align: left;
-	font-family: sans-serif;
-	font-size: 14px;
-	background: #fff;
-}
-	
-.BattleTable th, .BattleTable td
-{
-	padding: 8px;
-	vertical-align: top;
-}
-	
-.BattleTableHeader .Row
-{
-	margin: 0 0 8px 0;
-}
-	
-.BattleTableHeader .Row::after
-{
-	clear: both;
-	display: block;
-	content: " ";
-}
-	
-.BattleTableHeader .Row .Title
-{
-	float: left;
-	width: 100px;
-	font-weight: bold;
-}
-	
-.BattleTableHeader .Row .Value
-{
-	float: left;
-	font-weight: normal;
-}	
-	
-.BattleTable .HeaderRow td, .BattleTable .HeaderRow th
-{
-	width: 100%;
-	background: #B0C4DE;
-	font-weight: bold;
-	text-align: center;
-}
-	
-.BattleTable .SubHeaderRow td, .BattleTable .SubHeaderRow th
-{
-	width: 100%;
-	background: #dcdcdc;
-	text-align: center;
-	font-weight: normal;
-}	
-	
-.BattleTable .NormalRow td
-{
-	width: 50%;
-}
-	
-.BattleTable .NormalRow td:first-of-type
-{
-	border-right: 1px dotted #aaa;
 }

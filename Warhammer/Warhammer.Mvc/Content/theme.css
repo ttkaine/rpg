@@ -7271,8 +7271,7 @@ img.AttributeStar {
   width: 400px;
   padding: 5px;
   border: 1px solid #bbb;
-  margin: 20px 0 20px 20px;
-  float: right;
+  margin: 20px auto;
 }
 .BattleTable {
   margin: 0;
