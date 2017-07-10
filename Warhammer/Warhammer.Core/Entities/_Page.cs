@@ -14,7 +14,7 @@ namespace Warhammer.Core.Entities
             get { return 0.25; }
         }
 
-        public int WordCount
+        public int CalculatedWordCount
         {
             get
             {

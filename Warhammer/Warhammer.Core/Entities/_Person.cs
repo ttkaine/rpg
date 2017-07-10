@@ -6,6 +6,16 @@ using System.Linq;
 
 namespace Warhammer.Core.Entities
 {
+    public enum Gender
+    {
+        Unknown = 0,
+        Female = 1,
+        Male = 2,
+        Hermaphrodite = 3,
+        Neuter = 4,
+        Other = 5
+    }
+
     public enum StatName
     {
         //0 CROW
@@ -40,6 +50,12 @@ namespace Warhammer.Core.Entities
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
+        public Gender Gender
+        {
+            get { return (Gender) GenderEnum; }
+            set { GenderEnum = (int) value;  }
+        }
+
         public bool IsFuCharacter
         {
             get { return PersonStats.Any(p => p.StatId > 100 && p.StatId < 200); }

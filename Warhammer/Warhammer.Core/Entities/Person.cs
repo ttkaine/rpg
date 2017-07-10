@@ -51,6 +51,7 @@ namespace Warhammer.Core.Entities
         public Nullable<System.DateTime> LastScoreCalculation { get; set; }
         public bool XpSpendAvailable { get; set; }
         public int WishingWell { get; set; }
+        public Nullable<int> GenderEnum { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }

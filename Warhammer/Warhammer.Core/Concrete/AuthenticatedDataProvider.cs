@@ -387,7 +387,7 @@ namespace Warhammer.Core.Concrete
             page.Modified = DateTime.Now;
             page.ModifedById = CurrentPlayer.Id;
             page.PlainText = page.RawText;
-
+            page.WordCount = page.CalculatedWordCount;
 
             int pageId = _repository.Save(page);
 

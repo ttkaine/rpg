@@ -39,6 +39,7 @@ namespace Warhammer.Core.Entities
         public string PlainText { get; set; }
         public int CampaignId { get; set; }
         public string GmNotes { get; set; }
+        public int WordCount { get; set; }
     
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Player ModifiedBy { get; set; }

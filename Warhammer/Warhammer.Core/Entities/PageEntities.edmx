@@ -226,6 +226,7 @@
           <Property Name="PlainText" Type="nvarchar(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="GmNotes" Type="nvarchar(max)" />
+          <Property Name="WordCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PageImage">
           <Key>
@@ -273,6 +274,7 @@
           <Property Name="LastScoreCalculation" Type="datetime" />
           <Property Name="XpSpendAvailable" Type="bit" Nullable="false" />
           <Property Name="WishingWell" Type="int" Nullable="false" />
+          <Property Name="GenderEnum" Type="int" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -1613,6 +1615,7 @@
           <NavigationProperty Name="PageImages" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="Page" ToRole="PageImage" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <Property Name="GmNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WordCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -1661,6 +1664,7 @@
           <Property Name="LastScoreCalculation" Type="DateTime" Precision="3" />
           <Property Name="XpSpendAvailable" Type="Boolean" Nullable="false" />
           <Property Name="WishingWell" Type="Int32" Nullable="false" />
+          <Property Name="GenderEnum" Type="Int32" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2615,6 +2619,7 @@
           <EntitySetMapping Name="Pages">
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="WordCount" ColumnName="WordCount" />
                 <ScalarProperty Name="GmNotes" ColumnName="GmNotes" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="PlainText" ColumnName="PlainText" />
@@ -2643,6 +2648,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="GenderEnum" ColumnName="GenderEnum" />
                 <ScalarProperty Name="WishingWell" ColumnName="WishingWell" />
                 <ScalarProperty Name="XpSpendAvailable" ColumnName="XpSpendAvailable" />
                 <ScalarProperty Name="LastScoreCalculation" ColumnName="LastScoreCalculation" />
