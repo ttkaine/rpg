@@ -214,7 +214,7 @@ namespace Warhammer.Core.Concrete
             return GetGmId();
         }
 
-        public int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc)
+        public int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc, Gender personGender)
         {
 
             Person person = new Person
@@ -222,6 +222,7 @@ namespace Warhammer.Core.Concrete
                 ShortName = shortName,
                 FullName = longName,
                 Description = description,
+                Gender = personGender
             };
             if (!CurrentPlayerIsGm && !personCreateAsNpc)
             {

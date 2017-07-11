@@ -61,7 +61,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                int pageId = DataProvider.AddPerson(person.ShortName, person.FullName, person.Description, person.CreateAsNpc);
+                int pageId = DataProvider.AddPerson(person.ShortName, person.FullName, person.Description, person.CreateAsNpc, person.Gender);
                 return RedirectToAction("Index", "Page", new { id = pageId });
             }
             return View(person);
