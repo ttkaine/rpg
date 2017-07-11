@@ -3,7 +3,7 @@
 
 <div class="alert alert-info">
     
-    @if (!Model.Wear.Any())
+    @if (!Model.Wear.Any() && !Model.Harm.Any())
     {
         using (Ajax.BeginForm("SetDefaultWearAndHarm", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
         {
