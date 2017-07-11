@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Configuration;
 using System.Web.Mvc;
+using Warhammer.Core.Entities;
 
 namespace Warhammer.Mvc.Models
 {
@@ -11,7 +12,7 @@ namespace Warhammer.Mvc.Models
         public bool AgeJustSet { get; set; }
         public bool MoneyJustSet { get; set; }
 
-        public bool ShowAny => ShowAge || ShowHeight || ShowMoney;
+        public bool ShowAny => ShowAge || ShowHeight || ShowMoney || ShowGender;
 
         public bool ShowMoney { get; set; }
         public bool ShowAge { get; set; }
@@ -48,5 +49,11 @@ namespace Warhammer.Mvc.Models
         public bool MoneyAdded { get; set; }
 
         public string MoneyDisplayString { get; set; }
+
+        public SelectList Genders { get; set; }
+        public Gender SelectedGender { get; set; }
+        public bool ShowGender { get; set; }
+        public bool GenderJustSet { get; set; }
+        public bool UseWarhammerMoney { get; set; }
     }
 }

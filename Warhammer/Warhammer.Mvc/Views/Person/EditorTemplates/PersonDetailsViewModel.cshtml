@@ -72,6 +72,7 @@ else
 {
     using (Ajax.BeginForm("SetAge", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
     {
+        <hr />
         <p>Set Age</p>
         @Html.HiddenFor(m => m.PersonId)
         @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form-control" } })
@@ -85,21 +86,35 @@ else
     {
         <div class="alert alert-success">Height Set to : @Model.Height</div>
     }
+    <hr />
     <p>Height</p>
         @Html.HiddenFor(m => m.PersonId)
         @Html.EditorFor(m => m.Height, new { htmlAttributes = new { @class = "form-control" } })
         <input type="submit" class="btn btn-info btn-block" value="Set Height" />
 }
 
+@using (Ajax.BeginForm("SetGender", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel" }))
+{
+    if (Model.GenderJustSet)
+    {
+        <div class="alert alert-success">Gender Set to : @Model.SelectedGender</div>
+    }
+    <hr />
+    <p>Gender</p>
+    @Html.HiddenFor(m => m.PersonId)
+    @Html.DropDownListFor(m => m.SelectedGender, Model.Genders, new { @class = "form-control" })
+    <input type="submit" class="btn btn-info btn-block" value="Set Gender" />
+}
 
-
-@using (Ajax.BeginForm("SetMoney", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel"}))
+@if (Model.UseWarhammerMoney)
+{
+using (Ajax.BeginForm("SetMoney", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "PersonDetailsPanel"}))
  {
      if (Model.MoneyJustSet)
      {
          <div class="alert alert-success">Money Set to : @Model.TotalPennies</div>
      }
-
+     <hr/>
      <p>Money</p>
      @Html.HiddenFor(m => m.PersonId)
      @Html.EditorFor(m => m.Crowns, new {htmlAttributes = new {@class = "form-control"}})
@@ -110,3 +125,4 @@ else
      @Html.EditorFor(m => m.Upkeep, new {htmlAttributes = new {@class = "form-control"}})
      <input type="submit" class="btn btn-info btn-block" value="Set Money"/>
  }
+}

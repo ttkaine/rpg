@@ -14,6 +14,12 @@
             <h4>Age: <span class="label label-info personDetail" title="@Model.DateOfBirthString">@Model.Age</span></h4>
             <br />
         }
+        
+        @if (Model.ShowGender)
+        {
+            <h4>Gender: <span class="label label-success personDetail" title="@Model.SelectedGender">@Model.SelectedGender</span></h4>
+            <br />
+        }
 
         @if (Model.ShowMoney)
         {

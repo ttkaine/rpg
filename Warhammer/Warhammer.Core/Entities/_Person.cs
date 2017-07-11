@@ -52,7 +52,7 @@ namespace Warhammer.Core.Entities
     {
         public Gender Gender
         {
-            get { return (Gender) GenderEnum; }
+            get { return (Gender) (GenderEnum ?? 0); }
             set { GenderEnum = (int) value;  }
         }
 

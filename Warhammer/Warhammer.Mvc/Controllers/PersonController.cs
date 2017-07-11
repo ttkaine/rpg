@@ -884,8 +884,10 @@ namespace Warhammer.Mvc.Controllers
                 AllowEdit = CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId
             };
 
-            if (person.TotalPennies != 0)
+            model.UseWarhammerMoney = DataProvider.SiteHasFeature(Feature.WarhammerMoney);
+            if (person.TotalPennies != 0 && model.UseWarhammerMoney)
             {
+
                 model.ShowMoney = true;
                 model.Pennies = person.Pennies ?? 0;
                 model.Shillings = person.Shillings ?? 0;
@@ -915,7 +917,16 @@ namespace Warhammer.Mvc.Controllers
                     age--;
                 }
                 model.Age = age;
-                model.DateOfBirthString = $"Born on the {person.DateOfBirth.Value.ToWarhammerDateString()} ({person.DateOfBirth:dddd dd MMMM yyyy})";
+                if (DataProvider.SiteHasFeature(Feature.WarhammerDate))
+                {
+                    model.DateOfBirthString =
+                        $"Born on the {person.DateOfBirth.Value.ToWarhammerDateString()} ({person.DateOfBirth:dddd dd MMMM yyyy})";
+                }
+                else
+                {
+                    model.DateOfBirthString = $"Born {person.DateOfBirth.Value.ToLongDateString()}";
+                }
+
                 model.DateOfBirth = person.DateOfBirth.Value;
             }
 
@@ -925,6 +936,9 @@ namespace Warhammer.Mvc.Controllers
                 model.Height = person.Height;
             }
 
+            model.Genders = new SelectList(Gender.Female.ToList<Gender>());
+            model.SelectedGender = person.Gender;
+            model.ShowGender = person.Gender != Gender.Unknown;
 
             return model;
         }
@@ -1047,6 +1061,28 @@ namespace Warhammer.Mvc.Controllers
                 if (model != null)
                 {
                     return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SetGender(PersonDetailsViewModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonDetails))
+            {
+                Person person = DataProvider.GetPerson(model.PersonId);
+                if (person != null)
+                {
+                    DataProvider.SetGender(model.PersonId, model.SelectedGender);
+
+                    ModelState.Remove("SelectedGender");
+                    ModelState.Remove("ShowGender");
+                    CampaignDetail campagin = DataProvider.GetCampaginDetails();
+                    PersonDetailsViewModel updatedModel = MakePersonDetailsViewModel(person, campagin);
+                    updatedModel.GenderJustSet = true;
+                    return PartialView("DetailsPanel", updatedModel);
                 }
             }
             return null;

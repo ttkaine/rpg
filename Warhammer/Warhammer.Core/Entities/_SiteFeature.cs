@@ -46,7 +46,9 @@ namespace Warhammer.Core.Entities
         XpCatchup,
         PlaygroundMode,
         ShowWearTrack,
-        FavouritesGallery
+        FavouritesGallery,
+        WarhammerMoney,
+        WarhammerDate
     }
 
     public partial class SiteFeature

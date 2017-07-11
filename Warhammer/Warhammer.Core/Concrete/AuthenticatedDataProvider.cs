@@ -2150,6 +2150,16 @@ namespace Warhammer.Core.Concrete
             return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
+        public void SetGender(int personId, Gender gender)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.Gender = gender;
+                Save(person);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

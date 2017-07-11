@@ -167,5 +167,6 @@ namespace Warhammer.Core.Abstract
         void UpdateAward(int id, string awardReason);
         List<Person> GetNpcSheetPeople();
         List<PageLinkModel> GetFavourites();
+        void SetGender(int personId, Gender gender);
     }
 }
