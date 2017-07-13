@@ -10,7 +10,7 @@ namespace Warhammer.Core.Concrete
 {
     public class ScoreCalculator : IScoreCalculator
     {
-        private int _scoreUpdateInterval = 10000;
+        private int _scoreUpdateInterval = 1440;
         private readonly IRepository _repo;
         private readonly CharacterAttributeManager _attributeManager;
 
@@ -193,7 +193,7 @@ namespace Warhammer.Core.Concrete
         public void UpdatePersonScore(int personId)
         {
             
-            Person person = _repo.People()
+            Person person = _repo.AllPeople()
                 .Include(p => p.Awards.Select(a => a.Trophy))
                 .Include(p => p.PersonStats)
                 .Include(p => p.Pages)
@@ -201,11 +201,14 @@ namespace Warhammer.Core.Concrete
                 .FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
+                int campaignId = person.CampaignId;
+
                 List<ScoreHistory> scores = CalculateScoreForPerson(person, DateTime.Now).ToList();
                 decimal current = scores.Where(s => s.ScoreType == ScoreType.Total).Sum(s => s.PointsValue);
                 person.CurrentScore = current;
 
-                List<ScoreHistory> original = _repo.ScoreHistories().Where(s => s.PersonId == personId).ToList();
+
+                List<ScoreHistory> original = _repo.AllScoreHistories().Where(s => s.PersonId == personId).ToList();
 
                 foreach (ScoreHistory scoreHistory in original)
                 {
@@ -214,16 +217,11 @@ namespace Warhammer.Core.Concrete
 
                 foreach (ScoreHistory scoreHistory in scores)
                 {
+                    scoreHistory.CampaignId = campaignId;
                     _repo.Save(scoreHistory);
                 }
 
                 person.LastScoreCalculation = DateTime.Now;
- 
-                CharacterAttributeModel attributes = _attributeManager.GetCharacterAttributes(personId);
-                if (attributes.HasStats && attributes.CanBuyAll)
-                {
-                    person.XpSpendAvailable = true;
-                }
 
                 _repo.Save(person);
             }
@@ -232,11 +230,12 @@ namespace Warhammer.Core.Concrete
         public void UpdateScores()
         {
             DateTime cutOff = DateTime.Now.AddMinutes(-_scoreUpdateInterval);
-            List<int> personIds = _repo.People()
-                .Where(p => p.ScoreHistories.All(s => s.DateTime < cutOff))
-                .OrderByDescending(s => s.ScoreHistories.Count==0)
-                .ThenBy(p => p.ScoreHistories.Min(s => s.DateTime))
-                .Take(3).Select(p => p.Id).ToList();
+            List<int> personIds = _repo.AllPeople()
+                .Where(p => p.LastScoreCalculation < cutOff || p.LastScoreCalculation < p.SignificantUpdate || p.LastScoreCalculation == null)
+                .OrderByDescending(s => s.LastScoreCalculation == null)
+                .ThenBy(p => p.SignificantUpdate)
+                .ThenBy(p => p.LastScoreCalculation)
+                .Take(5).Select(p => p.Id).ToList();
             foreach (var id in personIds)
             {
                 UpdatePersonScore(id);

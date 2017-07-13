@@ -7,7 +7,9 @@ using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FluentScheduler;
 using Warhammer.Core.Abstract;
+using Warhammer.Mvc.Concrete;
 using Warhammer.Mvc.Controllers;
 using Warhammer.Mvc.Helpers;
 
@@ -22,6 +24,11 @@ namespace Warhammer.Mvc
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DatabaseUpdate();
+
+            IExceptionLogHandler log = DependencyResolver.Current.GetService<IExceptionLogHandler>();
+
+            JobManager.Initialize(new FluentSchedulerRegistry());
+            JobManager.JobException += (info) => log.LogException(info.Exception, "JobManager", 99, DateTime.Now);
         }
 
         private void DatabaseUpdate()

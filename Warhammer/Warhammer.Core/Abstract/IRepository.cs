@@ -73,5 +73,7 @@ namespace Warhammer.Core.Abstract
         void Delete(PersonAttribute personAttribute);
         int Save(PersonAttribute personAttribute);
         int Save(Award award);
+        IQueryable<Person> AllPeople();
+        IQueryable<ScoreHistory> AllScoreHistories();
     }
 }

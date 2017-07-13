@@ -635,6 +635,15 @@ namespace Warhammer.Core.Concrete
             return award.Id;
         }
 
+        public IQueryable<Person> AllPeople()
+        {
+            return _entities.Pages.OfType<Person>();
+        }
+
+        public IQueryable<ScoreHistory> AllScoreHistories()
+        {
+            return _entities.ScoreHistories;
+        }
 
         public void Dispose()
         {

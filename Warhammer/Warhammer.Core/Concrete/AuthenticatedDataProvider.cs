@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Transactions;
 using LinqKit;
 using Warhammer.Core.Abstract;
@@ -21,7 +18,6 @@ namespace Warhammer.Core.Concrete
         private readonly IRepository _repository;
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
-        private readonly IScoreCalculator _score;
         private readonly ISiteFeatureProvider _feature;
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
@@ -59,13 +55,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, IScoreCalculator score, ISiteFeatureProvider feature)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
-            _score = score;
             _feature = feature;
 
             if (_authenticatedUser.UserIsAuthenticated)
@@ -74,7 +69,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        private Player _currentPlayer = null;
+        private Player _currentPlayer;
         public Player CurrentPlayer
         {
             get
@@ -91,8 +86,8 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        private Player _gm = null;
-        private CampaignDetail _campaign = null;
+        private Player _gm;
+        private CampaignDetail _campaign;
 
         public CampaignDetail Campaign
         {
@@ -297,6 +292,7 @@ namespace Warhammer.Core.Concrete
                 }
             }
 
+            existingPage.WordCount = existingPage.CalculatedWordCount;
             Save(existingPage);
             AutoAddLinks(existingPage);
             return existingPage;
@@ -404,16 +400,8 @@ namespace Warhammer.Core.Concrete
                 }
             }
 
-            Person person  = page as Person;
-            if (person != null)
-            {
-                _score.UpdatePersonScore(pageId);
-            }
-
             return pageId;
         }
-
-
 
         private bool AnotherPageExistsWithThisName(string shortName, int id)
         {
