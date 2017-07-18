@@ -52,6 +52,11 @@ namespace Warhammer.Mvc.Concrete
                     return 5;
                 }
 
+
+                if (domain == "mouse.sendingofeight.co.uk")
+                {
+                    return 6;
+                }
                 return 0;
 
             }

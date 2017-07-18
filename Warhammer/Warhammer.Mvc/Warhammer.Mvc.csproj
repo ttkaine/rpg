@@ -327,6 +327,7 @@
     <Content Include="Content\Images\lock.png" />
     <Content Include="Content\Images\log.png" />
     <Content Include="Content\Images\mill.jpg" />
+    <Content Include="Content\Images\mouse_background.jpg" />
     <Content Include="Content\Images\no-image.jpg" />
     <Content Include="Content\Images\page-location.png" />
     <Content Include="Content\Images\page-page.png" />
@@ -384,6 +385,7 @@
     <Content Include="Content\Less\jcrop.min.css">
       <DependentUpon>jcrop.css</DependentUpon>
     </Content>
+    <Content Include="Content\mouse.css" />
     <Content Include="Content\Pirate.css" />
     <Content Include="Content\playground.css" />
     <Content Include="Content\RoleplayCss\CharacterSheet.css" />

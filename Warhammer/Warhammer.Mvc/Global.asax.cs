@@ -60,7 +60,11 @@ namespace Warhammer.Mvc
             string newline = Environment.NewLine;
             string errors = $"{newline}{newline} Errors: {newline}{string.Join(newline, result.ErrorMessages)}";
             string debug = $"{newline}{newline} Debug: {newline}{string.Join(newline, result.DebugMessages)}";
-            string versions = $"{newline}{newline} Database Versions: {newline}{string.Join(newline, result.Versions.Select(v => $"{v.Id} - {v.DateTime.ToShortDateString()} - {v.Comment}"))}";
+            string versions = "No Version Info Available";
+            if (result.Versions != null)
+            {
+                versions = $"{newline}{newline} Database Versions: {newline}{string.Join(newline, result.Versions.Select(v => $"{v.Id} - {v.DateTime.ToShortDateString()} - {v.Comment}"))}";
+            }
             string fileData = $"{DateTime.Now}{newline}{errors}{newline}{debug}{newline}{versions}{newline}";
             File.WriteAllText(applcationOfflineLog, fileData);
         }
