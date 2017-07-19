@@ -236,6 +236,7 @@
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PageControlsController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleplayController.cs" />
     <Compile Include="Controllers\RumourController.cs" />
     <Compile Include="Controllers\TimiController.cs" />
@@ -738,6 +739,7 @@
     <Content Include="Views\Gm\NpcSheet.cshtml" />
     <Content Include="Views\Gm\DisplayTemplates\NpcSheetViewModel.cshtml" />
     <Content Include="Views\Home\FavouritesGallery.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
