@@ -48,7 +48,11 @@ namespace Warhammer.Core.Entities
         ShowWearTrack,
         FavouritesGallery,
         WarhammerMoney,
-        WarhammerDate
+        WarhammerDate,
+        Reports,
+        WordCountChart,
+        PlayerWordCountChart,
+        CharacterGenderChart
     }
 
     public partial class SiteFeature

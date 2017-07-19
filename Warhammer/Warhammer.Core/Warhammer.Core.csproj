@@ -354,6 +354,7 @@
     <Compile Include="Models\PageLinkWithUpdateDateModel.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
     <Compile Include="Models\PersonAttributeAdvanceModel.cs" />
+    <Compile Include="Models\Reports\ChartDataItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />
     <Compile Include="RoleplayViewModels\CharacterViewModel.cs" />

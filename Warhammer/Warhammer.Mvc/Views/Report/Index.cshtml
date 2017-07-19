@@ -1,7 +1,27 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reports!";
 }
 
-<h2>Index</h2>
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Statistics</h1>
+        </div>
 
+    </div>
+
+    <div class="main-content">         
+        @Html.Action("WordcountChart")
+        @Html.Action("PlayerWordcountChart")
+        @Html.Action("CharacterGenderChart")
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Set some numbers and stuff</h3>
+            <p>Here are some numbers and stuff about the site. You know... just general gumph...</p>
+        </div>
+    </div>
+
+</div>

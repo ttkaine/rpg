@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
+using Warhammer.Core.Models.Reports;
 
 namespace Warhammer.Core.Abstract
 {
@@ -168,5 +170,8 @@ namespace Warhammer.Core.Abstract
         List<Person> GetNpcSheetPeople();
         List<PageLinkModel> GetFavourites();
         void SetGender(int personId, Gender gender);
+        List<ChartDataItem> GetWordcountReportData();
+        List<ChartDataItem> GetPlayerWordcountReportData();
+        List<ChartDataItem> GetCharacterGenderReportData();
     }
 }

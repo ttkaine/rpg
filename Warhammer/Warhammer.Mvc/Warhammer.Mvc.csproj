@@ -659,7 +659,7 @@
     <Content Include="Views\AdminPageControls\DisplayTemplates\Page.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Person.cshtml" />
     <Content Include="Views\AdminPageControls\DisplayTemplates\Session.cshtml" />
-    <Content Include="Views\Person\Chart.cshtml" />
+    <Content Include="Views\Shared\Chart.cshtml" />
     <Content Include="Views\Fate\Aspects.cshtml" />
     <Content Include="Views\Fate\DisplayTemplates\FateAspectViewModel.cshtml" />
     <Content Include="Views\Fate\EditorTemplates\FateAspectViewModel.cshtml" />

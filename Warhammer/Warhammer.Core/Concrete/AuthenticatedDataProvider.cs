@@ -8,6 +8,7 @@ using LinqKit;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
+using Warhammer.Core.Models.Reports;
 
 namespace Warhammer.Core.Concrete
 {
@@ -2147,6 +2148,98 @@ namespace Warhammer.Core.Concrete
                 person.Gender = gender;
                 Save(person);
             }
+        }
+
+        public List<ChartDataItem> GetWordcountReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();          
+
+            counts.Add(new ChartDataItem
+            {
+                Name = "Characters",
+                Value = _repository.Pages().OfType<Person>().Sum(p => p.WordCount)
+            });
+
+            counts.Add(new ChartDataItem
+            {
+                Name = "Sessions",
+                Value = _repository.Pages().OfType<Session>().Sum(p => p.WordCount)
+            });
+
+            counts.Add(new ChartDataItem
+            {
+                Name = "Session Logs",
+                Value = _repository.Pages().OfType<SessionLog>().Sum(p => p.WordCount)
+            });
+
+            counts.Add(new ChartDataItem
+            {
+                Name = "Session Logs",
+                Value = _repository.Pages().OfType<Place>().Sum(p => p.WordCount)
+            });
+
+            int othersTotal = counts.Sum(c => c.Value);
+
+            counts.Add(new ChartDataItem
+            {
+                Name = "Other Pages",
+                Value = _repository.Pages().OfType<Page>().Sum(p => p.WordCount) - othersTotal
+            });
+
+            return counts;
+
+        }
+
+        public List<ChartDataItem> GetPlayerWordcountReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+
+            List<Player> players = _repository.Players().ToList();
+
+            var theData = _repository.Pages().GroupBy(p => p.CreatedById).Select(g => new {playerId = g.Key, Words = g.Sum(x => x.WordCount)});
+
+            foreach (Player player in players)
+            {
+                int wordCount = theData.Where(d => d.playerId == player.Id).Select(d => d.Words).FirstOrDefault();
+                if (wordCount > 0)
+                {
+                    string count = Convert.ToDouble(string.Format("{0:G2}", wordCount)).ToString("R0");
+                    int roundedCount;
+                    int.TryParse(count, out roundedCount);
+
+                    if (roundedCount > 0)
+                    {
+
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = player.DisplayName,
+                            Value = roundedCount
+                        });
+                    }
+                }
+            }
+
+            return counts;
+        }
+
+        public List<ChartDataItem> GetCharacterGenderReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+            var theData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
+
+            foreach (var datum in theData)
+            {
+                if (datum.Count > 0)
+                {
+                    counts.Add(new ChartDataItem
+                    {
+                        Name = ((Gender)datum.genderId).ToString(),
+                        Value = datum.Count
+                    });
+                }
+            }
+
+            return counts;
         }
 
         public void RemoveAward(int personId, int awardId)
