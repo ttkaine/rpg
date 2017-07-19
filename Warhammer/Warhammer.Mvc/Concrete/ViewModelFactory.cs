@@ -123,6 +123,7 @@ namespace Warhammer.Mvc.Concrete
             List<MenuItemViewModel> adminSubMenu = MakeAdminSubmenu();
             List<MenuItemViewModel> gmSubMenu = MakeGmSubMenu();
             List<MenuItemViewModel> createMenu = MakeCreateMenu();
+            
 
             if (createMenu.Any())
             {
@@ -608,6 +609,15 @@ namespace Warhammer.Mvc.Concrete
         private List<MenuItemViewModel> MakeUsefulSubmenu()
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+
+            if (_data.SiteHasFeature(Feature.Reports))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Statistics",
+                    Url = _urlHelper.Action("Index", "Report"),
+                });
+            }
 
             items.Add(new MenuItemViewModel
             {
