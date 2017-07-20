@@ -2298,42 +2298,33 @@ namespace Warhammer.Core.Concrete
         public List<ChartDataItem> GetGenderScoresReportData()
         {
             List<ChartDataItem> counts = new List<ChartDataItem>();
-            var theData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Sum(c => c.CurrentScore) });
+            var playerData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Sum(c => c.CurrentScore) });
+            var npcData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId == null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Sum(c => c.CurrentScore) });
 
-            foreach (var datum in theData)
+            foreach (Gender gender in Gender.Female.ToList<Gender>())
             {
-                if (datum.Count > 0)
+                var datum = playerData.FirstOrDefault(d => d.genderId == (int)gender && d.Count > 0);
+                if (datum != null)
                 {
                     counts.Add(new ChartDataItem
                     {
-                        Name = ((Gender)datum.genderId).ToString(),
-                        Value = (int)datum.Count
+                        Name = ((Gender)datum.genderId).ToString() + " (Player Characters)",
+                        Value = (int)datum.Count,
+                        Color = GetChartColorFor(gender, true)
+                    });
+                }
+                datum = npcData.FirstOrDefault(d => d.genderId == (int)gender && d.Count > 0);
+                if (datum != null)
+                {
+                    counts.Add(new ChartDataItem
+                    {
+                        Name = ((Gender)datum.genderId).ToString() + " (NPCs)",
+                        Value = (int)datum.Count,
+                        Color = GetChartColorFor(gender, false)
                     });
                 }
             }
 
-            return counts;
-        }
-
-        public List<ChartDataItem> GetPcNpcScoresReportData()
-        {
-            List<ChartDataItem> counts = new List<ChartDataItem>();
-            if (_repository.Pages().OfType<Person>().Any(p => p.PlayerId != null))
-            {
-                counts.Add(new ChartDataItem
-                {
-                    Name = "Player Characters",
-                    Value = (int)_repository.Pages().OfType<Person>().Where(p => p.PlayerId != null).Sum(p => p.CurrentScore)
-                });
-            }
-            if (_repository.Pages().OfType<Person>().Any(p => p.PlayerId == null))
-            {
-                counts.Add(new ChartDataItem
-                {
-                    Name = "Non Player Characters",
-                    Value = (int)_repository.Pages().OfType<Person>().Where(p => p.PlayerId == null).Sum(p => p.CurrentScore)
-                });
-            }
             return counts;
         }
 

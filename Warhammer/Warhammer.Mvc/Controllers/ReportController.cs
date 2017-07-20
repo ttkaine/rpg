@@ -192,21 +192,5 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
-
-        public ActionResult PcNpcScoresChart()
-        {
-            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.PcNpcScoresChart))
-            {
-                List<ChartDataItem> data = DataProvider.GetPcNpcScoresReportData();
-
-                if (data.Any())
-                {
-                    var chart = GetHighchartsPie(data, "pc_npc_score_pie", "Character Engagement by Player Type", "Total Points for Characters", " points");
-                    return PartialView("Chart", chart);
-                }
-
-            }
-            return null;
-        }
     }
 }
