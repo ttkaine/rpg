@@ -2182,7 +2182,7 @@ namespace Warhammer.Core.Concrete
             {
                 counts.Add(new ChartDataItem
                 {
-                    Name = "Session Logs",
+                    Name = "Locations",
                     Value = _repository.Pages().OfType<Place>().Sum(p => p.WordCount)
                 });
             }
