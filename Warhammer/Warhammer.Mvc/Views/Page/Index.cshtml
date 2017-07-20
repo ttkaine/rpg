@@ -105,6 +105,7 @@
             if (User.IsInRole("Admin"))
             {
                 <h1>Points Value: @person.PointsValue</h1>
+                <span class="note">Last Calcualted: @person.LastScoreCalculation</span>
             }
             if (person.SessionLogs.Any() && !ViewBag.EditMode)
             {
