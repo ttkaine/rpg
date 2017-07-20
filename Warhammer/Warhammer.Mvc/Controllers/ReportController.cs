@@ -27,7 +27,8 @@ namespace Warhammer.Mvc.Controllers
 
                 if (data.Any())
                 {
-                    var chart = GetHighchartsPie(data, "wordcount_pie", "Wordcount by Page Type", "Words", " words");
+                    int sum = data.Sum(d => d.Value);
+                    var chart = GetHighchartsPie(data, "wordcount_pie", $"{sum} total words in the site", "Words", " words");
                     return PartialView("Chart", chart);
                 }
 
@@ -95,7 +96,8 @@ namespace Warhammer.Mvc.Controllers
 
                 if (data.Any())
                 {
-                    var chart = GetHighchartsPie(data, "characterGender_pie", "Gender Representation", "Number of Characters", " characters");
+                    int sum = data.Sum(d => d.Value);
+                    var chart = GetHighchartsPie(data, "characterGender_pie", $"{sum} characters on the site", "Number of Characters", " characters");
                     return PartialView("Chart", chart);
                 }
 
@@ -111,7 +113,8 @@ namespace Warhammer.Mvc.Controllers
 
                 if (data.Any())
                 {
-                    var chart = GetHighchartsPie(data, "gender_score_pie", "Character Engagement by Gender", "Total Points for Characters", " points");
+                    int sum = data.Sum(d => d.Value);
+                    var chart = GetHighchartsPie(data, "gender_score_pie", $"{sum} points awarded to characters", "Total Points for Characters", " points");
                     return PartialView("Chart", chart);
                 }
 
