@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
 using LinqKit;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Core.Models;
 using Warhammer.Core.Models.Reports;
 
@@ -2234,21 +2236,63 @@ namespace Warhammer.Core.Concrete
         public List<ChartDataItem> GetCharacterGenderReportData()
         {
             List<ChartDataItem> counts = new List<ChartDataItem>();
-            var theData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
+            var playerData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
+            var npcData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId == null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
 
-            foreach (var datum in theData)
+            foreach (Gender gender in Gender.Female.ToList<Gender>())
             {
-                if (datum.Count > 0)
+                var datum = playerData.FirstOrDefault(d => d.genderId == (int) gender && d.Count > 0);
+                if (datum != null)
                 {
                     counts.Add(new ChartDataItem
                     {
-                        Name = ((Gender)datum.genderId).ToString(),
-                        Value = datum.Count
+                        Name = ((Gender)datum.genderId).ToString() + " (Player Characters)",
+                        Value = datum.Count,
+                        Color = GetChartColorFor(gender, true)
+                    });
+                }
+                datum = npcData.FirstOrDefault(d => d.genderId == (int)gender && d.Count > 0);
+                if (datum != null)
+                {
+                    counts.Add(new ChartDataItem
+                    {
+                        Name = ((Gender)datum.genderId).ToString() + " (NPCs)",
+                        Value = datum.Count,
+                        Color = GetChartColorFor(gender, false)
                     });
                 }
             }
 
             return counts;
+        }
+
+        private Color GetChartColorFor(Gender gender, bool isPlayer)
+        {
+            Color color = Color.Black;
+            
+            switch (gender)
+            {
+                case Gender.Unknown:
+                    break;
+                case Gender.Female:
+                    color = Color.Red;
+                    break;
+                case Gender.Male:
+                    color = Color.Blue;
+                    break;
+                case Gender.Hermaphrodite:
+                    color =  Color.Purple ;
+                    break;
+                case Gender.Neuter:
+                    color = Color.Green;
+                    break;
+                case Gender.Other:
+                    color = Color.Orange;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gender), gender, null);
+            }
+            return isPlayer ? color : color.Lerp(Color.White,0.50f);
         }
 
         public List<ChartDataItem> GetGenderScoresReportData()

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
 using DotNet.Highcharts;
@@ -41,6 +43,12 @@ namespace Warhammer.Mvc.Controllers
             Series pieSeries = new Series();
             pieSeries.Name = seriesName;
 
+            Color[] colors = GetDefaultColors(data.Count);
+            if (data.Any(d => !d.Color.IsEmpty))
+            {
+                colors = data.Select(d => d.Color).ToArray();
+            }
+
             pieSeries.Data = new Data(data.Where(s => s.Value > 0).Select(s => new {name = s.Name, y = s.Value})
                 .ToArray());
 
@@ -60,12 +68,58 @@ namespace Warhammer.Mvc.Controllers
                 {
                     Pie = new PlotOptionsPie()
                     {
-                        //Colors = scores.Where(s => s.ScoreType != ScoreType.Total).Where(s => s.PointsValue > 0).Select(s => GetColorForScoreType(s.ScoreType)).ToArray(),
+                        Colors = colors.Select(c => Color.FromArgb(150, c)).ToArray(),
                         AllowPointSelect = true
                     }
                 })
                 .SetSeries(pieSeries);
             return chart;
+        }
+
+        private static Color[] GetDefaultColors(int count)
+        {
+            List<Color> colors = new List<Color>();
+            for (int i = 0; i < count; i++)
+            {
+                switch (i % 10)
+                {
+                    case 0:
+                        colors.Add(Color.Black);
+                        break;
+                    case 1:
+                        colors.Add(Color.BlueViolet);
+                        break;
+                    case 2:
+                        colors.Add(Color.Blue);
+                        break;
+                    case 3:
+                        colors.Add(Color.DarkCyan);
+                        break;
+                    case 4:
+                        colors.Add(Color.Green);
+                        break;
+                    case 5:
+                        colors.Add(Color.YellowGreen);
+                        break;
+                    case 6:
+                        colors.Add(Color.Gold);
+                        break;
+                    case 7:
+                        colors.Add(Color.Orange);
+                        break;
+                    case 8:
+                        colors.Add(Color.OrangeRed);
+                        break;
+                    case 9:
+                        colors.Add(Color.Red);
+                        break;
+                    default:
+                        break;
+
+
+                }
+            }
+            return colors.ToArray();
         }
 
         public ReportController(IAuthenticatedDataProvider data) : base(data)
