@@ -102,5 +102,37 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult GenderScoresChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.GenderScoresChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetGenderScoresReportData();
+
+                if (data.Any())
+                {
+                    var chart = GetHighchartsPie(data, "gender_score_pie", "Character Engagement by Gender", "Total Points for Characters", " points");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
+
+        public ActionResult PcNpcScoresChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.PcNpcScoresChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetPcNpcScoresReportData();
+
+                if (data.Any())
+                {
+                    var chart = GetHighchartsPie(data, "pc_npc_score_pie", "Character Engagement by Player Type", "Total Points for Characters", " points");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
     }
 }

@@ -52,7 +52,9 @@ namespace Warhammer.Core.Entities
         Reports,
         WordCountChart,
         PlayerWordCountChart,
-        CharacterGenderChart
+        CharacterGenderChart,
+        GenderScoresChart,
+        PcNpcScoresChart
     }
 
     public partial class SiteFeature

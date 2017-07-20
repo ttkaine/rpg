@@ -2152,40 +2152,49 @@ namespace Warhammer.Core.Concrete
 
         public List<ChartDataItem> GetWordcountReportData()
         {
-            List<ChartDataItem> counts = new List<ChartDataItem>();          
+            List<ChartDataItem> counts = new List<ChartDataItem>();
 
-            counts.Add(new ChartDataItem
+            if (_repository.Pages().OfType<Person>().Any())
             {
-                Name = "Characters",
-                Value = _repository.Pages().OfType<Person>().Sum(p => p.WordCount)
-            });
-
-            counts.Add(new ChartDataItem
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Characters",
+                    Value = _repository.Pages().OfType<Person>().Sum(p => p.WordCount)
+                });
+            }
+            if (_repository.Pages().OfType<Session>().Any())
             {
-                Name = "Sessions",
-                Value = _repository.Pages().OfType<Session>().Sum(p => p.WordCount)
-            });
-
-            counts.Add(new ChartDataItem
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Sessions",
+                    Value = _repository.Pages().OfType<Session>().Sum(p => p.WordCount)
+                });
+            }
+            if (_repository.Pages().OfType<SessionLog>().Any())
             {
-                Name = "Session Logs",
-                Value = _repository.Pages().OfType<SessionLog>().Sum(p => p.WordCount)
-            });
-
-            counts.Add(new ChartDataItem
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Session Logs",
+                    Value = _repository.Pages().OfType<SessionLog>().Sum(p => p.WordCount)
+                });
+            }
+            if (_repository.Pages().OfType<Place>().Any())
             {
-                Name = "Session Logs",
-                Value = _repository.Pages().OfType<Place>().Sum(p => p.WordCount)
-            });
-
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Session Logs",
+                    Value = _repository.Pages().OfType<Place>().Sum(p => p.WordCount)
+                });
+            }
             int othersTotal = counts.Sum(c => c.Value);
-
-            counts.Add(new ChartDataItem
+            if (_repository.Pages().OfType<Page>().Any())
             {
-                Name = "Other Pages",
-                Value = _repository.Pages().OfType<Page>().Sum(p => p.WordCount) - othersTotal
-            });
-
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Other Pages",
+                    Value = _repository.Pages().OfType<Page>().Sum(p => p.WordCount) - othersTotal
+                });
+            }
             return counts;
 
         }
@@ -2239,6 +2248,48 @@ namespace Warhammer.Core.Concrete
                 }
             }
 
+            return counts;
+        }
+
+        public List<ChartDataItem> GetGenderScoresReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+            var theData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Sum(c => c.CurrentScore) });
+
+            foreach (var datum in theData)
+            {
+                if (datum.Count > 0)
+                {
+                    counts.Add(new ChartDataItem
+                    {
+                        Name = ((Gender)datum.genderId).ToString(),
+                        Value = (int)datum.Count
+                    });
+                }
+            }
+
+            return counts;
+        }
+
+        public List<ChartDataItem> GetPcNpcScoresReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+            if (_repository.Pages().OfType<Person>().Any(p => p.PlayerId != null))
+            {
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Player Characters",
+                    Value = (int)_repository.Pages().OfType<Person>().Where(p => p.PlayerId != null).Sum(p => p.CurrentScore)
+                });
+            }
+            if (_repository.Pages().OfType<Person>().Any(p => p.PlayerId == null))
+            {
+                counts.Add(new ChartDataItem
+                {
+                    Name = "Non Player Characters",
+                    Value = (int)_repository.Pages().OfType<Person>().Where(p => p.PlayerId == null).Sum(p => p.CurrentScore)
+                });
+            }
             return counts;
         }
 

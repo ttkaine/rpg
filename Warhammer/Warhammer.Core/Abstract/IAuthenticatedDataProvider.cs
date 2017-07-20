@@ -173,5 +173,7 @@ namespace Warhammer.Core.Abstract
         List<ChartDataItem> GetWordcountReportData();
         List<ChartDataItem> GetPlayerWordcountReportData();
         List<ChartDataItem> GetCharacterGenderReportData();
+        List<ChartDataItem> GetGenderScoresReportData();
+        List<ChartDataItem> GetPcNpcScoresReportData();
     }
 }
