@@ -2293,6 +2293,30 @@ namespace Warhammer.Core.Concrete
             return counts;
         }
 
+        public List<ChartDataItem> GetPagesByPlayerReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+
+            List<Player> players = _repository.Players().ToList();
+
+            var theData = _repository.Pages().GroupBy(p => p.CreatedById).Select(g => new { playerId = g.Key, Words = g.Count() });
+
+            foreach (Player player in players)
+            {
+                int pageCount = theData.Where(d => d.playerId == player.Id).Select(d => d.Words).FirstOrDefault();
+                if (pageCount > 0)
+                {
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = player.DisplayName,
+                            Value = pageCount
+                        });
+                }
+            }
+
+            return counts;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

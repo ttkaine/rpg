@@ -122,6 +122,23 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        public ActionResult PagesByPlayerChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.PlayerPageChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetPagesByPlayerReportData();
+
+                if (data.Any())
+                {
+                    int sum = data.Sum(d => d.Value);
+                    var chart = GetHighchartsPie(data, "player_page_pie", $"{sum} pages on the site", "Created ", " pages");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
+
         public ActionResult PcNpcScoresChart()
         {
             if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.PcNpcScoresChart))
