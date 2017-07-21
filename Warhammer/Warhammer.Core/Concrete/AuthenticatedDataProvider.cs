@@ -2355,14 +2355,14 @@ namespace Warhammer.Core.Concrete
         public List<ChartDataItem> GetTopAwardsReportData()
         {
             List<ChartDataItem> counts = new List<ChartDataItem>();
-
+            int campaginId = Campaign.Id;
             var trophyData = _repository.Trophies()
                 .Where(t => t.Awards.Any())
                // .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
-                .OrderByDescending(t => t.Awards.Count)
+                .OrderByDescending(t => t.Awards.Count(a => a.CampaignId == campaginId))
                 .Take(20)
                 .OrderByDescending(t => t.PointsValue)
-                .Select(a => new { trophy = a.Name, count = a.Awards.Count });
+                .Select(a => new { trophy = a.Name, count = a.Awards.Count(b => b.CampaignId == campaginId) });
 
             foreach (var datum in trophyData)
             {
