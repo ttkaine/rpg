@@ -132,7 +132,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 List<ChartDataItem> data = DataProvider.GetPlayerWordcountReportData();
 
-                if (data.Any())
+                if (data.Count > 1)
                 {
                     var chart = GetHighchartsPie(data, "playerwordcount_pie", "Wordcount by Player (approx)", "Words", " words", "About ");
                     return PartialView("Chart", chart);
@@ -148,7 +148,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 List<ChartDataItem> data = DataProvider.GetCharacterGenderReportData();
 
-                if (data.Any())
+                if (data.Count > 1)
                 {
                     int sum = data.Sum(d => d.Value);
                     var chart = GetHighchartsPie(data, "characterGender_pie", $"{sum} characters on the site", "Number of Characters", " characters");
@@ -165,7 +165,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 List<ChartDataItem> data = DataProvider.GetGenderScoresReportData();
 
-                if (data.Any())
+                if (data.Count > 1)
                 {
                     int sum = data.Sum(d => d.Value);
                     var chart = GetHighchartsPie(data, "gender_score_pie", $"{sum} points awarded to characters", "Total Points for Characters", " points");
@@ -182,7 +182,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 List<ChartDataItem> data = DataProvider.GetPagesByPlayerReportData();
 
-                if (data.Any())
+                if (data.Count > 1)
                 {
                     int sum = data.Sum(d => d.Value);
                     var chart = GetHighchartsPie(data, "player_page_pie", $"{sum} pages on the site", "Created ", " pages");
@@ -199,7 +199,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 List<ChartDataItem> data = DataProvider.GetTopAwardsReportData();
 
-                if (data.Any())
+                if (data.Count > 1)
                 {
                     int sum = DataProvider.TotalAwardCount();
                     var chart = GetHighchartsPie(data, "top_awards_pie", $"{sum} Trophies Awarded", "Trophy ", " times", "Awarded ");

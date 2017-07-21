@@ -2358,9 +2358,10 @@ namespace Warhammer.Core.Concrete
 
             var trophyData = _repository.Trophies()
                 .Where(t => t.Awards.Any())
-                .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
+               // .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
                 .OrderByDescending(t => t.Awards.Count)
-                .Take(10)
+                .Take(20)
+                .OrderByDescending(t => t.PointsValue)
                 .Select(a => new { trophy = a.Name, count = a.Awards.Count });
 
             foreach (var datum in trophyData)
