@@ -2292,7 +2292,7 @@ namespace Warhammer.Core.Concrete
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gender), gender, null);
             }
-            return isPlayer ? color : color.Lerp(Color.White,0.50f);
+            return isPlayer ? color : color.Lerp(Color.White,0.30f);
         }
 
         public List<ChartDataItem> GetGenderScoresReportData()
