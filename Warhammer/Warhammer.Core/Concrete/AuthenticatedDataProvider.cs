@@ -22,6 +22,7 @@ namespace Warhammer.Core.Concrete
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
         private readonly ISiteFeatureProvider _feature;
+        private readonly ICurrentCampaignProvider _campaignProvider;
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
         private List<int> _myPageIds;
@@ -58,13 +59,14 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICurrentCampaignProvider campaignProvider)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
             _feature = feature;
+            _campaignProvider = campaignProvider;
 
             if (_authenticatedUser.UserIsAuthenticated)
             {
@@ -2355,7 +2357,7 @@ namespace Warhammer.Core.Concrete
         public List<ChartDataItem> GetTopAwardsReportData()
         {
             List<ChartDataItem> counts = new List<ChartDataItem>();
-            int campaginId = Campaign.Id;
+            int campaginId = _campaignProvider.CurrentCampaignId;
             var trophyData = _repository.Trophies()
                 .Where(t => t.Awards.Any())
                // .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
