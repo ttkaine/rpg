@@ -2352,6 +2352,34 @@ namespace Warhammer.Core.Concrete
             return counts;
         }
 
+        public List<ChartDataItem> GetTopAwardsReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+
+            var trophyData = _repository.Trophies()
+                .Where(t => t.Awards.Any())
+                .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
+                .OrderByDescending(t => t.Awards.Count)
+                .Take(10)
+                .Select(a => new { trophy = a.Name, count = a.Awards.Count });
+
+            foreach (var datum in trophyData)
+            {
+                counts.Add(new ChartDataItem
+                {
+                    Name = datum.trophy.Replace("'","`"),
+                    Value = datum.count
+                });
+            }
+
+            return counts;
+        }
+
+        public int TotalAwardCount()
+        {
+            return _repository.Awards().Count();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

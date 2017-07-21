@@ -192,5 +192,22 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult TopAwardsChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.TopAwardsChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetTopAwardsReportData();
+
+                if (data.Any())
+                {
+                    int sum = DataProvider.TotalAwardCount();
+                    var chart = GetHighchartsPie(data, "top_awards_pie", $"{sum} Trophies Awarded", "Trophy ", " times", "Awarded ");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
     }
 }
