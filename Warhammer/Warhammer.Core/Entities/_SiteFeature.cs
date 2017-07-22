@@ -56,7 +56,8 @@ namespace Warhammer.Core.Entities
         GenderScoresChart,
         PcNpcScoresChart,
         PlayerPageChart,
-        TopAwardsChart
+        TopAwardsChart,
+        PlayerTextPostChart
     }
 
     public partial class SiteFeature

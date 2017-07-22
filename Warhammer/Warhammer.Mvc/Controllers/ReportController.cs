@@ -38,12 +38,12 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
-        private static Highcharts GetHighchartsPie(List<ChartDataItem> data, string name, string title, string seriesName, string tooltipSuffix = "", string tooltipPrefix = "")
+        private Highcharts GetHighchartsPie(List<ChartDataItem> data, string name, string title, string seriesName, string tooltipSuffix = "", string tooltipPrefix = "")
         {
             Series pieSeries = new Series();
             pieSeries.Name = seriesName;
 
-            Color[] colors = GetDefaultColors(data.Count);
+            Color[] colors = DataProvider.GetDefaultColors(data.Count);
             if (data.Any(d => !d.Color.IsEmpty))
             {
                 colors = data.Select(d => d.Color).ToArray();
@@ -76,52 +76,6 @@ namespace Warhammer.Mvc.Controllers
             return chart;
         }
 
-        private static Color[] GetDefaultColors(int count)
-        {
-            List<Color> colors = new List<Color>();
-            for (int i = 0; i < count; i++)
-            {
-                switch (i % 10)
-                {
-                    case 0:
-                        colors.Add(Color.Black);
-                        break;
-                    case 1:
-                        colors.Add(Color.BlueViolet);
-                        break;
-                    case 2:
-                        colors.Add(Color.Blue);
-                        break;
-                    case 3:
-                        colors.Add(Color.DarkCyan);
-                        break;
-                    case 4:
-                        colors.Add(Color.Green);
-                        break;
-                    case 5:
-                        colors.Add(Color.YellowGreen);
-                        break;
-                    case 6:
-                        colors.Add(Color.Gold);
-                        break;
-                    case 7:
-                        colors.Add(Color.Orange);
-                        break;
-                    case 8:
-                        colors.Add(Color.OrangeRed);
-                        break;
-                    case 9:
-                        colors.Add(Color.Red);
-                        break;
-                    default:
-                        break;
-
-
-                }
-            }
-            return colors.ToArray();
-        }
-
         public ReportController(IAuthenticatedDataProvider data) : base(data)
         {
         }
@@ -135,6 +89,23 @@ namespace Warhammer.Mvc.Controllers
                 if (data.Count > 1)
                 {
                     var chart = GetHighchartsPie(data, "playerwordcount_pie", "Wordcount by Player (approx)", "Words", " words", "About ");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
+
+        public ActionResult PlayerTextPostChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.PlayerTextPostChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetPlayerTextPostReportData();
+
+                if (data.Count > 1)
+                {
+                    int sum = data.Sum(d => d.Value);
+                    var chart = GetHighchartsPie(data, "playertextpost_pie", $"{sum} total posts in Text Sessions", "Posts", " posts", "About ");
                     return PartialView("Chart", chart);
                 }
 

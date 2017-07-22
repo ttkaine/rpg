@@ -2383,6 +2383,102 @@ namespace Warhammer.Core.Concrete
             return _repository.Awards().Count();
         }
 
+        public List<ChartDataItem> GetPlayerTextPostReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+
+            List<Player> players = _repository.Players().ToList();
+
+            if (players.Count > 0)
+            {
+                int topPlayerId = players.OrderByDescending(p => p.Id).First().Id;
+                Color[] colors = GetDefaultColors(topPlayerId);
+                
+                
+                var theIcData =
+                    _repository.Posts()
+                        .Where(p => p.PostType == (int) PostType.InCharacter)
+                        .GroupBy(p => p.PlayerId)
+                        .Select(g => new {playerId = g.Key, Count = g.Count()});
+                var theOocData =
+                    _repository.Posts()
+                        .Where(p => p.PostType == (int) PostType.OutOfCharacter)
+                        .GroupBy(p => p.PlayerId)
+                        .Select(g => new {playerId = g.Key, Count = g.Count()});
+
+                foreach (Player player in players)
+                {
+                    int postCount = theIcData.Where(d => d.playerId == player.Id).Select(d => d.Count).FirstOrDefault();
+                    if (postCount > 0)
+                    {
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = $"{player.DisplayName} (In Character)",
+                            Value = postCount,
+                            Color = colors[player.Id - 1]
+                        });
+                    }
+                    postCount = theOocData.Where(d => d.playerId == player.Id).Select(d => d.Count).FirstOrDefault();
+                    if (postCount > 0)
+                    {
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = $"{player.DisplayName} (OOC)",
+                            Value = postCount,
+                            Color = colors[player.Id -1].Lerp(Color.White, 0.3f)
+                        });
+                    }
+                }
+            }
+            return counts;
+        }
+
+        public Color[] GetDefaultColors(int count)
+        {
+            List<Color> colors = new List<Color>();
+            for (int i = 0; i < count; i++)
+            {
+                switch (i % 10)
+                {
+                    case 0:
+                        colors.Add(Color.Black);
+                        break;
+                    case 1:
+                        colors.Add(Color.BlueViolet);
+                        break;
+                    case 2:
+                        colors.Add(Color.Blue);
+                        break;
+                    case 3:
+                        colors.Add(Color.DarkCyan);
+                        break;
+                    case 4:
+                        colors.Add(Color.Green);
+                        break;
+                    case 5:
+                        colors.Add(Color.YellowGreen);
+                        break;
+                    case 6:
+                        colors.Add(Color.Gold);
+                        break;
+                    case 7:
+                        colors.Add(Color.Orange);
+                        break;
+                    case 8:
+                        colors.Add(Color.OrangeRed);
+                        break;
+                    case 9:
+                        colors.Add(Color.Red);
+                        break;
+                    default:
+                        break;
+
+
+                }
+            }
+            return colors.ToArray();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

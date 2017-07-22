@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Web.Mvc;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
@@ -177,5 +178,7 @@ namespace Warhammer.Core.Abstract
         List<ChartDataItem> GetPagesByPlayerReportData();
         List<ChartDataItem> GetTopAwardsReportData();
         int TotalAwardCount();
+        List<ChartDataItem> GetPlayerTextPostReportData();
+        Color[] GetDefaultColors(int count);
     }
 }
