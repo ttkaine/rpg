@@ -55,7 +55,8 @@ namespace Warhammer.Mvc.Controllers
             DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts(name)
                 .InitChart(new Chart
                 {
-                    DefaultSeriesType = ChartTypes.Pie
+                    DefaultSeriesType = ChartTypes.Pie,
+                    
                 })
                 .SetTitle(new Title {Text = title })
                 .SetTooltip(new Tooltip
@@ -73,6 +74,7 @@ namespace Warhammer.Mvc.Controllers
                     }
                 })
                 .SetSeries(pieSeries);
+            chart.SetCredits(new Credits {Enabled = false});
             return chart;
         }
 
