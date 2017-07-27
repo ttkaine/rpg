@@ -2226,13 +2226,19 @@ namespace Warhammer.Core.Concrete
                         counts.Add(new ChartDataItem
                         {
                             Name = player.DisplayName,
-                            Value = roundedCount
+                            Value = roundedCount,
+                            Color = GetChartColorFor(player)
                         });
                     }
                 }
             }
 
             return counts;
+        }
+
+        private Color GetChartColorFor(Player player)
+        {
+            return GetDefaultColors(player.Id).Last();
         }
 
         public List<ChartDataItem> GetCharacterGenderReportData()
@@ -2346,7 +2352,8 @@ namespace Warhammer.Core.Concrete
                         counts.Add(new ChartDataItem
                         {
                             Name = player.DisplayName,
-                            Value = pageCount
+                            Value = pageCount,
+                            Color = GetChartColorFor(player)
                         });
                 }
             }
@@ -2393,8 +2400,13 @@ namespace Warhammer.Core.Concrete
             {
                 int topPlayerId = players.OrderByDescending(p => p.Id).First().Id;
                 Color[] colors = GetDefaultColors(topPlayerId);
-                
-                
+
+
+                var theGmData =
+                    _repository.Posts()
+                        .Where(p => p.PostType == (int)PostType.GmInCharacter)
+                        .GroupBy(p => p.PlayerId)
+                        .Select(g => new { playerId = g.Key, Count = g.Count() });
                 var theIcData =
                     _repository.Posts()
                         .Where(p => p.PostType == (int) PostType.InCharacter)
@@ -2405,10 +2417,27 @@ namespace Warhammer.Core.Concrete
                         .Where(p => p.PostType == (int) PostType.OutOfCharacter)
                         .GroupBy(p => p.PlayerId)
                         .Select(g => new {playerId = g.Key, Count = g.Count()});
+                var diceData =
+                    _repository.Posts()
+                        .Where(p => p.PostType == (int)PostType.DiceRoll)
+                        .GroupBy(p => p.PlayerId)
+                        .Select(g => new { playerId = g.Key, Count = g.Count() });
 
                 foreach (Player player in players)
                 {
-                    int postCount = theIcData.Where(d => d.playerId == player.Id).Select(d => d.Count).FirstOrDefault();
+
+                    int postCount = theGmData.Where(d => d.playerId == player.Id).Select(d => d.Count).FirstOrDefault();
+                    if (postCount > 0)
+                    {
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = $"{player.DisplayName} (GM)",
+                            Value = postCount,
+                            Color = colors[player.Id - 1].Lerp(Color.Black, 0.3f)
+                        });
+                    }
+
+                    postCount = theIcData.Where(d => d.playerId == player.Id).Select(d => d.Count).FirstOrDefault();
                     if (postCount > 0)
                     {
                         counts.Add(new ChartDataItem
@@ -2426,6 +2455,16 @@ namespace Warhammer.Core.Concrete
                             Name = $"{player.DisplayName} (OOC)",
                             Value = postCount,
                             Color = colors[player.Id -1].Lerp(Color.White, 0.3f)
+                        });
+                    }
+                    postCount = diceData.Where(d => d.playerId == player.Id).Select(d => d.Count).FirstOrDefault();
+                    if (postCount > 0)
+                    {
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = $"{player.DisplayName} (Dice Rolls)",
+                            Value = postCount,
+                            Color = colors[player.Id - 1].Lerp(Color.White, 0.6f)
                         });
                     }
                 }

@@ -107,7 +107,7 @@ namespace Warhammer.Mvc.Controllers
                 if (data.Count > 1)
                 {
                     int sum = data.Sum(d => d.Value);
-                    var chart = GetHighchartsPie(data, "playertextpost_pie", $"{sum} total posts in Text Sessions", "Posts", " posts", "About ");
+                    var chart = GetHighchartsPie(data, "playertextpost_pie", $"{sum} total posts in Text Sessions", "Posts", " posts");
                     return PartialView("Chart", chart);
                 }
 
