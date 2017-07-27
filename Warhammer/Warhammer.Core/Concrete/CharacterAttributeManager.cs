@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Warhammer.Core.Abstract;
@@ -394,12 +395,31 @@ namespace Warhammer.Core.Concrete
 
         public bool RefreshWear(int personId)
         {
+            Player player = _repo.Players().FirstOrDefault(p => p.UserName == _user.UserName);
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
                 foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.AttributeType == AttributeType.Wear || a.AttributeType == AttributeType.Edge))
                 {
                     personPersonAttribute.Name = null;
+                }
+
+                List<Session> openTextSessions = person.Sessions.Where(s => s.IsTextSession && !s.IsClosed).ToList();
+
+                foreach (Session session in openTextSessions)
+                {
+                    session.Posts.Add(new Post
+                    {
+                        PostType = (int) PostType.OutOfCharacter,
+                        OriginalContent = $"WEAR REFRESHED FOR {person.FullName}",
+                        SessionId = session.Id,
+                        CampaignId = person.CampaignId,
+                        DatePosted = DateTime.Now,
+                        PlayerId = player.Id,
+                        RevisedContent = "",
+                        RollValues = ""
+                    });
+                    _repo.Save(session);
                 }
 
                 _repo.Save(person);
@@ -411,12 +431,32 @@ namespace Warhammer.Core.Concrete
 
         public bool ApplyWear(int personId, int attributeId)
         {
+            Player player = _repo.Players().FirstOrDefault(p => p.UserName == _user.UserName);
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
+                List<Session> openTextSessions = person.Sessions.Where(s => s.IsTextSession && !s.IsClosed).ToList();
+
                 foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.Id == attributeId))
                 {
                     personPersonAttribute.Name = "Exhausted";
+
+                    foreach (Session session in openTextSessions)
+                    {
+                        session.Posts.Add(new Post
+                        {
+                            PostType = (int)PostType.OutOfCharacter,
+                            OriginalContent = $"{personPersonAttribute.AttributeType} ({personPersonAttribute.CurrentValue}) Exhaused FOR {person.FullName}",
+                            SessionId = session.Id,
+                            CampaignId = person.CampaignId,
+                            DatePosted = DateTime.Now,
+                            PlayerId = player.Id,
+                            RevisedContent =  "",
+                            RollValues = ""
+                        });
+                        _repo.Save(session);
+                    }
+
                 }
 
                 _repo.Save(person);
