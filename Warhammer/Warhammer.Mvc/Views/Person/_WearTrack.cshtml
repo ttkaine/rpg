@@ -100,6 +100,47 @@
             <input type="submit" value="Refresh" class="btn btn-block btn-success"/>
         }
     }
+    
+    
+
+    <table class="table attribute-table">
+
+        @foreach (PersonAttributeAdvanceModel harm in Model.Harm)
+        {
+            if (harm.Exhausted)
+            {
+                <tr>
+                    <td>@harm.PersonAttribute.Name</td>
+                    <td><span class="personAttribute label label-danger">@harm.DisplayValue</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        @using (Ajax.BeginForm("RefreshHarm", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="hidden" value="@harm.PersonAttribute.Id" name="attributeId" />
+                            <input type="submit" value="Refresh @harm.Name" class="btn btn-block btn-success" />
+                        }
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">
+                        @using (Ajax.BeginForm("ApplyHarm", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="hidden" value="@harm.PersonAttribute.Id" name="attributeId" />
+                            <input type="text" placeholder="What kind of harm?" class="form-control" name="harmMessage"/>
+                            <input type="submit" value="@harm.DisplayValue" class="btn btn-block btn-success" />
+                        }
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
 
 
 </div>

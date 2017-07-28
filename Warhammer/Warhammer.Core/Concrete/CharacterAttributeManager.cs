@@ -438,6 +438,44 @@ namespace Warhammer.Core.Concrete
             return false;
         }
 
+        public bool ApplyHarm(int personId, int attributeId, string harmMessage)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.Id == attributeId))
+                {
+                    personPersonAttribute.Name = harmMessage;
+                    string message = $"{personPersonAttribute.AttributeType} ({personPersonAttribute.CurrentValue}) Exhaused for {person.FullName}: {harmMessage}";
+                    PostToTextSessions(person, message);
+                }
+
+                _repo.Save(person);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool RefreshHarm(int personId, int attributeId)
+        {
+            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.Id == attributeId))
+                {
+                    personPersonAttribute.Name = null;
+                    string message = $"{personPersonAttribute.AttributeType} ({personPersonAttribute.CurrentValue}) refreshed for {person.FullName}";
+                    PostToTextSessions(person, message);
+                }
+
+                _repo.Save(person);
+
+                return true;
+            }
+            return false;
+        }
+
         private void PostToTextSessions(Person person, string message)
         {
             int playerId = _repo.Players().Single(p => p.UserName == _user.UserName).Id;

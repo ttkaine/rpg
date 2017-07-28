@@ -14,6 +14,8 @@ namespace Warhammer.Core.Abstract
         void ResetAttributes(int id);
         bool RefreshWear(int personId);
         bool ApplyWear(int personId, int attributeId);
+        bool ApplyHarm(int personId, int attributeId, string harmMessage);
+        bool RefreshHarm(int personId, int attributeId);
         bool SetDefaultWearAndHarm(int personId);
         bool SetAttributeVisibility(int personId, int attributeId, bool isVisible);
         bool AlterWishingWell(int personId, int amount);
