@@ -961,11 +961,43 @@ namespace Warhammer.Mvc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Player")]
+        public ActionResult RefreshHarm(int personId, int attributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.RefreshHarm(personId, attributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
         public ActionResult ApplyWear(int personId, int attributeId)
         {
             if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
                 bool success = _attributeManager.ApplyWear(personId, attributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult ApplyHarm(int personId, int attributeId, string harmMessage)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.ApplyHarm(personId, attributeId, harmMessage);
                 CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
                 if (model != null)
                 {
