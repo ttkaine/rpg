@@ -404,23 +404,7 @@ namespace Warhammer.Core.Concrete
                     personPersonAttribute.Name = null;
                 }
 
-                List<Session> openTextSessions = person.Sessions.Where(s => s.IsTextSession && !s.IsClosed).ToList();
-
-                foreach (Session session in openTextSessions)
-                {
-                    session.Posts.Add(new Post
-                    {
-                        PostType = (int) PostType.OutOfCharacter,
-                        OriginalContent = $"WEAR REFRESHED FOR {person.FullName}",
-                        SessionId = session.Id,
-                        CampaignId = person.CampaignId,
-                        DatePosted = DateTime.Now,
-                        PlayerId = player.Id,
-                        RevisedContent = "",
-                        RollValues = ""
-                    });
-                    _repo.Save(session);
-                }
+                PostToTextSessions(person, $"Wear and Edge refreshed for {person.FullName}.");
 
                 _repo.Save(person);
 
@@ -431,32 +415,20 @@ namespace Warhammer.Core.Concrete
 
         public bool ApplyWear(int personId, int attributeId)
         {
-            Player player = _repo.Players().FirstOrDefault(p => p.UserName == _user.UserName);
+            
             Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
-                List<Session> openTextSessions = person.Sessions.Where(s => s.IsTextSession && !s.IsClosed).ToList();
+                
 
                 foreach (PersonAttribute personPersonAttribute in person.PersonAttributes.Where(a => a.Id == attributeId))
                 {
                     personPersonAttribute.Name = "Exhausted";
 
-                    foreach (Session session in openTextSessions)
-                    {
-                        session.Posts.Add(new Post
-                        {
-                            PostType = (int)PostType.OutOfCharacter,
-                            OriginalContent = $"{personPersonAttribute.AttributeType} ({personPersonAttribute.CurrentValue}) Exhaused FOR {person.FullName}",
-                            SessionId = session.Id,
-                            CampaignId = person.CampaignId,
-                            DatePosted = DateTime.Now,
-                            PlayerId = player.Id,
-                            RevisedContent =  "",
-                            RollValues = ""
-                        });
-                        _repo.Save(session);
-                    }
+                    string message =
+                        $"{personPersonAttribute.AttributeType} ({personPersonAttribute.CurrentValue}) Exhaused for {person.FullName}";
 
+                    PostToTextSessions(person, message);
                 }
 
                 _repo.Save(person);
@@ -464,6 +436,27 @@ namespace Warhammer.Core.Concrete
                 return true;
             }
             return false;
+        }
+
+        private void PostToTextSessions(Person person, string message)
+        {
+            int playerId = _repo.Players().Single(p => p.UserName == _user.UserName).Id;
+            List<Session> openTextSessions = person.Sessions.Where(s => s.IsTextSession && !s.IsClosed).ToList();
+            foreach (Session session in openTextSessions)
+            {
+                session.Posts.Add(new Post
+                {
+                    PostType = (int) PostType.OutOfCharacter,
+                    OriginalContent = message,
+                    SessionId = session.Id,
+                    CampaignId = person.CampaignId,
+                    DatePosted = DateTime.Now,
+                    PlayerId = playerId,
+                    RevisedContent = "",
+                    RollValues = "",
+                });
+                _repo.Save(session);
+            }
         }
 
         public bool SetDefaultWearAndHarm(int personId)
@@ -506,6 +499,9 @@ namespace Warhammer.Core.Concrete
             {
                 person.WishingWell = person.WishingWell + amount;
                 _repo.Save(person);
+                string message = $"Wishing Well changed by {amount} for {person.FullName}. New Value: {person.WishingWell}";
+                PostToTextSessions(person, message);
+
                 return true;
             }
 
@@ -529,14 +525,7 @@ namespace Warhammer.Core.Concrete
         {
             if (!person.IsNpc)
             {
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Wear,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 2,
-                    CurrentValue = 2
-                });
+
 
                 person.PersonAttributes.Add(new PersonAttribute
                 {
@@ -556,6 +545,15 @@ namespace Warhammer.Core.Concrete
                     CurrentValue = 4
                 });
             }
+
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Wear,
+                Name = "",
+                Description = "",
+                InitialValue = 2,
+                CurrentValue = 2
+            });
 
             person.PersonAttributes.Add(new PersonAttribute
             {
