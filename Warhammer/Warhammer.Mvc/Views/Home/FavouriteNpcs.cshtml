@@ -36,11 +36,14 @@
 
             </table>
 
+            <span>First Favourite</span>
             @Html.DropDownListFor(m => Model.FirstId, Model.ChooseFirstNpcList)
-
+            <span>Second Favourite</span>
             @Html.DropDownListFor(m => Model.SecondId, Model.ChooseSecondNpcList)
-
+            <span>Third Favourite</span>
             @Html.DropDownListFor(m => Model.ThirdId, Model.ChooseThirdNpcList)
+            <span>Nemisis</span>
+            @Html.DropDownListFor(m => Model.NemisisId, Model.ChooseNemisisNpcList)
 
             <input type="submit" value="Set Favourites" class="btn btn-block btn-success"/>
         }
@@ -72,6 +75,14 @@
             else
             {
                 @Html.DisplayFor(m => Model.Third)
+            }
+            @if (Model.Nemisis == null)
+            {
+                <tr><td colspan="2">No Nemisis NPC selected - go into edit mode and choose one!</td></tr>
+            }
+            else
+            {
+                @Html.DisplayFor(m => Model.Nemisis)
             }
 
         </table>

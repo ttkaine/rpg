@@ -8,8 +8,8 @@
         FirstFavouriteNpc = 3,
         SecondFavouriteNpc = 4,
         ThirdFavouriteNpc = 5,
-        LeadWeightAward = 6
-
+        LeadWeightAward = 6,
+        NemesisAward = 7,
     }
 
     public partial class Trophy

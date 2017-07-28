@@ -202,7 +202,8 @@ namespace Warhammer.Mvc.Controllers
             {
                 First = DataProvider.PersonWithMyAward(TrophyType.FirstFavouriteNpc),
                 Second = DataProvider.PersonWithMyAward(TrophyType.SecondFavouriteNpc),
-                Third = DataProvider.PersonWithMyAward(TrophyType.ThirdFavouriteNpc)
+                Third = DataProvider.PersonWithMyAward(TrophyType.ThirdFavouriteNpc),
+                Nemisis = DataProvider.PersonWithMyAward(TrophyType.NemesisAward),
             };
 
             if (model.First != null)
@@ -234,6 +235,16 @@ namespace Warhammer.Mvc.Controllers
             {
                 model.ChooseThirdNpcList = new SelectList(npcs, "Id", "FullName");
             }
+
+            if (model.Nemisis != null)
+            {
+                model.NemisisId = model.Nemisis.Id;
+                model.ChooseNemisisNpcList = new SelectList(npcs, "Id", "FullName", model.Nemisis.Id);
+            }
+            else
+            {
+                model.ChooseNemisisNpcList = new SelectList(npcs, "Id", "FullName");
+            }
             return model;
         }
 
@@ -246,6 +257,10 @@ namespace Warhammer.Mvc.Controllers
                 DataProvider.SetMyAward(model.ThirdId, TrophyType.ThirdFavouriteNpc);
                 DataProvider.SetMyAward(model.SecondId, TrophyType.SecondFavouriteNpc);
                 DataProvider.SetMyAward(model.FirstId, TrophyType.FirstFavouriteNpc);
+                if (model.NemisisId > 0)
+                {
+                    DataProvider.SetMyAward(model.NemisisId, TrophyType.NemesisAward);
+                }
             }
             ModelState.Clear();
             var favModel = MyFavNpcModel();

@@ -35,11 +35,15 @@ namespace Warhammer.Core.Entities
                 var property = added.GetType().GetProperty("CampaignId");
                 if (property != null)
                 {
-                    string propValue = property.GetValue(added).ToString();
-
-                    if (propValue == "0")
+                    var propvalue = property.GetValue(added);
+                    if (propvalue != null)
                     {
-                        property.SetValue(added, CurrentCampaignId, null);
+                        string propValue = property.GetValue(added).ToString();
+
+                        if (propValue == "0")
+                        {
+                            property.SetValue(added, CurrentCampaignId, null);
+                        }
                     }
                 }
             }

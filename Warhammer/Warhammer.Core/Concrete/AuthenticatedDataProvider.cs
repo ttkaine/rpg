@@ -2134,7 +2134,8 @@ namespace Warhammer.Core.Concrete
                 .Where(p => p.PlayerId == null)
                 .Where(p => p.Awards.Any(a => a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc ||
                                               a.Trophy.TypeId == (int)TrophyType.SecondFavouriteNpc ||
-                                              a.Trophy.TypeId == (int)TrophyType.ThirdFavouriteNpc));
+                                              a.Trophy.TypeId == (int)TrophyType.ThirdFavouriteNpc ||
+                                              a.Trophy.TypeId == (int)TrophyType.NemesisAward));
 
             if (ShadowMode)
             {
@@ -2879,6 +2880,7 @@ namespace Warhammer.Core.Concrete
                 (int)TrophyType.FirstFavouriteNpc,
                 (int)TrophyType.SecondFavouriteNpc,
                 (int)TrophyType.ThirdFavouriteNpc,
+                (int)TrophyType.NemesisAward,
             };
 
             if (favAwardId.Contains((int)trophyType))

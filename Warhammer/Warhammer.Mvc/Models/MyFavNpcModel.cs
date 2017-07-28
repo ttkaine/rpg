@@ -13,6 +13,8 @@ namespace Warhammer.Mvc.Models
         public PageLinkModel Second { get; set; }
         [UIHint("FavNpc")]
         public PageLinkModel Third { get; set; }
+        [UIHint("FavNpc")]
+        public PageLinkModel Nemisis { get; set; }
 
         [Required]
         public int FirstId { get; set; }
@@ -21,8 +23,11 @@ namespace Warhammer.Mvc.Models
         [Required]
         public int ThirdId { get; set; }
 
+        public int NemisisId { get; set; }
+
         public SelectList ChooseFirstNpcList { get; set; }
         public SelectList ChooseSecondNpcList { get; set; }
         public SelectList ChooseThirdNpcList { get; set; }
+        public SelectList ChooseNemisisNpcList { get; set; }
     }
 }
