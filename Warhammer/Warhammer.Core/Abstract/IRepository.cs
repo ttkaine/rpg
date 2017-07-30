@@ -75,5 +75,7 @@ namespace Warhammer.Core.Abstract
         int Save(Award award);
         IQueryable<Person> AllPeople();
         IQueryable<ScoreHistory> AllScoreHistories();
+        int Save(AwardNomination awardNomination);
+        IQueryable<AwardNomination> AwardNominations();
     }
 }

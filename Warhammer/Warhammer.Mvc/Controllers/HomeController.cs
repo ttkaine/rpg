@@ -206,6 +206,9 @@ namespace Warhammer.Mvc.Controllers
                 Nemisis = DataProvider.PersonWithMyAward(TrophyType.NemesisAward),
             };
 
+            model.CanSetFavourites = DataProvider.SiteHasFeature(Feature.FavouritesGallery) &&
+                                     !DataProvider.SiteHasFeature(Feature.AwardNominations);
+
             if (model.First != null)
             {
                 model.FirstId = model.First.Id;

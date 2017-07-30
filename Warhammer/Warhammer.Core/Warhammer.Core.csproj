@@ -203,6 +203,9 @@
     <Compile Include="Entities\Award.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AwardNomination.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CampaignDetail.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>

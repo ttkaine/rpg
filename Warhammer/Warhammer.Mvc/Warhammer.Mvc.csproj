@@ -286,6 +286,7 @@
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
     <Compile Include="Models\SuspendPlayerItemViewModel.cs" />
     <Compile Include="Models\TrophyCabinetViewModel.cs" />
+    <Compile Include="Models\TrophyNominationViewModel.cs" />
     <Compile Include="Models\UserSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -295,6 +296,7 @@
     <Content Include="Content\darknet.css" />
     <Content Include="Content\DbUpdateScripts\17071801.sql" />
     <Content Include="Content\DbUpdateScripts\17072801.sql" />
+    <Content Include="Content\DbUpdateScripts\17073001.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -741,6 +743,8 @@
     <Content Include="Views\Gm\DisplayTemplates\NpcSheetViewModel.cshtml" />
     <Content Include="Views\Home\FavouritesGallery.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Person\AwardNominationPanel.cshtml" />
+    <Content Include="Views\Activity\DisplayTemplates\AwardNomination.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

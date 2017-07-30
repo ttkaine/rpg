@@ -128,6 +128,12 @@ namespace Warhammer.Mvc.Controllers
             List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
             return View(models);
         }
+
+        public ActionResult OutstandingAwardNominations()
+        {
+            List<AwardNomination> nominations = DataProvider.OutstandingNominations();
+            return View(nominations);
+        }
     }
 
 

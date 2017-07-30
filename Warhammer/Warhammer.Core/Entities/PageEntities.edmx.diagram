@@ -92,6 +92,10 @@
         <InheritanceConnector EntityType="WarhammerModel.Session" />
         <EntityTypeShape EntityType="WarhammerModel.PersonAttribute" Width="1.5" PointX="8.25" PointY="0.75" />
         <AssociationConnector Association="WarhammerModel.FK_PersonAttribute_Person" />
+        <EntityTypeShape EntityType="WarhammerModel.AwardNomination" Width="1.5" PointX="13.5" PointY="17.875" />
+        <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Trophy" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

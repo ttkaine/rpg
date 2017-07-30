@@ -180,5 +180,10 @@ namespace Warhammer.Core.Abstract
         int TotalAwardCount();
         List<ChartDataItem> GetPlayerTextPostReportData();
         Color[] GetDefaultColors(int count);
+        void SetAsNemisis(int id);
+        void SetAsTopFavourite(int personId);
+        void NominateForAward(int personId, int selectedAward, string reason);
+        List<AwardNomination> OutstandingNominationsForPerson(int personId);
+        List<AwardNomination> OutstandingNominations();
     }
 }
