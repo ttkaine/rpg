@@ -1128,7 +1128,7 @@ namespace Warhammer.Mvc.Controllers
 
                 if(person != null)
                 {
-                    List<Trophy> trophies = DataProvider.Trophies().ToList();
+                    List<Trophy> trophies = DataProvider.Trophies().Where(t => t.TrophyType == TrophyType.DefaultAward).ToList();
                     List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(id);
                     TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
 

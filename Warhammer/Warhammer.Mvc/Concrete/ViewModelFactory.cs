@@ -255,6 +255,11 @@ namespace Warhammer.Mvc.Concrete
             {
                 items.Add(new MenuItemViewModel
                 {
+                    Name = "Review Award Nominations",
+                    Url = _urlHelper.Action("OutstandingAwardNominations", "Gm"),
+                });
+                items.Add(new MenuItemViewModel
+                {
                     Name = "Outstanding Xp",
                     Url = _urlHelper.Action("OutstandingXp", "Gm"),
                 });

@@ -1,15 +1,15 @@
 ﻿@model Warhammer.Core.Entities.AwardNomination
 
-<li>
-    <div>
-        <div>
-            
 
-        </div>
-        <div class="panel panel-success">
+<div class="panel">
+    <div class="panel-heading">
+        <h3>@Model.Person.FullName nominated for @Model.Trophy.Name</h3>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-success">
             @using (Html.BeginForm("AcceptAwardNomination", "Gm", FormMethod.Post))
             {
-                <h3>Award Text:</h3>
+                <h4>Award Text:</h4>
                 <input type="text" value="@Model.NominationReason" name="NominationReason" class="form-control"/>
                 <h3>Comment</h3>
                 <input type="text" value="@Model.AcceptedReason" name="AcceptedReason" class="form-control"/>
@@ -18,14 +18,16 @@
                 <button class="btn btn-success btn-block" type="submit">Accept</button>
             }
         </div>
-        <div class="panel panel-danger">
+        <div class="alert alert-danger">
             @using (Html.BeginForm("RejectAwardNomination", "Gm", FormMethod.Post))
             {
-                <h3>Reject Comment</h3>
+                <h4>Reject Comment</h4>
                 <input type="text" value="@Model.RejectedReason" name="RejectedReason" class="form-control" />
                 <input type="hidden" name="Id" value="@Model.Id" />
-                <button class="btn btn-danger" type="submit">Reject</button>
+                <button class="btn btn-danger btn-block" type="submit">Reject</button>
             }
         </div>
     </div>
-</li>
+</div>
+
+<hr/>
