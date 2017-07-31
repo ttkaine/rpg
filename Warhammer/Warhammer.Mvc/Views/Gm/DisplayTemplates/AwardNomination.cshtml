@@ -1,0 +1,27 @@
+﻿@model Warhammer.Core.Entities.AwardNomination
+
+<li>
+    <div>
+        <div>
+            
+
+        </div>
+        <div class="panel panel-success">
+            @using (Html.BeginForm("AcceptAwardNomination", "Gm", FormMethod.Post))
+            {
+                @Html.EditorFor(m => m.AcceptedReason, new { @class = "form-control"})
+                @Html.HiddenFor(m => m.Id)
+   
+                <button class="btn btn-success btn-block" type="submit">Accept</button>
+            }
+        </div>
+        <div class="panel panel-danger">
+            @using (Html.BeginForm("RejectAwardNomination", "Gm", FormMethod.Post))
+            {
+                @Html.EditorFor(m => m.RejectedReason, new { @class = "form-control" })
+                @Html.HiddenFor(m => m.Id)
+                <button class="btn btn-danger" type="submit">Reject</button>
+            }
+        </div>
+    </div>
+</li>

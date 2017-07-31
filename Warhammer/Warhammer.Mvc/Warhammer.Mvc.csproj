@@ -746,6 +746,7 @@
     <Content Include="Views\Person\AwardNominationPanel.cshtml" />
     <Content Include="Views\Activity\DisplayTemplates\AwardNomination.cshtml" />
     <Content Include="Views\Gm\OutstandingAwardNominations.cshtml" />
+    <Content Include="Views\Gm\DisplayTemplates\AwardNomination.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
