@@ -57,6 +57,12 @@ namespace Warhammer.Mvc.Concrete
                 {
                     return 6;
                 }
+
+
+                if (domain == "writing.sendingofeight.co.uk")
+                {
+                    return 7;
+                }
                 return 0;
 
             }
