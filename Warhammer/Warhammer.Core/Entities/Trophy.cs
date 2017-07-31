@@ -17,6 +17,7 @@ namespace Warhammer.Core.Entities
         public Trophy()
         {
             this.Awards = new HashSet<Award>();
+            this.AwardNominations = new HashSet<AwardNomination>();
         }
     
         public int Id { get; set; }
@@ -29,5 +30,6 @@ namespace Warhammer.Core.Entities
         public Nullable<int> CampaignId { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
+        public virtual ICollection<AwardNomination> AwardNominations { get; set; }
     }
 }

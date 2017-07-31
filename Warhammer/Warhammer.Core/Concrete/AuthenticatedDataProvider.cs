@@ -456,6 +456,13 @@ namespace Warhammer.Core.Concrete
             return query.Where(c => MyPageIds.Contains(c.PersonId) || c.Person.Pages.Any(r => MyPageIds.Contains(r.Id)));
         }
 
+
+        private IQueryable<AwardNomination> ApplyShadow(IQueryable<AwardNomination> query)
+        {
+            return query.Where(c => MyPageIds.Contains(c.PersonId) || c.Person.Pages.Any(r => MyPageIds.Contains(r.Id)));
+        }
+
+
         public ICollection<Page> MyStuff()
         {
             return _repository.Pages().Where(p => p.CreatedById == CurrentPlayer.Id).OrderByDescending(p => p.Created).ToList();
@@ -879,7 +886,7 @@ namespace Warhammer.Core.Concrete
             return _repository.Trophies().OrderBy(t => t.TypeId == (int)TrophyType.DefaultAward).ThenBy(t => t.TypeId).ThenByDescending(t => t.PointsValue).ThenBy(t => t.Name).ToList();
         }
 
-        public void AwardTrophy(int personId, int trophyId, string reason)
+        public void AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null)
         {
             Person person = GetPerson(personId);
             Trophy trophy = GetTrophy(trophyId);
@@ -890,7 +897,7 @@ namespace Warhammer.Core.Concrete
                     Trophy = trophy,
                     Reason = reason,
                     AwardedOn = DateTime.Now,
-                    NominatedBy = CurrentPlayer
+                    NominatedById = nominatedById ?? CurrentPlayerId
                 };
                 person.Awards.Add(award);
                 Save(person);
@@ -1197,6 +1204,7 @@ namespace Warhammer.Core.Concrete
 
             List<Award> awards = RecentAwards();
             List<Comment> comments = RecentComments();
+            List<AwardNomination> nominations = RecentNominations();
 
             Dictionary<DateTime, object> dateObject = new Dictionary<DateTime, object>();
 
@@ -1221,6 +1229,14 @@ namespace Warhammer.Core.Concrete
                 if (!dateObject.ContainsKey(comment.Created))
                 {
                     dateObject.Add(comment.Created, comment);
+                }
+            }
+
+            foreach (AwardNomination nomination in nominations)
+            {
+                if (nomination.NominatedDate.HasValue && !dateObject.ContainsKey(nomination.NominatedDate.Value))
+                {
+                    dateObject.Add(nomination.NominatedDate.Value, nomination);
                 }
             }
 
@@ -1259,6 +1275,20 @@ namespace Warhammer.Core.Concrete
 
             return results;
         }
+
+        private List<AwardNomination> RecentNominations()
+        {
+            var awardNominations = _repository.AwardNominations().Include(a => a.Person).Include(a => a.Trophy);
+
+            if (ShadowMode)
+            {
+                awardNominations = ApplyShadow(awardNominations);
+            }
+
+            List<AwardNomination> nominations = awardNominations.OrderByDescending(a => a.NominatedDate).Take(20).ToList();
+            return nominations;
+        }
+
 
         private List<Award> RecentAwards()
         {
@@ -2519,6 +2549,102 @@ namespace Warhammer.Core.Concrete
             return colors.ToArray();
         }
 
+        public void SetAsNemisis(int id)
+        {
+            SetMyAward(id, TrophyType.NemesisAward);
+        }
+
+        public void SetAsTopFavourite(int personId)
+        {
+            int playerId = CurrentPlayerId;
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                Award thridAward = _repository.Awards().FirstOrDefault(a => a.Trophy.TypeId == (int) TrophyType.ThirdFavouriteNpc && a.NominatedById == playerId);
+                if(thridAward !=null)
+                {
+                    RemoveAward(thridAward.PersonId, thridAward.Id);
+                }
+
+                Award secondAward = _repository.Awards().FirstOrDefault(a => a.Trophy.TypeId == (int)TrophyType.SecondFavouriteNpc && a.NominatedById == playerId);
+                if (secondAward != null)
+                {
+                    if (secondAward.PersonId == personId)
+                    {
+                        RemoveAward(secondAward.PersonId, secondAward.Id);
+                    }
+                    else
+                    {
+                        Trophy trophy = Trophies().FirstOrDefault(t => t.TypeId == (int) TrophyType.ThirdFavouriteNpc);
+                        if (trophy != null)
+                        {
+                            secondAward.TrophyId = trophy.Id;
+                            _repository.Save(secondAward);
+                        }
+                    }
+                }
+
+                Award firstAward = _repository.Awards().FirstOrDefault(a => a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc && a.NominatedById == playerId);
+                if (firstAward != null)
+                {
+                    Trophy trophy = Trophies().FirstOrDefault(t => t.TypeId == (int)TrophyType.SecondFavouriteNpc);
+                    if (trophy != null)
+                    {
+                        firstAward.TrophyId = trophy.Id;
+                        _repository.Save(firstAward);
+                    }
+                }
+
+                Trophy firstTrophy = Trophies().FirstOrDefault(t => t.TypeId == (int)TrophyType.FirstFavouriteNpc);
+                if (firstTrophy != null)
+                {
+                    AwardTrophy(personId, firstTrophy.Id, ": Awarded by " + CurrentPlayer.DisplayName);
+                }
+
+            }
+        }
+
+        public void NominateForAward(int personId, int selectedAward, string reason)
+        {
+            AwardNomination award = new AwardNomination
+            {
+                CampaignId = _campaignProvider.CurrentCampaignId,
+                NominationReason = reason,
+                NominatedById = CurrentPlayerId,
+                NominatedDate = DateTime.Now,
+                TrophyId = selectedAward,
+                PersonId = personId
+            };
+            _repository.Save(award);
+        }
+
+        public List<AwardNomination> OutstandingNominationsForPerson(int personId)
+        {
+            return _repository.AwardNominations().Where(a => !a.AwardedOn.HasValue && !a.RejectedOn.HasValue && a.PersonId == personId).ToList();
+        }
+
+        public List<AwardNomination> OutstandingNominations()
+        {
+            return _repository.AwardNominations().Where(a => !a.AwardedOn.HasValue && !a.RejectedOn.HasValue).ToList();
+        }
+
+        public void AcceptNomination(int nominationId, string acceptComment, string awardText)
+        {
+            AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
+            nomination.AwardedOn = DateTime.Now;
+            nomination.AcceptedReason = acceptComment;
+            AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById);
+            _repository.Save(nomination);
+        }
+
+        public void RejectNomination(int nominationId, string rejectedReason)
+        {
+            AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
+            nomination.RejectedOn = DateTime.Now;
+            nomination.RejectedReason = rejectedReason;
+            _repository.Save(nomination);
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -2880,7 +3006,6 @@ namespace Warhammer.Core.Concrete
                 (int)TrophyType.FirstFavouriteNpc,
                 (int)TrophyType.SecondFavouriteNpc,
                 (int)TrophyType.ThirdFavouriteNpc,
-                (int)TrophyType.NemesisAward,
             };
 
             if (favAwardId.Contains((int)trophyType))

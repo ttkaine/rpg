@@ -1119,5 +1119,86 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult AwardNominationPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.AwardNominations))
+            {
+                Person person = DataProvider.GetPerson(id);
+
+                if(person != null)
+                {
+                    List<Trophy> trophies = DataProvider.Trophies().ToList();
+                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(id);
+                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+
+                    return PartialView(model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult SetAsNemesis(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.AwardNominations))
+            {
+                DataProvider.SetAsNemisis(personId);
+
+                Person person = DataProvider.GetPerson(personId);
+
+                if (person != null)
+                {
+                    List<Trophy> trophies = DataProvider.Trophies().ToList();
+                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(personId);
+                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+
+                    return PartialView("AwardNominationPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult SetAsFavourite(int personId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.AwardNominations))
+            {
+                DataProvider.SetAsTopFavourite(personId);
+
+                Person person = DataProvider.GetPerson(personId);
+
+                if (person != null)
+                {
+                    List<Trophy> trophies = DataProvider.Trophies().ToList();
+                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(personId);
+                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+
+                    return PartialView("AwardNominationPanel", model);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult NominateForAward(int personId, string reason, int selectedTrophy)
+        {
+            if (DataProvider.SiteHasFeature(Feature.AwardNominations))
+            {
+                DataProvider.NominateForAward(personId, selectedTrophy, reason);
+
+                Person person = DataProvider.GetPerson(personId);
+
+                if (person != null)
+                {
+                    List<Trophy> trophies = DataProvider.Trophies().ToList();
+                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(personId);
+                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+                    ModelState.Clear();
+                    return PartialView("AwardNominationPanel", model);
+                }
+            }
+            return null;
+        }
     }
 }

@@ -59,5 +59,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<ScoreHistory> ScoreHistories { get; set; }
         public virtual DbSet<PostOrder> PostOrders { get; set; }
         public virtual DbSet<PersonAttribute> PersonAttributes { get; set; }
+        public virtual DbSet<AwardNomination> AwardNominations { get; set; }
     }
 }

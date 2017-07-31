@@ -90,7 +90,11 @@
     
     @if (!ViewBag.EditMode)
     {
-        @Html.Action("AwardHistory", "Person", new { id = Model.Id })
+        @Html.Action("AwardHistory", "Person", new {id = Model.Id})
+    }
+    else
+    {
+        @Html.Action("AwardNominationPanel", "Person", new { id = Model.Id })
     }
 
     <div class="content-block">

@@ -3,7 +3,7 @@
 
     <h3>My Favourite NPCs</h3>
 
-    @if (ViewBag.EditMode)
+    @if (ViewBag.EditMode && Model.CanSetFavourites)
     {
         using (Ajax.BeginForm("UpdateFavNpc", "Home", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "favNpcBlock" }))
         {
@@ -54,7 +54,7 @@
             
             @if (Model.First == null)
             {
-                <tr><td colspan="2">No favourite NPC selected - go into edit mode and choose one!</td></tr>
+                <tr><td colspan="2">No favourite NPC selected - go choose one!</td></tr>
             }
             else
             {
@@ -62,7 +62,7 @@
             }
             @if (Model.Second == null)
             {
-                <tr><td colspan="2">No second favourite NPC selected - go into edit mode and choose one!</td></tr>
+               
             }
             else
             {
@@ -70,7 +70,7 @@
             }
             @if (Model.Third == null)
             {
-                <tr><td colspan="2">No third favourite NPC selected - go into edit mode and choose one!</td></tr>
+               
             }
             else
             {
@@ -78,7 +78,7 @@
             }
             @if (Model.Nemisis == null)
             {
-                <tr><td colspan="2">No Nemisis NPC selected - go into edit mode and choose one!</td></tr>
+                <tr><td colspan="2">No Nemisis NPC selected - go choose one!</td></tr>
             }
             else
             {

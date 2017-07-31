@@ -645,6 +645,26 @@ namespace Warhammer.Core.Concrete
             return _entities.ScoreHistories;
         }
 
+        public int Save(AwardNomination awardNomination)
+        {
+            if (awardNomination.Id == 0)
+            {
+                _entities.AwardNominations.Add(awardNomination);
+            }
+            else
+            {
+                _entities.Entry(awardNomination).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return awardNomination.Id;
+        }
+
+        public IQueryable<AwardNomination> AwardNominations()
+        {
+            return _entities.AwardNominations.Where(a => a.CampaignId == CurrentCampaignId);
+        }
+
         public void Dispose()
         {
             Dispose(true);

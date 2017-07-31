@@ -29,5 +29,6 @@ namespace Warhammer.Mvc.Models
         public SelectList ChooseSecondNpcList { get; set; }
         public SelectList ChooseThirdNpcList { get; set; }
         public SelectList ChooseNemisisNpcList { get; set; }
+        public bool CanSetFavourites { get; set; }
     }
 }
