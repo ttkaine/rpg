@@ -134,6 +134,26 @@ namespace Warhammer.Mvc.Controllers
             List<AwardNomination> nominations = DataProvider.OutstandingNominations();
             return View(nominations);
         }
+
+        [HttpPost]
+        public ActionResult AcceptAwardNomination(AwardNomination nomination)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.AcceptNomination(nomination.Id, nomination.AcceptedReason, nomination.NominationReason);
+            }
+            return RedirectToAction("OutstandingAwardNominations");
+        }
+
+        [HttpPost]
+        public ActionResult RejectAwardNomination(AwardNomination nomination)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.RejectNomination(nomination.Id, nomination.RejectedReason);
+            }
+            return RedirectToAction("OutstandingAwardNominations");
+        }
     }
 
 

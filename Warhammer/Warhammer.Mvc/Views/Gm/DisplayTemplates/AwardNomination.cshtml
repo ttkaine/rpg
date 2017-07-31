@@ -9,8 +9,11 @@
         <div class="panel panel-success">
             @using (Html.BeginForm("AcceptAwardNomination", "Gm", FormMethod.Post))
             {
-                @Html.EditorFor(m => m.AcceptedReason, new { @class = "form-control"})
-                @Html.HiddenFor(m => m.Id)
+                <h3>Award Text:</h3>
+                <input type="text" value="@Model.NominationReason" name="NominationReason" class="form-control"/>
+                <h3>Comment</h3>
+                <input type="text" value="@Model.AcceptedReason" name="AcceptedReason" class="form-control"/>
+                <input type="hidden" name="Id" value="@Model.Id"/>
    
                 <button class="btn btn-success btn-block" type="submit">Accept</button>
             }
@@ -18,8 +21,9 @@
         <div class="panel panel-danger">
             @using (Html.BeginForm("RejectAwardNomination", "Gm", FormMethod.Post))
             {
-                @Html.EditorFor(m => m.RejectedReason, new { @class = "form-control" })
-                @Html.HiddenFor(m => m.Id)
+                <h3>Reject Comment</h3>
+                <input type="text" value="@Model.RejectedReason" name="RejectedReason" class="form-control" />
+                <input type="hidden" name="Id" value="@Model.Id" />
                 <button class="btn btn-danger" type="submit">Reject</button>
             }
         </div>

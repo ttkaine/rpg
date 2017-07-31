@@ -886,7 +886,7 @@ namespace Warhammer.Core.Concrete
             return _repository.Trophies().OrderBy(t => t.TypeId == (int)TrophyType.DefaultAward).ThenBy(t => t.TypeId).ThenByDescending(t => t.PointsValue).ThenBy(t => t.Name).ToList();
         }
 
-        public void AwardTrophy(int personId, int trophyId, string reason)
+        public void AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null)
         {
             Person person = GetPerson(personId);
             Trophy trophy = GetTrophy(trophyId);
@@ -897,7 +897,7 @@ namespace Warhammer.Core.Concrete
                     Trophy = trophy,
                     Reason = reason,
                     AwardedOn = DateTime.Now,
-                    NominatedBy = CurrentPlayer
+                    NominatedById = nominatedById ?? CurrentPlayerId
                 };
                 person.Awards.Add(award);
                 Save(person);
@@ -2626,6 +2626,23 @@ namespace Warhammer.Core.Concrete
         public List<AwardNomination> OutstandingNominations()
         {
             return _repository.AwardNominations().Where(a => !a.AwardedOn.HasValue && !a.RejectedOn.HasValue).ToList();
+        }
+
+        public void AcceptNomination(int nominationId, string acceptComment, string awardText)
+        {
+            AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
+            nomination.AwardedOn = DateTime.Now;
+            nomination.AcceptedReason = acceptComment;
+            AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById);
+            _repository.Save(nomination);
+        }
+
+        public void RejectNomination(int nominationId, string rejectedReason)
+        {
+            AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
+            nomination.RejectedOn = DateTime.Now;
+            nomination.RejectedReason = rejectedReason;
+            _repository.Save(nomination);
         }
 
         public void RemoveAward(int personId, int awardId)
