@@ -178,13 +178,15 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
-            model.LeftMenu.Add(new MenuItemViewModel
+            if (peopleSubMenu.Any())
             {
-                Name = "People",
-                Url = "#",
-                SubMenu = peopleSubMenu
-            });
-
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "People",
+                    Url = "#",
+                    SubMenu = peopleSubMenu
+                });
+            }
 
 
             if (_data.SiteHasFeature(Feature.UserSettings) && !_data.CurrentUserIsGuest)
@@ -253,11 +255,15 @@ namespace Warhammer.Mvc.Concrete
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
             if (_data.CurrentPlayerIsGm)
             {
-                items.Add(new MenuItemViewModel
+                if (_data.SiteHasFeature(Feature.AwardNominations))
                 {
-                    Name = "Review Award Nominations",
-                    Url = _urlHelper.Action("OutstandingAwardNominations", "Gm"),
-                });
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Review Award Nominations",
+                        Url = _urlHelper.Action("OutstandingAwardNominations", "Gm"),
+                    });
+                }
+
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Outstanding Xp",
