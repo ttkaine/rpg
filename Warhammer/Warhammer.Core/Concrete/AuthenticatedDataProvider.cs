@@ -815,18 +815,6 @@ namespace Warhammer.Core.Concrete
                     }
                 }
 
-                if (currentCampaignOnly)
-                {
-                    trophy.CampaignId = Campaign.Id;
-                }
-                else
-                {
-                    if (_authenticatedUser.IsAdmin)
-                    {
-                        trophy.CampaignId = null;
-                    }
-                }
-
                 trophy.Name = name;
                 trophy.Description = description;
                 trophy.PointsValue = pointsValue;
@@ -835,11 +823,14 @@ namespace Warhammer.Core.Concrete
 
                 if (currentCampaignOnly)
                 {
-                    trophy.CampaignId = Campaign.Id;
+                    trophy.CampaignId = Campaign.CampaignId;
                 }
                 else
                 {
-                    trophy.CampaignId = null;
+                    if (_authenticatedUser.IsAdmin)
+                    {
+                        trophy.CampaignId = null;
+                    }
                 }
 
                 _repository.Save(trophy);
@@ -861,7 +852,7 @@ namespace Warhammer.Core.Concrete
 
                 if (currentCampaignOnly)
                 {
-                    trophy.CampaignId = Campaign.Id;
+                    trophy.CampaignId = Campaign.CampaignId;
                 }
                 else
                 {
