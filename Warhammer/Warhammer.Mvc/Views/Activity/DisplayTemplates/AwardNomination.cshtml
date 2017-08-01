@@ -7,13 +7,46 @@
         <a href="@Url.Action("Trophy", "Home", new { id = Model.Trophy.Id})"><img src="@Url.Action("TrophyImage", "Home", new {id = Model.Trophy.Id}, null)" title="@Model.Trophy.Name @Model.NominationReason" alt="Picture of @Model.Trophy.Name" class="mini-trophy-image" /></a>
     </td>
     <td class="name">
-       @Model.Player.DisplayName nominated @Model.Person.FullName for an award! <br/> @Model.Trophy.Name @Model.NominationReason
+        @Model.Player.DisplayName nominated @Model.Person.FullName for an award! 
+        <br/> @Model.Trophy.Name @Model.NominationReason
+        @if (Model.AwardedOn.HasValue)
+        {
+            <br />
+            <span class="note">
+                Accepted <br/> @Model.AcceptedReason
+            </span>
+        }
+        @if (Model.RejectedOn.HasValue)
+        {
+            <br />
+            <span class="note">
+                Rejected <br/> @Model.RejectedReason
+            </span>
+        }
     </td>
 </tr>
 <tr>
     <td colspan="3">
         <span class="note">
-            Nominated @Model.NominatedDate.Value.ToLongDateString() : @Model.NominatedDate.Value.ToShortTimeString()
+            @if (Model.NominatedDate.HasValue)
+            {
+                <text>
+                   Nominated @Model.NominatedDate.Value.ToLongDateString() : @Model.NominatedDate.Value.ToShortTimeString()
+                </text>
+            }
+           
+            @if (Model.AwardedOn.HasValue)
+            {
+                <text>
+                   ::  Awarded @Model.AwardedOn.Value.ToLongDateString() : @Model.AwardedOn.Value.ToShortTimeString()
+                </text>
+            }
+            @if (Model.RejectedOn.HasValue)
+            {
+                <text>
+                  ::  Rejected @Model.RejectedOn.Value.ToLongDateString() : @Model.RejectedOn.Value.ToShortTimeString()
+                </text>
+            }
         </span>
     </td>
 </tr>
