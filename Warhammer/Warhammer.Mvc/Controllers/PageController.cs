@@ -55,6 +55,11 @@ namespace Warhammer.Mvc.Controllers
                                );
                     }
 
+                    page.PlayerIsGm = CurrentPlayerIsGm;
+                    if (DataProvider.SiteHasFeature(Feature.GmNotes))
+                    {
+                        page.ShowGmNotes = CurrentPlayerIsGm;
+                    }
                     return View(page);
                 }
             }
@@ -84,6 +89,19 @@ namespace Warhammer.Mvc.Controllers
 
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
 
+                if (CurrentPlayerIsGm)
+                {
+                    List<ExtractedImage> notesImages = _imageProcessor.GetImagesFromHtmlString(page.GmNotes);
+
+                    foreach (ExtractedImage image in notesImages)
+                    {
+                        byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
+                        PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
+                        string linkUrl = Url.Action("ShowImage", "Home", new { id = pageImage.Id });
+                        page.GmNotes = page.GmNotes.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+                    }
+                    DataProvider.SaveGmNotes(page.Id, page.GmNotes);
+                }
                 
                 if (!updatedPage.HasImage)
                 {
@@ -97,6 +115,14 @@ namespace Warhammer.Mvc.Controllers
                         DataProvider.ChangePicture(updatedPage.Id, imageData, "Image/Jpeg");
                     }
                 }
+
+                updatedPage.PlayerIsGm = CurrentPlayerIsGm;
+
+                if (DataProvider.SiteHasFeature(Feature.GmNotes))
+                {
+                    updatedPage.ShowGmNotes = CurrentPlayerIsGm;
+                }
+
                 return View(updatedPage);
             }
             return RedirectToAction("index", new { id = page.Id });

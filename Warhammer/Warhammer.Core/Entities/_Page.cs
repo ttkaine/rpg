@@ -109,5 +109,8 @@ namespace Warhammer.Core.Entities
                 return text;
             }
         }
+
+        public bool PlayerIsGm { get; set; }
+        public bool ShowGmNotes { get; set; }
     }
 }

@@ -187,5 +187,6 @@ namespace Warhammer.Core.Abstract
         List<AwardNomination> OutstandingNominations();
         void AcceptNomination(int nominationId, string acceptComment, string awardText);
         void RejectNomination(int nominationId, string rejectedReason);
+        void SaveGmNotes(int pageId, string gmNotes);
     }
 }

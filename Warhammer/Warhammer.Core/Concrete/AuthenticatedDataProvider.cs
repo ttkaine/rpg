@@ -2639,6 +2639,16 @@ namespace Warhammer.Core.Concrete
             _repository.Save(nomination);
         }
 
+        public void SaveGmNotes(int pageId, string gmNotes)
+        {
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
+            if (page != null)
+            {
+                page.GmNotes = gmNotes;
+                Save(page);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

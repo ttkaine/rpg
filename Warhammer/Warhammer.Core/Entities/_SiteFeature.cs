@@ -58,7 +58,8 @@ namespace Warhammer.Core.Entities
         PlayerPageChart,
         TopAwardsChart,
         PlayerTextPostChart,
-        AwardNominations
+        AwardNominations,
+        GmNotes
     }
 
     public partial class SiteFeature
