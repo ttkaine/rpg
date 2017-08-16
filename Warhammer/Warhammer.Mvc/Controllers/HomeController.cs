@@ -14,6 +14,7 @@ using Page = Warhammer.Core.Entities.Page;
 
 namespace Warhammer.Mvc.Controllers
 {
+
     public class HomeController : BaseController
     {
         private readonly IScoreCalculator _scoreCalculator;

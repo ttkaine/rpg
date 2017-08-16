@@ -102,15 +102,12 @@
 
     @Html.Action("Aspects", "Fate", new {id = Model.Id})
     @Html.Action("Stunts", "Fate", new {id = Model.Id})
-    
+    @Html.Action("AwardNominationPanel", "Person", new { id = Model.Id })
     @if (!ViewBag.EditMode)
     {
         @Html.Action("AwardHistory", "Person", new {id = Model.Id})
     }
-    else
-    {
-        @Html.Action("AwardNominationPanel", "Person", new { id = Model.Id })
-    }
+
 
     <div class="content-block">
 

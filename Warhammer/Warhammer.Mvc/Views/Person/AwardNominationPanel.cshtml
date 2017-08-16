@@ -2,64 +2,66 @@
 @using Warhammer.Core.Entities
 @model Warhammer.Mvc.Models.TrophyNominationViewModel
 
-<div id="award-nomination-panel" class="content-block">
+@if (ViewBag.EditMode || Model.ExistingNominations.Any())
+{
+    <div id="award-nomination-panel" class="content-block">
 
-    @if (Model.CanSetAnNemesis || Model.CanSetAsFavourite)
-    {
+        @if ((Model.CanSetAnNemesis || Model.CanSetAsFavourite) && ViewBag.EditMode)
+        {
+            <div class="panel panel-info">
+                <div class="panel-heading">Play Favourites</div>
+                <div class="panel-body">
+
+                    @if (Model.CanSetAnNemesis)
+                    {
+                        using (Ajax.BeginForm("SetAsNemesis", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="submit" value="Set As Nemesis" class="btn btn-block btn-info"/>
+                        }
+                    }
+
+                    @if (Model.CanSetAsFavourite)
+                    {
+                        using (Ajax.BeginForm("SetAsFavourite", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="submit" value="Set As Favourite" class="btn btn-block btn-info"/>
+                        }
+                    }
+                </div>
+            </div>
+        }
+        @if(ViewBag.EditMode)
+        {
         <div class="panel panel-info">
-            <div class="panel-heading">Play Favourites</div>
+            <div class="panel-heading">Nominate for an Award</div>
             <div class="panel-body">
 
-                @if (Model.CanSetAnNemesis)
+                @using (Ajax.BeginForm("NominateForAward", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel"}))
                 {
-                    using (Ajax.BeginForm("SetAsNemesis", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel"}))
-                    {
-                        <input type="hidden" value="@Model.PersonId" name="personId"/>
-                        <input type="submit" value="Set As Nemesis" class="btn btn-block btn-info"/>
-                    }
+                    <input type="hidden" value="@Model.PersonId" name="personId"/>
+                    @Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--Choose a Trophy--", new {@class = "form-control"})
+                    <input type="text" value="" placeholder="Reason for Nomination" name="reason" class="form-control"/>
+                    <input type="submit" value="Nominate for Award" class="btn btn-block btn-success"/>
                 }
-
-
-                @if (Model.CanSetAsFavourite)
-                {
-                    using (Ajax.BeginForm("SetAsFavourite", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel"}))
-                    {
-                        <input type="hidden" value="@Model.PersonId" name="personId"/>
-                        <input type="submit" value="Set As Favourite" class="btn btn-block btn-info"/>
-                    }
-                }
-
             </div>
         </div>
-    }
-    <div class="panel panel-info">
-        <div class="panel-heading">Nominate for an Award</div>
-        <div class="panel-body">
+        }
+        @if (Model.ExistingNominations.Any())
+        {
 
-            @using (Ajax.BeginForm("NominateForAward", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel" }))
-            {
-                <input type="hidden" value="@Model.PersonId" name="personId" />
-                        @Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--Choose a Trophy--", new { @class = "form-control" })
-                        <input type="text" value="" placeholder="Reason for Nomination" name="reason" class="form-control" />
-                        <input type="submit" value="Nominate for Award" class="btn btn-block btn-success" />
-            }
-        </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">Outstanding Nominations</div>
+                <div class="panel-body">
+                    <ul>
+                        @foreach (AwardNomination nomiation in Model.ExistingNominations)
+                        {
+                            <li>@nomiation.Trophy.Name by @nomiation.Player.DisplayName</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
     </div>
-    
-    @if (Model.ExistingNominations.Any())
-    {
-
-        <div class="panel panel-info">
-            <div class="panel-heading">Outstanding Nominations</div>
-            <div class="panel-body">
-                <ul>
-                    @foreach (AwardNomination nomiation in Model.ExistingNominations)
-                    {
-                        <li>@nomiation.Trophy.Name by @nomiation.Player.DisplayName</li>
-                    }
-                </ul>
-            </div>
-        </div>
-    }
-</div>
-
+}
