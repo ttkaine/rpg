@@ -1129,7 +1129,7 @@ namespace Warhammer.Mvc.Controllers
                 if(person != null)
                 {
                     List<Trophy> trophies = DataProvider.Trophies().Where(t => t.TrophyType == TrophyType.DefaultAward).ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(id);
+                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(id);
                     TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
 
                     return PartialView(model);
@@ -1150,7 +1150,7 @@ namespace Warhammer.Mvc.Controllers
                 if (person != null)
                 {
                     List<Trophy> trophies = DataProvider.Trophies().ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(personId);
+                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(personId);
                     TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
 
                     return PartialView("AwardNominationPanel", model);
@@ -1171,7 +1171,7 @@ namespace Warhammer.Mvc.Controllers
                 if (person != null)
                 {
                     List<Trophy> trophies = DataProvider.Trophies().ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(personId);
+                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(personId);
                     TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
 
                     return PartialView("AwardNominationPanel", model);
@@ -1181,18 +1181,18 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult NominateForAward(int personId, string reason, int selectedTrophy)
+        public ActionResult NominateForAward(int personId, string reason, int selectedTrophy, bool isPrivate)
         {
             if (DataProvider.SiteHasFeature(Feature.AwardNominations))
             {
-                DataProvider.NominateForAward(personId, selectedTrophy, reason);
+                DataProvider.NominateForAward(personId, selectedTrophy, reason, isPrivate);
 
                 Person person = DataProvider.GetPerson(personId);
 
                 if (person != null)
                 {
                     List<Trophy> trophies = DataProvider.Trophies().ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingNominationsForPerson(personId);
+                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(personId);
                     TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
                     ModelState.Clear();
                     return PartialView("AwardNominationPanel", model);

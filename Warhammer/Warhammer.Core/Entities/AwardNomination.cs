@@ -25,9 +25,12 @@ namespace Warhammer.Core.Entities
         public Nullable<int> NominatedById { get; set; }
         public Nullable<System.DateTime> NominatedDate { get; set; }
         public int CampaignId { get; set; }
+        public bool IsPrivate { get; set; }
+        public Nullable<int> AwardId { get; set; }
     
         public virtual Person Person { get; set; }
         public virtual Player Player { get; set; }
         public virtual Trophy Trophy { get; set; }
+        public virtual Award Award { get; set; }
     }
 }

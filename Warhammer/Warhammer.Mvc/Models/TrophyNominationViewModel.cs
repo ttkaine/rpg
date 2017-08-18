@@ -12,5 +12,6 @@ namespace Warhammer.Mvc.Models
         public int PersonId { get; set; }
         public int SelectedTrophy { get; set; }
         public IEnumerable<AwardNomination> ExistingNominations { get; set; }
+        public bool IsPrivate { get; set; }
     }
 }

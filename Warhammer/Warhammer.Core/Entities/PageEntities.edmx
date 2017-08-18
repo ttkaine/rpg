@@ -114,6 +114,8 @@
           <Property Name="NominatedById" Type="int" />
           <Property Name="NominatedDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="IsPrivate" Type="bit" Nullable="false" />
+          <Property Name="AwardId" Type="int" />
         </EntityType>
         <EntityType Name="CampaignDetails">
           <Key>
@@ -567,6 +569,18 @@
             </Principal>
             <Dependent Role="Award">
               <PropertyRef Name="TrophyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AwardNomination_Award">
+          <End Role="Award" Type="Self.Award" Multiplicity="0..1" />
+          <End Role="AwardNomination" Type="Self.AwardNomination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AwardNomination">
+              <PropertyRef Name="AwardId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1216,6 +1230,10 @@
             <End Role="Trophy" EntitySet="Trophy" />
             <End Role="Award" EntitySet="Award" />
           </AssociationSet>
+          <AssociationSet Name="FK_AwardNomination_Award" Association="Self.FK_AwardNomination_Award">
+            <End Role="Award" EntitySet="Award" />
+            <End Role="AwardNomination" EntitySet="AwardNomination" />
+          </AssociationSet>
           <AssociationSet Name="FK_AwardNomination_Person" Association="Self.FK_AwardNomination_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="AwardNomination" EntitySet="AwardNomination" />
@@ -1625,6 +1643,10 @@
             <End Role="Trophy" EntitySet="Trophies" />
             <End Role="AwardNomination" EntitySet="AwardNominations" />
           </AssociationSet>
+          <AssociationSet Name="FK_AwardNomination_Award" Association="WarhammerModel.FK_AwardNomination_Award">
+            <End Role="Award" EntitySet="Awards" />
+            <End Role="AwardNomination" EntitySet="AwardNominations" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1641,6 +1663,7 @@
           <NavigationProperty Name="NominatedBy" Relationship="WarhammerModel.FK_Award_Player" FromRole="Award" ToRole="Player" />
           <NavigationProperty Name="Trophy" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Award" ToRole="Trophy" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Award" FromRole="Award" ToRole="AwardNomination" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -2672,6 +2695,9 @@
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_AwardNomination_Person" FromRole="AwardNomination" ToRole="Person" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_AwardNomination_Player" FromRole="AwardNomination" ToRole="Player" />
           <NavigationProperty Name="Trophy" Relationship="WarhammerModel.FK_AwardNomination_Trophy" FromRole="AwardNomination" ToRole="Trophy" />
+          <Property Name="IsPrivate" Type="Boolean" Nullable="false" />
+          <Property Name="AwardId" Type="Int32" />
+          <NavigationProperty Name="Award" Relationship="WarhammerModel.FK_AwardNomination_Award" FromRole="AwardNomination" ToRole="Award" />
         </EntityType>
         <Association Name="FK_AwardNomination_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -2706,6 +2732,18 @@
             </Principal>
             <Dependent Role="AwardNomination">
               <PropertyRef Name="TrophyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AwardNomination_Award">
+          <End Type="WarhammerModel.Award" Role="Award" Multiplicity="0..1" />
+          <End Type="WarhammerModel.AwardNomination" Role="AwardNomination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AwardNomination">
+              <PropertyRef Name="AwardId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3242,6 +3280,8 @@
           <EntitySetMapping Name="AwardNominations">
             <EntityTypeMapping TypeName="WarhammerModel.AwardNomination">
               <MappingFragment StoreEntitySet="AwardNomination">
+                <ScalarProperty Name="AwardId" ColumnName="AwardId" />
+                <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="NominatedDate" ColumnName="NominatedDate" />
                 <ScalarProperty Name="NominatedById" ColumnName="NominatedById" />

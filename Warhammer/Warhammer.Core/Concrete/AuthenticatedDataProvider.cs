@@ -880,22 +880,19 @@ namespace Warhammer.Core.Concrete
                 .ThenBy(t => t.Name).ToList();
         }
 
-        public void AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null)
+        public int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null)
         {
-            Person person = GetPerson(personId);
-            Trophy trophy = GetTrophy(trophyId);
-            if (person != null && trophy != null)
+            Award award = new Award
             {
-                Award award = new Award
-                {
-                    Trophy = trophy,
-                    Reason = reason,
-                    AwardedOn = DateTime.Now,
-                    NominatedById = nominatedById ?? CurrentPlayerId
-                };
-                person.Awards.Add(award);
-                Save(person);
-            }
+                PersonId = personId,
+                TrophyId = trophyId,
+                Reason = reason,
+                AwardedOn = DateTime.Now,
+                NominatedById = nominatedById ?? CurrentPlayerId
+            };
+
+            int awardId = _repository.Save(award);
+            return awardId;
         }
 
         public void DisableFeature(string featureName)
@@ -1091,6 +1088,12 @@ namespace Warhammer.Core.Concrete
             return _repository.UserSettings().Any(s => s.Enabled && s.PlayerId == CurrentPlayer.Id && s.SettingId == setting.Id);
         }
 
+        public bool SettingIsEnabled(SettingNames settingName)
+        {
+            Setting setting = _repository.Settings().FirstOrDefault(s => s.Name == settingName.ToString());
+            return SettingIsEnabled(setting);
+        }
+
         public List<Setting> SettingSection(int sectionId)
         {
             return _repository.Settings().Where(s => s.SectionId == sectionId).ToList();
@@ -1272,7 +1275,7 @@ namespace Warhammer.Core.Concrete
 
         private List<AwardNomination> RecentNominations()
         {
-            var awardNominations = _repository.AwardNominations().Include(a => a.Person).Include(a => a.Trophy);
+            var awardNominations = _repository.AwardNominations().Where(n => !n.IsPrivate).Include(a => a.Person).Include(a => a.Trophy);
 
             if (ShadowMode)
             {
@@ -1286,7 +1289,7 @@ namespace Warhammer.Core.Concrete
 
         private List<Award> RecentAwards()
         {
-            var awardQuery = _repository.Awards().Include(a => a.Person).Include(a => a.Trophy);
+            var awardQuery = _repository.Awards().Where(a => !a.AwardNominations.Any(n => n.IsPrivate)).Include(a => a.Person).Include(a => a.Trophy);
 
             if (ShadowMode)
             {
@@ -2598,7 +2601,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void NominateForAward(int personId, int selectedAward, string reason)
+        public void NominateForAward(int personId, int selectedAward, string reason, bool isPrivate)
         {
             AwardNomination award = new AwardNomination
             {
@@ -2607,14 +2610,15 @@ namespace Warhammer.Core.Concrete
                 NominatedById = CurrentPlayerId,
                 NominatedDate = DateTime.Now,
                 TrophyId = selectedAward,
-                PersonId = personId
+                PersonId = personId,
+                IsPrivate = isPrivate
             };
             _repository.Save(award);
         }
 
-        public List<AwardNomination> OutstandingNominationsForPerson(int personId)
+        public List<AwardNomination> OutstandingPublicNominationsForPerson(int personId)
         {
-            return _repository.AwardNominations().Where(a => !a.AwardedOn.HasValue && !a.RejectedOn.HasValue && a.PersonId == personId).ToList();
+            return _repository.AwardNominations().Where(n => !n.IsPrivate || n.NominatedById == CurrentPlayerId).Where(a => !a.AwardedOn.HasValue && !a.RejectedOn.HasValue && a.PersonId == personId).ToList();
         }
 
         public List<AwardNomination> OutstandingNominations()
@@ -2627,7 +2631,8 @@ namespace Warhammer.Core.Concrete
             AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
             nomination.AwardedOn = DateTime.Now;
             nomination.AcceptedReason = acceptComment;
-            AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById);
+            int awardId = AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById);
+            nomination.AwardId = awardId;
             _repository.Save(nomination);
         }
 

@@ -14,6 +14,11 @@ namespace Warhammer.Core.Entities
     
     public partial class Award
     {
+        public Award()
+        {
+            this.AwardNominations = new HashSet<AwardNomination>();
+        }
+    
         public int Id { get; set; }
         public int PersonId { get; set; }
         public int TrophyId { get; set; }
@@ -26,5 +31,6 @@ namespace Warhammer.Core.Entities
         public virtual Person Person { get; set; }
         public virtual Player NominatedBy { get; set; }
         public virtual Trophy Trophy { get; set; }
+        public virtual ICollection<AwardNomination> AwardNominations { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace Warhammer.Mvc.Concrete
         protected Player CurrentPlayer => _data.MyPlayer();
         readonly IAuthenticatedDataProvider _data;
         private readonly UrlHelper _urlHelper;
+        
 
         public ViewModelFactory(UrlHelper urlHelper, IAuthenticatedDataProvider data)
         {
@@ -375,8 +376,12 @@ namespace Warhammer.Mvc.Concrete
                 model.SectionsIds.Add(SettingSection.ShadowMode);
             }
 
-            return model;
+            if (_data.SiteHasFeature(Feature.AwardNominations))
+            {
+                model.SectionsIds.Add(SettingSection.AwardSettings);
+            }
 
+            return model;
         }
 
         public UserSettingsSectionViewModel Make(List<Setting> settingSection)
@@ -546,6 +551,7 @@ namespace Warhammer.Mvc.Concrete
             model.CanSetAnNemesis = person.IsNpc && person.Awards.All(a => !(a.Trophy.TypeId == (int) TrophyType.NemesisAward && a.NominatedById == CurrentPlayer.Id));
             model.CanSetAsFavourite = person.IsNpc && person.Awards.All(a => !(a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc && a.NominatedById == CurrentPlayer.Id));
             model.ExistingNominations = nominations;
+            model.IsPrivate = _data.SettingIsEnabled(SettingNames.PrivateAwardNominations); 
             return model;
         }
 

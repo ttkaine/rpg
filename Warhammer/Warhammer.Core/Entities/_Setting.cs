@@ -5,7 +5,8 @@
     {
         EmailNotifications = 1,
         DailySummaryEmails = 2,
-        ShadowMode = 3
+        ShadowMode = 3,
+        AwardSettings = 4,
     }
 
     public enum SettingNames
@@ -15,7 +16,8 @@
         SendEmailOnNewComment,
         SendEmailOnUpdatePage,
         SendDailySummaryEmail,
-        ShadowMode
+        ShadowMode,
+        PrivateAwardNominations
     }
 
     public partial class Setting
