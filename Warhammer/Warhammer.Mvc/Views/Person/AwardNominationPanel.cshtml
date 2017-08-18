@@ -47,7 +47,7 @@
                         <hr />
                         <p class="note">If you want, you can set a nomination to be private. This means that nobody (except you and the GM) will be able to see it.</p>
                         <p class="note">This nomination is:</p>
-                        @Html.CheckBoxFor(m => Model.IsPrivate, new { data_toggle = "toggle", data_on = "Private", data_off = "Public", data_offstyle = "success", data_onstyle = "warning" })
+                        @Html.CheckBoxFor(m => Model.IsPrivate, new { data_toggle = "toggle", data_on = "Private", data_off = "Public", data_offstyle = "success", data_onstyle = "info" })
                     }
                 </div>
             </div>
@@ -64,7 +64,7 @@
                             <li>      
                                 @if (nomiation.IsPrivate)
                                 {
-                                    <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session" />
+                                    <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Nomination" title="Private Nomination" />
                                 }
                                 @nomiation.Trophy.Name by @nomiation.Player.DisplayName
                                 @if (nomiation.IsPrivate)
