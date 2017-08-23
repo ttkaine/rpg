@@ -76,7 +76,10 @@
                             </div>
 
                         }
-                        <div class="profile-footer"><span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Last Modified: @Model.Modified</span></div>
+                        <div class="profile-footer">
+                            <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName"</span><br />
+                            <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName"</span>
+                        </div>
                     </div>
 
                     @Html.Action("CurrentScorePie", "Person")
