@@ -84,23 +84,34 @@ namespace Warhammer.Mvc.Controllers
                     byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
                     PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
                     string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
-                    page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+
+                    int width = image.Image.Width / 5;
+                    if (width > 100)
+                    {
+                        width = 100;
+                    }
+
+                    page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}' width='{width}%'");
                 }
 
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
 
                 if (CurrentPlayerIsGm)
                 {
-                    List<ExtractedImage> notesImages = _imageProcessor.GetImagesFromHtmlString(page.GmNotes);
-
-                    foreach (ExtractedImage image in notesImages)
+                    if (page.GmNotes != null)
                     {
-                        byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
-                        PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
-                        string linkUrl = Url.Action("ShowImage", "Home", new { id = pageImage.Id });
-                        page.GmNotes = page.GmNotes.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+                        List<ExtractedImage> notesImages = _imageProcessor.GetImagesFromHtmlString(page.GmNotes);
+
+                        foreach (ExtractedImage image in notesImages)
+                        {
+                            byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
+                            PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
+                            string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
+                            page.GmNotes = page.GmNotes.Replace(image.OriginalSrc, $"src='{linkUrl}'");
+                        }
+
+                        DataProvider.SaveGmNotes(page.Id, page.GmNotes);
                     }
-                    DataProvider.SaveGmNotes(page.Id, page.GmNotes);
                 }
                 
                 if (!updatedPage.HasImage)
