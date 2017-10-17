@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -29,6 +30,37 @@ namespace Warhammer.Mvc.Controllers
             return View(pages);
         }
 
+
+        public ActionResult DeletePage(int id)
+        {
+            Core.Entities.Page page = DataProvider.GetPage(id);
+            if (page == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View(page);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeletePage(Core.Entities.Page page)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DataProvider.DeletePage(page.Id);
+                }
+                catch (Exception ex)
+                {
+                    return View("DeleteError", ex);
+                }
+
+            }
+            return RedirectToAction("Index", "Home");
+        }
         public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, ICurrentCampaignProvider campaignProvider) : base(data)
         {
             _imageProcessor = imageProcessor;

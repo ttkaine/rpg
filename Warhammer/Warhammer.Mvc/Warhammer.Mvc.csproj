@@ -344,6 +344,7 @@
     <Content Include="Content\Images\RoleplayForum\notify-icon2.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon1.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon4.jpg" />
+    <Content Include="Content\Images\RoleplayForum\notify-icon7.jpg" />
     <Content Include="Content\Images\RoleplayForum\post_strip.jpg" />
     <Content Include="Content\Images\RoleplayForum\trait_checked.png" />
     <Content Include="Content\Images\RoleplayForum\trait_unchecked.png" />
@@ -358,6 +359,7 @@
     <Content Include="Content\Images\space_background.jpg" />
     <Content Include="Content\Images\Trophy.png" />
     <Content Include="Content\Images\update.png" />
+    <Content Include="Content\Images\writing_background.jpg" />
     <Content Include="Content\Less\Bootstrap\mixins\border-radius.css">
       <DependentUpon>border-radius.less</DependentUpon>
     </Content>
@@ -397,6 +399,7 @@
     <Content Include="Content\WarhammerStyle.min.css">
       <DependentUpon>WarhammerStyle.css</DependentUpon>
     </Content>
+    <Content Include="Content\writing.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -613,8 +616,8 @@
     <Content Include="Views\Admin\DbUpdate.cshtml" />
     <Content Include="Views\Page\EditLinks.cshtml" />
     <Content Include="Views\Home\Sessions.cshtml" />
-    <Content Include="Views\Admin\DeletePage.cshtml" />
-    <Content Include="Views\Admin\DeleteError.cshtml" />
+    <Content Include="Views\Gm\DeletePage.cshtml" />
+    <Content Include="Views\Gm\DeleteError.cshtml" />
     <Content Include="Views\Home\CharacterLeague.cshtml" />
     <Content Include="Views\Home\PinnedItems.cshtml" />
     <Content Include="Views\Admin\PinPage.cshtml" />

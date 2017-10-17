@@ -1,0 +1,39 @@
+﻿@model Warhammer.Core.Entities.Page
+
+@{
+    ViewBag.Title = "DELETE a PAGE";
+}
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+            <h2>Delete @Html.ActionLink(Model.FullName, "Index", "Page", new { id = Model.Id }, null)</h2>
+            <p>Deleting a page is permenent - the page and all it's links, comments, images, and related gumph will be destoryed forever!</p>
+            <h3>Be sure you want to delete this page before pressing the button...</h3>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(p => p.Id)
+                @Html.HiddenFor(p => p.ShortName)
+                @Html.HiddenFor(p => p.FullName)
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="DELETE" class="btn btn-danger" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

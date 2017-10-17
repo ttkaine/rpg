@@ -137,6 +137,12 @@
         }
 
         <div class="clearfix"></div>
-
+        
+        <hr />
+        
+        @if (Model.CanDelete)
+        {
+            @Html.ActionLink("Delete", "DeletePage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-danger btn-block" })
+        }
     </div>
 }

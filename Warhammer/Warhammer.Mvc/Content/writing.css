@@ -1,0 +1,18 @@
+﻿
+    body {
+        background: url('images/writing_background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .navbar-inverse  {
+        background-color: #222200;
+    }
+
+    #roleplayContent,
+    .core-content,
+    .banner-content,
+    .main-content,
+    .side-bar {
+        opacity: 0.95;
+    }
+

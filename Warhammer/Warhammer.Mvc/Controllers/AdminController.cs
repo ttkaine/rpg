@@ -119,36 +119,6 @@ namespace Warhammer.Mvc.Controllers
 
 
 
-        public ActionResult DeletePage(int id)
-        {
-            Core.Entities.Page page = DataProvider.GetPage(id);
-            if (page == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                return View(page);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult DeletePage(Core.Entities.Page page)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    DataProvider.DeletePage(page.Id);
-                }
-                catch (Exception ex)
-                {
-                    return View("DeleteError", ex);
-                }
-                
-            }
-            return RedirectToAction("Index", "Home");
-        }
 
 
         public ViewResult Log()

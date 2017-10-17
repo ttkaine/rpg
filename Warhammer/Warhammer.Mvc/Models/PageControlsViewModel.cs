@@ -205,5 +205,6 @@ namespace Warhammer.Mvc.Models
         public SelectList Players { get; set; }
         public bool CanPin => (PlayerIsGm || PlayerIsAdmin) && !Page.Pinned;
         public bool CanUnpin => (PlayerIsGm || PlayerIsAdmin) && Page.Pinned;
+        public bool CanDelete => (PlayerIsGm || PlayerIsAdmin);
     }
 }
