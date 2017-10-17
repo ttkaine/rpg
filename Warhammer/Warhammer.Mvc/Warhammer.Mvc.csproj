@@ -344,6 +344,8 @@
     <Content Include="Content\Images\RoleplayForum\notify-icon2.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon1.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon4.jpg" />
+    <Content Include="Content\Images\RoleplayForum\notify-icon5.jpg" />
+    <Content Include="Content\Images\RoleplayForum\notify-icon6.jpg" />
     <Content Include="Content\Images\RoleplayForum\notify-icon7.jpg" />
     <Content Include="Content\Images\RoleplayForum\post_strip.jpg" />
     <Content Include="Content\Images\RoleplayForum\trait_checked.png" />
