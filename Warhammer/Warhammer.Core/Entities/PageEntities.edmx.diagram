@@ -97,6 +97,7 @@
         <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Player" />
         <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Trophy" />
         <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Award" />
+        <AssociationConnector Association="WarhammerModel.FK_Post_PageImage" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
