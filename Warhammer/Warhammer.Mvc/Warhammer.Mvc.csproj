@@ -294,6 +294,7 @@
   <ItemGroup>
     <Content Include="Content\cowboy.css" />
     <Content Include="Content\darknet.css" />
+    <Content Include="Content\DbUpdateScripts\17072801.sql" />
     <Content Include="Content\DbUpdateScripts\17073001.sql" />
     <Content Include="Content\DbUpdateScripts\17073101.sql" />
     <Content Include="Content\DbUpdateScripts\17081801.sql" />

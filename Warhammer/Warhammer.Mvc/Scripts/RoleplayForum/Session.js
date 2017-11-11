@@ -109,7 +109,6 @@ function selectedTabChanged(tab)
             $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
             $("#divDiceRollButton").attr("checked", "checked");
             $("#divPlayerDiceControls").attr("style", "display:block;");
-            $(".PlayerTextPostControls").attr("style", "display:none;");
 
             toggleRollTypeDisplay();
             getDiceCountFromCookie();
@@ -119,7 +118,15 @@ function selectedTabChanged(tab)
             $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
             $("#divDiceRollButton").attr("checked", "unchecked");
             $("#divPlayerDiceControls").attr("style", "display:none;");
+        }
+
+        if (selectedTab == 1 || selectedTab == 2)
+        {
             $(".PlayerTextPostControls").attr("style", "display:block;");
+        }
+        else
+        {
+            $(".PlayerTextPostControls").attr("style", "display:none;");
         }
 
         if (selectedTab == 1 || selectedTab == 3)
@@ -142,6 +149,22 @@ function selectedTabChanged(tab)
             $("#ddlPostAs").attr("style", "display:none;");
             $("#btnPost").removeAttr("disabled");
             $("#spanPostAs").html("Post As:&nbsp;&nbsp;OOC");
+        }
+
+        if (selectedTab == 4)
+        {
+            $("#divCharacterControls").attr("style", "background-color:#ddd;");
+            $("#divPlayerPostControls").attr("style", "background-color:#ddd;");
+            $("#divPlayerImageControls").attr("style", "display:block;");
+            $("#divImageButton").attr("class", "ToggleButtonEnabled");
+            $("#divImageButton").attr("checked", "checked");
+
+        }
+        else
+        {
+            $("#divPlayerImageControls").attr("style", "display:none;");
+            $("#divImageButton").attr("class", "ToggleButtonDisabled");
+            $("#divImageButton").attr("checked", "unchecked");
         }
     }
 }

@@ -1319,6 +1319,24 @@ footer
     text-align: center;
 }
 
+@media (max-width: 991px)
+{
+    .WideText
+    {
+        display: none;
+    }
+
+    .NarrowText
+    {
+        display: inline;
+    }    
+
+    .ToggleButtonEnabled, .ToggleButtonDisabled
+    {
+        width: 88px;
+    }
+}
+
 @media (max-width: 770px)
 {
     .body-content
@@ -1701,4 +1719,12 @@ footer
         min-width: 145px;
         padding-bottom: 4px;
     }
+}
+
+@media (max-width: 420px)
+{
+    .ToggleButtonEnabled, .ToggleButtonDisabled
+    {
+        width: 64px;
+    }    
 }
