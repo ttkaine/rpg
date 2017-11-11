@@ -380,6 +380,7 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="ImageId" Type="int" />
         </EntityType>
         <EntityType Name="PostOrder">
           <Key>
@@ -978,6 +979,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_PageImage">
+          <End Role="PageImage" Type="Self.PageImage" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PageImage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_Player">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -1362,6 +1375,10 @@
             <End Role="Player" EntitySet="Player" />
             <End Role="PlayerCampaign" EntitySet="PlayerCampaign" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_PageImage" Association="Self.FK_Post_PageImage">
+            <End Role="PageImage" EntitySet="PageImage" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
           <AssociationSet Name="FK_Post_Player" Association="Self.FK_Post_Player">
             <End Role="Player" EntitySet="Player" />
             <End Role="Post" EntitySet="Post" />
@@ -1646,6 +1663,10 @@
           <AssociationSet Name="FK_AwardNomination_Award" Association="WarhammerModel.FK_AwardNomination_Award">
             <End Role="Award" EntitySet="Awards" />
             <End Role="AwardNomination" EntitySet="AwardNominations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_PageImage" Association="WarhammerModel.FK_Post_PageImage">
+            <End Role="PageImage" EntitySet="PageImages" />
+            <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
@@ -2004,6 +2025,8 @@
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Post_Player" FromRole="Post" ToRole="Player" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_Post_Session" FromRole="Post" ToRole="Session" />
+          <Property Name="ImageId" Type="Int32" />
+          <NavigationProperty Name="PageImage" Relationship="WarhammerModel.FK_Post_PageImage" FromRole="Post" ToRole="PageImage" />
         </EntityType>
         <Association Name="FK_Post_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -2300,6 +2323,7 @@
           <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="PageImage" ToRole="Page" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_PageImage" FromRole="PageImage" ToRole="Post" />
         </EntityType>
         <Association Name="FK_PageImage_Page">
           <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
@@ -2747,6 +2771,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_PageImage">
+          <End Type="WarhammerModel.PageImage" Role="PageImage" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PageImage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2929,6 +2965,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="WarhammerModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />

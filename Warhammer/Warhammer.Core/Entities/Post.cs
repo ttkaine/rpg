@@ -34,8 +34,10 @@ namespace Warhammer.Core.Entities
         public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
         public int CampaignId { get; set; }
+        public Nullable<int> ImageId { get; set; }
     
         public virtual Player Player { get; set; }
         public virtual Session Session { get; set; }
+        public virtual PageImage PageImage { get; set; }
     }
 }

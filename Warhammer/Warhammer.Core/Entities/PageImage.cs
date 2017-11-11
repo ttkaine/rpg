@@ -14,6 +14,11 @@ namespace Warhammer.Core.Entities
     
     public partial class PageImage
     {
+        public PageImage()
+        {
+            this.Posts = new HashSet<Post>();
+        }
+    
         public int Id { get; set; }
         public int PageId { get; set; }
         public bool IsPrimary { get; set; }
@@ -21,5 +26,6 @@ namespace Warhammer.Core.Entities
         public int CampaignId { get; set; }
     
         public virtual Page Page { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }
