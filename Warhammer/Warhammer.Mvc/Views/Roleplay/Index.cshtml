@@ -292,17 +292,29 @@
                     </div><!-- DiceRollButtonContainer -->
                 </div><!-- PlayerDiceControls -->
 
-                <div id="divPlayerImageControls" class="PlayerImageControls" style="display:none;">
-                    <div class="ImagePostButtonContainer">
-                        @if (User.IsInRole("Player"))
-                        {
-                            @*<input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="btnRollDice_Click();" />*@
-                        }
-                        else
-                        {
-                            @*<input id="btnRoll" type="button" value="ROLL DICE" class="PlayerPostButton" onclick="alert('Guest Mode')" />*@
-                        }
-                    </div><!-- ImagePostButtonContainer -->
+                <div id="divPlayerImageControls" class="PlayerImageControls" style="display: none;">
+                    <form style="display: none;">
+                        <input type="file" id="imageUpload" onchange="imageSelected(this);" />
+                    </form>
+
+                    <div id="imagePreview" class="ImagePreviewContainer">
+                        
+                    </div>
+                    <div class="ImageUploadControls">
+                        <label for="imageUpload" id="lblImageUploadArea" class="ImageUploadArea">Click here to select an image...</label>    
+                        <input id="btnClearImage" type="button" value="CLEAR" class="ClearImageButton" onclick="btnClearImage_Click();" style="display: none;" />
+
+                        <div class="ImagePostButtonContainer">
+                            @if (User.IsInRole("Player"))
+                            {
+                                <input id="btnUploadImage" type="button" value="UPLOAD IMAGE" class="PlayerPostButton" onclick="btnUploadImage_Click();" style="display: none;" />
+                            }
+                            else
+                            {
+                                <input id="btnUploadImage" type="button" value="UPLOAD IMAGE" class="PlayerPostButton" onclick="alert('Guest Mode');" style="display: none;" />
+                            }
+                        </div><!-- ImagePostButtonContainer -->
+                    </div>
                 </div><!-- PlayerImageControls -->
 
 

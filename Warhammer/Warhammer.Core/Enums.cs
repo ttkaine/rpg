@@ -26,7 +26,8 @@
 		InvalidSession = 6,
 		InvalidDiceRoll = 7,
 		SessionClosed = 8,
-		InvalidPost = 9
+		InvalidPost = 9,
+        ImageError = 10
 	}
 
 	public enum MediaSaveResult

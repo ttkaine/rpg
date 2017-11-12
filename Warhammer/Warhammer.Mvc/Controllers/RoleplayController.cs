@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -282,7 +283,78 @@ namespace Warhammer.Mvc.Controllers
 
 		}
 
-		private string StripTagsFromString(string source)
+        [Authorize(Roles = "Player")]
+        public JsonResult MakeImagePost(int sessionId, int lastPostId, string lastUpdateTime, string recipientString)
+        {
+            DateTime lastUpdate;
+            if (!DateTime.TryParse(lastUpdateTime, out lastUpdate))
+            {
+                lastUpdate = DateTime.MinValue;
+            }
+            if (DataProvider.IsLoggedIn() && Request.Files["imageUpload"] != null)
+            {
+                HttpPostedFileBase file = Request.Files["imageUpload"];
+                string fileName = file.FileName;
+
+                PostResult result = PostResult.Success;
+
+                //CallSignalRUpdate();
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
+
+                if (result == PostResult.Success)
+                {
+                    postCollection = GetRecentPostsForSession(sessionId, lastPostId, lastUpdate);
+                }
+                else
+                {
+                    postCollection.IsError = true;
+                    switch (result)
+                    {
+                        case PostResult.CharacterNotInCampaign:
+                            postCollection.ErrorMessage = "Character not assigned to this campaign.";
+                            break;
+
+                        case PostResult.InvalidPlayer:
+                            postCollection.ErrorMessage = "Invalid player";
+                            break;
+
+                        case PostResult.InvalidSession:
+                            postCollection.ErrorMessage = "Invalid session";
+                            break;
+
+                        case PostResult.PlayerNotInCampaign:
+                            postCollection.ErrorMessage = "You are not part of this campaign.";
+                            break;
+
+                        case PostResult.SessionClosed:
+                            postCollection.ErrorMessage = "Posting not allowed.  The GM has closed the session.";
+                            break;
+
+                        case PostResult.ImageError:
+                            postCollection.ErrorMessage = "Image Error";
+                            break;
+
+                        default:
+                            postCollection.ErrorMessage = "Unknown Error";
+                            break;
+                    }
+                }
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return Json("[" + serializer.Serialize(postCollection) + "]");
+            }
+            else
+            {
+                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
+                postCollection.IsError = true;
+                postCollection.ErrorMessage = "Session timeout";
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return Json("[" + serializer.Serialize(postCollection) + "]");
+            }
+        }
+
+
+        private string StripTagsFromString(string source)
 		{
 			return Regex.Replace(source, "<.*?>", string.Empty);
 		}
