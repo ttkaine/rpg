@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Warhammer.Core.Abstract;
@@ -216,7 +218,88 @@ namespace Warhammer.Core.Concrete
 			return PostResult.Success;
 		}
 
-		public bool DeletePostForUser(int postId)
+	    public PostResult CreateImagePostForUser(int sessionId, byte[] imageBytes)
+	    {
+            Player player = GetCurrentPlayer();
+            Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+
+            if (player == null)
+            {
+                return PostResult.InvalidPlayer;
+            }
+            if (session == null)
+            {
+                return PostResult.InvalidSession;
+            }
+            if (session.IsClosed)
+            {
+                return PostResult.SessionClosed;
+            }
+	        if (imageBytes.Length < 1 || imageBytes.Length > 4194304)
+	        {
+	            return PostResult.ImageError;
+	        }
+
+	        Bitmap image;
+	        try
+	        {
+	            using (MemoryStream stream = new MemoryStream(imageBytes))
+	            {
+	                image = new Bitmap(stream);
+	            }
+	        }
+	        catch 
+	        {
+                return PostResult.ImageError;
+	        }
+
+	        if (image.Width <= 0 || image.Height <= 0)
+	        {
+	            return PostResult.ImageError;
+	        }
+
+	        PageImage pageImage = new PageImage()
+	        {
+                CampaignId = session.CampaignId,
+                Data = imageBytes,
+                IsPrimary = false,
+                PageId = session.Id
+	        };
+
+	        int imageId = Repo.Save(pageImage);
+            image.Dispose();
+
+	        if (imageId <= 0)
+	        {
+	            return PostResult.ImageError;
+	        }
+
+            Post post = new Post()
+            {
+                CharacterId = null,
+                OriginalContent = string.Empty,
+                RevisedContent = string.Empty,
+                DatePosted = DateTime.Now,
+                DieCount = 0,
+                DieSize = 0,
+                PlayerId = player.Id,
+                PostType = (int)PostType.Image,
+                ReRollMaximums = false,
+                RollTarget = 0,
+                RollValues = string.Empty,
+                RollType = 0,
+                SessionId = session.Id,
+                TargetPlayerIds = null,
+                LastEdited = null,
+                ImageId = imageId
+            };
+
+            Repo.Save(post);
+
+            return PostResult.Success;
+        }
+
+	    public bool DeletePostForUser(int postId)
 		{
 			Player player = GetCurrentPlayer();
 			Post post = Repo.Posts().FirstOrDefault(p => p.Id == postId);

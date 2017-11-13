@@ -291,15 +291,20 @@ namespace Warhammer.Mvc.Controllers
             {
                 lastUpdate = DateTime.MinValue;
             }
-            if (DataProvider.IsLoggedIn() && Request.Files["imageUpload"] != null)
+            if (DataProvider.IsLoggedIn() && Request.Files["imageUpload"] != null && Request.Files["imageUpload"].InputStream != null)
             {
                 HttpPostedFileBase file = Request.Files["imageUpload"];
-                string fileName = file.FileName;
+                //string fileName = file.FileName;
 
-                PostResult result = PostResult.Success;
+                
+                byte[] imageBytes = new byte[file.InputStream.Length];
+                file.InputStream.Read(imageBytes, 0, imageBytes.Length);
+                file.InputStream.Close();
+
+                PostResult result = PostManager.CreateImagePostForUser(sessionId, imageBytes);
 
                 //CallSignalRUpdate();
-                JsonResponseWithPostCollection postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
+                JsonResponseWithPostCollection postCollection;
 
                 if (result == PostResult.Success)
                 {
@@ -307,6 +312,7 @@ namespace Warhammer.Mvc.Controllers
                 }
                 else
                 {
+                    postCollection = new JsonResponseWithPostCollection(CampaignProvider.CurrentCampaignId);
                     postCollection.IsError = true;
                     switch (result)
                     {

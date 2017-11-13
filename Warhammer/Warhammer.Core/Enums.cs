@@ -5,7 +5,8 @@
 		InCharacter = 1,
 		OutOfCharacter = 2,
 		GmInCharacter = 3,
-		DiceRoll = 4
+		DiceRoll = 4,
+        Image = 5
 	}
 
 	public enum RollType
