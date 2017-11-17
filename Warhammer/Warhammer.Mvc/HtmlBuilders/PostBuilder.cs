@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Razor.Parser;
 using Warhammer.Core;
 using Warhammer.Core.RoleplayViewModels;
 
@@ -90,11 +91,19 @@ namespace Warhammer.Mvc.HtmlBuilders
                         }
 					}
 					break;
+
+                case (int)PostType.Image:
+			        if (post is ImagePostViewModel)
+			        {
+			            ImagePostViewModel imagePost = (ImagePostViewModel) post;
+			            html = GetHtmlForImagePost(imagePost);
+			        }
+			        break;
 			}
 			return html;
 		}
 
-		private string GetHtmlForInCharacterPost(TextPostViewModel post, bool includeEditControls, int playerId, bool playerIsGm)
+	    private string GetHtmlForInCharacterPost(TextPostViewModel post, bool includeEditControls, int playerId, bool playerIsGm)
 		{
 			StringBuilder html = new StringBuilder();
 
@@ -530,5 +539,91 @@ namespace Warhammer.Mvc.HtmlBuilders
 
 			return postContent;
 		}
-	}
+
+        private string GetHtmlForImagePost(ImagePostViewModel post)
+        {
+            StringBuilder html = new StringBuilder();
+
+            html.Append("<div class=\"Post\"><div id=\"post");
+            html.Append(post.ID);
+            html.Append("\" class=\"ImagePost\"><div class=\"PostHeader\"><span class=\"PostPlayer\">");
+            html.Append(post.PlayerName);
+            if (post.IsPostedByGm)
+            {
+                html.Append(" (GM)");
+            }
+            html.Append("</span><div class=\"Clear\"></div></div>");
+            if (post.TargetPlayerNames.Length > 0)
+            {
+                html.Append("<div class=\"PrivateMessageRecipients\"><strong>Recipients:</strong>&nbsp;&nbsp;&nbsp;");
+                html.Append(post.TargetPlayerNames);
+                html.Append("</div>");
+            }
+            html.Append("<div id=\"postContent");
+            html.Append(post.ID);
+            html.Append("\" class=\"PostContent\">");
+            //html.Append(post.Content);
+
+            html.Append("<div id=\"postedImage");
+            html.Append(post.ImageId);
+            html.Append("\" class=\"ImagePostImage\" style=\"background: #fff url(/Roleplay/ImagePost/");
+            html.Append(post.ImageId);
+            html.Append(") no-repeat scroll center center / contain;\"></div>");
+
+            html.Append("<button class=\"ZoomButton\" type=\"button\" onclick=\"$.featherlight('/Roleplay/ImagePost/");
+            html.Append(post.ImageId);
+            html.Append("', {");
+            html.Append("type: 'image'");
+            html.Append("});\" />");
+
+            html.Append("</div><span class=\"PostedDate\">");
+            html.Append(post.DatePosted);
+            html.Append("</span><div class=\"Clear\"></div>");
+            //if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
+            //{
+            //    html.Append("<div class=\"PostEditControls\">");
+
+            //    if (playerIsGm)
+            //    {
+            //        html.Append("<input id=\"btnDeletePost");
+            //        html.Append(post.ID);
+            //        html.Append("\" type=\"button\" value=\"DELETE\" class=\"PostEditButton\" onclick=\"deletePost(");
+            //        html.Append(post.ID);
+            //        html.Append(");\" />");
+            //    }
+
+            //    html.Append("<input id=\"btnEditPost");
+            //    html.Append(post.ID);
+            //    html.Append("\" type=\"button\" value=\"EDIT\" class=\"PostEditButton\" onclick=\"editPost(");
+            //    html.Append(post.ID);
+            //    html.Append(");\" />");
+
+            //    if (playerIsGm && post.IsRevised && post.CanRevert)
+            //    {
+            //        html.Append("<input id=\"btnRevertPost");
+            //        html.Append(post.ID);
+            //        html.Append("\" type=\"button\" value=\"REVERT\" class=\"PostEditButton\" onclick=\"revertPost(");
+            //        html.Append(post.ID);
+            //        html.Append(");\" />");
+            //    }
+
+            //    if (post.IsRevised && post.LastEdited != null)
+            //    {
+            //        html.Append("<span class=\"EditedDate\">Last Edited: ");
+            //        html.Append(post.LastEdited);
+            //        html.Append("</span>");
+            //    }
+
+            //    html.Append("</div>");
+            //}
+            html.Append("</div>");
+            html.Append("<div id=\"coverpost");
+            html.Append(post.ID);
+            html.Append("\" class=\"PostCover\"></div>");
+            html.Append("</div>");
+
+            return html.ToString();
+        }
+
+    }
 }

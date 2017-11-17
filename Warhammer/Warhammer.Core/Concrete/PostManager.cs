@@ -218,7 +218,7 @@ namespace Warhammer.Core.Concrete
 			return PostResult.Success;
 		}
 
-	    public PostResult CreateImagePostForUser(int sessionId, byte[] imageBytes)
+	    public PostResult CreateImagePostForUser(int sessionId, byte[] imageBytes, string fileName)
 	    {
             Player player = GetCurrentPlayer();
             Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
@@ -277,7 +277,7 @@ namespace Warhammer.Core.Concrete
             Post post = new Post()
             {
                 CharacterId = null,
-                OriginalContent = string.Empty,
+                OriginalContent = fileName,
                 RevisedContent = string.Empty,
                 DatePosted = DateTime.Now,
                 DieCount = 0,

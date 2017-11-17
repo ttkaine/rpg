@@ -351,6 +351,7 @@
     <Content Include="Content\Images\RoleplayForum\view-messages.png" />
     <Content Include="Content\Images\RoleplayForum\ViewDetails.png" />
     <Content Include="Content\Images\RoleplayForum\write-comment.png" />
+    <Content Include="Content\Images\RoleplayForum\zoom.png" />
     <Content Include="Content\Images\rules.png" />
     <Content Include="Content\Images\rumour.png" />
     <Content Include="Content\Images\sessions.png" />
@@ -382,6 +383,7 @@
     <Content Include="Content\Pirate.css" />
     <Content Include="Content\playground.css" />
     <Content Include="Content\RoleplayCss\CharacterSheet.css" />
+    <Content Include="Content\RoleplayCss\featherlight.css" />
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
     <Content Include="Content\RoleplayCss\SessionLog.css" />
@@ -563,6 +565,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\RoleplayForum\CharacterSheet.js" />
+    <Content Include="Scripts\RoleplayForum\featherlight.js" />
     <Content Include="Scripts\RoleplayForum\Session.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="StaticPages\DatabaseError.html" />

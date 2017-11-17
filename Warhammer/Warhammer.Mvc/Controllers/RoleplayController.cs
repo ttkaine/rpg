@@ -294,14 +294,12 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.IsLoggedIn() && Request.Files["imageUpload"] != null && Request.Files["imageUpload"].InputStream != null)
             {
                 HttpPostedFileBase file = Request.Files["imageUpload"];
-                //string fileName = file.FileName;
-
-                
+                string fileName = file.FileName;
                 byte[] imageBytes = new byte[file.InputStream.Length];
                 file.InputStream.Read(imageBytes, 0, imageBytes.Length);
                 file.InputStream.Close();
 
-                PostResult result = PostManager.CreateImagePostForUser(sessionId, imageBytes);
+                PostResult result = PostManager.CreateImagePostForUser(sessionId, imageBytes, fileName);
 
                 //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection;
@@ -826,7 +824,22 @@ namespace Warhammer.Mvc.Controllers
 			return File(defaultImagePath, "image/jpeg");
 		}
 
-	    public FileContentResult TextLog(int id)
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        public ActionResult ImagePost(int id)
+        {
+            PostedImageViewModel image = ModelFactory.GetPostedImage(id);
+            var defaultDir = Server.MapPath("/Content/Images/RoleplayForum");
+
+            if (image?.Image != null && image.Image.Length > 100)
+            {
+                return File(image.Image, image.MimeType);
+            }
+
+            var defaultImagePath = Path.Combine(defaultDir, "default_character.jpg");
+            return File(defaultImagePath, "image/jpeg");
+        }
+
+        public FileContentResult TextLog(int id)
 	    {
 		    string textLog = LogGenerator.GenerateTextLog(id, false);
 

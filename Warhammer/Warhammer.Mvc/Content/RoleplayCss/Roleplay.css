@@ -1387,6 +1387,98 @@ footer
     border-radius: 15px;
 }
 
+.ImagePost
+{
+    width: calc(100% - 51px);
+    max-width: 500px;
+    margin: 0 0 0 21px;
+    background:#8cd98c;
+    box-shadow: 5px 5px 5px #888888;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ImagePost .PostHeader
+{
+    width: calc(100% - 20px);
+    padding: 8px 10px 4px 10px;
+    color: #333;
+    background-color: #53c653;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ImagePost .PostCharacter
+{
+    float: left;   
+}
+
+.ImagePost .PostPlayer
+{
+    float: right;
+    text-align: right;   
+}
+
+.ImagePost .PostContent
+{
+    width: calc(100% - 30px);
+    padding: 10px 15px 30px 15px;
+    margin: 0;
+    float: right;
+    font-size: 14px;   
+    color: #333;
+}
+
+.ImagePost .PostedDate
+{
+    position: absolute;
+    bottom: 4px;
+    left: 10px;    
+    font-size: 10px;
+}
+
+.ImagePost .PrivateMessageRecipients
+{
+    width: calc(100% - 80px);
+    padding: 9px;
+    border: 1px solid #999;
+    background-color: #fff;
+    margin: 10px auto 0 auto;
+    font-size: 12px;
+    line-height: 20px;  
+}
+
+.ImagePost .EditedDate
+{
+    float: right;
+    margin: 1px 10px 0 0;
+    font-size: 12px;
+    line-height: 24px;
+    font-style: italic;
+}
+
+.ImagePostImage
+{
+    width: calc(100% - 70px);
+    max-width: 400px;
+    border: 1px solid #999;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 56.25%;
+    float: left;
+}
+
+.ImagePost .ZoomButton
+{
+    display: block;
+    width: 50px;
+    height: 50px;
+    float: right;
+    margin: 0;
+    background: url(/Content/Images/RoleplayForum/zoom.png) no-repeat scroll center center;
+}
+
 @media (max-width: 991px)
 {
     .WideText
