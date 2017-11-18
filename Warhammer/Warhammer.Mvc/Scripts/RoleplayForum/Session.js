@@ -466,12 +466,16 @@ function togglePostButtonsEnabled(enabled)
         $("#btnPost").prop("disabled", false);
         $("#btnRoll").prop("disabled", false);
         $("#btnUploadImage").prop("disabled", false);
+        $("#btnClearImage").prop("disabled", false);
+        $("#imageUpload").prop("disabled", false);
     }
     else
     {
         $("#btnPost").prop("disabled", true);
         $("#btnRoll").prop("disabled", true);
         $("#btnUploadImage").prop("disabled", true);
+        $("#btnClearImage").prop("disabled", true);
+        $("#imageUpload").prop("disabled", true);
     }
 }
 
@@ -1472,6 +1476,11 @@ function btnUploadImage_Click()
     var formData = new FormData();
     var input = document.getElementById("imageUpload");
 
+    //var outerHeight = $("#divPostContainer").outerHeight();
+    //var scrollTop = $("#divPostContainer").scrollTop();
+    //var scrollHeight = $("#divPostContainer").prop("scrollHeight");
+    var scrollToEnd = true;
+
     if (input.files && input.files[0])
     {
         if (input.files[0].size <= 4194304)
@@ -1494,15 +1503,19 @@ function btnUploadImage_Click()
                     dataType: 'json',
                     contentType: false,
                     processData: false,
-                    success: function (response)
+                    success: function (data)
                     {
-                        alert('success!!');
+                        $("#chkDeviceToggle").prop("checked", false);
+                        var jsonData = eval(data)[0];                        
+                        handleNewPosts(jsonData, scrollToEnd);
+                        roleplaySessionUpdated();
+
                         togglePostButtonsEnabled(true);
                         clearImage();
                     },
                     error: function (jqxhr, textStatus, error)
                     {
-                        alert("error:  " + error + " ::: " + textStatus);
+                        alert("Unable to post at this time.");
                         togglePostButtonsEnabled(true);
                         clearImage();
                     }
