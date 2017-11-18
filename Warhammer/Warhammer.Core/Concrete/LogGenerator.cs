@@ -20,8 +20,43 @@ namespace Warhammer.Core.Concrete
 			_repository = repository;
 		}
 
+        private Player _gm;
+        private CampaignDetail _campaign;
 
-		public string GenerateTextLog(int sessionId, bool includeOoc)
+        public CampaignDetail Campaign
+        {
+            get
+            {
+                if (_campaign == null)
+                {
+                    _campaign = Repo.CampaignDetails().Single();
+                }
+                return _campaign;
+            }
+        }
+
+        public Player Gm
+        {
+            get
+            {
+                if (_gm == null)
+                {
+
+                    if (Campaign != null)
+                    {
+                        _gm = Repo.Players().Single(p => p.Id == Campaign.GmId);
+                    }
+                }
+                return _gm;
+            }
+        }
+
+	    private int GetGmId()
+	    {
+	        return Gm?.Id ?? 0;
+	    }
+
+        public string GenerateTextLog(int sessionId, bool includeOoc)
 		{
 			List<Post> posts = (from p in Repo.Posts()
 				where
@@ -77,7 +112,22 @@ namespace Warhammer.Core.Concrete
 						}
 						else
 						{
-							output.AppendLine("GM:");
+						    if (post.PlayerId == Gm?.Id && Gm != null)
+						    {
+						        output.AppendLine("GM:");
+						    }
+						    else
+						    {
+						        if (post.PostType == (int) PostType.Image)
+						        {
+						            output.Append(post.Player.DisplayName);
+						            output.AppendLine(":");
+						        }
+						        else
+						        {
+						            output.AppendLine("Environment:");
+						        }
+						    }
 						}
 					}
 					if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
@@ -104,6 +154,7 @@ namespace Warhammer.Core.Concrete
 									(p.PostType == (int)PostType.InCharacter || p.PostType == (int)PostType.GmInCharacter || includeOoc)
 								orderby p.DatePosted
 								select p).ToList();
+            
 
 			StringBuilder output = new StringBuilder();
 			foreach (Post post in posts)
@@ -130,6 +181,27 @@ namespace Warhammer.Core.Concrete
 					output.AppendLine(post.RollValues.Replace(",", ", "));
 					output.AppendLine("</span></div>");
 				}
+                else if (post.PostType == (int) PostType.Image)
+                {
+                    if (post.PlayerId == Gm?.Id && Gm != null)
+                    {
+                        output.AppendLine("<h4>GM</h4>");
+                    }
+                    else
+                    {
+                        output.Append("<h4>");
+                        output.Append(post.Player.DisplayName);
+                        output.AppendLine("</h4>");
+                    }
+
+                    output.Append("<div class=\"LogImage\">");
+                    output.Append("<img src=\"/Roleplay/ImagePost/");
+                    output.Append(post.ImageId ?? 0);
+                    output.Append("\" alt=\"");
+                    output.Append(post.OriginalContent);
+                    output.Append("\" />");
+                    output.Append("</div>");
+                }
 				else
 				{
 					if (post.PostType == (int)PostType.OutOfCharacter)
@@ -151,7 +223,14 @@ namespace Warhammer.Core.Concrete
 						}
 						else
 						{
-							output.AppendLine("<h4>GM</h4>");
+						    if (post.PlayerId == Gm?.Id && Gm != null)
+						    {
+						        output.AppendLine("<h4>GM</h4>");
+						    }
+						    else
+						    {
+						        output.AppendLine("<h4>Environment</h4>");
+						    }
 						}
 					}
 					output.Append("<p>");
@@ -205,5 +284,15 @@ namespace Warhammer.Core.Concrete
 
 			return postContent;
 		}
-	}
+
+        private int GetGmId(int sessionId)
+        {
+            int? sessionGm = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId)?.GmId;
+            if (sessionGm.HasValue)
+            {
+                return sessionGm.Value;
+            }
+            return GetGmId();
+        }
+    }
 }
