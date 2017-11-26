@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.RoleplayViewModels;
@@ -393,6 +397,14 @@ namespace Warhammer.Core.Concrete
 
 				viewModel = diceRollViewModel;
 			}
+            else if (post.PostType == (int) PostType.Image)
+            {
+                ImagePostViewModel imagePostViewModel = new ImagePostViewModel();
+                imagePostViewModel.ImageId = post.ImageId ?? 0;
+                imagePostViewModel.FileName = post.OriginalContent;
+
+                viewModel = imagePostViewModel;
+            }
 			else
 			{
 				TextPostViewModel textViewModel = new TextPostViewModel();
@@ -538,5 +550,50 @@ namespace Warhammer.Core.Concrete
 
 			return ids;
 	    }
+
+        public PostedImageViewModel GetPostedImage(int imageId)
+        {
+            PageImage image = Repo.PageImages().FirstOrDefault(i => i.Id == imageId);
+            if (image != null && image.Data.Length > 0)
+            {
+                Bitmap bmp;
+                string mimeType;
+                try
+                {
+                    using (MemoryStream stream = new MemoryStream(image.Data))
+                    {
+                        bmp = new Bitmap(stream);
+                    }
+                    mimeType = GetImageMimeType(bmp);
+                    bmp.Dispose();
+                }
+                catch
+                {
+                    mimeType = "image/unknown";
+                }
+
+                PostedImageViewModel viewModel = new PostedImageViewModel()
+                {
+                    ID = image.Id,
+                    Image = image.Data,
+                    MimeType = mimeType
+                };
+                return viewModel;
+            }
+            return null;
+        }
+
+        private static string GetImageMimeType(Image i)
+        {
+            var imgguid = i.RawFormat.Guid;
+            foreach (ImageCodecInfo codec in ImageCodecInfo.GetImageDecoders())
+            {
+                if (codec.FormatID == imgguid)
+                    return codec.MimeType;
+            }
+            return "image/unknown";
+        }
+
+
     }
 }

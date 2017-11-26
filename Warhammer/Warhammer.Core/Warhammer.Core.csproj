@@ -364,7 +364,9 @@
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />
     <Compile Include="RoleplayViewModels\CharacterViewModel.cs" />
     <Compile Include="RoleplayViewModels\DiceRollPostViewModel.cs" />
+    <Compile Include="RoleplayViewModels\ImagePostViewModel.cs" />
     <Compile Include="RoleplayViewModels\PlayerViewModel.cs" />
+    <Compile Include="RoleplayViewModels\PostedImageViewModel.cs" />
     <Compile Include="RoleplayViewModels\PostViewModel.cs" />
     <Compile Include="RoleplayViewModels\SessionViewModel.cs" />
     <Compile Include="RoleplayViewModels\TextPostViewModel.cs" />

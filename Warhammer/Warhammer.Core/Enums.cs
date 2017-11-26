@@ -5,7 +5,8 @@
 		InCharacter = 1,
 		OutOfCharacter = 2,
 		GmInCharacter = 3,
-		DiceRoll = 4
+		DiceRoll = 4,
+        Image = 5
 	}
 
 	public enum RollType
@@ -26,7 +27,8 @@
 		InvalidSession = 6,
 		InvalidDiceRoll = 7,
 		SessionClosed = 8,
-		InvalidPost = 9
+		InvalidPost = 9,
+        ImageError = 10
 	}
 
 	public enum MediaSaveResult

@@ -67,3 +67,8 @@ h4
 {
     margin-left: 10px;
 }
+
+.LogImage img
+{
+    max-width: 100%;
+}

@@ -109,7 +109,6 @@ function selectedTabChanged(tab)
             $("#divDiceRollButton").attr("class", "ToggleButtonEnabled");
             $("#divDiceRollButton").attr("checked", "checked");
             $("#divPlayerDiceControls").attr("style", "display:block;");
-            $(".PlayerTextPostControls").attr("style", "display:none;");
 
             toggleRollTypeDisplay();
             getDiceCountFromCookie();
@@ -119,7 +118,15 @@ function selectedTabChanged(tab)
             $("#divDiceRollButton").attr("class", "ToggleButtonDisabled");
             $("#divDiceRollButton").attr("checked", "unchecked");
             $("#divPlayerDiceControls").attr("style", "display:none;");
+        }
+
+        if (selectedTab == 1 || selectedTab == 2)
+        {
             $(".PlayerTextPostControls").attr("style", "display:block;");
+        }
+        else
+        {
+            $(".PlayerTextPostControls").attr("style", "display:none;");
         }
 
         if (selectedTab == 1 || selectedTab == 3)
@@ -142,6 +149,22 @@ function selectedTabChanged(tab)
             $("#ddlPostAs").attr("style", "display:none;");
             $("#btnPost").removeAttr("disabled");
             $("#spanPostAs").html("Post As:&nbsp;&nbsp;OOC");
+        }
+
+        if (selectedTab == 4)
+        {
+            $("#divCharacterControls").attr("style", "background-color:#8cd98c;");
+            $("#divPlayerPostControls").attr("style", "background-color:#8cd98c;");
+            $("#divPlayerImageControls").attr("style", "display:block;");
+            $("#divImageButton").attr("class", "ToggleButtonEnabled");
+            $("#divImageButton").attr("checked", "checked");
+
+        }
+        else
+        {
+            $("#divPlayerImageControls").attr("style", "display:none;");
+            $("#divImageButton").attr("class", "ToggleButtonDisabled");
+            $("#divImageButton").attr("checked", "unchecked");
         }
     }
 }
@@ -442,11 +465,17 @@ function togglePostButtonsEnabled(enabled)
     {
         $("#btnPost").prop("disabled", false);
         $("#btnRoll").prop("disabled", false);
+        $("#btnUploadImage").prop("disabled", false);
+        $("#btnClearImage").prop("disabled", false);
+        $("#imageUpload").prop("disabled", false);
     }
     else
     {
         $("#btnPost").prop("disabled", true);
         $("#btnRoll").prop("disabled", true);
+        $("#btnUploadImage").prop("disabled", true);
+        $("#btnClearImage").prop("disabled", true);
+        $("#imageUpload").prop("disabled", true);
     }
 }
 
@@ -1376,4 +1405,142 @@ function getCookie(cname)
         if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
     }
     return "";
+}
+
+function imageSelected(input)
+{
+    $("#imagePreview").removeAttr("style");
+
+    if (input.files && input.files[0])
+    {
+        if (input.files[0].size <= 4194304)
+        {
+            var fileType = input.files[0].type;
+            var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+            if ($.inArray(fileType, validImageTypes) > -1)
+            {
+                var reader = new FileReader();
+                reader.onload = function (e)
+                {
+                    imagePreviewLoaded(input, e);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else
+            {
+                alert("Selected file is not a valid image format (jpeg, png, gif).");
+                clearImage();
+            }
+        }
+        else
+        {
+            alert("Unable to upload file: 4MB size limit exceeded.");
+            clearImage();
+        }
+    }
+    else
+    {
+        alert("No file was selected.");
+        clearImage();
+    }
+}
+
+function imagePreviewLoaded(input, e)
+{
+    var fileName = input.files[0].name;
+    $("#lblImageUploadArea").html(fileName);
+    $("#lblImageUploadArea").removeClass("ImageSelected");
+    $("#imagePreview").css("background", "#fff url(" + e.target.result + ") no-repeat scroll center center / contain");
+    $("#btnClearImage").css("display", "block");
+    $("#btnUploadImage").css("display", "inline");
+}
+
+function btnClearImage_Click()
+{
+    clearImage();
+}
+
+function clearImage()
+{
+    $("#imageUpload").closest("form").get(0).reset();
+    $("#imagePreview").removeAttr("style")
+    $("#lblImageUploadArea").html("Click here to select an image...");
+    $("#lblImageUploadArea").removeClass("ImageSelected");
+    $("#btnClearImage").css("display", "none");
+    $("#btnUploadImage").css("display", "none");
+}
+
+function btnUploadImage_Click()
+{
+    togglePostButtonsEnabled(false);
+    var formData = new FormData();
+    var input = document.getElementById("imageUpload");
+
+    //var outerHeight = $("#divPostContainer").outerHeight();
+    //var scrollTop = $("#divPostContainer").scrollTop();
+    //var scrollHeight = $("#divPostContainer").prop("scrollHeight");
+    var scrollToEnd = true;
+
+    if (input.files && input.files[0])
+    {
+        if (input.files[0].size <= 4194304)
+        {
+            var fileType = input.files[0].type;
+            var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+            if ($.inArray(fileType, validImageTypes) > -1)
+            {
+                var file = input.files[0];
+                formData.append("imageUpload", file);
+
+                formData.append('sessionId', sessionId);
+                formData.append('lastPostId', lastPostId);
+                formData.append('lastUpdateTime', lastUpdateTime);
+
+                $.ajax({
+                    type: "POST",
+                    url: rootPath + "/MakeImagePost",
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (data)
+                    {
+                        $("#chkDeviceToggle").prop("checked", false);
+                        var jsonData = eval(data)[0];                        
+                        handleNewPosts(jsonData, scrollToEnd);
+                        roleplaySessionUpdated();
+
+                        togglePostButtonsEnabled(true);
+                        clearImage();
+                    },
+                    error: function (jqxhr, textStatus, error)
+                    {
+                        alert("Unable to post at this time.");
+                        togglePostButtonsEnabled(true);
+                        clearImage();
+                    }
+                });
+
+            }
+            else
+            {
+                alert("Selected file is not a valid image format (jpeg, png, gif).");
+                clearImage();
+                togglePostButtonsEnabled(true);
+            }
+        }
+        else
+        {
+            alert("Unable to upload file: 4MB size limit exceeded.");
+            clearImage();
+            togglePostButtonsEnabled(true);
+        }
+    }
+    else
+    {
+        alert("No file was selected.");
+        clearImage();
+        togglePostButtonsEnabled(true);
+    }
+
 }
