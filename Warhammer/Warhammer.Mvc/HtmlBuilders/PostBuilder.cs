@@ -96,7 +96,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			        if (post is ImagePostViewModel)
 			        {
 			            ImagePostViewModel imagePost = (ImagePostViewModel) post;
-			            html = GetHtmlForImagePost(imagePost);
+			            html = GetHtmlForImagePost(imagePost, includeEditControls, playerId, playerIsGm);
 			        }
 			        break;
 			}
@@ -540,7 +540,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			return postContent;
 		}
 
-        private string GetHtmlForImagePost(ImagePostViewModel post)
+        private string GetHtmlForImagePost(ImagePostViewModel post, bool includeEditControls, int playerId, bool playerIsGm)
         {
             StringBuilder html = new StringBuilder();
 
@@ -566,7 +566,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 
             html.Append("<div id=\"postedImage");
             html.Append(post.ImageId);
-            html.Append("\" class=\"ImagePostImage\" style=\"background: #fff url(/Roleplay/ImagePost/");
+            html.Append("\" class=\"ImagePostImage\" style=\"background: #6ad86a url(/Roleplay/ImagePost/");
             html.Append(post.ImageId);
             html.Append(") no-repeat scroll center center / contain;\"></div>");
 
@@ -579,43 +579,20 @@ namespace Warhammer.Mvc.HtmlBuilders
             html.Append("</div><span class=\"PostedDate\">");
             html.Append(post.DatePosted);
             html.Append("</span><div class=\"Clear\"></div>");
-            //if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
-            //{
-            //    html.Append("<div class=\"PostEditControls\">");
+            if (includeEditControls && playerIsGm)
+            {
+                html.Append("<div class=\"PostEditControls\">");
 
-            //    if (playerIsGm)
-            //    {
-            //        html.Append("<input id=\"btnDeletePost");
-            //        html.Append(post.ID);
-            //        html.Append("\" type=\"button\" value=\"DELETE\" class=\"PostEditButton\" onclick=\"deletePost(");
-            //        html.Append(post.ID);
-            //        html.Append(");\" />");
-            //    }
+                html.Append("<input id=\"btnDeletePost");
+                html.Append(post.ID);
+                html.Append("\" type=\"button\" value=\"DELETE\" class=\"PostEditButton\" onclick=\"deletePost(");
+                html.Append(post.ID);
+                html.Append(");\" />");
 
-            //    html.Append("<input id=\"btnEditPost");
-            //    html.Append(post.ID);
-            //    html.Append("\" type=\"button\" value=\"EDIT\" class=\"PostEditButton\" onclick=\"editPost(");
-            //    html.Append(post.ID);
-            //    html.Append(");\" />");
+                html.Append("</div>");
+            }
 
-            //    if (playerIsGm && post.IsRevised && post.CanRevert)
-            //    {
-            //        html.Append("<input id=\"btnRevertPost");
-            //        html.Append(post.ID);
-            //        html.Append("\" type=\"button\" value=\"REVERT\" class=\"PostEditButton\" onclick=\"revertPost(");
-            //        html.Append(post.ID);
-            //        html.Append(");\" />");
-            //    }
 
-            //    if (post.IsRevised && post.LastEdited != null)
-            //    {
-            //        html.Append("<span class=\"EditedDate\">Last Edited: ");
-            //        html.Append(post.LastEdited);
-            //        html.Append("</span>");
-            //    }
-
-            //    html.Append("</div>");
-            //}
             html.Append("</div>");
             html.Append("<div id=\"coverpost");
             html.Append(post.ID);

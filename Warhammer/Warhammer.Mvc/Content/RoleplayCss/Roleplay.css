@@ -1461,12 +1461,12 @@ footer
 .ImagePostImage
 {
     width: calc(100% - 70px);
-    max-width: 400px;
-    border: 1px solid #999;
+    max-width: 380px;
     margin: 0;
     padding: 0;
     padding-bottom: 56.25%;
     float: left;
+    background-color: #6ad86a;
 }
 
 .ImagePost .ZoomButton
@@ -1477,6 +1477,15 @@ footer
     float: right;
     margin: 0;
     background: url(/Content/Images/RoleplayForum/zoom.png) no-repeat scroll center center;
+}
+
+.ImagePost .PostEditControls
+{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 100px;
+    text-align: right;
 }
 
 @media (max-width: 991px)
