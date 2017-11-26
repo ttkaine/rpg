@@ -105,7 +105,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult GameSession()
         {
-            Session session = new Session {DateTime = DateTime.Now};
+            Session session = new Session {};
             return View(session);
         }
 
