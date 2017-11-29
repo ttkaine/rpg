@@ -1877,6 +1877,14 @@ footer
     }
 }
 
+@media (max-width: 550px)
+{
+    .ToggleButtonEnabled, .ToggleButtonDisabled
+    {
+        width: 74px !important;
+    }    
+}
+
 @media (max-width: 500px)
 {
     .WideText
@@ -1941,6 +1949,6 @@ footer
 {
     .ToggleButtonEnabled, .ToggleButtonDisabled
     {
-        width: 64px;
+        width: 60px !important;
     }    
 }
