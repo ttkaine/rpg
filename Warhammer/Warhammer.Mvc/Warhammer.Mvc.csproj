@@ -279,6 +279,7 @@
     <Compile Include="Models\PersonDetailsViewModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\PlayerSessionControlsViewModel.cs" />
+    <Compile Include="Models\RelatedLinksModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionGmViewModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
