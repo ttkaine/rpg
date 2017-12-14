@@ -1,0 +1,13 @@
+﻿i.icon {
+    &-loading {
+        @extend .fa;
+        @extend .fa-stack-1x;
+        @extend .fa-sync-alt;
+        @extend .fa-spin;
+        @extend .fa-fw;
+    }
+    &-location {
+        @extend .fa;
+        @extend .fa-home;
+    }
+}

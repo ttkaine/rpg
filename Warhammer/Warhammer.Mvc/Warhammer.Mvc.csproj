@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -297,6 +298,10 @@
     <Content Include="Content\DbUpdateScripts\17111101.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-brands-400.svg" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-light-300.svg" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-regular-400.svg" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-solid-900.svg" />
     <Content Include="Content\Images\added.png" />
     <Content Include="Content\Images\bg-large.jpg" />
     <Content Include="Content\Images\bg-medium.jpg" />
@@ -387,6 +392,12 @@
     <Content Include="Content\RoleplayCss\MainStyle.css" />
     <Content Include="Content\RoleplayCss\Roleplay.css" />
     <Content Include="Content\RoleplayCss\SessionLog.css" />
+    <Content Include="Content\Sass\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\Sass\styles.min.css">
+      <DependentUpon>styles.css</DependentUpon>
+    </Content>
     <Content Include="Content\space.css" />
     <Content Include="Content\StaticPages\DatabaseError.html" />
     <Content Include="Content\theme.css">
@@ -501,10 +512,52 @@
     </Content>
     <Content Include="Content\Documents\character_sheet.docx" />
     <None Include="compilerconfig.json" />
-    <Content Include="compilerconfig.json.defaults">
+    <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
-    </Content>
+    </None>
     <Content Include="Content\fonts\RioGrande.ttf" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-brands-400.eot" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-brands-400.ttf" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-brands-400.woff" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-light-300.eot" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-light-300.ttf" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-light-300.woff" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-light-300.woff2" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-regular-400.eot" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-regular-400.ttf" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-regular-400.woff" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-solid-900.eot" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-solid-900.ttf" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-solid-900.woff" />
+    <Content Include="Content\FontAwesome5\webfonts\fa-solid-900.woff2" />
+    <Content Include="Content\Less\Module\module.less" />
+    <Content Include="Content\Less\Module\icon.less" />
+    <Content Include="Content\Less\Mixins\fontawesome.less" />
+    <Content Include="Content\Less\Mixins\mixins.less" />
+    <Content Include="Content\FontAwesome5\scss\fa-brands.scss" />
+    <Content Include="Content\FontAwesome5\scss\fa-light.scss" />
+    <Content Include="Content\FontAwesome5\scss\fa-regular.scss" />
+    <Content Include="Content\FontAwesome5\scss\fa-solid.scss" />
+    <Content Include="Content\FontAwesome5\scss\fontawesome.scss" />
+    <Content Include="Content\FontAwesome5\scss\_animated.scss" />
+    <Content Include="Content\FontAwesome5\scss\_bordered-pulled.scss" />
+    <Content Include="Content\FontAwesome5\scss\_core.scss" />
+    <Content Include="Content\FontAwesome5\scss\_fixed-width.scss" />
+    <Content Include="Content\FontAwesome5\scss\_icons.scss" />
+    <Content Include="Content\FontAwesome5\scss\_larger.scss" />
+    <Content Include="Content\FontAwesome5\scss\_list.scss" />
+    <Content Include="Content\FontAwesome5\scss\_mixins.scss" />
+    <Content Include="Content\FontAwesome5\scss\_rotated-flipped.scss" />
+    <Content Include="Content\FontAwesome5\scss\_screen-reader.scss" />
+    <Content Include="Content\FontAwesome5\scss\_stacked.scss" />
+    <Content Include="Content\FontAwesome5\scss\_variables.scss" />
+    <Content Include="Content\Sass\Module\module.scss" />
+    <Content Include="Content\Sass\Module\_icon.scss" />
+    <Content Include="Content\Sass\Mixin\mixin.scss" />
+    <Content Include="Content\Sass\Mixin\_font-awesome.scss" />
+    <Content Include="Content\Sass\styles.scss" />
     <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
     <None Include="Properties\PublishProfiles\CI01.pubxml" />
     <None Include="Properties\PublishProfiles\Fate_Federer.pubxml" />
@@ -785,6 +838,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Less\Base\" />
+    <Folder Include="Content\Less\Layout\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
   </ItemGroup>
