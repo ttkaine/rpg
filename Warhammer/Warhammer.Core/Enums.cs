@@ -56,4 +56,13 @@
         Harm = 5,
         Edge = 6
     }
+
+    public enum PageLinkType
+    {
+        Other = 0,
+        Person = 1,
+        Place = 2,
+        Session = 3,
+        SessionLog = 4        
+    }
 }

@@ -423,7 +423,8 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult RelatedLinks(int id)
         {
             List<PageLinkModel> linkedPages = DataProvider.GetRelatedPages(id);
-            return PartialView(linkedPages);
+            //return PartialView(linkedPages);
+            return PartialView(new RelatedLinksModel(linkedPages));
         }
     }
 }

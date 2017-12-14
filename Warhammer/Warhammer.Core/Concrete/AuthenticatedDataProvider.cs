@@ -680,7 +680,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName}).ToList();
+            return query.Select(GetPageLinkModel).ToList();
         }
 
         public ICollection<PageLinkModel> NewPages()
@@ -690,7 +690,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(GetPageLinkModel).ToList();
         }
 
         public ICollection<PageLinkModel> ModifiedPages()
@@ -702,7 +702,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(GetPageLinkModel).ToList();
         }
 
         public void TogglePagePin(int id)
@@ -2066,14 +2066,13 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> GetRelatedPages(int id)
         {
-
             if (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode))
             {
                 List<PageLinkModel> shadowLinks = _repository.Pages()
                     .Include(p => p.Pages)
                     .Single(p => p.Id == id)
                     .Pages.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)))
-                    .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
+                    .Select(p => GetPageLinkModelForPage(p, id))
                     .ToList();
 
                 return shadowLinks;
@@ -2083,9 +2082,55 @@ namespace Warhammer.Core.Concrete
                 _repository.Pages()
                     .Include(p => p.Pages)
                     .Single(p => p.Id == id)
-                    .Pages.Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
+                    .Pages.Select(p => GetPageLinkModelForPage(p, id))
                     .ToList();
             return links;
+        }
+
+        private PageLinkModel GetPageLinkModel(Page page)
+        {
+            return GetPageLinkModelForPage(page, 0);    
+        }
+
+        private PageLinkModel GetPageLinkModelForPage(Page page, int viewingPageId)
+        {
+            PageLinkModel model = new PageLinkModel
+            {
+                Id = page.Id,
+                ShortName = page.ShortName,
+                FullName = page.FullName
+            };
+
+            if (page is Person)
+            {
+                model.Type = PageLinkType.Person;
+            }
+            else if (page is Place)
+            {
+                model.Type = PageLinkType.Place;
+            }
+            else if (page is Session)
+            {
+                model.Type = PageLinkType.Session;
+            }
+            else if (page is SessionLog)
+            {
+                SessionLog log = (SessionLog) page;
+                if (log.PersonId != viewingPageId)
+                {
+                    model.Type = PageLinkType.SessionLog;
+                }
+                else
+                {
+                    model.Type = PageLinkType.Other;
+                }
+            }
+            else
+            {
+                model.Type = PageLinkType.Other;
+            }
+
+            return model;
         }
 
         public bool PlayerSettingEnabled(SettingNames setting)
@@ -2119,7 +2164,7 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> PeopleWithXpToSpend()
         {
-            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName } ).ToList();
+            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(GetPageLinkModel ).ToList();
         }
 
         public void AwardShiftForSession(int id)
@@ -2169,7 +2214,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyPeopleShadow(query);
             }
 
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.Select(GetPageLinkModel).ToList();
         }
 
         public void SetGender(int personId, Gender gender)
@@ -2669,13 +2714,7 @@ namespace Warhammer.Core.Concrete
 
         public PageLinkModel PersonWithMyAward(TrophyType awardType)
         {
-           return _repository.People().Where(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id
-                                                                  && a.Trophy.TypeId == (int)awardType)).Select(p => new PageLinkModel
-            {
-                FullName = p.FullName,
-                Id = p.Id,
-                ShortName = p.ShortName
-            }).FirstOrDefault();
+           return _repository.People().Where(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id&& a.Trophy.TypeId == (int)awardType)).Select(GetPageLinkModel).FirstOrDefault();
 
         }
 
@@ -2775,7 +2814,7 @@ namespace Warhammer.Core.Concrete
             query = query.OrderByDescending(p => p.CurrentScore).Take(5);
 
 
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.Select(GetPageLinkModel).ToList();
         }
 
         public List<Person> AllNpcs()
@@ -3003,7 +3042,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyPeopleShadow(query);
             }
 
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.Select(GetPageLinkModel).ToList();
         }
 
 

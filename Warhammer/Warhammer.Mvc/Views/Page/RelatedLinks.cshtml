@@ -1,9 +1,42 @@
-﻿@model IEnumerable<Warhammer.Core.Models.PageLinkModel>
-@if (Model.Any())
+﻿@model Warhammer.Mvc.Models.RelatedLinksModel
+
+@if (Model.Sessions.Any())
+{
+    <h3>Sessions</h3>
+    <ul>
+            @Html.DisplayFor(m => Model.Sessions)
+    </ul>
+    <div class="clearfix"></div>
+}
+@if (Model.People.Any())
+{
+    <h3>People</h3>
+    <ul>
+        @Html.DisplayFor(m => Model.People)
+    </ul>
+    <div class="clearfix"></div>
+}
+@if (Model.Places.Any())
+{
+    <h3>Places</h3>
+    <ul>
+        @Html.DisplayFor(m => Model.Places)
+    </ul>
+    <div class="clearfix"></div>
+}
+@if (Model.Others.Any())
 {
     <h3>Related Pages</h3>
-            <ul>
-                    @Html.DisplayFor(m => Model)
-            </ul>
-            <div class="clearfix"></div>
+    <ul>
+        @Html.DisplayFor(m => Model.Others)
+    </ul>
+    <div class="clearfix"></div>
+}
+@if (Model.SessionLogs.Any())
+{
+    <h3>Other People's Logs</h3>
+    <ul>
+        @Html.DisplayFor(m => Model.SessionLogs)
+    </ul>
+    <div class="clearfix"></div>
 }
