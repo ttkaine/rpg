@@ -12,12 +12,18 @@ namespace Warhammer.Mvc.Models
         public RelatedLinksModel(List<PageLinkModel> links)
         {
             _links = links ?? new List<PageLinkModel>();
+
+            Sessions = _links.Where(l => l.Type == PageLinkType.Session).OrderByDescending(l => l.Created).ToList();
+            SessionLogs = _links.Where(l => l.Type == PageLinkType.SessionLog).OrderByDescending(l => l.Created).ToList();
+            People = _links.Where(l => l.Type == PageLinkType.Person).OrderBy(l => l.ShortName).ToList();
+            Places = _links.Where(l => l.Type == PageLinkType.Place).OrderBy(l => l.ShortName).ToList();
+            Others = _links.Where(l => l.Type == PageLinkType.Other).OrderBy(l => l.ShortName).ToList();
         }
 
-        public List<PageLinkModel> Sessions => _links.Where(l => l.Type == PageLinkType.Session).ToList();
-        public List<PageLinkModel> SessionLogs => _links.Where(l => l.Type == PageLinkType.SessionLog).ToList();
-        public List<PageLinkModel> People => _links.Where(l => l.Type == PageLinkType.Person).ToList();
-        public List<PageLinkModel> Places => _links.Where(l => l.Type == PageLinkType.Place).ToList();
-        public List<PageLinkModel> Others => _links.Where(l => l.Type == PageLinkType.Other).ToList();
+        public List<PageLinkModel> Sessions { get; private set; }
+        public List<PageLinkModel> SessionLogs { get; private set; }
+        public List<PageLinkModel> People { get; private set; }
+        public List<PageLinkModel> Places { get; private set; }
+        public List<PageLinkModel> Others { get; private set; }
     }
 }

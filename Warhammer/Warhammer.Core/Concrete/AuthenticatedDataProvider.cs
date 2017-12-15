@@ -2098,7 +2098,8 @@ namespace Warhammer.Core.Concrete
             {
                 Id = page.Id,
                 ShortName = page.ShortName,
-                FullName = page.FullName
+                FullName = page.FullName,
+                Created = page.Created
             };
 
             if (page is Person)

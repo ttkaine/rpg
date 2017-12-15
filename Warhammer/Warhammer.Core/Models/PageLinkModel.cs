@@ -1,4 +1,6 @@
-﻿namespace Warhammer.Core.Models
+﻿using System;
+
+namespace Warhammer.Core.Models
 {
     public class PageLinkModel
     {
@@ -6,6 +8,7 @@
         public string ShortName { get; set; }
         public string FullName { get; set; }
         public PageLinkType Type { get; set; }
+        public DateTime Created { get; set; }
 
         public PageLinkModel()
         {
