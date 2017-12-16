@@ -1,0 +1,189 @@
+﻿
+button, a.button, input.button, .btn-default {
+    @extend .btn;
+    /*@include button-variant($color-default-fg, $color-default, darken($color-default, 10%));*/
+
+    &.small {
+        @extend .btn-xs;
+    }
+
+    &::before {
+        margin-right: 5px;
+    }
+
+    &.icon-only::before {
+        margin-right: 0;
+    }
+
+    &[type="submit"] {
+        @extend .btn-primary;
+
+        &:before {
+            @extend .fas;
+            @extend .fa-check-square;
+        }
+    }
+
+    &.primary, &.btn-primary {
+        @extend .btn-primary;
+    }
+
+    &.info, &.btn-info {
+        @extend .btn-info;
+    }
+
+    &.success, &.btn-success {
+        @extend .btn-success;
+    }
+
+    &.warning, &.btn-warning {
+        @extend .btn-warning;
+    }
+
+    &.danger, &.btn-danger {
+        @extend .btn-danger;
+    }
+
+    &.search {
+        @extend .btn-info;
+
+        &:before {
+            @extend .fas;
+            @extend .fa-search;
+        }
+    }
+
+    &.add {
+        @extend .btn-success;
+
+        &:before {
+            @extend .fal;
+            @extend .fa-plus-circle;
+        }
+    }
+
+    &.edit {
+        &:before {
+            @extend .fal;
+            @extend .fa-pencil-alt;
+        }
+    }
+
+    &.delete, &.remove {
+        @extend .btn-danger;
+
+        &:before {
+            @extend .fal;
+            @extend .fa-trash-alt;
+        }
+    }
+
+    &.close {
+        &:before {
+            @extend .fal;
+            @extend .fa-times;
+        }
+    }
+
+    &.cancel {
+        &:before {
+            @extend .fal;
+            @extend .fa-times-hexagon;
+        }
+    }
+
+    &.publish {
+        @extend .btn-primary;
+
+        &:before {
+            @extend .far;
+            @extend .fa-cloud-upload;
+        }
+    }
+
+    &.back {
+        &:before {
+            @extend .far;
+            @extend .fa-step-backward;
+        }
+    }
+
+    &.view {
+        &:before {
+            @extend .far;
+            @extend .fa-eye;
+        }
+    }
+
+    &.done {
+        @extend .btn-primary;
+
+        &:before {
+            @extend .far;
+            @extend .fa-arrow-left;
+        }
+    }
+
+    &.switch {
+        @extend .btn-info;
+
+        &:before {
+            @extend .fas;
+            @extend .fa-exchange;
+        }
+    }
+
+    &.move-up {
+        &:before {
+            @extend .fal;
+            @extend .fa-arrow-up;
+        }
+    }
+
+    &.move-down {
+        &:before {
+            @extend .fal;
+            @extend .fa-arrow-down;
+        }
+    }
+
+    &.email {
+        &:before {
+            @extend .far;
+            @extend .fa-at;
+        }
+    }
+
+    &.download {
+        &:before {
+            @extend .far;
+            @extend .fa-download;
+        }
+    }
+
+    &.upload {
+        &:before {
+            @extend .far;
+            @extend .fa-upload;
+        }
+    }
+    // DEFINE THESE LAST
+    &.working {
+        &:before {
+            @extend .far;
+            @extend .fa-sync;
+        }
+    }
+}
+
+.modal-header {
+    button.close::before {
+        margin: 0;
+    }
+}
+
+a.toggle {
+    &:hover {
+        cursor: pointer;
+    }
+}

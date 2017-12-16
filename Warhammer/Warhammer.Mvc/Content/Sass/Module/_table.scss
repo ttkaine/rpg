@@ -1,0 +1,291 @@
+﻿.table-container {
+    @extend .table-responsive;
+
+    .dataTables_wrapper > .toggle {
+        clear: both;
+        float: right;
+        margin-bottom: 10px;
+    }
+
+    @media screen and (max-width: $screen-xs-max) {
+        border: none;
+
+        .dataTables_length,
+        .dataTables_filter {
+            display: block;
+            float: none;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    }
+
+    .table-search-icon:hover {
+        cursor: pointer;
+    }
+
+    table {
+        @extend .table;
+
+        > tbody > tr > td,
+        > thead > tr > th {
+            padding: 5px;
+            margin: 0;
+        }
+
+        > tbody {
+            > tr {
+                &.odd {
+                    background-color: transparent;
+                }
+
+                &.even {
+                    background-color: $color-table-stripe;
+                }
+
+                > td {
+                    border-top: 1px solid darken($color-table-stripe, 10%);
+
+                    &:last-of-type {
+                        button, .button {
+                            float: right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .export-buttons-container {
+        float: left;
+        clear: left;
+    }
+}
+
+.show-children + .content-text {
+    display: inline;
+    margin-left: 10px;
+}
+
+.child-organisations-container {
+    margin-left: 2.5%;
+    margin-bottom: 15px;
+    width: 95%;
+    border: 1px solid darken($color-table-stripe, 7.5%);
+    border-top: none;
+
+    table {
+        margin-bottom: 0;
+
+        tbody {
+            tr {
+                &:nth-of-type(odd) {
+                    background-color: transparent;
+                }
+
+                &:nth-of-type(even) {
+                    background-color: $color-table-stripe;
+                }
+            }
+        }
+    }
+}
+
+.panel-with-filtered-results {
+    .panel-header {
+        background: repeating-linear-gradient(
+            45deg,
+            $background-panel-header,
+            $background-panel-header 16px,
+            lighten($background-panel-header, 5%) 16px,
+            lighten($background-panel-header, 5%) 32px
+        ) !important;
+    }
+}
+
+.filtered-results-indicator {
+    background: $color-info;
+    color: $color-info-fg;
+    padding: 1px 6px;
+    position: relative;
+    right: -10px;
+    display: inline-block;
+    border-radius: 4px;
+
+    @media screen and (max-width: $screen-xs-max) {
+        right: 0;
+        white-space: initial;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    &:before {
+        @extend .far;
+        @extend .fa-info-circle;
+    }
+
+    b {
+        font-weight: normal;
+        margin-left: 5px;
+
+        @media screen and (min-width: $screen-sm-min) {
+            display: none;
+        }
+    }
+
+    &:hover {
+        b {
+            display: inline;
+        }
+    }
+}
+
+@media screen and (min-width: $screen-sm-min) {
+    .dataTables_filter, .dataTables_paginate {
+        float: right;
+    }
+
+    .dataTables_wrapper > div > .col-sm-6,
+    .dataTables_wrapper > div > .col-sm-12,
+    .dataTables_wrapper > div > .col-sm-5,
+    .dataTables_wrapper > div > .col-sm-7 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.dataTables_wrapper {
+    position: relative;
+
+    .dt-buttons, .export-buttons-container {
+        .btn, button {
+            @extend .btn-xs;
+            margin: 0 15px 0 0;
+
+            @media screen and (max-width: $screen-xs-max) {
+                margin: 0 0 10px 0;
+                display: block;
+            }
+        }
+    }
+
+    .dataTables_processing {
+        top: 0;
+        left: 0;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: none;
+
+        .is-loading {
+            .icon-loading {
+                top: 40%;
+                font-size: 40px;
+            }
+        }
+    }
+}
+
+// Fix for the Buttons extension (export to PDF, Excel and CSV) breaking the layout.
+.dataTables_length {
+    float: left;
+}
+
+/*!
+ * DataTables + Font Awesome integration
+ * License: MIT - http://datatables.net/license
+ */
+/*
+ * Sort styling
+ */
+table.dataTable thead th {
+    position: relative;
+    background-image: none !important; /* Remove the DataTables bootstrap integration styling */
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    @extend .fas;
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    display: block;
+}
+
+table.dataTable thead th.sorting:after {
+    @extend .fa-sort;
+    color: #ddd;
+    font-size: 0.8em;
+    padding-top: 0.12em;
+}
+
+table.dataTable thead th.sorting_asc:after {
+    @extend .fa-sort-up;
+}
+
+table.dataTable thead th.sorting_desc:after {
+    @extend .fa-sort-down;
+}
+
+div.dataTables_scrollBody table.dataTable thead th.sorting:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_asc:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_desc:after {
+    content: "";
+}
+
+/* In Bootstrap and Foundation the padding top is a little different from the DataTables stylesheet */
+table.table thead th.sorting:after,
+table.table thead th.sorting_asc:after,
+table.table thead th.sorting_desc:after {
+    top: 8px;
+}
+
+
+/*
+ * DataTables style pagination controls
+ */
+div.dataTables_paginate a.paginate_button.first,
+div.dataTables_paginate a.paginate_button.previous {
+    position: relative;
+    padding-left: 24px;
+}
+
+div.dataTables_paginate a.paginate_button.next,
+div.dataTables_paginate a.paginate_button.last {
+    position: relative;
+    padding-right: 24px;
+}
+
+div.dataTables_paginate a.first:before,
+div.dataTables_paginate a.previous:before {
+    @extend .fas;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    display: block;
+}
+
+div.dataTables_paginate a.next:after,
+div.dataTables_paginate a.last:after {
+    @extend .fas;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    display: block;
+}
+
+div.dataTables_paginate a.first:before {
+    @extend .fa-angle-double-left;
+}
+
+div.dataTables_paginate a.previous:before {
+    @extend .fa-angle-left;
+}
+
+div.dataTables_paginate a.next:after {
+    @extend .fa-angle-right;
+}
+
+div.dataTables_paginate a.last:after {
+    @extend .fa-angle-double-right;
+}

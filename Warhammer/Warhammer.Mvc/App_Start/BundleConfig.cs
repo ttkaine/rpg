@@ -22,8 +22,11 @@ namespace Warhammer.Mvc
             //          "~/Scripts/bootstrap.js",
             //          "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/less_styles").Include(
                       "~/Content/WarhammerStyle.css"));
+
+            bundles.Add(new StyleBundle("~/Content/default_theme").Include(
+                "~/Content/Sass/default-theme.css"));
         }
     }
 }

@@ -1,0 +1,120 @@
+﻿
+header {
+    @include box-shadow(0 0 15px rgba(0, 0, 0, 0.8));
+    background: $color-header;
+    color: $color-header-fg;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 15px;
+    height: 60px;
+
+    .menu-trigger, .logo-container {
+        display: block;
+        float: left;
+    }
+
+    @media screen and (max-width: $screen-xs-max) {
+        height: 92px;
+
+        .logo-container {
+            display: none;
+        }
+    }
+
+    .menu-trigger {
+        margin-right: 15px;
+        background: $color-info;
+        color: $color-info-fg;
+    }
+
+    .global-search,
+    .current-user-container {
+        float: right;
+        position: relative;
+        top: 15px;
+    }
+
+    .global-search {
+        height: 38px;
+
+        @media screen and (max-width: $screen-xs-max) {
+            float: none;
+            clear: both;
+            top: 4px;
+            text-align: center;
+        }
+    }
+
+    .current-user-container {
+        margin-left: 25px;
+
+        @media screen and (min-width: $screen-sm-min) {
+            .avatar-and-name {
+                padding-bottom: 10px;
+            }
+        }
+
+        @media screen and (max-width: $screen-xs-max) {
+            float: left;
+            margin-left: 0;
+            position: initial;
+            margin-top: 10px;
+        }
+
+        .user-avatar > img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .user-name {
+            color: $color-header-fg;
+        }
+
+        .links-container {
+            z-index: 50;
+            position: relative;
+            background: $color-header;
+            color: $color-header-fg;
+            text-align: center;
+
+            a.button, a.button:hover, a.button:focus {
+                @include box-shadow(none);
+                background: $color-header;
+                border: none;
+                color: $color-header-fg;
+                display: block;
+            }
+
+            @media screen and (min-width: $screen-sm-min) {
+                display: none;
+                margin-right: -15px;
+
+                a.button {
+                    width: 100%;
+                    padding: 3px 0;
+                }
+            }
+
+            @media screen and (max-width: $screen-xs-max) {
+                position: absolute;
+                top: 10px;
+                right: 0;
+
+                a.button {
+                    width: 100%;
+                    padding: 5px 15px 5px 5px;
+                }
+            }
+        }
+
+        &:hover, &:focus {
+            > a {
+                text-decoration: none;
+            }
+
+            .links-container {
+                display: block;
+            }
+        }
+    }
+}

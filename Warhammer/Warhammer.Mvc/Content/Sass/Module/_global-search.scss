@@ -1,0 +1,122 @@
+﻿
+.global-search {
+    float: right;
+    position: relative;
+    top: 15px;
+    height: 38px;
+
+    @media screen and (max-width: $screen-xs-max) {
+        top: 8px;
+    }
+
+    &.search-results-visible {
+        z-index: 1050;
+    }
+
+    .form-container {
+        width: 250px;
+
+        @media screen and (max-width: $screen-xs-max) {
+            width: 100%;
+        }
+    }
+
+    .search-results-container {
+        @include make-row;
+        @include box-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+        position: absolute;
+        min-width: 600px;
+        margin: 0;
+        right: 0;
+        margin-top: 3px;
+        z-index: 1050;
+        background: $background-panel-content;
+        color: $color-panel-content;
+
+        @media screen and (max-width: $screen-xs-max) {
+            min-width: initial;
+            margin-bottom: 50px;
+            max-width: 100%;
+        }
+
+        .icon-loading {
+            font-size: 30px;
+        }
+
+        &.is-loading {
+            width: auto;
+            height: auto;
+            top: unset;
+            left: unset;
+
+            @media screen and (max-width: $screen-xs-max) {
+                width: 100%;
+            }
+        }
+
+        .icon-loading {
+            font-size: 30px;
+        }
+
+        .search-result-toggles {
+            @include make-sm-column(4);
+            padding: 5px;
+            text-align: left;
+
+            .entity-type-toggle {
+                margin-bottom: 10px;
+
+                @media screen and (max-width: $screen-xs-max) {
+                    width: 50%;
+                    float: left;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &.current {
+                    font-weight: bold;
+
+                    i {
+                        color: $color-info;
+                    }
+                }
+
+                i {
+                    width: 24px;
+                    font-size: 16px;
+                }
+            }
+
+            .filtered-results-indicator {
+                left: 0;
+                bottom: 0;
+
+                @media screen and (max-width: $screen-xs-max) {
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+        }
+
+        .entity-items-list {
+            @include make-sm-column(8);
+            padding: 5px;
+            padding-bottom: 0;
+            text-align: left;
+            max-height: 800px;
+            overflow-y: scroll;
+
+            &.no-results {
+                padding-bottom: 5px;
+            }
+
+            @media screen and (max-width: $screen-xs-max) {
+                clear: both;
+                max-height: none;
+                overflow-y: unset;
+            }
+        }
+    }
+}

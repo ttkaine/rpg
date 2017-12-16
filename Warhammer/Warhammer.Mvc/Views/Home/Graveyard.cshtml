@@ -22,7 +22,7 @@
                 @foreach (Person person in Model)
                 {
                     <tr>
-                        <td><a href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                        <td><a href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="profile-image-mini" /></a></td>
                         <td>@person.FullName</td>
                         <td>
                             <h3>@person.CauseOfDeath</h3>

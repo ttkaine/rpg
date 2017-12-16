@@ -1,0 +1,79 @@
+﻿.bootstrap-datetimepicker-widget {
+    table td span:hover,
+    table > tbody > tr:nth-of-type(even) {
+        background: transparent;
+    }
+
+    .picker-switch {
+        a {
+            @extend .button;
+            @extend .info;
+            margin-top: 5px;
+
+            .fa {
+                height: auto;
+                line-height: 1;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.datepicker table tr td {
+    &.today,
+    &.today:hover,
+    &.today.disabled,
+    &.today.disabled:hover {
+        background: $color-warning;
+        color: $color-warning-fg;
+
+        &:before {
+            border-bottom-color: $color-warning-fg;
+        }
+    }
+
+    &.active:hover,
+    &.active:hover:hover,
+    &.active.disabled:hover,
+    &.active.disabled:hover:hover,
+    &.active:active,
+    &.active:hover:active,
+    &.active.disabled:active,
+    &.active.disabled:hover:active,
+    &.active.active,
+    &.active:hover.active,
+    &.active.disabled.active,
+    &.active.disabled:hover.active,
+    &.active.disabled,
+    &.active:hover.disabled,
+    &.active.disabled.disabled,
+    &.active.disabled:hover.disabled,
+    &.active[disabled],
+    &.active:hover[disabled],
+    &.active.disabled[disabled],
+    &.active.disabled:hover[disabled],
+    & span.active:hover,
+    & span.active:hover:hover,
+    & span.active.disabled:hover,
+    & span.active.disabled:hover:hover,
+    & span.active:active,
+    & span.active:hover:active,
+    & span.active.disabled:active,
+    & span.active.disabled:hover:active,
+    & span.active.active,
+    & span.active:hover.active,
+    & span.active.disabled.active,
+    & span.active.disabled:hover.active,
+    & span.active.disabled,
+    & span.active:hover.disabled,
+    & span.active.disabled.disabled,
+    & span.active.disabled:hover.disabled,
+    & span.active[disabled],
+    & span.active:hover[disabled],
+    & span.active.disabled[disabled],
+    & span.active.disabled:hover[disabled] {
+        background: $color-primary;
+        color: $color-primary-fg;
+    }
+}

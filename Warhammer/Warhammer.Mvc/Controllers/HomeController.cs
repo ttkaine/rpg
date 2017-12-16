@@ -433,5 +433,14 @@ namespace Warhammer.Mvc.Controllers
             List<Award> awards = DataProvider.AwardsForTrophy(id);
             return PartialView(awards);
         }
+
+        public ActionResult ThemeCss()
+        {
+            if (DataProvider.SiteHasFeature(Feature.SassUi))
+            {
+                return PartialView("_SassStyles");
+            }
+            return PartialView("_LessStyles");
+        }
     }
 }

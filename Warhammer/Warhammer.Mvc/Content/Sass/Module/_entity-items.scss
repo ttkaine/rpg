@@ -1,0 +1,52 @@
+﻿
+.entity-items-list {
+    a:hover, a:focus {
+        text-decoration: none;
+    }
+
+    .entity-item {
+        border: 1px solid darken($color-globalsearch-entity, 15%);
+        margin-bottom: 10px;
+
+        .name, .details, .tags {
+            @include fit-on-one-line;
+        }
+
+        .name, .details {
+            padding: 5px;
+        }
+
+        .name {
+            margin-bottom: 5px;
+            border-bottom: 1px solid darken($color-globalsearch-entity, 15%);
+            background: $color-globalsearch-entity;
+            color: $color-globalsearch-entity-fg;
+
+            .updating-panel {
+                display: inline-block;
+            }
+
+            i[class^="icon-"] {
+                font-size: 16px;
+                margin-right: 6px;
+            }
+        }
+
+        .details {
+            padding-top: 0;
+            color: $color-panel-content;
+        }
+    }
+}
+
+.related-entities {
+    .panel-content {
+        .updating-panel {
+            display: inline-block;
+
+            .entity-pill {
+                margin: 0 5px 5px 0;
+            }
+        }
+    }
+}

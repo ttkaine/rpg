@@ -1,0 +1,156 @@
+﻿
+.entity-pill {
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 100px;
+    background: $color-input-background;
+    color: $color-input-text;
+
+    &.entity-null, .fa, .name {
+        padding: 8px 12px;
+        line-height: 1;
+    }
+
+    &.entity-null {
+        font-style: italic;
+    }
+
+    .fa, .name {
+        display: inline-block;
+    }
+
+    .fa {
+        border-radius: 100px;
+        width: 36px;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+    }
+
+    .name {
+        padding-left: 2px;
+
+        a {
+            color: $color-default-font;
+        }
+    }
+
+    &.contact-display {
+        border-color: $color-contact;
+
+        .fa {
+            color: $color-contact-fg;
+            background: $color-contact;
+        }
+    }
+
+    &.opportunity-display {
+        border-color: $color-opportunity;
+
+        .fa {
+            color: $color-opportunity-fg;
+            background: $color-opportunity;
+        }
+    }
+
+    &.organisation-display {
+        border-color: $color-organisation;
+
+        .fa {
+            color: $color-organisation-fg;
+            background: $color-organisation;
+        }
+    }
+
+    &.product-display {
+        border-color: $color-product;
+
+        .fa {
+            color: $color-product-fg;
+            background: $color-product;
+        }
+    }
+
+    &.user-display {
+        border-color: $color-user;
+
+        .fa {
+            color: $color-user-fg;
+            background: $color-user;
+        }
+    }
+
+    &.project-display {
+        border-color: $color-project;
+
+        .fa {
+            color: $color-project-fg;
+            background: $color-project;
+        }
+    }
+
+    &.action-display {
+        border-color: $color-action;
+
+        .fa {
+            color: $color-action-fg;
+            background: $color-action;
+        }
+    }
+
+    &.appointment-display {
+        border-color: $color-appointment;
+
+        .fa {
+            color: $color-appointment-fg;
+            background: $color-appointment;
+        }
+    }
+
+    &.attachment-display {
+        border-color: $color-attachment;
+
+        .fa {
+            color: $color-attachment-fg;
+            background: $color-attachment;
+
+        }
+    }
+
+    &.attachment-display-file-excel {
+        border-color: $color-attachment-excel;
+
+        .fa {
+            color: $color-attachment-excel-fg;
+            background: $color-attachment-excel;
+        }
+    }
+
+    &.attachment-display-file-word {
+        border-color: $color-attachment-word;
+
+        .fa {
+            color: $color-attachment-word-fg;
+            background: $color-attachment-word;
+        }
+    }
+
+    &.attachment-display-file-pdf {
+        border-color: $color-attachment-pdf;
+
+        .fa {
+            color: $color-attachment-pdf-fg;
+            background: $color-attachment-pdf;
+        }
+    }
+
+    &.attachment-display {
+        .fa {
+              &.icon-download {
+                border: none;
+                color: $color-attachment-fg;
+                background: $color-attachment-download;
+            }
+        }
+    }
+}

@@ -127,7 +127,7 @@
                         @foreach (Person person in Model.MyPeople)
                         {
                             <tr>
-                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="profile-image-mini" /></a></td>
                                 <td class="name">@person.FullName</td>
                             </tr>
 
@@ -150,7 +150,7 @@
                         @foreach (PageLinkModel person in Model.OtherPeople)
                         {
                             <tr>
-                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="profile-image-mini" /></a></td>
                                 <td class="name">@person.FullName</td>
                             </tr>
 
@@ -173,7 +173,7 @@
                             @foreach (PageLinkModel person in Model.TopNpcs)
                             {
                                 <tr>
-                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
+                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="profile-image-mini" /></a></td>
                                     <td class="name">@person.FullName</td>
                                 </tr>
 

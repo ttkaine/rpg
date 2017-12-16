@@ -6992,7 +6992,7 @@ footer {
 .btn-main {
   width: 75%;
 }
-.mini-profile-image,
+.profile-image-mini,
 .profile-image {
   float: right;
   -moz-border-radius: 100px;
@@ -7003,7 +7003,7 @@ footer {
   box-shadow: #333333 5px 5px 15px ;
 }
 .trophy-image,
-.mini-profile-image {
+.profile-image-mini {
   width: 80px;
   height: 80px;
   margin: 8px;
@@ -7014,7 +7014,7 @@ footer {
   word-wrap: break-word;
   width: 100%;
 }
-#recentActivity .mini-profile-image,
+#recentActivity .profile-image-mini,
 #recentActivity .mini-trophy-image {
   width: 30px;
   height: 30px;
@@ -7159,7 +7159,7 @@ table.graveyard td {
   -webkit-box-shadow: #333333 5px 5px 5px ;
   box-shadow: #333333 5px 5px 5px ;
 }
-#characterLeagueList .mini-profile-image {
+#characterLeagueList .profile-image-mini {
   clear: both;
   float: none;
 }

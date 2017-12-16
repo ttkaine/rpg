@@ -1,0 +1,248 @@
+﻿.form-control {
+    @include transition(border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s);
+    @include box-shadow(inset 0 1px 2px rgba(0, 0, 0, 0.1));
+    @include form-control-focus($color-primary);
+    padding: $padding-input;
+    height: $height-input;
+    border: 1px solid $color-input-border;
+    background: $color-input-background;
+    color: $color-input-text;
+    border-radius: 0;
+
+    &.pure-inline {
+        @include box-shadow(none);
+        border: none;
+        background-color: transparent;
+        color: inherit;
+        padding: 0;
+        height: auto;
+        min-height: unset;
+        resize: none;
+    }
+}
+
+.mce-lite.mce-content-body {
+    @extend .form-control;
+    border: 1px dashed $color-input-border;
+    height: auto;
+    min-height: $height-input * 3;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="color"],
+select,
+textarea {
+    @extend .form-control;
+
+    &.datepicker, &.datetimepicker {
+        background-color: $color-body-background;
+    }
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="color"],
+select,
+textarea,
+.mce-lite.mce-content-body,
+.selectize-input,
+input.datepicker,
+input.datetimepicker {
+    &[readonly] {
+        background-color: $color-input-readonly-background !important;
+
+        &.pure-inline {
+            background-color: transparent !important;
+        }
+
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+}
+
+.form-group {
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .editor-for-bool {
+        &:first-of-type {
+            margin-top: 20px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 10px;
+            position: relative;
+            top: 2px;
+            left: 25px;
+            padding-left: 0;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            margin-left: 0;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &[readonly],
+            &[readonly] + label {
+                &:hover {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+    &.checkbox,
+    &.radio {
+        .editor-for-bool {
+            &:first-of-type {
+                margin-top: 0;
+            }
+        }
+    }
+
+    &.checkbox,
+    &.radio {
+        margin: 10px 0 5px 0;
+    }
+}
+
+.inline-form-groups {
+    [class^=form-group-] {
+        .form-group {
+            &.checkbox,
+            &.radio {
+                margin-top: 26px;
+            }
+        }
+    }
+}
+
+.field-validation-error {
+    display: block;
+    color: $color-danger;
+}
+
+input.input-validation-error,
+textarea.input-validation-error,
+select.input-validation-error,
+.multiselect.input-validation-error + .btn-group button.multiselect {
+    border-color: $color-danger !important;
+    background-color: lighten($color-danger, 40%) !important;
+
+    &:focus {
+        @include form-control-focus($color-danger);
+        background-color: #fff !important;
+    }
+}
+
+.validation-summary-errors {
+    color: darken($color-danger, 15%);
+    background: lighten($color-danger, 40%);
+    border: 1px solid $color-danger;
+    padding: 8px 8px 8px 0;
+    border-radius: 10px;
+
+    ul {
+        margin: 0;
+    }
+}
+
+.timespan-editor {
+    @include clearfix;
+
+    .timespan-hours,
+    .timespan-minutes {
+        width: 48%;
+        display: inline-block;
+
+        select, label {
+            display: inline-block;
+        }
+
+        select {
+            width: 50%;
+        }
+
+        label {
+            font-weight: normal;
+            margin-left: 5px;
+        }
+    }
+
+    .timespan-hours {
+        float: left;
+    }
+
+    .timespan-minutes {
+        float: right;
+    }
+}
+
+.dynamic-linked-entity-container,
+.dynamic-entity-status-container {
+    @include clearfix;
+
+    .updating-panel, button.edit {
+        float: left;
+    }
+
+    .entity-pill {
+        padding-right: 25px;
+
+        &.entity-null {
+            padding-right: 40px;
+        }
+    }
+
+    .status-display {
+        padding: 8px 40px 8px 12px;
+        line-height: 1;
+    }
+
+    &.no-options {
+        .entity-pill, .status-display {
+            padding-right: 12px;
+        }
+    }
+
+    &.no-write-permission {
+        .entity-pill {
+            padding-right: 0px;
+        }
+
+        .entity-null, .status-display {
+            padding-right: 12px;
+        }
+    }
+
+    button.edit {
+        padding: 1px 5px;
+        border-radius: 100px;
+        position: relative;
+        left: -28px;
+        top: 4px;
+    }
+}

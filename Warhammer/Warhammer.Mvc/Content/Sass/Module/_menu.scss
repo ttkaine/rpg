@@ -1,0 +1,160 @@
+﻿
+.menu-trigger {
+    font-size: 25px;
+    line-height: 2.25;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    margin-left: -15px;
+
+    @media screen and (max-width: $screen-xs-max) {
+        line-height: 2;
+        height: 50px;
+        width: 50px;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.main-menu-container {
+    @include box-shadow(0 0 15px rgba(0, 0, 0, 0.8));
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: $background-panel-content;
+    color: $color-panel-content;
+    padding: 15px;
+    padding-top: 0;
+    overflow-y: scroll;
+    width: 450px;
+
+    @media screen and (max-width: $screen-xs-max) {
+        width: 100%;
+    }
+
+    .menu-trigger {
+        display: block;
+        float: left;
+        background: $background-panel-content;
+        color: $color-panel-content;
+    }
+
+    .visibility-scope-container {
+        display: inline-block;
+        margin: 13px 0 0 60px;
+
+        @media screen and (max-width: $screen-xs-max) {
+            margin: 10px 0;
+            display: block;
+            clear: both;
+            float: right;
+        }
+    }
+
+    menu {
+        margin: 0;
+        padding: 10px 0 0 0;
+        clear: both;
+
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        ol {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                @include transition(all 0.3s cubic-bezier(.25, .8, .25, 1));
+                background: transparent;
+                margin-bottom: 10px;
+                border-radius: 3px;
+                border: 1px solid transparent;
+
+                a {
+                    color: $color-panel-content;
+                    display: block;
+                    padding: 12px;
+                    font-size: 16px;
+
+                    &:hover, &:focus {
+                        text-decoration: none;
+                    }
+
+                    i {
+                        width: 20px;
+                    }
+                }
+
+                .hover-buttons {
+                    float: right;
+                    margin-top: -40px;
+                    margin-right: 5px;
+
+                    @media screen and (min-width: $screen-sm-min) {
+                        opacity: 0.4;
+                    }
+                }
+
+                &:hover, &.menu-popup-open {
+                    @include box-shadow(0 7px 14px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22));
+                    border: 1px solid $color-default-border;
+
+                    .hover-buttons {
+                        opacity: 1;
+                    }
+                }
+
+                &.current {
+                    background: $color-info-fg;
+
+                    a {
+                        color: $color-info;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .menu-popup {
+            background: $background-panel-content;
+            color: $color-panel-content;
+            margin-bottom: 25px;
+            border-radius: 3px;
+            padding: 10px;
+            position: relative;
+            border: 1px solid $color-default-border;
+            @include box-shadow(0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22));
+
+            &:after, &:before {
+                bottom: 100%;
+                left: 50%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+            }
+
+            &:after {
+                border-color: transparent;
+                border-bottom-color: $background-panel-content;
+                border-width: 10px;
+                margin-left: -10px;
+            }
+
+            &:before {
+                border-color: transparent;
+                border-bottom-color: $color-default-border;
+                border-width: 11px;
+                margin-left: -11px;
+            }
+        }
+    }
+}

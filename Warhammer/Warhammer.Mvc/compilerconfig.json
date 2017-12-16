@@ -1,14 +1,17 @@
-﻿[
+[
   {
     "outputFile": "Content/theme.css",
-    "inputFile": "Content/theme.less"
+    "inputFile": "Content/theme.less",
+    "sourceMap": false
   },
   {
     "outputFile": "Content/WarhammerStyle.css",
-    "inputFile": "Content/WarhammerStyle.less"
+    "inputFile": "Content/WarhammerStyle.less",
+    "sourceMap": false
   },
   {
-    "outputFile": "Content/Sass/styles.css",
-    "inputFile": "Content/Sass/styles.scss"
+    "outputFile": "Content/Sass/default-theme.css",
+    "inputFile": "Content/Sass/default-theme.scss",
+    "sourceMap": false
   }
 ]

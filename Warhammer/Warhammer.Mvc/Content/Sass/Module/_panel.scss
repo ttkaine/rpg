@@ -1,0 +1,84 @@
+﻿
+.layout-panel-container {
+    > [class^="layout-panel-"] {
+        .panel-header,
+        .panel-content,
+        .panel-footer {
+            padding: $padding-panel-default;
+            border: $border-panel-default;
+        }
+
+        .panel-header + .panel-content,
+        .panel-header + form > .panel-content {
+            border-top: none;
+        }
+
+        .panel-content + .panel-footer {
+            border-top: none;
+        }
+
+        .panel-header, .panel-secondary .panel-header {
+            @include clearfix;
+            background: $background-panel-header;
+            color: $color-panel-header;
+
+            @media screen and (min-width: $screen-sm-min) {
+                @include fit-on-one-line;
+            }
+
+            @media screen and (max-width: $screen-xs-max) {
+                overflow: hidden;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                @media screen and (min-width: $screen-sm-min) {
+                    float: left;
+                }
+            }
+
+            button, a.button {
+                float: right;
+                margin-left: 4px;
+
+                @media screen and (max-width: $screen-xs-max) {
+                    float: none;
+                    display: block;
+                    width: 100%;
+                    margin-top: 5px;
+                    margin-left: 0;
+                }
+            }
+        }
+
+        .panel-content {
+            background: $background-panel-content;
+            color: $color-panel-content;
+
+            .panel-secondary {
+                .panel-header, .panel-content {
+                    margin-left: -$padding-panel-default;
+                    margin-right: -$padding-panel-default;
+                }
+
+                .panel-header {
+                    padding-top: $padding-panel-default / 2;
+                    padding-bottom: $padding-panel-default / 2;
+                }
+
+                .panel-content {
+                    border: none;
+                }
+            }
+        }
+
+        .panel-footer {
+            @include clearfix;
+            background: $background-panel-footer;
+            color: $color-panel-footer;
+
+            button[type="submit"] {
+                float: right;
+            }
+        }
+    }
+}

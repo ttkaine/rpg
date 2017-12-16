@@ -1,0 +1,104 @@
+﻿// RAW COLOURS - visit http://paletton.com/ for nice theme colours for this
+
+$color-default: #EEEEEE;
+$color-default-fg: #000000;
+$color-primary: #5EB2F2;
+$color-primary-fg: #FFFFFF;
+$color-info: #6C6CF4;
+$color-info-fg: #FFFFFF;
+$color-success: #00CE76;
+$color-success-fg: #FFFFFF;
+$color-danger: #FF4E07;
+$color-danger-fg: #FFFFFF;
+$color-warning: #FFC107;
+$color-warning-fg: #FFFFFF;
+
+// SITE DEFAULT COLOURS:
+
+$color-default-font: #333333;
+$color-subtle-font: lighten($color-default-font, 40%);
+$color-default-border: #A2A0A0;
+$color-body-background: #FFFFFF;
+$color-table-stripe: darken($color-body-background, 10%);
+
+// OTHER COLOURS
+
+$color-info-stripe1: lighten($color-info, 20%);
+$color-info-stripe2: lighten($color-info, 22.5%);
+$color-info-stripe-fg: $color-default-font;
+$color-warning-stripe1: lighten($color-warning, 25%);
+$color-warning-stripe2: lighten($color-warning, 40%);
+$color-warning-stripe-fg: $color-default-font;
+
+// SITE BODY VARIABLES
+
+$font-default: 'Open Sans', sans-serif;
+$font-title: 'Oswald', sans-serif;
+$font-size-default: 14px;
+$background-body: url(/Content/Images/classic-theme/background.jpg) no-repeat scroll top center;
+
+// PANELS
+
+$color-panel-header: $color-default-font;
+$color-panel-content: $color-default-font;
+$color-panel-footer: $color-default-font;
+$background-panel-header: #D0D0D0;
+$background-panel-content: $color-body-background;
+$background-panel-footer: #EAEAEA;
+$border-panel-default: 1px solid $color-default-border;
+$padding-panel-default: 10px;
+
+// NOTES
+
+$note-text-color: $color-default-font;
+$note-background-color: #FFE79F;
+$note-border-color: darken($note-background-color, 20%);
+
+// FORMS
+
+$padding-input: 5px 10px;
+$height-input: 32px;
+$color-input-text: $color-panel-content;
+$color-input-background: $background-panel-content;
+$color-input-border: lighten($color-input-text, 30%);
+$color-input-readonly-background: darken($color-input-background, 5%);
+
+
+// ENTITY PILLS
+
+$color-contact: #CC9A06;
+$color-contact-fg: #FFFFFF;
+$color-opportunity: #7F2703;
+$color-opportunity-fg: #FFFFFF;
+$color-organisation: #0C0CDA;
+$color-organisation-fg: #FFFFFF;
+$color-product: #004D2C;
+$color-product-fg: #FFFFFF;
+$color-user: #8E3F0B;
+$color-user-fg: #FFFFFF;
+$color-project: #21B073;
+$color-project-fg: #FFFFFF;
+$color-action: #A73C96;
+$color-action-fg: #FFFFFF;
+$color-appointment: #3B0084;
+$color-appointment-fg: #FFFFFF;
+$color-attachment: #e5f3ff;
+$color-attachment-fg: #000000;
+
+$color-attachment-word: $color-attachment;
+$color-attachment-word-fg: #295496;
+$color-attachment-excel: $color-attachment;
+$color-attachment-excel-fg: #207044;
+$color-attachment-pdf: $color-attachment;
+$color-attachment-pdf-fg: #e80000;
+$color-attachment-download: $color-body-background;
+// GLOBAL SEARCH
+$color-globalsearch-entity: #DDDADA;
+$color-globalsearch-entity-fg: #000000;
+
+// HEADER & FOOTER
+
+$color-header: #333333;
+$color-header-fg: #FFFFFF;
+$color-footer: $background-panel-content;
+$color-footer-fg: $color-panel-content;

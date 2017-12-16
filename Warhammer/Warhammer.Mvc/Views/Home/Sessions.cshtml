@@ -31,7 +31,7 @@
                                             @foreach (Person person in session.People)
                                             {
                                                 <a href="@Url.Action("Index", "Page", new { id = person.Id })">
-                                                    <img src="@Url.Action("Image", "Page", new { id = person.Id })" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                                    <img src="@Url.Action("Image", "Page", new { id = person.Id })" title="@person.FullName" alt="Picture of @person.FullName" class="profile-image-mini" /></a>
                                             }
                                         </li>
                                     </ul>

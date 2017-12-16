@@ -1,0 +1,19 @@
+﻿
+
+.profile-image {
+    float: right;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border-radius: 100px;
+    -moz-box-shadow: #333333 5px 5px 15px;
+    -webkit-box-shadow: #333333 5px 5px 15px;
+    box-shadow: #333333 5px 5px 15px;
+
+    &-mini {
+        @extend .profile-image;
+        width: 80px;
+        height: 80px;
+        margin: 8px;
+        margin-top: 0;
+    }
+}
