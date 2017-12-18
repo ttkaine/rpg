@@ -251,5 +251,22 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        [HttpPost]
+        public ActionResult ApplyShift(int? id)
+        {
+            if (id.HasValue)
+            {
+                PageControlsViewModel model = GetModel(id.Value);
+                if (model != null && (model.CanApplyShift))
+                {
+                    DataProvider.ApplyShift(id.Value);
+                    model = GetModel(id.Value);
+                    model.ShiftJustApplied = true;
+                    return PartialView("Index", model);
+                }
+            }
+
+            return null;
+        }
     }
 }

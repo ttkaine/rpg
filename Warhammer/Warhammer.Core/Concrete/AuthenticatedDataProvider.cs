@@ -2700,6 +2700,25 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void ApplyShift(int id)
+        {
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == id);
+            if (page != null)
+            {
+                Session session = page as Session;
+                if (session != null)
+                {
+                    AwardShiftForSession(session.Id);
+                }
+                Person person = page as Person;
+                if (person != null)
+                {
+                    person.HasAttributeMoveAvailable = true;
+                    _repository.Save(person);
+                }
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

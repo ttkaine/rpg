@@ -466,6 +466,8 @@ namespace Warhammer.Mvc.Concrete
                 model.SelectedGm = session.GmId;
             }
 
+            model.IsCrowMk2 = _data.SiteHasFeature(Feature.PersonAttributes);
+
             return model;
         }
 

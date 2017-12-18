@@ -206,5 +206,8 @@ namespace Warhammer.Mvc.Models
         public bool CanPin => (PlayerIsGm || PlayerIsAdmin) && !Page.Pinned;
         public bool CanUnpin => (PlayerIsGm || PlayerIsAdmin) && Page.Pinned;
         public bool CanDelete => (PlayerIsGm || PlayerIsAdmin);
+        public bool CanApplyShift => IsCrowMk2 && (PlayerIsAdmin || PlayerIsGm) && (IsSession || IsLivePerson);
+        public bool ShiftJustApplied { get; set; }
+        public bool IsCrowMk2 { get; set; }
     }
 }

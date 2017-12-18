@@ -135,6 +135,26 @@
                 }
             }
         }
+        
+        @if (Model.CanApplyShift)
+        {
+            <hr/>
+            if (Model.ShiftJustApplied)
+            {
+                <div class="alert alert-success">
+                    <h3>Shift Applied</h3>
+                </div>
+            }
+            else
+            {
+                using (Ajax.BeginForm("ApplyShift", "PageControls", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls"}))
+                {
+                    <input type="hidden" name="Id" value="@Model.Page.Id"/>
+                    <input type="submit" value="Apply Shift" class="btn btn-success btn-block"/>
+                }
+            }
+            
+        }
 
         <div class="clearfix"></div>
         
