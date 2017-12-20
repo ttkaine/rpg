@@ -52,6 +52,7 @@ namespace Warhammer.Core.Models
                     case AttributeType.Edge:
                         return -1;
                     case AttributeType.Wear:
+                        return (PersonAttribute.CurrentValue * PersonAttribute.CurrentValue) + CharacterLevel;
                     case AttributeType.Harm:
                         return PersonAttribute.CurrentValue + CharacterLevel;
                     default:
