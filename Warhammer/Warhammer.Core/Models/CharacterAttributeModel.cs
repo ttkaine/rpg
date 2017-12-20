@@ -96,8 +96,7 @@ namespace Warhammer.Core.Models
 
                     return descCost + CharacterLevel;
                     case  AttributeType.Edge:
-                        return CharacterInfo.TotalEdge * CharacterInfo.TotalEdge * CharacterInfo.TotalEdge +
-                               CharacterLevel;
+                        return 1 + (CharacterInfo.TotalEdge * CharacterInfo.TotalEdge * CharacterInfo.TotalEdge) + CharacterLevel;
                 case AttributeType.Wear:
                     int wearValue = CharacterInfo.TotalWear / 4;
                     if (wearValue < 1)
