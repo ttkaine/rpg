@@ -52,9 +52,19 @@ namespace Warhammer.Core.Models
                     case AttributeType.Edge:
                         return -1;
                     case AttributeType.Wear:
-                        return (PersonAttribute.CurrentValue * PersonAttribute.CurrentValue) + CharacterLevel;
+                        int wearValue = CharacterInfo.TotalWear / 4;
+                        if (wearValue < 1)
+                        {
+                            wearValue = 1;
+                        }
+                        return wearValue + CharacterLevel;
                     case AttributeType.Harm:
-                        return PersonAttribute.CurrentValue + CharacterLevel;
+                        int harmValue = CharacterInfo.TotalHarm / 4;
+                        if (harmValue < 1)
+                        {
+                            harmValue = 1;
+                        }
+                        return harmValue + CharacterLevel;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

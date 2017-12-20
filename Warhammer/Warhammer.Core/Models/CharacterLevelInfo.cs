@@ -16,6 +16,7 @@ namespace Warhammer.Core.Models
         public int NumberOfStats { get; set; }
         public int TotalAverageStatValue => AverageStatValue*NumberOfStats;
         public int XpSpent { get; set; }
+        public int TotalEdge { get; set; }
         public int TotalWear { get; set; }
         public int TotalHarm { get; set; }
         public int NumberOfWear { get; set; }

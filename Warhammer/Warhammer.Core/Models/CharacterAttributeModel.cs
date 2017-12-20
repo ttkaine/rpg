@@ -95,11 +95,23 @@ namespace Warhammer.Core.Models
                     }
 
                     return descCost + CharacterLevel;
+                    case  AttributeType.Edge:
+                        return CharacterInfo.TotalEdge * CharacterInfo.TotalEdge * CharacterInfo.TotalEdge +
+                               CharacterLevel;
                 case AttributeType.Wear:
-                case AttributeType.Edge:
-                    return CharacterLevel + CharacterInfo.NumberOfEdge + ((CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge) * (CharacterInfo.NumberOfWear + CharacterInfo.NumberOfEdge));
+                    int wearValue = CharacterInfo.TotalWear / 4;
+                    if (wearValue < 1)
+                    {
+                        wearValue = 1;
+                    }
+                    return wearValue + CharacterLevel;
                 case AttributeType.Harm:
-                    return CharacterLevel + CharacterInfo.NumberOfHarm + (CharacterInfo.NumberOfHarm * CharacterInfo.NumberOfHarm);
+                    int harmValue = CharacterInfo.TotalHarm / 4;
+                    if (harmValue < 1)
+                    {
+                        harmValue = 1;
+                    }
+                    return harmValue + CharacterLevel;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

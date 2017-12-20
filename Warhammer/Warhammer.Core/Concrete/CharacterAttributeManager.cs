@@ -37,6 +37,7 @@ namespace Warhammer.Core.Concrete
                 int totalSkills = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Skill).Sum(p => p.CurrentValue);
                 int totalStats = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Stat).Sum(p => p.CurrentValue);
                 int totalDescriptors = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Descriptor).Sum(p => p.CurrentValue);
+                int totalEdge = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Edge).Sum(p => p.CurrentValue);
                 int totalWear = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Wear).Sum(p => p.CurrentValue);
                 int totalHarm = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Harm).Sum(p => p.CurrentValue);
                 int numberOfWear = person.PersonAttributes.Count(p => p.AttributeType == AttributeType.Wear);
@@ -52,6 +53,7 @@ namespace Warhammer.Core.Concrete
                     TotalRoles = totalRoles,
                     TotalStats = totalStats,
                     TotalSkills = totalSkills,
+                    TotalEdge = totalEdge,
                     TotalWear = totalWear,
                     TotalHarm = totalHarm,
                     NumberOfWear = numberOfWear,
