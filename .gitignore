@@ -196,3 +196,4 @@ FakesAssemblies/
 *.opt
 Warhammer/WebEssentials2015-Settings.json
 *.orig
+Warhammer/Warhammer.Mvc/app_offline.htm
