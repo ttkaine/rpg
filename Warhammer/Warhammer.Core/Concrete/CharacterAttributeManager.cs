@@ -63,7 +63,8 @@ namespace Warhammer.Core.Concrete
                     CanEdit = person.Player?.UserName == player.UserName || campaignDetail.GmId == player.Id,
                     AverageStatValue = averageStat,
                     NumberOfStats =  person.PersonAttributes.Count(c => c.AttributeType == AttributeType.Stat),
-                    HasAttributeMoveAvailable = person.HasAttributeMoveAvailable
+                    HasAttributeMoveAvailable = person.HasAttributeMoveAvailable,
+                    FixedWearAndHarm = _featureProvider.SiteHasFeature(Feature.FixedHarmAndWear),
                 };
 
                 CharacterAttributeModel model = new CharacterAttributeModel
@@ -78,6 +79,7 @@ namespace Warhammer.Core.Concrete
                     }).ToList(),
                     WishingWell =  person.WishingWell,
                     PlayerId = player.Id,
+                    FixedWearAndHarm = _featureProvider.SiteHasFeature(Feature.FixedHarmAndWear),
                     CampaignDetail = campaignDetail,
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
                     ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack)
@@ -115,11 +117,11 @@ namespace Warhammer.Core.Concrete
             return false;
         }
 
-        public bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description)
+        public bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description, int initialValue = 1)
         {
             CharacterAttributeModel model = GetCharacterAttributes(personId);
 
-            if (!model.CanAddNew(attributeType))
+            if (!model.CanAddNew(attributeType, initialValue))
             {
                 return false;
             }
@@ -132,12 +134,12 @@ namespace Warhammer.Core.Concrete
                     AttributeType = attributeType,
                     Name = name,
                     Description = description,
-                    CurrentValue = 1,
-                    InitialValue = 1,
+                    CurrentValue = initialValue,
+                    InitialValue = initialValue,
                 };
 
-                personAttribute.XpSpent += model.NewCost(attributeType);
-                person.XpSpent += model.NewCost(attributeType);
+                personAttribute.XpSpent += model.NewCost(attributeType, initialValue);
+                person.XpSpent += model.NewCost(attributeType, initialValue);
                 person.TotalAdvancesTaken++;
                 person.PersonAttributes.Add(personAttribute);
                 person.XpSpendAvailable = model.CanBuyAll;

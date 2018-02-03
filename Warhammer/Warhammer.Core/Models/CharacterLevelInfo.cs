@@ -23,6 +23,6 @@ namespace Warhammer.Core.Models
         public int NumberOfHarm { get; set; }
         public int NumberOfEdge { get; set; }
         public bool HasAttributeMoveAvailable { get; set; }
-
+        public bool FixedWearAndHarm { get; set; }
     }
 }

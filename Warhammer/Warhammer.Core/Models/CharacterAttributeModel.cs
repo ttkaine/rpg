@@ -11,6 +11,8 @@ namespace Warhammer.Core.Models
         public int PersonId { get; set; }
         public string PersonName { get; set; }
         public int PlayerId { get; set; }
+        public bool FixedWearAndHarm { get; set; }
+
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int XpSpent => CharacterInfo.XpSpent;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
@@ -56,7 +58,7 @@ namespace Warhammer.Core.Models
         public List<PersonAttributeAdvanceModel> Harm => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Harm).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
         public List<PersonAttributeAdvanceModel> Edge => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Edge).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
 
-        public bool CanAddNew(AttributeType type)
+        public bool CanAddNew(AttributeType type, int level = 1)
         {
             switch (type)
             {
@@ -68,13 +70,13 @@ namespace Warhammer.Core.Models
                 case AttributeType.Harm:
                 case AttributeType.Wear:
                 case AttributeType.Edge:
-                    return NewCost(type) <= CurrentXp;
+                    return NewCost(type, level) <= CurrentXp;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
 
-        public int NewCost(AttributeType type)
+        public int NewCost(AttributeType type, int level = 1)
         {
             switch (type)
             {
@@ -98,19 +100,35 @@ namespace Warhammer.Core.Models
                     case  AttributeType.Edge:
                         return 1 + (CharacterInfo.TotalEdge * CharacterInfo.TotalEdge * CharacterInfo.TotalEdge) + CharacterLevel;
                 case AttributeType.Wear:
-                    int wearValue = CharacterInfo.TotalWear / 4;
-                    if (wearValue < 1)
+                    if (FixedWearAndHarm)
                     {
-                        wearValue = 1;
+                        return level + CharacterInfo.NumberOfWear + CharacterLevel;
                     }
-                    return wearValue + CharacterLevel;
+                    else
+                    {
+                        int wearValue = CharacterInfo.TotalWear / 4;
+                        if (wearValue < 1)
+                        {
+                            wearValue = 1;
+                        }
+                        return wearValue + CharacterLevel;
+                    }
+
                 case AttributeType.Harm:
-                    int harmValue = CharacterInfo.TotalHarm / 4;
-                    if (harmValue < 1)
+                    if (FixedWearAndHarm)
                     {
-                        harmValue = 1;
+                        return level + CharacterInfo.NumberOfHarm + CharacterLevel;
                     }
-                    return harmValue + CharacterLevel;
+                    else
+                    {
+                        int harmValue = CharacterInfo.TotalHarm / 4;
+                        if (harmValue < 1)
+                        {
+                            harmValue = 1;
+                        }
+
+                        return harmValue + CharacterLevel;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

@@ -72,8 +72,24 @@ namespace Warhammer.Core.Models
         }
 
         public CharacterLevelInfo CharacterInfo { get; set; }
-        public string DisplayPrefix => PersonAttribute.CurrentValue >= 0 ? "+" : "-";
-        public string DisplayValue => $"{DisplayPrefix}{PersonAttribute.CurrentValue}";
+        public string DisplayPrefix => PersonAttribute.CurrentValue >= 0 ? "+" : "";
+        public string DisplayValue {
+            get
+            {
+                if (CharacterInfo.FixedWearAndHarm)
+                {
+                    if (PersonAttribute.AttributeType == AttributeType.Harm ||
+                        PersonAttribute.AttributeType == AttributeType.Wear)
+                    {
+
+                        FixedWearAndHarmLevels level = (FixedWearAndHarmLevels) PersonAttribute.CurrentValue;
+                        return $"{DisplayPrefix}{PersonAttribute.CurrentValue} {level}";
+                    }
+                }
+
+                return $"{DisplayPrefix}{PersonAttribute.CurrentValue}";
+            }
+    } 
 
         public bool Exhausted
         {
@@ -86,5 +102,7 @@ namespace Warhammer.Core.Models
                 return false;
             }
         }
+
+        public int Value => PersonAttribute.CurrentValue;
     }
 }

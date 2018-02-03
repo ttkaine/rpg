@@ -90,7 +90,7 @@
                         <input type="hidden" value="@AttributeType.Role" name="attributeType"/>
                         <input type="text" value="" placeholder="Role Name" name="name" class="form-control"/>
                         <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Role for @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-success"/>
+                        <input type="submit" value="Add Role for @Model.NewCost(AttributeType.Role) XP" class="btn btn-block btn-success"/>
                     }
                 }
             </div>
@@ -109,7 +109,7 @@
                         <input type="hidden" value="@AttributeType.Skill" name="attributeType"/>
                         <input type="text" value="" placeholder="Skill Name" name="name" class="form-control"/>
                         <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Skill for @(Model.NewCost(AttributeType.Skill)) XP" class="btn btn-block btn-success"/>
+                        <input type="submit" value="Add Skill for @Model.NewCost(AttributeType.Skill) XP" class="btn btn-block btn-success"/>
                     }
                 }
             </div>
@@ -128,7 +128,7 @@
                         <input type="hidden" value="@AttributeType.Descriptor" name="attributeType"/>
                         <input type="text" value="" placeholder="Descriptor Name" name="name" class="form-control"/>
                         <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Descriptor for @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-success"/>
+                        <input type="submit" value="Add Descriptor for @Model.NewCost(AttributeType.Descriptor) XP" class="btn btn-block btn-success"/>
                     }
                 }
             </div>
@@ -146,39 +146,19 @@
                     {
                         <input type="hidden" value="@Model.PersonId" name="personId" />
                         <input type="hidden" value="@AttributeType.Edge" name="attributeType" />
-                        <input type="submit" value="Add New Edge slot for @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-success" />
+                        <input type="submit" value="Add New Edge slot for @Model.NewCost(AttributeType.Edge) XP" class="btn btn-block btn-success" />
                     }
                 }
 
-                <h4>Wear</h4>
-                <table class="table">
-                    @Html.EditorFor(m => m.Wear)
-                </table>
-
-                @if (Model.CanAddNew(AttributeType.Wear))
+                @if (Model.FixedWearAndHarm)
                 {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
-                    {
-                        <input type="hidden" value="@Model.PersonId" name="personId"/>
-                        <input type="hidden" value="@AttributeType.Wear" name="attributeType"/>
-                        <input type="submit" value="Add New Wear slot for @(Model.NewCost(AttributeType.Wear)) XP" class="btn btn-block btn-success"/>
-                    }
+                    @Html.Partial("_FixedWearAndHarm", Model)
                 }
-
-                <h4>Harm</h4>
-                <table class="table">
-                    @Html.EditorFor(m => m.Harm)
-                </table>
-
-                @if (Model.CanAddNew(AttributeType.Harm))
+                else
                 {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
-                    {
-                        <input type="hidden" value="@Model.PersonId" name="personId"/>
-                        <input type="hidden" value="@AttributeType.Harm" name="attributeType"/>
-                        <input type="submit" value="Add New Harm slot for @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-success"/>
-                    }
+                    @Html.Partial("_DynamicWearAndHarm", Model)
                 }
+
             </div>
         }
         else
