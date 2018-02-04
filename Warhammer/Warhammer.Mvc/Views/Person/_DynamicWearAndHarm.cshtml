@@ -15,6 +15,10 @@
         <input type="submit" value="Add New Wear slot for @Model.NewCost(AttributeType.Wear) XP" class="btn btn-block btn-success" />
     }
 }
+else
+{
+    <input type="button"  disabled="disabled" value="New Wear Slot: @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-default"/>
+}
 
 <h4>Harm</h4>
 <table class="table">
@@ -29,4 +33,8 @@
         <input type="hidden" value="@AttributeType.Harm" name="attributeType" />
         <input type="submit" value="Add New Harm slot for @Model.NewCost(AttributeType.Harm) XP" class="btn btn-block btn-success" />
     }
+}
+else
+{
+    <input type="button"  disabled="disabled" value="New Harm Slot: @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-default"/>
 }

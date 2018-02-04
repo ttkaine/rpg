@@ -93,6 +93,10 @@
                         <input type="submit" value="Add Role for @Model.NewCost(AttributeType.Role) XP" class="btn btn-block btn-success"/>
                     }
                 }
+                else
+                {
+                    <input type="button"  disabled="disabled" value="New Role: @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-default"/>
+                }
             </div>
 
             <div class="alert alert-success">
@@ -111,6 +115,10 @@
                         <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
                         <input type="submit" value="Add Skill for @Model.NewCost(AttributeType.Skill) XP" class="btn btn-block btn-success"/>
                     }
+                }
+                else
+                {
+                    <input type="button"  disabled="disabled" value="New Skill: @(Model.NewCost(AttributeType.Skill)) XP" class="btn btn-block btn-default"/>
                 }
             </div>
 
@@ -131,6 +139,10 @@
                         <input type="submit" value="Add Descriptor for @Model.NewCost(AttributeType.Descriptor) XP" class="btn btn-block btn-success"/>
                     }
                 }
+                else
+                {
+                    <input type="button"  disabled="disabled" value="New Descriptor: @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-default"/>
+                }
             </div>
 
             <div class="alert alert-danger">
@@ -148,6 +160,10 @@
                         <input type="hidden" value="@AttributeType.Edge" name="attributeType" />
                         <input type="submit" value="Add New Edge slot for @Model.NewCost(AttributeType.Edge) XP" class="btn btn-block btn-success" />
                     }
+                }
+                else
+                {
+                    <input type="button"  disabled="disabled" value="New Edge: @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-default"/>
                 }
 
                 @if (Model.FixedWearAndHarm)
