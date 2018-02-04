@@ -6,7 +6,7 @@ namespace Warhammer.Core.Abstract
     {
         CharacterAttributeModel GetCharacterAttributes(int personId);
         bool BuyAttributeAdvance(int personId, int attributeId);
-        bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description);
+        bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description, int initialValue);
         bool MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId);
         bool RenameAttribute(int personId, int attributeId, string name, string description);
         CharacterInitialStatsModel GetDefaultStats(int id);

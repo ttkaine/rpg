@@ -830,11 +830,11 @@ namespace Warhammer.Mvc.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Player")]
-        public ActionResult BuyNewAttribute(int personId, AttributeType attributeType, string name, string description)
+        public ActionResult BuyNewAttribute(int personId, AttributeType attributeType, string name, string description, int initialValue = 1)
         {
             if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
             {
-                bool success = _attributeManager.BuyNewAttribute(personId, attributeType, name, description);
+                bool success = _attributeManager.BuyNewAttribute(personId, attributeType, name, description, initialValue);
                 CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
                 if (model != null)
                 {

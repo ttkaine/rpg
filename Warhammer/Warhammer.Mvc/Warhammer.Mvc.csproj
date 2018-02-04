@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -754,6 +755,9 @@
     <Content Include="Views\Activity\DisplayTemplates\AwardNomination.cshtml" />
     <Content Include="Views\Gm\OutstandingAwardNominations.cshtml" />
     <Content Include="Views\Gm\DisplayTemplates\AwardNomination.cshtml" />
+    <Content Include="Views\Person\_DynamicWearAndHarm.cshtml" />
+    <Content Include="Views\Person\_FixedWearAndHarm.cshtml" />
+    <Content Include="Views\Person\_PersonAttribute.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

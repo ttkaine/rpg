@@ -57,6 +57,15 @@
         Edge = 6
     }
 
+    public enum FixedWearAndHarmLevels
+    {
+        Trivial = 1,
+        Slight = 2,
+        Significant = 4,
+        Serious = 6,
+        Critical = 8
+    }
+
     public enum PageLinkType
     {
         Other = 0,

@@ -1,0 +1,79 @@
+﻿
+@using Warhammer.Core
+@model Warhammer.Core.Models.CharacterAttributeModel
+
+<h4>Wear</h4>
+<table class="table">
+    @foreach (int level in Enum.GetValues(typeof(FixedWearAndHarmLevels)))
+    {
+        if (Model.Wear.Any(w => w.Value == level))
+        {
+
+            @Html.Partial("_PersonAttribute", Model.Wear.First(w => w.Value == level))
+        }
+        else
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @{
+                        string levelName = ((FixedWearAndHarmLevels) level).ToString();
+                    }
+                    @if (Model.CanAddNew(AttributeType.Wear, level))
+                    {
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@AttributeType.Wear" name="attributeType"/>
+                            <input type="hidden" value="@level" name="initialValue"/>
+                            <input type="submit" value="Add @levelName +@level slot for @(Model.NewCost(AttributeType.Wear, level)) XP" class="btn btn-block btn-success"/>
+                        }
+                    }
+                    else
+                    {
+                        <input type="submit" value="@levelName +@level : Cost @(Model.NewCost(AttributeType.Wear, level)) XP" class="btn btn-block btn-default"/>
+                    }
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+<h4>Harm</h4>
+<table class="table">
+    @foreach (int level in Enum.GetValues(typeof(FixedWearAndHarmLevels)))
+    {
+        if (Model.Harm.Any(w => w.Value == level))
+        {
+
+            @Html.Partial("_PersonAttribute", Model.Harm.First(w => w.Value == level))
+        }
+        else
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @{
+                        string levelName = ((FixedWearAndHarmLevels) level).ToString();
+                    }
+                    @if (Model.CanAddNew(AttributeType.Harm, level))
+                    {
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@AttributeType.Harm" name="attributeType"/>
+                            <input type="hidden" value="@level" name="initialValue"/>
+                            <input type="submit" value="Add @levelName +@level slot  for @(Model.NewCost(AttributeType.Harm, level)) XP" class="btn btn-block btn-success"/>
+                        }
+                    }
+                    else
+                    {
+                        <input type="submit" value="@levelName +@level :Cost @(Model.NewCost(AttributeType.Harm, level)) XP" class="btn btn-block btn-default"/>
+                    }
+                </td>
+            </tr>
+        }
+    }
+
+</table>
