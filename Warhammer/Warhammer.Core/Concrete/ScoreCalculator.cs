@@ -231,9 +231,9 @@ namespace Warhammer.Core.Concrete
         {
             DateTime cutOff = DateTime.Now.AddMinutes(-_scoreUpdateInterval);
             List<int> personIds = _repo.AllPeople()
-                .Where(p => p.LastScoreCalculation < cutOff || p.LastScoreCalculation < p.SignificantUpdate || p.LastScoreCalculation == null)
+                .Where(p => p.LastScoreCalculation < cutOff || p.LastScoreCalculation < p.Modified || p.LastScoreCalculation == null)
                 .OrderByDescending(s => s.LastScoreCalculation == null)
-                .ThenBy(p => p.SignificantUpdate)
+                .ThenByDescending(p => p.SignificantUpdate)
                 .ThenBy(p => p.LastScoreCalculation)
                 .Take(5).Select(p => p.Id).ToList();
             foreach (var id in personIds)
