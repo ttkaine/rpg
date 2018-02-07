@@ -506,6 +506,7 @@ namespace Warhammer.Mvc.Controllers
                     baseColor = Color.Orange;
                     break;
                 case ScoreType.Roles:
+                case ScoreType.Level:
                     baseColor = Color.OrangeRed;
                     break;
                 case ScoreType.Descriptors:

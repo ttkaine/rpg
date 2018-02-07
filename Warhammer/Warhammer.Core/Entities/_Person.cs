@@ -42,7 +42,7 @@ namespace Warhammer.Core.Entities
         public string Name { get; set; }
         public double BaseValue { get; set; }
         public double ActivityBonus { get; set; }
-        public double Score { get { return BaseValue + ActivityBonus; } }
+        public double Score => BaseValue + ActivityBonus;
     }
 
 
@@ -55,6 +55,8 @@ namespace Warhammer.Core.Entities
             get { return (Gender) (GenderEnum ?? 0); }
             set { GenderEnum = (int) value;  }
         }
+
+        public int Level => (int) Math.Floor(TotalAdvancesTaken / 5.0);
 
         public bool IsFuCharacter
         {

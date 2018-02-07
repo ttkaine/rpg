@@ -11,7 +11,8 @@
         Awards = 6,
         Stats = 7,
         Roles = 8,
-        Descriptors = 9
+        Descriptors = 9,
+        Level = 10
     }
 
     public partial class ScoreHistory
