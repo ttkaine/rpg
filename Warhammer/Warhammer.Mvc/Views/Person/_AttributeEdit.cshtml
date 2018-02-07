@@ -1,21 +1,20 @@
 ﻿@model Warhammer.Core.Models.CharacterAttributeModel
 
-@if (Model.CharacterInfo.CanEdit && Model.CharacterInfo.HasAttributeMoveAvailable)
+@if (Model.CharacterInfo.CanEdit && Model.CharacterInfo.HasAttributeMoveAvailable && ViewBag.EditMode)
 {
     <div class="alert alert-info">
-        @if (ViewBag.EditMode)
-        {
             <h3>Stat Shift</h3>
             <p>
                 Once per session you have the option to move a stat point or rename one of your Roles, Skills, or Descriptors. This doesn't cost any XP but you can only do it once per session.
-                
             </p>
             <p>
-                If you choose not to make any changes, these do not stack (so you can't pile up a load of pending changes them move a load of stuff at once).
+                If you choose not to make any changes, these do not stack (so you can't pile up a load of pending changes then move a load of stuff at once).
             </p>
-            <p>In order to make a change, use the forms below. Once you have made a change this form will disapear and only return once you've finished another session.</p>
+            <p>
+                In order to make a change, use the forms below. Once you have made a change this form will disapear and only return once you've finished another session.
+            </p>
             <h3>Move a stat point</h3>
-            using (Ajax.BeginForm("MoveAttributePoint", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+            @using (Ajax.BeginForm("MoveAttributePoint", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
             {
                 <input type="hidden" value="@Model.PersonId" name="personId" />
                 <span>From:</span>
@@ -30,7 +29,7 @@
             <h3> - OR - </h3>
             <h3>Rename a Role, Skill, or Descriptor</h3>
 
-            using (Ajax.BeginForm("RenameAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+            @using (Ajax.BeginForm("RenameAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
             {
                 <span>Choose a Role, Skill, or Descriptior to rename:</span>
                 <input type="hidden" value="@Model.PersonId" name="personId" />
@@ -42,6 +41,5 @@
                 <br />
                 <input type="submit" value="Set New Name" class="btn btn-block btn-success" />
             }
-        }
     </div>
 }
