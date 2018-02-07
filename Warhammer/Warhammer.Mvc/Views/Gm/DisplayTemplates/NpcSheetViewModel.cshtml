@@ -36,6 +36,12 @@
     </td>
 
     <td>@(string.Join(", ", Model.Descriptors))</td>
+    <td>@Html.Raw(string.Join("<br />", Model.Wear.Select(s => "[" + s +  "]")))</td>
+    <td>@Html.Raw(string.Join("<br />", Model.Harm.Select(s => "[" + s + "]")))</td>
+    <td>@Html.Raw(string.Join("<br />", Model.Edge.Select(s => "[" + s + "]")))</td>
 
 
+</tr>
+<tr>
+    <td>-</td>
 </tr>

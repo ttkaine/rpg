@@ -10,5 +10,8 @@ namespace Warhammer.Mvc.Models
         public Dictionary<string, int> Roles { get; set; }
         public Dictionary<string, int> Skills { get; set; }
         public List<string> Descriptors { get; set; }
+        public List<string> Wear { get; set; }
+        public List<string> Harm { get; set; }
+        public List<string> Edge { get; set; }
     }
 }

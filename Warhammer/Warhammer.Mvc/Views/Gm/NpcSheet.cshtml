@@ -8,11 +8,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Crow Npc Sheet</title>
-
+    <style>
+        table td {
+            border-right: black;
+        }
+    </style>
 </head>
 <body>
     <div>
-        <table>
+        <table style="width: 100%; text-align: left; vertical-align: top; ">
             <thead>
                 <tr>
                     <th></th>
@@ -26,10 +30,14 @@
                     <th>Roles</th>
                     <th>Skills</th>
                     <th>Descriptors</th>
+                    <th>Wear</th>
+                    <th>Harm</th>
+                    <th>Edge</th>
                 </tr>
             </thead>
             <tbody>
                 @Html.DisplayForModel()
+    
             </tbody>
         </table>
 
