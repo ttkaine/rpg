@@ -541,9 +541,9 @@ namespace Warhammer.Mvc.Concrete
                 Roles = roles,
                 Stats = stats,
                 Descriptors = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Descriptor).Select(s => s.Name).Distinct().ToList(),
-                Wear = npc.PersonAttributes.Where(a=> a.AttributeType == AttributeType.Wear).OrderByDescending(a => a.CurrentValue).Select(a => a.CurrentValue.ToString()).ToList(),
-                Harm = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Harm).OrderByDescending(a => a.CurrentValue).Select(a => a.CurrentValue.ToString()).ToList(),
-                Edge = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Edge).OrderByDescending(a => a.CurrentValue).Select(a => a.CurrentValue.ToString()).ToList()
+                Wear = npc.PersonAttributes.Where(a=> a.AttributeType == AttributeType.Wear).OrderBy(a => a.CurrentValue).Select(a => a.CurrentValue.ToString()).ToList(),
+                Harm = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Harm).OrderBy(a => a.CurrentValue).Select(a => a.CurrentValue.ToString()).ToList(),
+                Edge = npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Edge).OrderBy(a => a.CurrentValue).Select(a => a.CurrentValue.ToString()).ToList()
             };
             return model;
         }
