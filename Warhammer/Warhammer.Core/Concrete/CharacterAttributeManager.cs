@@ -149,7 +149,7 @@ namespace Warhammer.Core.Concrete
 
                     personAttribute.XpSpent += model.NewCost(attributeType, initialValue);
                     person.XpSpent += model.NewCost(attributeType, initialValue);
-                    person.TotalAdvancesTaken = person.TotalAdvancesTaken + initialValue;
+                    person.TotalAdvancesTaken++;
                     person.PersonAttributes.Add(personAttribute);
                     person.XpSpendAvailable = model.CanBuyAll;
                     _repo.Save(person);
