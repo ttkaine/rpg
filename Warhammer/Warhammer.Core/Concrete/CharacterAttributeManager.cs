@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
@@ -13,6 +14,7 @@ namespace Warhammer.Core.Concrete
         private readonly IRepository _repo;
         private readonly IAuthenticatedUserProvider _user;
         private readonly ISiteFeatureProvider _featureProvider;
+        private static object _editLock = new object();
 
         public CharacterAttributeManager(IRepository repo, IAuthenticatedUserProvider user, ISiteFeatureProvider featureProvider)
         {
@@ -94,108 +96,125 @@ namespace Warhammer.Core.Concrete
 
         public bool BuyAttributeAdvance(int personId, int attributeId)
         {
-            CharacterAttributeModel model = GetCharacterAttributes(personId);
-            PersonAttributeAdvanceModel attribute =
-                model.PersonAttributes.FirstOrDefault(p => p.PersonAttribute.Id == attributeId);
-
-            if (attribute != null && attribute.CanBuy)
+            lock (_editLock)
             {
-                Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
-                PersonAttribute personAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == attributeId);
-                if (personAttribute != null)
+                CharacterAttributeModel model = GetCharacterAttributes(personId);
+                PersonAttributeAdvanceModel attribute =
+                    model.PersonAttributes.FirstOrDefault(p => p.PersonAttribute.Id == attributeId);
+
+                if (attribute != null && attribute.CanBuy)
                 {
-                    personAttribute.XpSpent += attribute.Cost;
-                    person.XpSpent += attribute.Cost;
-                    personAttribute.CurrentValue++;
-                    person.TotalAdvancesTaken++;
-                    person.XpSpendAvailable = model.CanBuyAll;
+                    Person person = _repo.People().Include(p => p.PersonAttributes)
+                        .FirstOrDefault(p => p.Id == personId);
+                    PersonAttribute personAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == attributeId);
+                    if (personAttribute != null)
+                    {
+                        personAttribute.XpSpent += attribute.Cost;
+                        person.XpSpent += attribute.Cost;
+                        personAttribute.CurrentValue++;
+                        person.TotalAdvancesTaken++;
+                        person.XpSpendAvailable = model.CanBuyAll;
 
-                    _repo.Save(person);
-                    return true;
+                        _repo.Save(person);
+                        return true;
+                    }
                 }
-            }
 
-            return false;
+                return false;
+            }
         }
 
         public bool BuyNewAttribute(int personId, AttributeType attributeType, string name, string description, int initialValue = 1)
         {
-            CharacterAttributeModel model = GetCharacterAttributes(personId);
-
-            if (!model.CanAddNew(attributeType, initialValue))
+            lock (_editLock)
             {
+                CharacterAttributeModel model = GetCharacterAttributes(personId);
+
+                if (!model.CanAddNew(attributeType, initialValue))
+                {
+                    return false;
+                }
+
+                Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+                if (person != null)
+                {
+                    PersonAttribute personAttribute = new PersonAttribute
+                    {
+                        AttributeType = attributeType,
+                        Name = name,
+                        Description = description,
+                        CurrentValue = initialValue,
+                        InitialValue = initialValue,
+                    };
+
+                    personAttribute.XpSpent += model.NewCost(attributeType, initialValue);
+                    person.XpSpent += model.NewCost(attributeType, initialValue);
+                    person.TotalAdvancesTaken = person.TotalAdvancesTaken + initialValue;
+                    person.PersonAttributes.Add(personAttribute);
+                    person.XpSpendAvailable = model.CanBuyAll;
+                    _repo.Save(person);
+
+                    return true;
+                }
                 return false;
             }
-
-            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
-            if (person != null)
-            {
-                PersonAttribute personAttribute = new PersonAttribute
-                {
-                    AttributeType = attributeType,
-                    Name = name,
-                    Description = description,
-                    CurrentValue = initialValue,
-                    InitialValue = initialValue,
-                };
-
-                personAttribute.XpSpent += model.NewCost(attributeType, initialValue);
-                person.XpSpent += model.NewCost(attributeType, initialValue);
-                person.TotalAdvancesTaken = person.TotalAdvancesTaken + initialValue;
-                person.PersonAttributes.Add(personAttribute);
-                person.XpSpendAvailable = model.CanBuyAll;
-                _repo.Save(person);
-
-                return true;
-            }
-            return false;
         }
 
         public bool MoveAttributePoint(int personId, int sourceAttributeId, int targetAttributeId)
         {
-            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
-            if (person != null)
+            lock (_editLock)
             {
-                if (person.HasAttributeMoveAvailable)
+                Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+                if (person != null)
                 {
-                    PersonAttribute sourceAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == sourceAttributeId && a.AttributeType == AttributeType.Stat);
-                    PersonAttribute targetAttribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == targetAttributeId && a.AttributeType == AttributeType.Stat);
-
-                    if (sourceAttribute != null && targetAttribute != null)
+                    if (person.HasAttributeMoveAvailable)
                     {
-                        sourceAttribute.CurrentValue--;
-                        targetAttribute.CurrentValue++;
-                        person.HasAttributeMoveAvailable = false;
-                        _repo.Save(person);
-                        return true;
+                        PersonAttribute sourceAttribute =
+                            person?.PersonAttributes.FirstOrDefault(
+                                a => a.Id == sourceAttributeId && a.AttributeType == AttributeType.Stat);
+                        PersonAttribute targetAttribute =
+                            person?.PersonAttributes.FirstOrDefault(
+                                a => a.Id == targetAttributeId && a.AttributeType == AttributeType.Stat);
+
+                        if (sourceAttribute != null && targetAttribute != null)
+                        {
+                            sourceAttribute.CurrentValue--;
+                            targetAttribute.CurrentValue++;
+                            person.HasAttributeMoveAvailable = false;
+                            _repo.Save(person);
+                            return true;
+                        }
                     }
                 }
-            }
 
-            return false;
+                return false;
+            }
         }
 
         public bool RenameAttribute(int personId, int attributeId, string name, string description)
         {
-            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
-            if (person != null)
+            lock (_editLock)
             {
-                if (person.HasAttributeMoveAvailable)
+                Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+                if (person != null)
                 {
-                    PersonAttribute attribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == attributeId);
-
-                    if (attribute != null)
+                    if (person.HasAttributeMoveAvailable)
                     {
-                        attribute.Name = name;
-                        attribute.Description = description;
-                        person.HasAttributeMoveAvailable = false;
-                        _repo.Save(person);
-                        return true;
+                        PersonAttribute attribute = person?.PersonAttributes.FirstOrDefault(a => a.Id == attributeId);
+
+                        if (attribute != null)
+                        {
+                            attribute.Name = name;
+                            attribute.Description = description;
+                            person.HasAttributeMoveAvailable = false;
+                            _repo.Save(person);
+                            return true;
+                        }
                     }
                 }
-            }
 
-            return false;
+                return false;
+            }
         }
 
         public CharacterInitialStatsModel GetDefaultStats(int personId)
@@ -238,88 +257,92 @@ namespace Warhammer.Core.Concrete
 
         public bool InitializeStats(CharacterInitialStatsModel model)
         {
-            Player player = _repo.Players().Single(p => p.UserName == _user.UserName);
-            CampaignDetail campaignDetail = _repo.CampaignDetails().FirstOrDefault();
-
-            bool playerIsGm = player.Id == campaignDetail?.GmId;
-
-            Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == model.PersonId);
-            if (person != null)
+            lock (_editLock)
             {
-                var averageStat = GetAverageStatValue();
+                Player player = _repo.Players().Single(p => p.UserName == _user.UserName);
+                CampaignDetail campaignDetail = _repo.CampaignDetails().FirstOrDefault();
 
-                int expectedTotal = averageStat * model.Stats.Count;
-                if (!playerIsGm && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
+                bool playerIsGm = player.Id == campaignDetail?.GmId;
+
+                Person person = _repo.People().Include(p => p.PersonAttributes)
+                    .FirstOrDefault(p => p.Id == model.PersonId);
+                if (person != null)
                 {
-                    return false;
-                }
+                    var averageStat = GetAverageStatValue();
 
-                int skillLevel = averageStat;
-
-                if (person.IsNpc)
-                {
-                    skillLevel = 1;
-                }
-
-                if (skillLevel < 1)
-                {
-                    skillLevel = 1;
-                }
-
-                ResetAttributes(person.Id);
-
-                foreach (StatInitModel statInitModel in model.Stats)
-                {
-                    PersonAttribute addedStat = new PersonAttribute
+                    int expectedTotal = averageStat * model.Stats.Count;
+                    if (!playerIsGm && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
                     {
-                        AttributeType = AttributeType.Stat,
-                        Name = statInitModel.StatName.ToString(),
-                        Description = statInitModel.StatName.ToString(),
-                        CurrentValue = statInitModel.CurrentValue,
-                        InitialValue = statInitModel.CurrentValue,
-                        IsPrivate = true
-                    };
-                    person.PersonAttributes.Add(addedStat);
+                        return false;
+                    }
+
+                    int skillLevel = averageStat;
+
+                    if (person.IsNpc)
+                    {
+                        skillLevel = 1;
+                    }
+
+                    if (skillLevel < 1)
+                    {
+                        skillLevel = 1;
+                    }
+
+                    ResetAttributes(person.Id);
+
+                    foreach (StatInitModel statInitModel in model.Stats)
+                    {
+                        PersonAttribute addedStat = new PersonAttribute
+                        {
+                            AttributeType = AttributeType.Stat,
+                            Name = statInitModel.StatName.ToString(),
+                            Description = statInitModel.StatName.ToString(),
+                            CurrentValue = statInitModel.CurrentValue,
+                            InitialValue = statInitModel.CurrentValue,
+                            IsPrivate = true
+                        };
+                        person.PersonAttributes.Add(addedStat);
+                    }
+
+                    person.PersonAttributes.Add(new PersonAttribute
+                    {
+                        AttributeType = AttributeType.Role,
+                        Name = model.InitialRoleName,
+                        Description = model.InitialRoleName,
+                        InitialValue = skillLevel,
+                        CurrentValue = skillLevel
+                    });
+
+                    SetInitialSkill(model.InitialFirstSkillName, playerIsGm, person, skillLevel);
+
+                    if (skillLevel > 1)
+                    {
+                        skillLevel--;
+                    }
+
+                    SetInitialSkill(model.InitialSecondSkillName, playerIsGm, person, skillLevel);
+
+                    if (skillLevel > 1)
+                    {
+                        skillLevel--;
+                    }
+
+                    SetInitialSkill(model.InitialThirdSkillName, playerIsGm, person, skillLevel);
+
+
+                    SetInitialDescriptor(model.InitialFirstDescriptorName, playerIsGm, person);
+                    SetInitialDescriptor(model.InitialSecondDescriptorName, playerIsGm, person);
+                    SetInitialDescriptor(model.InitialThirdDescriptorName, playerIsGm, person);
+
+                    AddDefaultWearAndHarm(person);
+
+                    _repo.Save(person);
+
+                    return true;
                 }
 
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Role,
-                    Name = model.InitialRoleName,
-                    Description = model.InitialRoleName,
-                    InitialValue = skillLevel,
-                    CurrentValue = skillLevel
-                });
-
-                SetInitialSkill(model.InitialFirstSkillName, playerIsGm, person, skillLevel);
-
-                if (skillLevel > 1)
-                {
-                    skillLevel--;
-                }
-
-                SetInitialSkill(model.InitialSecondSkillName, playerIsGm, person, skillLevel);
-
-                if (skillLevel > 1)
-                {
-                    skillLevel--;
-                }
-
-                SetInitialSkill(model.InitialThirdSkillName, playerIsGm, person, skillLevel);
-
-
-                SetInitialDescriptor(model.InitialFirstDescriptorName, playerIsGm, person);
-                SetInitialDescriptor(model.InitialSecondDescriptorName, playerIsGm, person);
-                SetInitialDescriptor(model.InitialThirdDescriptorName, playerIsGm, person);
-
-                AddDefaultWearAndHarm(person);
-
-                _repo.Save(person);
-
-                return true;
+                return false;
             }
-
-            return false;
         }
 
         private static void SetInitialSkill(string skillName, bool playerIsGm, Person person, int skillLevel)
@@ -382,7 +405,8 @@ namespace Warhammer.Core.Concrete
 
         public void ResetAttributes(int id)
         {
-
+            lock (_editLock)
+            {
                 Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == id);
                 if (person != null)
                 {
@@ -395,6 +419,7 @@ namespace Warhammer.Core.Concrete
                     person.TotalAdvancesTaken = 0;
                     _repo.Save(person);
                 }
+            }
 
         }
 
@@ -553,15 +578,18 @@ namespace Warhammer.Core.Concrete
 
         public bool AddXp(int personId, decimal amount)
         {
-            Person person = _repo.People().FirstOrDefault(p => p.Id == personId);
-            if (person != null)
+            lock (_editLock)
             {
-                person.XPAwarded = person.XPAwarded + amount;
-                _repo.Save(person);
-                return true;
-            }
+                Person person = _repo.People().FirstOrDefault(p => p.Id == personId);
+                if (person != null)
+                {
+                    person.XPAwarded = person.XPAwarded + amount;
+                    _repo.Save(person);
+                    return true;
+                }
 
-            return false;
+                return false;
+            }
         }
 
         private void AddDefaultWearAndHarm(Person person)
