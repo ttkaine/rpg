@@ -113,9 +113,15 @@ namespace Warhammer.Core.Concrete
                         person.XpSpent += attribute.Cost;
                         personAttribute.CurrentValue++;
                         person.TotalAdvancesTaken++;
-                        person.XpSpendAvailable = model.CanBuyAll;
 
                         _repo.Save(person);
+
+                        model = GetCharacterAttributes(personId);
+                        person.XpSpendAvailable = model.CanBuyAll;
+                        person.Modified = DateTime.Now;
+                        
+                        _repo.Save(person);
+
                         return true;
                     }
                 }
@@ -151,6 +157,9 @@ namespace Warhammer.Core.Concrete
                     person.XpSpent += model.NewCost(attributeType, initialValue);
                     person.TotalAdvancesTaken++;
                     person.PersonAttributes.Add(personAttribute);
+                    
+                    _repo.Save(person);
+                    model = GetCharacterAttributes(personId);
                     person.XpSpendAvailable = model.CanBuyAll;
                     _repo.Save(person);
 
@@ -585,6 +594,12 @@ namespace Warhammer.Core.Concrete
                 {
                     person.XPAwarded = person.XPAwarded + amount;
                     _repo.Save(person);
+
+                    CharacterAttributeModel model = GetCharacterAttributes(personId);
+                    model = GetCharacterAttributes(personId);
+                    person.XpSpendAvailable = model.CanBuyAll;
+                    _repo.Save(person);
+
                     return true;
                 }
 
