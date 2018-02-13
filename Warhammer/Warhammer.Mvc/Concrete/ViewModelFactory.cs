@@ -211,7 +211,7 @@ namespace Warhammer.Mvc.Concrete
                     Name = "",
                     AltText = "Settings",
                     Url = "#",
-                    IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/recent.png"),
                     SubMenu = recentPages.Select(l => new MenuItemViewModel
                     {
                         AltText = l.FullName,

@@ -2725,7 +2725,7 @@ namespace Warhammer.Core.Concrete
                 _repository.PageViews().Include(p => p.Page)
                     .Where(u => u.PlayerId == CurrentPlayerId)
                     .OrderByDescending(d => d.Viewed)
-                    .Take(10).ToList()
+                    .Take(15).ToList()
                     .Select(v => GetPageLinkModel(v.Page))
                     .ToList();
         }

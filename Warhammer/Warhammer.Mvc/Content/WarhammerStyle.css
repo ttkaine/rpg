@@ -7324,6 +7324,11 @@ img.AttributeStar {
 .BattleTable .NormalRow td:first-of-type {
   border-right: 1px dotted #aaa;
 }
+.dropdown-menu img {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance
