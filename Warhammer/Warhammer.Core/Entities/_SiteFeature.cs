@@ -60,7 +60,8 @@ namespace Warhammer.Core.Entities
         PlayerTextPostChart,
         AwardNominations,
         GmNotes,
-        FixedHarmAndWear
+        FixedHarmAndWear,
+        RecentItemsMenu
     }
 
     public partial class SiteFeature

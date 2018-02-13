@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 
@@ -199,6 +200,27 @@ namespace Warhammer.Mvc.Concrete
                     Url = _urlHelper.Action("Settings", "Home"),
                     IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
                   //  IconCssClass = "badge"
+                });
+            }
+
+            if (_data.SiteHasFeature(Feature.RecentItemsMenu))
+            {
+                List<PageLinkModel> recentPages = _data.GetRecentViewedPages();
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Settings",
+                    Url = "#",
+                    IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
+                    SubMenu = recentPages.Select(l => new MenuItemViewModel
+                    {
+                        AltText = l.FullName,
+                        Name = l.ShortName,
+                        IconUrl = _urlHelper.Action("Image", "Page", new { id = l.Id }),
+                        Url = _urlHelper.Action("Index", "Page", new { id = l.Id })
+
+                    }).ToList()
+                    //  IconCssClass = "badge"
                 });
             }
 

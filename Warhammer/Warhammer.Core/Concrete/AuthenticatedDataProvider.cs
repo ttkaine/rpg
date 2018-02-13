@@ -2719,6 +2719,17 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<PageLinkModel> GetRecentViewedPages()
+        {
+            return
+                _repository.PageViews().Include(p => p.Page)
+                    .Where(u => u.PlayerId == CurrentPlayerId)
+                    .OrderByDescending(d => d.Viewed)
+                    .Take(10).ToList()
+                    .Select(v => GetPageLinkModel(v.Page))
+                    .ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
