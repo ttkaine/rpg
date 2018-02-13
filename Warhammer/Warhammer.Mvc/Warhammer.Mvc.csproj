@@ -330,6 +330,7 @@
     <Content Include="Content\Images\penny.jpg" />
     <Content Include="Content\Images\pirate_background.jpg" />
     <Content Include="Content\Images\playground_background.jpg" />
+    <Content Include="Content\Images\recent.png" />
     <Content Include="Content\Images\RoleplayForum\controlclose.jpg" />
     <Content Include="Content\Images\RoleplayForum\default_character.jpg" />
     <Content Include="Content\Images\RoleplayForum\dice_control.jpg" />

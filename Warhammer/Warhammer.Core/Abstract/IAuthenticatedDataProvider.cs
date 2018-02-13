@@ -190,5 +190,6 @@ namespace Warhammer.Core.Abstract
         void RejectNomination(int nominationId, string rejectedReason);
         void SaveGmNotes(int pageId, string gmNotes);
         void ApplyShift(int id);
+        List<PageLinkModel> GetRecentViewedPages();
     }
 }
