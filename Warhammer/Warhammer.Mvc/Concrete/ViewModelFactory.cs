@@ -214,8 +214,8 @@ namespace Warhammer.Mvc.Concrete
                     IconUrl = _urlHelper.Content("~/Content/Images/recent.png"),
                     SubMenu = recentPages.Select(l => new MenuItemViewModel
                     {
-                        AltText = l.FullName,
-                        Name = l.ShortName,
+                        AltText = l.ShortName,
+                        Name = l.FullName,
                         IconUrl = _urlHelper.Action("Image", "Page", new { id = l.Id }),
                         Url = _urlHelper.Action("Index", "Page", new { id = l.Id })
 
