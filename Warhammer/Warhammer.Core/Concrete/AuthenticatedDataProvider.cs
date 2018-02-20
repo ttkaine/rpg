@@ -959,13 +959,20 @@ namespace Warhammer.Core.Concrete
             Save(person);
         }
 
-        public decimal CurrentMaxPlayerXp(int? xpGroup = null)
+        public decimal CurrentMaxPlayerXp(int xpGroup = 0)
         {
             var query = _repository.People().Where(p => p.PlayerId.HasValue);
 
-            if (SiteHasFeature(Feature.XpGroups) && xpGroup.HasValue)
+            if (SiteHasFeature(Feature.XpGroups))
             {
-                query = query.Where(p => p.XpGroup == xpGroup);
+                if (xpGroup > 0)
+                {
+                    query = query.Where(p => p.XpGroup == xpGroup);
+                }
+                else
+                {
+                    query = query.Where(p => p.XpGroup == xpGroup || p.XpGroup == null);
+                }               
             }
             decimal xpCap = query.Max(p => p.XPAwarded);
             return xpCap;
@@ -978,10 +985,10 @@ namespace Warhammer.Core.Concrete
 
             if (SiteHasFeature(Feature.XpCatchup))
             {
-                int? xpGroup = null;
+                int xpGroup = 0;
                 if (SiteHasFeature(Feature.XpGroups))
                 {
-                    xpGroup = person.XpGroup;
+                    xpGroup = person.XpGroup.GetValueOrDefault(0);
                 }
 
                 decimal playerXpLevel = CurrentMaxPlayerXp(xpGroup);
@@ -1482,7 +1489,7 @@ namespace Warhammer.Core.Concrete
                         {
                             if (SiteHasFeature(Feature.XpGroups))
                             {
-                                if (person.XpGroup == xpGrouping)
+                                if (person.XpGroup.GetValueOrDefault(0) == xpGrouping)
                                 {
                                     people.Add(person);
                                 }
