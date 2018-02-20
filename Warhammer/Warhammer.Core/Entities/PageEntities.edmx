@@ -293,6 +293,7 @@
           <Property Name="XpSpendAvailable" Type="bit" Nullable="false" />
           <Property Name="WishingWell" Type="int" Nullable="false" />
           <Property Name="GenderEnum" Type="int" />
+          <Property Name="XpGroup" Type="int" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -1788,6 +1789,7 @@
           <Property Name="WishingWell" Type="Int32" Nullable="false" />
           <Property Name="GenderEnum" Type="Int32" />
           <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Person" FromRole="Person" ToRole="AwardNomination" />
+          <Property Name="XpGroup" Type="Int32" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2858,6 +2860,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="XpGroup" ColumnName="XpGroup" />
                 <ScalarProperty Name="GenderEnum" ColumnName="GenderEnum" />
                 <ScalarProperty Name="WishingWell" ColumnName="WishingWell" />
                 <ScalarProperty Name="XpSpendAvailable" ColumnName="XpSpendAvailable" />

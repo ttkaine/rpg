@@ -61,7 +61,8 @@ namespace Warhammer.Core.Entities
         AwardNominations,
         GmNotes,
         FixedHarmAndWear,
-        RecentItemsMenu
+        RecentItemsMenu,
+        XpGroups
     }
 
     public partial class SiteFeature

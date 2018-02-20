@@ -296,7 +296,7 @@
   <ItemGroup>
     <Content Include="Content\cowboy.css" />
     <Content Include="Content\darknet.css" />
-    <Content Include="Content\DbUpdateScripts\17111101.sql" />
+    <Content Include="Content\DbUpdateScripts\18022001.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />

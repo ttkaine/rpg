@@ -1460,6 +1460,7 @@ namespace Warhammer.Core.Concrete
 
                 if (!SiteHasFeature(Feature.SoloXp))
                 {
+                    int xpGrouping = people.Where(p => !p.IsNpc).Select(p => p.XpGroup).FirstOrDefault() ?? 0;
                     //always award all players regardless - just to be fair
                     List<Person> playerCharacters = _repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).ToList();
 
@@ -1467,7 +1468,17 @@ namespace Warhammer.Core.Concrete
                     {
                         if (people.All(p => p.Id != person.Id))
                         {
-                            people.Add(person);
+                            if (SiteHasFeature(Feature.XpGroups))
+                            {
+                                if (person.XpGroup == xpGrouping)
+                                {
+                                    people.Add(person);
+                                }
+                            }
+                            else
+                            {
+                                people.Add(person);
+                            }
                         }
                     }
                 }
@@ -1483,9 +1494,7 @@ namespace Warhammer.Core.Concrete
                     else
                     {
                         AddXp(person.Id, xpAwarded);
-                    }
-
-                    
+                    }                   
                 }
 
                 Save(session);

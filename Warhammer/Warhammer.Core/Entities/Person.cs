@@ -53,6 +53,7 @@ namespace Warhammer.Core.Entities
         public bool XpSpendAvailable { get; set; }
         public int WishingWell { get; set; }
         public Nullable<int> GenderEnum { get; set; }
+        public Nullable<int> XpGroup { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }
