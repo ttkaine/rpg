@@ -2758,6 +2758,11 @@ namespace Warhammer.Core.Concrete
                     .ToList();
         }
 
+        public string GetPageName(int id)
+        {
+            return _repository.Pages().Single(p => p.Id == id).FullName;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

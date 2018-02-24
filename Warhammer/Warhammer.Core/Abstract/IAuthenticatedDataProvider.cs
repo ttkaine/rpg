@@ -191,5 +191,6 @@ namespace Warhammer.Core.Abstract
         void SaveGmNotes(int pageId, string gmNotes);
         void ApplyShift(int id);
         List<PageLinkModel> GetRecentViewedPages();
+        string GetPageName(int id);
     }
 }

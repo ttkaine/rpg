@@ -232,8 +232,13 @@ namespace Warhammer.Mvc.Controllers
         {
             if (id.HasValue)
             {
-                Page page = DataProvider.GetPage(id.Value);
-                return PartialView(page);
+                string name = DataProvider.GetPageName(id.Value);
+                ImageViewModel imageViewModel = new ImageViewModel
+                {
+                    Id = id.Value,
+                    Name = name
+                };
+                return PartialView(imageViewModel);
             }
             return null;
         }
