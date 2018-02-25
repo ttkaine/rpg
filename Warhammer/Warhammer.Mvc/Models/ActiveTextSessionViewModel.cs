@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Warhammer.Core.Entities;
 
 namespace Warhammer.Mvc.Models
@@ -20,6 +21,8 @@ namespace Warhammer.Mvc.Models
         public List<OpenSessionViewModel> OpenSessions { get; set; }
     }
 
+
+
     public class OpenSessionViewModel
     {
         public string CssClass
@@ -33,12 +36,17 @@ namespace Warhammer.Mvc.Models
                     case OpenSessionStatus.Updated:
                         return "btn-default";
                     case OpenSessionStatus.MyTurn:
+
                         return "btn-success";
                     default:
                         return "btn-default";
                 }
             }
         }
+
+        public DateTime LastPostTime => Session.LastPostTime;
+
+        public int DaysSinceLastPost => (int)Math.Floor((DateTime.Today - LastPostTime.Date).TotalDays);
 
         public Session Session { get; set; }
 

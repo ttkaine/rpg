@@ -28,7 +28,7 @@ namespace Warhammer.Mvc.Concrete
         {
             ActiveTextSessionViewModel model = new ActiveTextSessionViewModel();
 
-            List<Session> myOpenTestSessions = _data.MyOpenTextSessions().OrderBy(s => s.LastPostTime).ToList();
+            List<Session> myOpenTestSessions = _data.MyOpenTextSessions().ToList();
 
             foreach (Session myOpenTestSession in myOpenTestSessions)
             {
@@ -46,6 +46,11 @@ namespace Warhammer.Mvc.Concrete
                 }
                 model.OpenSessions.Add(sessionViewModel);
             }
+
+            model.OpenSessions =
+                model.OpenSessions.OrderByDescending(m => m.Status == OpenSessionStatus.MyTurn)
+                    .ThenBy(m => m.LastPostTime)
+                    .ToList();
 
             return model;
         }
