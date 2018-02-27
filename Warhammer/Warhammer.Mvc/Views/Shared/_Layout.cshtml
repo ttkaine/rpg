@@ -17,11 +17,15 @@
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @Html.Action("OverrideCss", "Home")
+    
+    <script type="text/javascript">
+        
+    </script>
 
     @if (ViewBag.EditMode)
     {
-
         <script type="text/javascript">
+
 
             var formmodified = 0;
 
@@ -107,17 +111,17 @@
 
         </script>
         <script>
-          $( function() {
-            $( ".game-datepicker" ).datepicker({
-              showOtherMonths: true,
-              selectOtherMonths: true,
-              changeMonth: true,
-              changeYear: true,
-              minDate: new Date(2430, 1 - 1, 26),
-              maxDate: new Date(2600, 1 - 1, 26),
-              dateFormat: "yy-mm-dd"
-            });
-          } );
+            $( function() {
+                $( ".game-datepicker" ).datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    changeMonth: true,
+                    changeYear: true,
+                    minDate: new Date(2430, 1 - 1, 26),
+                    maxDate: new Date(2600, 1 - 1, 26),
+                    dateFormat: "yy-mm-dd"
+                });
+            } );
         </script>
 
     }

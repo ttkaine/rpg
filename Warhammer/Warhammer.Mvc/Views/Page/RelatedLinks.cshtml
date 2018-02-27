@@ -10,11 +10,72 @@
 }
 @if (Model.People.Any())
 {
+
     <h3>People</h3>
+    <input type="text" id="linked-person-selector"/>
     <ul>
         @Html.DisplayFor(m => Model.People)
     </ul>
     <div class="clearfix"></div>
+
+    <script>
+        var elemId = 'linked-person-selector';
+        var $elem = $('#linked-person-selector');
+        $elem.addClass('selectize-entity-picker');
+
+        var addUrl = '/Create/QuickAdd';
+
+        var createOption = function (input, callback) {
+
+            $.ajax({
+                url: addUrl,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    value: input,
+                    parentId: @Model.Id,
+                    type: "person"
+                },
+                error: function(jqXhr, textStatus, errorThrown) {
+                    console.log('ERROR IN SELECTIZE LIST THING!');
+                },
+                success: function(data, textStatus, jqXhr) {
+                    callback(data);
+                }
+            });
+        };
+
+        var loadUrl = '/Page/LinkOptions';
+
+        var load = function (input, callback) {
+
+            $.ajax({
+                url: loadUrl,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    value: input,
+                    parentId: @Model.Id,
+                    type: "person"
+                },
+                error: function(jqXhr, textStatus, errorThrown) {
+                    console.log('ERROR IN SELECTIZE LIST THING!');
+                },
+                success: function(data, textStatus, jqXhr) {
+                    callback(data);
+                }
+            });
+        };
+
+        initSelectize({
+            persist: false,
+            elementId: elemId,
+            plugins: [],
+            create: createOption,
+            load: load,
+            maxItems: 1
+        });
+    </script>
 }
 @if (Model.Places.Any())
 {

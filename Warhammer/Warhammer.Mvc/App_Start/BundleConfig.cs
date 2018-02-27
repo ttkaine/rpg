@@ -11,6 +11,7 @@ namespace Warhammer.Mvc
             //            "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Content/Selectize/js/standalone/selectize.js",
                         "~/Scripts/jquery.validate*"));
 
             //// Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -23,6 +24,7 @@ namespace Warhammer.Mvc
             //          "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/Selectize/css/selectize.bootstrap3.css",
                       "~/Content/WarhammerStyle.css"));
         }
     }
