@@ -24,8 +24,17 @@
                     else
                     {
                         <h1>Add a session  log</h1>
-                        <h2>Pick a Person</h2>
-                        @Html.DropDownListFor(m => m.SelectedPersonId, Model.Person)
+
+                        <div class="form-group">
+                            @Html.Label("Pick a Person", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-md-8">
+                                
+                                @Html.DropDownListFor(m => m.SelectedPersonId, Model.Person)
+                                @Html.ValidationMessageFor(model => model.SelectedPersonId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
                     }
                     
                     @if (Model.Log.Session != null)

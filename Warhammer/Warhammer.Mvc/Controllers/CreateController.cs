@@ -128,10 +128,11 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult SessionLog(int? personid, int? sessionId)
         {
+            int playerId = DataProvider.CurrentPlayerId;
             CreateSessionLogViewModel model = new CreateSessionLogViewModel
             {
-                Person = new SelectList(DataProvider.People(), "Id", "ShortName"),
-                Session = new SelectList(DataProvider.Sessions(), "Id", "ShortName")
+                Person = new SelectList(DataProvider.People().OrderBy(p => p.IsDead).ThenByDescending(p => p.PlayerId == playerId).ThenBy(p => p.ShortName), "Id", "ShortName"),
+                Session = new SelectList(DataProvider.Sessions().OrderByDescending(s => s.DateTime), "Id", "ShortName")
                 
             };
             SessionLog sessionLog = new SessionLog();
