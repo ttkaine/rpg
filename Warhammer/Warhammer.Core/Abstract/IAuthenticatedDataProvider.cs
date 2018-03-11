@@ -174,10 +174,12 @@ namespace Warhammer.Core.Abstract
         void SetGender(int personId, Gender gender);
         List<ChartDataItem> GetWordcountReportData();
         List<ChartDataItem> GetPlayerWordcountReportData();
+        List<ChartDataItem> GetCharacterWordcountReportData();
         List<ChartDataItem> GetCharacterGenderReportData();
         List<ChartDataItem> GetGenderScoresReportData();
         List<ChartDataItem> GetPagesByPlayerReportData();
         List<ChartDataItem> GetTopAwardsReportData();
+        List<ChartDataItem> GetPersonTextPostReportData();
         int TotalAwardCount();
         List<ChartDataItem> GetPlayerTextPostReportData();
         Color[] GetDefaultColors(int count);
@@ -192,5 +194,7 @@ namespace Warhammer.Core.Abstract
         void ApplyShift(int id);
         List<PageLinkModel> GetRecentViewedPages();
         string GetPageName(int id);
+
+        
     }
 }

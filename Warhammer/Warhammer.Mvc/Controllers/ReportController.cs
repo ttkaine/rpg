@@ -74,7 +74,7 @@ namespace Warhammer.Mvc.Controllers
                     }
                 })
                 .SetSeries(pieSeries);
-            chart.SetCredits(new Credits {Enabled = false});
+            chart.SetCredits(new Credits { Enabled = false });
             return chart;
         }
 
@@ -97,6 +97,40 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult CharacterWordcountChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.CharacterWordCountChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetCharacterWordcountReportData();
+
+                if (data.Count > 1)
+                {
+                    var chart = GetHighchartsPie(data, "characterwordcount_pie", "Wordcount by Character (approx)", "Words", " words", "About ");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
+
+        public ActionResult CharacterTextPostChart()
+        {
+            if (DataProvider.SiteHasFeature(Feature.Reports) && DataProvider.SiteHasFeature(Feature.CharacterTextPostChart))
+            {
+                List<ChartDataItem> data = DataProvider.GetPersonTextPostReportData();
+
+                if (data.Count > 1)
+                {
+                    var chart = GetHighchartsPie(data, "charactertextpost_pie", "Text Session Posts by Character", "Posts", " posts");
+                    return PartialView("Chart", chart);
+                }
+
+            }
+            return null;
+        }
+
+        
 
         public ActionResult PlayerTextPostChart()
         {

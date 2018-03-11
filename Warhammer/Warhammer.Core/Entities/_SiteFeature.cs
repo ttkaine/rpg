@@ -62,7 +62,9 @@ namespace Warhammer.Core.Entities
         GmNotes,
         FixedHarmAndWear,
         RecentItemsMenu,
-        XpGroups
+        XpGroups,
+        CharacterWordCountChart,
+        CharacterTextPostChart
     }
 
     public partial class SiteFeature

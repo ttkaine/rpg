@@ -2338,6 +2338,39 @@ namespace Warhammer.Core.Concrete
             return counts;
         }
 
+        public List<ChartDataItem> GetCharacterWordcountReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+
+            List<Person> people = _repository.Pages().OfType<Person>().Where(p => p.SessionLogs.Any()).ToList();
+
+            var theData = _repository.Pages().OfType<SessionLog>().GroupBy(p => p.PersonId).Select(g => new { personId = g.Key, Words = g.Sum(x => x.WordCount) });
+            
+
+            foreach (Person person in people)
+            {
+                int wordCount = theData.Where(d => d.personId == person.Id).Select(d => d.Words).FirstOrDefault();
+                if (wordCount > 0)
+                {
+                    string count = Convert.ToDouble(string.Format("{0:G2}", wordCount)).ToString("R0");
+                    int roundedCount;
+                    int.TryParse(count, out roundedCount);
+
+                    if (roundedCount > 0)
+                    {
+
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = person.FullName,
+                            Value = roundedCount,
+                        });
+                    }
+                }
+            }
+
+            return counts;
+        }
+
         private Color GetChartColorFor(Player player)
         {
             return GetDefaultColors(player.Id).Last();
@@ -2471,7 +2504,7 @@ namespace Warhammer.Core.Concrete
                 .Where(t => t.Awards.Any())
                // .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
                 .OrderByDescending(t => t.Awards.Count(a => a.CampaignId == campaginId))
-                .Take(20)
+                .Take(10)
                 .OrderByDescending(t => t.PointsValue)
                 .Select(a => new { trophy = a.Name, count = a.Awards.Count(b => b.CampaignId == campaginId) });
 
@@ -2484,6 +2517,39 @@ namespace Warhammer.Core.Concrete
                 });
             }
 
+            return counts;
+        }
+
+        public List<ChartDataItem> GetPersonTextPostReportData()
+        {
+            List<ChartDataItem> counts = new List<ChartDataItem>();
+
+            var theData =
+                _repository.Posts()
+                .Where(p => p.CharacterId.HasValue)
+                    .GroupBy(p => p.CharacterId)
+                    .OrderByDescending(p => p.Count())
+                    .Select(g => new {CharacterId = g.Key.Value, Posts = g.Count()})
+                    .Take(10);
+            List<int> personIds = theData.Select(d => d.CharacterId).ToList();
+
+            List<Person> people = _repository.Pages().OfType<Person>().Where(p => personIds.Contains(p.Id)).ToList();
+
+            if (people.Count > 0)
+            {
+                foreach (Person person in people)
+                {
+                    int postCount = theData.Where(d => d.CharacterId == person.Id).Select(d => d.Posts).FirstOrDefault();
+                    if (postCount > 0)
+                    {
+                        counts.Add(new ChartDataItem
+                        {
+                            Name = person.FullName,
+                            Value = postCount,
+                        });
+                    }
+                }
+            }
             return counts;
         }
 

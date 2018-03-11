@@ -467,6 +467,7 @@ namespace Warhammer.Mvc.Controllers
                             })
                             .SetSeries(pieSeries);
 
+                        chart.SetCredits(new Credits { Enabled = false });
                         return PartialView("Chart", chart);
 
                     }
