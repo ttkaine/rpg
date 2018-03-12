@@ -2527,6 +2527,7 @@ namespace Warhammer.Core.Concrete
             var theData =
                 _repository.Posts()
                 .Where(p => p.CharacterId.HasValue)
+                .Where(p => p.PostType == (int)PostType.InCharacter)
                     .GroupBy(p => p.CharacterId)
                     .OrderByDescending(p => p.Count())
                     .Select(g => new {CharacterId = g.Key.Value, Posts = g.Count()})
