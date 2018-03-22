@@ -7,22 +7,12 @@
     <div id="characterattributes" class="content-block">
         @if (Model.CharacterInfo.CanEdit)
         {
-
-
             if (Model.ShowWearTrack)
             {
                  @Html.Partial("_WearTrack", Model)
              }
             @Html.Partial("_AttributeEdit", Model)
-
-
             <div class="alert alert-info">
-                
-                @for (int i = 0; i < Model.CharacterLevel; i++)
-                {
-                    <img class="AttributeStar" src="@Url.Content("~/Content/Images/gold-star.png")" alt="Level @Model.CharacterLevel" title="Level @Model.CharacterLevel" />
-                }
-
                 <table class="table attribute-table">
                     <tr>
                         <td>Current XP</td>

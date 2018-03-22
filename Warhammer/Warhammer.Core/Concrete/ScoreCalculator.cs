@@ -82,14 +82,14 @@ namespace Warhammer.Core.Concrete
                     PointsValue = person.HasImage ? 1 : 0
                 });
 
-                if (person.Level > 0)
+                if (person.HeroLevel > 0)
                 {
                     scoreHistories.Add(new ScoreHistory
                     {
                         ScoreType = ScoreType.Level,
                         DateTime = scoreDate,
                         PersonId = person.Id,
-                        PointsValue = person.Level
+                        PointsValue = (int)person.HeroLevel
                     });
                 }
                 ScoreHistory total = new ScoreHistory

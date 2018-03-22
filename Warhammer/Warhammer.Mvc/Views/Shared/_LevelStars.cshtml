@@ -1,0 +1,11 @@
+﻿
+@model Warhammer.Core.Entities.HeroLevel
+@if (Model > 0)
+{
+    <div class="level-stars">
+        @for (int i = 0; i < (int)Model; i++)
+        {
+            <img class="AttributeStar" src="@Url.Content("~/Content/Images/gold-star.png")" alt="@Model" title="@Model"/>
+        }
+    </div>
+}

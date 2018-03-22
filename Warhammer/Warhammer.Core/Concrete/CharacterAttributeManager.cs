@@ -50,7 +50,7 @@ namespace Warhammer.Core.Concrete
                 CharacterLevelInfo info = new CharacterLevelInfo
                 {
                     TotalAdvancesTaken = person.TotalAdvancesTaken,
-                    CharacterLevel = person.Level,
+                    CharacterLevel = person.XpLevel,
                     CurrentXp = person.CurrentXp,
                     XpSpent = person.XpSpent,
                     TotalRoles = totalRoles,

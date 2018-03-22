@@ -18,9 +18,16 @@
         @Html.HiddenFor(m => m.Id)
         <div class="banner-content">
             <div class="header-block">
+                @if (Model is Person)
+                {
+                    Person person = Model as Person;
+                    if (person.HeroLevel > 0)
+                    {           
+                        @Html.Partial("_LevelStars", person.HeroLevel)
+                    }
+                }
                 <h1 id="fullName" class="editable">@Model.FullName</h1>
             </div>
-
         </div>
                 <div class="main-content">
                     <div class="content-block">

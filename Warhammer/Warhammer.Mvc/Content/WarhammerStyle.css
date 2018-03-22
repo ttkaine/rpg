@@ -7329,6 +7329,10 @@ img.AttributeStar {
   height: 20px;
   border-radius: 10px;
 }
+.level-stars {
+  position: absolute;
+  width: 100%;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

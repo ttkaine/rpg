@@ -43,7 +43,12 @@
                             </tr>
                             <tr>
                                 <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new { id = person.Id })"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
-                                <td class="name no-break">@person.FullName</td>
+                                <td class="name no-break">@person.FullName
+                                    @if (person.HeroLevel > 0)
+                                    {           
+                                    @Html.Partial("_LevelStars", person.HeroLevel)
+                                    }
+                                </td>
                                 <td>@Html.Raw(person.MiniSummary)</td>
                                 <td>&nbsp;</td>
                                 <td class="description" style="display: none">@Html.Raw(person.SearchString)</td>

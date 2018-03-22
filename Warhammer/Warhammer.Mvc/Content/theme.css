@@ -7329,3 +7329,7 @@ img.AttributeStar {
   height: 20px;
   border-radius: 10px;
 }
+.level-stars {
+  position: absolute;
+  width: 100%;
+}

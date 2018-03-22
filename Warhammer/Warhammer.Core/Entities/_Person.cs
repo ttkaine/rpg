@@ -37,6 +37,16 @@ namespace Warhammer.Core.Entities
         Fellowship = 108
     }
 
+    public enum HeroLevel
+    {
+        Rookie = 0,
+        Adventurer,
+        Veteran,
+        Hero,
+        Champion,
+        Legend
+    }
+
     public struct ScoreBreakdown
     {
         public string Name { get; set; }
@@ -56,7 +66,20 @@ namespace Warhammer.Core.Entities
             set { GenderEnum = (int) value;  }
         }
 
-        public int Level => (int) Math.Floor(TotalAdvancesTaken / 5.0);
+        public int XpLevel => (int) Math.Floor(TotalAdvancesTaken / 5.0);
+
+        public HeroLevel HeroLevel
+        {
+            get
+            {
+                if(XPAwarded > 1200) return HeroLevel.Legend;
+                if (XPAwarded > 600) return HeroLevel.Champion;
+                if (XPAwarded > 200) return HeroLevel.Hero;
+                if (XPAwarded > 50) return HeroLevel.Veteran;
+                if (XPAwarded > 10) return HeroLevel.Adventurer;
+                return HeroLevel.Rookie;
+            }
+        }
 
         public bool IsFuCharacter
         {
