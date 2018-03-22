@@ -12,12 +12,10 @@ namespace Warhammer.Core.Concrete
     {
         private int _scoreUpdateInterval = 1440;
         private readonly IRepository _repo;
-        private readonly CharacterAttributeManager _attributeManager;
 
-        public ScoreCalculator(IRepository repo, CharacterAttributeManager attributeManager)
+        public ScoreCalculator(IRepository repo)
         {
             _repo = repo;
-            _attributeManager = attributeManager;
         }
 
         private IEnumerable<ScoreHistory> CalculateScoreForPerson(Person person, DateTime scoreDate)
@@ -94,10 +92,6 @@ namespace Warhammer.Core.Concrete
                         PointsValue = person.Level
                     });
                 }
-                else
-                {
-                    AddOldStatScoreItems(person, scoreDate, scoreHistories);
-                }
                 ScoreHistory total = new ScoreHistory
                 {
                     ScoreType = ScoreType.Total,
@@ -110,101 +104,6 @@ namespace Warhammer.Core.Concrete
 
             }
             return scoreHistories;
-        }
-
-        private static void AddOldStatScoreItems(Person person, DateTime scoreDate, List<ScoreHistory> scoreHistories)
-        {
-            decimal statScore = 0m;
-
-            if (person.FateStunts != null && person.FateStunts.Any())
-            {
-                statScore += person.FateStunts.Count;
-            }
-            if (person.FateStats != null && person.FateStats.Any())
-            {
-                statScore += person.FateStats.Sum(s => s.StatValue);
-            }
-
-            if (person.Stats != null && person.Stats.Any())
-            {
-                decimal statFactor = person.IsCrowCharacter ? 6.0m : 2.0m;
-                statScore += person.Stats.Sum(l => l.Value) / statFactor;
-            }
-            if (statScore > 0)
-            {
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Stats,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = statScore
-                });
-            }
-            else
-            {
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Stats,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = 0m
-                });
-            }
-
-            if (person.RoleNames != null && person.RoleNames.Count > 1)
-            {
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Roles,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = person.RoleNames.Count - 1
-                });
-            }
-            else
-            {
-                if (person.FateAspects != null && person.FateAspects.Any())
-                {
-                    scoreHistories.Add(new ScoreHistory
-                    {
-                        ScoreType = ScoreType.Roles,
-                        DateTime = scoreDate,
-                        PersonId = person.Id,
-                        PointsValue = person.FateAspects.Count(a => a.IsVisible)
-                    });
-                }
-                else
-                {
-                    scoreHistories.Add(new ScoreHistory
-                    {
-                        ScoreType = ScoreType.Roles,
-                        DateTime = scoreDate,
-                        PersonId = person.Id,
-                        PointsValue = 0
-                    });
-                }
-            }
-
-            if (person.DescriptorNames != null && person.DescriptorNames.Count > 0)
-            {
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Descriptors,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = person.DescriptorNames.Count
-                });
-            }
-            else
-            {
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Descriptors,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = 0
-                });
-            }
         }
 
         public void UpdatePersonScore(int personId)
