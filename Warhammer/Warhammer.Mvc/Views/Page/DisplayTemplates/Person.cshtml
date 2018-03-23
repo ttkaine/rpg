@@ -1,0 +1,78 @@
+﻿@model Warhammer.Core.Entities.Person
+
+
+
+@{
+    ViewBag.Title = @Model.FullName;
+}
+
+<div class="content-wrapper">
+    @Html.Action("TopStats", "Crow", new { id = Model.Id })
+</div>
+
+@using (Html.BeginForm("Index", "Page", FormMethod.Post, new {id = "mainpageform"}))
+{
+    <input type="submit" style="display: none" id="hiddenPageSubmit"/>
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="banner-content">
+        <div class="header-block">
+
+            @if (Model.HeroLevel > 0)
+            {           
+                @Html.Partial("_LevelStars", Model.HeroLevel)
+            }
+
+            <h1 id="fullName" class="editable">@Model.FullName</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            @if (Model.Awards.Any())
+            {
+                <ul class="awardBar awardBar-mini">
+                    @Html.DisplayFor(m => Model.OrderedAwards)
+                </ul>
+            }
+            
+            <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
+            
+            @if (Model.IsDead && !string.IsNullOrWhiteSpace(Model.Obiturary))
+            {
+                <div class="obiturary">
+                    <h2>@Model.CauseOfDeath</h2>
+                    <div>@Html.Raw(Model.Obiturary)</div>
+                </div>
+            }
+            
+            <h2 id="shortName" class="editable page-content-heading">@Model.ShortName</h2>
+            <div id="description" class="editable">
+                @Html.Raw(Model.Description)
+            </div>
+            @if (Model.ShowGmNotes)
+            {
+                <div class="panel panel-info">
+                    <div class="page-header"><h3 class="panel-title">GM Notes</h3></div>
+                    <div class="panel-body">
+                        <div id="gmnotes" class="editable alert alert-info">
+                            @Html.Raw(Model.GmNotes)
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <span class="note">The GM notes section is only visible to the GM. This can be used to keep notes handy for the current page without the other players being able to see it.</span>
+                    </div>
+                </div>
+
+            }
+            <div class="profile-footer">
+                <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br />
+                <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName</span>
+            </div>
+
+        </div>
+
+        @Html.Action("CurrentScorePie", "Person")
+
+    </div>
+}

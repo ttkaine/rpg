@@ -22,6 +22,14 @@
                         <td>XP Spent</td>
                         <td><span class="personAttribute label label-danger">@(Model.XpSpent).00</span></td>
                     </tr>
+                    <tr>
+                        <td>Advances Taken</td>
+                        <td ><span class="personAttribute label label-success">@Model.TotalAdvancesTaken</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tax Level</td>
+                        <td ><span class="personAttribute label label-info">+@Model.CharacterLevel</span></td>
+                    </tr>
                     @if (Model.CharacterInfo.HasAttributeMoveAvailable)
                     {
                         <tr>

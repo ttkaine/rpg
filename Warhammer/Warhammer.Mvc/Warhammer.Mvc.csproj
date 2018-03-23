@@ -761,6 +761,8 @@
     <Content Include="Views\Person\_FixedWearAndHarm.cshtml" />
     <Content Include="Views\Person\_PersonAttribute.cshtml" />
     <Content Include="Views\Shared\_LevelStars.cshtml" />
+    <Content Include="Views\Page\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Page\DisplayTemplates\Person.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
