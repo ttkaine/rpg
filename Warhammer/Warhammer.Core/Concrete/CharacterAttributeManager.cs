@@ -287,11 +287,6 @@ namespace Warhammer.Core.Concrete
 
                     int skillLevel = averageStat;
 
-                    if (person.IsNpc)
-                    {
-                        skillLevel = 1;
-                    }
-
                     if (skillLevel < 1)
                     {
                         skillLevel = 1;
