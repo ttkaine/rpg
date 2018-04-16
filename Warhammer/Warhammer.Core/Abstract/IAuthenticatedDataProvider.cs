@@ -88,7 +88,6 @@ namespace Warhammer.Core.Abstract
         void AddXp(int personId, decimal xpValue);
         bool CheckStatPermissions(int personId);
         bool CheckStatSummaryPermissions();
-        List<Person> NpcWithXp();
         List<Person> PeopleInGraveyard();
         bool CurrentUserIsAdmin { get; }
         bool ShowGraveyard { get;  }

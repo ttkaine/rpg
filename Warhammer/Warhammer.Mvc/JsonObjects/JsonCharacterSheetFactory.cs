@@ -10,16 +10,12 @@ namespace Warhammer.Mvc.JsonObjects
 			switch (style)
 			{
 				case CharacterSheetStyle.So82013Standard:
-					return GetSo82013StandardCharacterSheet();
-					break;
-
+					return GetSo82013StandardCharacterSheet();					
 				case CharacterSheetStyle.So82013Fantasy:
 					return GetSo82013FantasyCharacterSheet();
-					break;
-
+					
 				default:
-					return GetSo82013StandardCharacterSheet();
-					break;
+					return GetSo82013StandardCharacterSheet();				
 			}
 		}
 

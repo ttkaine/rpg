@@ -1032,14 +1032,6 @@ namespace Warhammer.Core.Concrete
             return true;
         }
 
-        public List<Person> NpcWithXp()
-        {
-            return new List<Person>();
-            return _repository.People().Where(p => !p.PlayerId.HasValue)
-                .Where(p => p.Stats.Sum(s => s.Value) > 10 && p.CurrentXp > 10)
-                .OrderByDescending(p => p.CurrentXp).ToList();
-        }
-
         public List<Person> PeopleInGraveyard()
         {
             var query = _repository.People().Where(p => p.IsDead);
