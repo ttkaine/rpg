@@ -169,6 +169,7 @@ namespace Warhammer.Core.Abstract
         void AwardShiftForSession(int id);
         void UpdateAward(int id, string awardReason);
         List<Person> GetNpcSheetPeople();
+        List<Person> GetNpcWithAwardSheetPeople(int trophyId);
         List<PageLinkModel> GetFavourites();
         void SetGender(int personId, Gender gender);
         List<ChartDataItem> GetWordcountReportData();
@@ -193,7 +194,5 @@ namespace Warhammer.Core.Abstract
         void ApplyShift(int id);
         List<PageLinkModel> GetRecentViewedPages();
         string GetPageName(int id);
-
-        
     }
 }

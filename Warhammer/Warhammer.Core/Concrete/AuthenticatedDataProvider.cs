@@ -2221,6 +2221,17 @@ namespace Warhammer.Core.Concrete
                 .OrderByDescending(p => p.CurrentScore).ToList();
         }
 
+        public List<Person> GetNpcWithAwardSheetPeople(int trophyId)
+        {
+            return _repository.People()
+                .Include(p => p.PersonAttributes)
+                .Include(p => p.Awards)
+                .Where(p => !p.PlayerId.HasValue)
+                .Where(p => p.PersonAttributes.Any())
+                .Where(p => p.Awards.Any(a => a.TrophyId == trophyId))
+                .OrderByDescending(p => p.CurrentScore).ToList();
+        }
+
         public List<PageLinkModel> GetFavourites()
         {
             var query = _repository.Pages().OfType<Person>()

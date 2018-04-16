@@ -23,7 +23,7 @@
             <p>@Model.Description</p>
 
             <table class="table table-striped">
-
+                @Html.Action("GmToolsForTRophy", "Gm", new { id = Model.Id })
                 @Html.Action("AwardsForTrophy", "Home", new {id = Model.Id })
             </table>
         </div>

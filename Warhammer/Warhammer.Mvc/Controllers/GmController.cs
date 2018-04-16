@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ASP;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
@@ -161,6 +160,13 @@ namespace Warhammer.Mvc.Controllers
             return View(models);
         }
 
+        public ActionResult NpcWithAwardSheet(int awardId)
+        {
+            List<Person> npcs = DataProvider.GetNpcWithAwardSheetPeople(awardId);
+            List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
+            return View("NpcSheet", models);
+        }
+
         public ActionResult OutstandingAwardNominations()
         {
             List<AwardNomination> nominations = DataProvider.OutstandingNominations();
@@ -185,6 +191,11 @@ namespace Warhammer.Mvc.Controllers
                 DataProvider.RejectNomination(nomination.Id, nomination.RejectedReason);
             }
             return RedirectToAction("OutstandingAwardNominations");
+        }
+
+        public ActionResult GmToolsForTrophy(int id)
+        {
+            return PartialView();
         }
     }
 
