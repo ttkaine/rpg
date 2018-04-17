@@ -155,16 +155,24 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult NpcSheet()
         {
-            List<Person> npcs = DataProvider.GetNpcSheetPeople();
-            List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
-            return View(models);
+            if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
+            {
+                List<Person> npcs = DataProvider.GetNpcSheetPeople();
+                List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
+                return View(models);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult NpcWithAwardSheet(int awardId)
+        public ActionResult PersonWithTrophyCharacterSheets(int id)
         {
-            List<Person> npcs = DataProvider.GetNpcWithAwardSheetPeople(awardId);
-            List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
-            return View("NpcSheet", models);
+            if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
+            {
+                List<Person> people = DataProvider.GetCharacterSheetPeopleWithTrophy(id);
+                List<NpcSheetViewModel> models = people.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
+                return View("NpcSheet", models);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult OutstandingAwardNominations()
@@ -195,7 +203,11 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult GmToolsForTrophy(int id)
         {
-            return PartialView();
+            if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
+            {
+                return PartialView(id);
+            }
+            return null;
         }
     }
 

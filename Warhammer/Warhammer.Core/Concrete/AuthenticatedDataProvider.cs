@@ -2218,17 +2218,17 @@ namespace Warhammer.Core.Concrete
                 .Include(p => p.Awards)
                 .Where(p => !p.PlayerId.HasValue)
                 .Where(p => p.PersonAttributes.Any())
+                .Where(p => !p.IsDead)
                 .OrderByDescending(p => p.CurrentScore).ToList();
         }
 
-        public List<Person> GetNpcWithAwardSheetPeople(int trophyId)
+        public List<Person> GetCharacterSheetPeopleWithTrophy(int trophyId)
         {
             return _repository.People()
                 .Include(p => p.PersonAttributes)
                 .Include(p => p.Awards)
-                .Where(p => !p.PlayerId.HasValue)
-                .Where(p => p.PersonAttributes.Any())
                 .Where(p => p.Awards.Any(a => a.TrophyId == trophyId))
+                .Where(p => !p.IsDead)
                 .OrderByDescending(p => p.CurrentScore).ToList();
         }
 

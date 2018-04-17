@@ -9,6 +9,11 @@
     {
         <td style="text-align: center;font-size: 1.5em; padding: 5px;">@statPair.Key.ToString().Substring(0, 2)<br /> <b>@statPair.Value</b></td>
     }
+    
+    @if (Model.Stats.Count < 6)
+    {
+        <td colspan="@(6 - Model.Stats.Count)"></td>
+    }
 
     <td style="text-align: center; font-size: 1.2em;padding: 15px;">
         <b>
@@ -22,7 +27,7 @@
     <td>
         @foreach (KeyValuePair<string, int> statPair in Model.Roles)
         {
-            @statPair.Key<b> : @statPair.Value</b>
+            @statPair.Key<b>&nbsp;:&nbsp;@statPair.Value</b>
             <br />
         }
 
@@ -30,7 +35,7 @@
     <td>
         @foreach (KeyValuePair<string, int> statPair in Model.Skills)
         {
-            @statPair.Key<b> : @statPair.Value</b>
+            @statPair.Key<b>&nbsp;:&nbsp;@statPair.Value</b>
             <br />
         }
     </td>

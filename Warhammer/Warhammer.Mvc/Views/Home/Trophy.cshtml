@@ -23,7 +23,6 @@
             <p>@Model.Description</p>
 
             <table class="table table-striped">
-                @Html.Action("GmToolsForTRophy", "Gm", new { id = Model.Id })
                 @Html.Action("AwardsForTrophy", "Home", new {id = Model.Id })
             </table>
         </div>
@@ -32,7 +31,7 @@
     <div class="side-bar">
         <div class="content-block">
             <h3>@Model.Name</h3>
-
+            @Html.Action("GmToolsForTrophy", "Gm", new { id = Model.Id })
 
 
         </div>

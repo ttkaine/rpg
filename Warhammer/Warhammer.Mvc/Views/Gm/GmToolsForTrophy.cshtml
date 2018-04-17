@@ -1,0 +1,6 @@
+﻿@model int 
+
+@if (Model > 0)
+{
+    @Html.ActionLink("Character Sheets", "PersonWithTrophyCharacterSheets", "Gm", new { id = Model }, new { @class = "btn btn-success btn-block" })
+}
