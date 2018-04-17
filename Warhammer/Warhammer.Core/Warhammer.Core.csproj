@@ -164,6 +164,7 @@
     <Compile Include="Abstract\ILogGenerator.cs" />
     <Compile Include="Abstract\IPostManager.cs" />
     <Compile Include="Abstract\IModelFactory.cs" />
+    <Compile Include="Abstract\IRandomItemGenerator.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IScoreCalculator.cs" />
     <Compile Include="Abstract\ISiteFeatureProvider.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Concrete\ExceptionLogHandler.cs" />
     <Compile Include="Concrete\ImageProcessor.cs" />
     <Compile Include="Concrete\InlineHtmlImage.cs" />
+    <Compile Include="Concrete\RandomItemGenerator.cs" />
     <Compile Include="Concrete\SiteFeatureProvider.cs" />
     <Compile Include="Concrete\LogGenerator.cs" />
     <Compile Include="Concrete\PostManager.cs" />
@@ -359,6 +361,7 @@
     <Compile Include="Models\PageLinkWithUpdateDateModel.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
     <Compile Include="Models\PersonAttributeAdvanceModel.cs" />
+    <Compile Include="Models\RandomItemResult.cs" />
     <Compile Include="Models\Reports\ChartDataItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleplayViewModels\CampaignViewModel.cs" />

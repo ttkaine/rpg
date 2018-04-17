@@ -237,6 +237,7 @@
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PageControlsController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\RandomController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleplayController.cs" />
     <Compile Include="Controllers\RumourController.cs" />
@@ -761,6 +762,10 @@
     <Content Include="Views\Person\_FixedWearAndHarm.cshtml" />
     <Content Include="Views\Person\_PersonAttribute.cshtml" />
     <Content Include="Views\Shared\_LevelStars.cshtml" />
+    <Content Include="Views\Random\Index.cshtml" />
+    <Content Include="Views\Random\Person.cshtml" />
+    <Content Include="Views\Random\Item.cshtml" />
+    <Content Include="Views\Random\DisplayTemplates\RandomItemResult.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

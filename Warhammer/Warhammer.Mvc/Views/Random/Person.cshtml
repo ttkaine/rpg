@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Random Person!";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Random Person</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            @Html.Action("Age")
+            @Html.Action("Sex")
+            @Html.Action("Orientation")
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Here is a Random Person</h3>
+            <p>Refresh the page to get another?</p>
+        </div>
+    </div>
+
+</div>

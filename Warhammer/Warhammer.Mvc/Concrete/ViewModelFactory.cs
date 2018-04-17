@@ -329,6 +329,15 @@ namespace Warhammer.Mvc.Concrete
                         Url = _urlHelper.Action("Index", "Rumour"),
                     });
                 }
+
+                if (_data.SiteHasFeature(Feature.RandomItemGenerator))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Random Items",
+                        Url = _urlHelper.Action("Index", "Random"),
+                    });
+                }
             }
 
             return items;
