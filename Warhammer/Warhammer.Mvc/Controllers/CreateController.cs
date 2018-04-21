@@ -119,7 +119,7 @@ namespace Warhammer.Mvc.Controllers
                     session.DateTime = DateTime.Now;
                 }
                 int sessionId = DataProvider.AddSession(session.FullName, session.ShortName, session.Description,
-                    session.DateTime.Value);
+                    session.DateTime.Value, session.CreateWithPreviousCharacterList);
                 return RedirectToAction("Index", "Page", new { id = sessionId });
             }
 

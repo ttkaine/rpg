@@ -167,7 +167,7 @@ namespace Warhammer.Core.Concrete
             return Save(session);
         }
 
-        public int AddSession(string title, string name, string description, DateTime date)
+        public int AddSession(string title, string name, string description, DateTime date, bool sessionCreateWithPreviousCharacterList)
         {
             Session session = new Session
             {
@@ -179,7 +179,7 @@ namespace Warhammer.Core.Concrete
 
             Session previousSession = null;
 
-            if (SiteHasFeature(Feature.AutoPopulatePeopleInNewSessions))
+            if (sessionCreateWithPreviousCharacterList)
             {
 
                 previousSession =
@@ -194,7 +194,7 @@ namespace Warhammer.Core.Concrete
 
             int id = Save(session);
 
-            if (SiteHasFeature(Feature.AutoPopulatePeopleInNewSessions) && previousSession != null)
+            if (previousSession != null)
             {
                 foreach (Person person in previousSession.People)
                 {

@@ -14,7 +14,7 @@ namespace Warhammer.Core.Abstract
         string VersionInfo();
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
-        int AddSession(string title, string name, string description, DateTime dateTime);
+        int AddSession(string title, string name, string description, DateTime dateTime, bool sessionCreateWithPreviousCharacterList);
         int GetGmId(int sessionId);
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc, Gender personGender);
         void ChangePicture(int id, byte[] data, string mimeType);

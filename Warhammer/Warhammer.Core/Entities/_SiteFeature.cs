@@ -18,7 +18,6 @@ namespace Warhammer.Core.Entities
         AdminLeague,
         ImmediateEmailer,
         AwardHistory,
-        AutoPopulatePeopleInNewSessions,
         FateStats,
         CurrentScorePie,
         SimpleAutoXp,
