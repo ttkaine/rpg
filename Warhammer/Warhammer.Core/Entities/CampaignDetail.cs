@@ -24,6 +24,9 @@ namespace Warhammer.Core.Entities
         public int CampaignId { get; set; }
         public int GmId { get; set; }
         public Nullable<int> AverageStat { get; set; }
+        public string CustomCss { get; set; }
+        public string Url { get; set; }
+        public byte[] BackgroundImage { get; set; }
     
         public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
     }

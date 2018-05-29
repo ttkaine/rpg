@@ -114,18 +114,21 @@
           <Property Name="NominatedById" Type="int" />
           <Property Name="NominatedDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
-          <Property Name="IsPrivate" Type="bit" Nullable="false" />
           <Property Name="AwardId" Type="int" />
+          <Property Name="IsPrivate" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CampaignDetails">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CurrentGameDate" Type="datetime" />
+          <Property Name="CurrentGameDate" Type="datetime2" Precision="7" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="GmId" Type="int" Nullable="false" />
           <Property Name="AverageStat" Type="int" />
+          <Property Name="CustomCss" Type="nvarchar(max)" />
+          <Property Name="Url" Type="nvarchar" MaxLength="200" />
+          <Property Name="BackgroundImage" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -1029,7 +1032,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PostOrder_Session">
-          <End Role="Session" Type="Self.Session" Multiplicity="1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PostOrder" Type="Self.PostOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Session">
@@ -2471,11 +2476,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CurrentGameDate" Type="DateTime" Precision="3" />
+          <Property Name="CurrentGameDate" Type="DateTime" Precision="7" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="CampaignDetail" ToRole="PlayerCampaign" />
           <Property Name="GmId" Type="Int32" Nullable="false" />
           <Property Name="AverageStat" Type="Int32" />
+          <Property Name="CustomCss" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BackgroundImage" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Rumour">
           <Key>
@@ -3222,6 +3230,9 @@
           <EntitySetMapping Name="CampaignDetails">
             <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
               <MappingFragment StoreEntitySet="CampaignDetails">
+                <ScalarProperty Name="BackgroundImage" ColumnName="BackgroundImage" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="CustomCss" ColumnName="CustomCss" />
                 <ScalarProperty Name="AverageStat" ColumnName="AverageStat" />
                 <ScalarProperty Name="GmId" ColumnName="GmId" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
