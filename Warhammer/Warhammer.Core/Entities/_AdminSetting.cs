@@ -5,7 +5,8 @@
     {
         //Core Site Settings 0
         SiteName = 1,
-        CssOverrideFilename = 2,
+        //CssOverrideFilename = 2,
+
 
         //email setting 100
         SendingEmailAddress = 101,

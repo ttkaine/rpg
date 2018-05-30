@@ -119,6 +119,12 @@ namespace Warhammer.Mvc.Concrete
 
         public MenuViewModel MakeMenu()
         {
+            if (_data.CurrentCampaignId == 0)
+            {
+                return NoCampaignMenu();
+            }
+
+
             MenuViewModel model = new MenuViewModel();
 
 
@@ -229,6 +235,25 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            return model;
+        }
+
+        private MenuViewModel NoCampaignMenu()
+        {
+            MenuViewModel model = new MenuViewModel {LeftMenu = new List<MenuItemViewModel>()};
+
+
+            if (_data.CurrentUserIsAdmin)
+            {
+                model.LeftMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Create Campaign on this domain",
+                    Url = _urlHelper.Action("CreateCampaign", "Admin"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
+                    //  IconCssClass = "badge"
+                });
+            }
             return model;
         }
 

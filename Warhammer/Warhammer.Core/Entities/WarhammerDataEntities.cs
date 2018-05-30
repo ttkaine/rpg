@@ -7,20 +7,19 @@ namespace Warhammer.Core.Entities
 {
     public partial class WarhammerDataEntities
     {
-        private readonly ICurrentCampaignProvider _campaignProvider =
-            DependencyResolver.Current.GetService<ICurrentCampaignProvider>();
+        private readonly IDomainProvider _domainProvider = DependencyResolver.Current.GetService<IDomainProvider>();
 
         private int? _campaignId = null;
 
-        private int CurrentCampaignId
+        public int CurrentCampaignId
         {
             get
             {
                 if (!_campaignId.HasValue)
                 {
-                    _campaignId = _campaignProvider.CurrentCampaignId;
+                    _campaignId = CampaignDetails.FirstOrDefault(c => c.Url == _domainProvider.CurrentDomain)?.CampaignId;
                 }
-                return _campaignId.Value;
+                return _campaignId.GetValueOrDefault();
             }
         }
 

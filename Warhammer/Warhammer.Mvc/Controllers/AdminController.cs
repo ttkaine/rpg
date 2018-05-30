@@ -18,12 +18,14 @@ namespace Warhammer.Mvc.Controllers
         private readonly IDatabaseUpdateProvider _databaseUpdate;
         private readonly IImageProcessor _imageProcessor;
         private readonly IAdminSettingsProvider _adminSettings;
+        private readonly IDomainProvider _domain;
         // GET: Admin
-        public AdminController(IAuthenticatedDataProvider data, IDatabaseUpdateProvider databaseUpdate, IImageProcessor imageProcessor, IAdminSettingsProvider adminSettings) : base(data)
+        public AdminController(IAuthenticatedDataProvider data, IDatabaseUpdateProvider databaseUpdate, IImageProcessor imageProcessor, IAdminSettingsProvider adminSettings, IDomainProvider domain) : base(data)
         {
             _databaseUpdate = databaseUpdate;
             _imageProcessor = imageProcessor;
             _adminSettings = adminSettings;
+            _domain = domain;
         }
 
 
@@ -240,6 +242,39 @@ namespace Warhammer.Mvc.Controllers
             }
 
             return RedirectToAction("CampaignSettings");
+        }
+
+        [HttpPost]
+        public ActionResult SetCss(string customCss)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetCustomCss(customCss);
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
+
+        public ActionResult CreateCampaign()
+        {
+            if (DataProvider.CurrentCampaignId > 0)
+            {
+               return RedirectToAction("AdminSettings", "Admin");
+            }
+            CampaignDetail details = new CampaignDetail {AvailableGms = DataProvider.GetAllPlayers()};
+            return View(details);
+        }
+
+        [HttpPost]
+        public ActionResult CreateCampaign(CampaignDetail model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.CreateCampaign(_domain.CurrentDomain, model.CustomCss, model.CurrentGameDate, model.GmId);
+               return RedirectToAction("AdminSettings", "Admin");
+            }
+            model.AvailableGms = DataProvider.GetAllPlayers();
+            return View(model);
         }
     }
 }

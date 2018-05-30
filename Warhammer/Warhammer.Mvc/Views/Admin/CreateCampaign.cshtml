@@ -1,0 +1,51 @@
+﻿
+
+@using Warhammer.Core.Entities
+@using Warhammer.Core.Extensions
+@model CampaignDetail
+@{
+    ViewBag.Title = "Create New Campaign";
+}
+
+<div class="content-wrapper">
+
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Add Campaign</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block session-block">
+            <div id="gamedatepanel">
+
+                @using (Html.BeginForm("CreateCampaign", "Admin"))
+                {
+
+                    <p>Choose Game Date</p>
+                    @Html.TextBoxFor(m => m.CurrentGameDate, new { @class = "game-datepicker" })
+
+                    <p>Set some Css for this site</p>
+                    @Html.TextAreaFor(m => m.CustomCss)
+
+
+                    <p>Pick a GM</p>
+                    @Html.DropDownListFor(m => m.GmId, new SelectList(Model.AvailableGms, "Id", "DisplayName"))
+
+
+                    <input type="submit" value="CREATE CAMPAIGN" />
+                }
+            </div>
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>We're adding a new game world for this Url</h3>
+            <p>Not that much here yet... but soon more maybe?</p>
+        </div>
+    </div>
+
+</div>

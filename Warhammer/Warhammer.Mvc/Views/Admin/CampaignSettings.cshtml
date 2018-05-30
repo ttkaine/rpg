@@ -60,7 +60,12 @@
                         <input type="submit" value="Set Game Date" />
                     }
                 }
-
+                @using (Html.BeginForm("SetCss", "Admin"))
+                {
+                    <p>Set some Css for this site</p>
+                    @Html.TextAreaFor(m => m.CustomCss)
+                    <input type="submit" value="Set Css" />
+                }
             </div>
 
         </div>

@@ -77,5 +77,6 @@ namespace Warhammer.Core.Abstract
         IQueryable<ScoreHistory> AllScoreHistories();
         int Save(AwardNomination awardNomination);
         IQueryable<AwardNomination> AwardNominations();
+        int CurrentCampaignId { get; }
     }
 }

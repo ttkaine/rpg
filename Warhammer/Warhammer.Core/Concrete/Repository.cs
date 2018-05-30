@@ -17,24 +17,10 @@ namespace Warhammer.Core.Concrete
     public class Repository : IRepository, IDisposable
     {
         private readonly WarhammerDataEntities _entities = new WarhammerDataEntities();
-        private readonly ICurrentCampaignProvider _campaign;
-
-        public Repository(ICurrentCampaignProvider campaign)
-        {
-            _campaign = campaign;
-        }
 
         #region Accessors
 
-        public int CurrentCampaignId
-        {
-            get { return _campaign.CurrentCampaignId; }
-        }
-
-        //public IQueryable<ChangeLog> ChangeLogs()
-        //{
-        //    return _entities.ChangeLogs;
-        //}
+        public int CurrentCampaignId => _entities.CurrentCampaignId;
 
         public IQueryable<ChangeLog> ChangeLogs()
         {
@@ -558,6 +544,11 @@ namespace Warhammer.Core.Concrete
             if (campaignDetail.Id == 0)
             {
                 _entities.CampaignDetails.Add(campaignDetail);
+                if (campaignDetail.CampaignId == 0)
+                {
+                    campaignDetail.CampaignId = _entities.CampaignDetails.OrderByDescending(c => c.CampaignId)
+                                                    .Select(c => c.CampaignId).FirstOrDefault() + 1;
+                }
             }
             else
             {

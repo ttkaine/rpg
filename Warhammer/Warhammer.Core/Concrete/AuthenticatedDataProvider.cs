@@ -22,9 +22,9 @@ namespace Warhammer.Core.Concrete
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
         private readonly ISiteFeatureProvider _feature;
-        private readonly ICurrentCampaignProvider _campaignProvider;
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
+        public int CurrentCampaignId => _repository.CurrentCampaignId;
         private List<int> _myPageIds;
         public List<int> MyPageIds
         {
@@ -59,14 +59,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICurrentCampaignProvider campaignProvider)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
             _feature = feature;
-            _campaignProvider = campaignProvider;
 
             if (_authenticatedUser.UserIsAuthenticated)
             {
@@ -100,7 +99,7 @@ namespace Warhammer.Core.Concrete
             {
                 if (_campaign == null)
                 {
-                    _campaign = _repository.CampaignDetails().Single();
+                    _campaign = _repository.CampaignDetails().FirstOrDefault();
                 }
                 return _campaign;
             }
@@ -2502,7 +2501,7 @@ namespace Warhammer.Core.Concrete
         public List<ChartDataItem> GetTopAwardsReportData()
         {
             List<ChartDataItem> counts = new List<ChartDataItem>();
-            int campaginId = _campaignProvider.CurrentCampaignId;
+            int campaginId = _repository.CurrentCampaignId;
             var trophyData = _repository.Trophies()
                 .Where(t => t.Awards.Any())
                // .Where(t => t.TypeId == (int) TrophyType.DefaultAward)
@@ -2749,7 +2748,7 @@ namespace Warhammer.Core.Concrete
         {
             AwardNomination award = new AwardNomination
             {
-                CampaignId = _campaignProvider.CurrentCampaignId,
+                CampaignId = CurrentCampaignId,
                 NominationReason = reason,
                 NominatedById = CurrentPlayerId,
                 NominatedDate = DateTime.Now,
@@ -2831,6 +2830,36 @@ namespace Warhammer.Core.Concrete
         public string GetPageName(int id)
         {
             return _repository.Pages().Single(p => p.Id == id).FullName;
+        }
+
+        public void SetCustomCss(string customCss)
+        {
+            CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
+            if (campaign != null)
+            {
+                campaign.CustomCss = customCss;
+                _repository.Save(campaign);
+            }
+        }
+
+        public void CreateCampaign(string domain, string customCss, DateTime? gameDate, int modelGmId)
+        {
+            CampaignDetail campaign = new CampaignDetail();
+            campaign.CustomCss = customCss;
+            campaign.CurrentGameDate = gameDate;
+            campaign.Url = domain;
+
+            if (modelGmId > 0)
+            {
+                campaign.GmId = modelGmId;
+            }
+            else
+            {
+                campaign.GmId = CurrentPlayerId;
+            }
+         
+            campaign.AverageStat = 3;
+            _repository.Save(campaign);
         }
 
         public void RemoveAward(int personId, int awardId)

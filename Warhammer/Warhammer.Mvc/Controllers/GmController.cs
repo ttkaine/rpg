@@ -15,7 +15,7 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IImageProcessor _imageProcessor;
         private readonly IAuthenticatedUserProvider _user;
-        private readonly ICurrentCampaignProvider _campaignProvider;
+        private readonly IAuthenticatedDataProvider _data;
 
         public ActionResult OutstandingXp()
         {
@@ -60,11 +60,11 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, ICurrentCampaignProvider campaignProvider) : base(data)
+        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, IAuthenticatedDataProvider data1) : base(data)
         {
             _imageProcessor = imageProcessor;
             _user = user;
-            _campaignProvider = campaignProvider;
+            _data = data1;
         }
 
         public ActionResult EditTrophy(int? id)
@@ -78,7 +78,7 @@ namespace Warhammer.Mvc.Controllers
 
             if (trophy == null)
             {
-                trophy = new Trophy {CampaignId = _campaignProvider.CurrentCampaignId };
+                trophy = new Trophy {CampaignId = _data.CurrentCampaignId };
             }
 
             EditTrophyViewModel model = ModelFactory.Make(trophy, DataProvider.CurrentPlayerIsGm, DataProvider.CurrentUserIsAdmin);

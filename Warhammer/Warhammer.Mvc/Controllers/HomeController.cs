@@ -17,8 +17,8 @@ namespace Warhammer.Mvc.Controllers
 
     public class HomeController : BaseController
     {
-        private readonly IScoreCalculator _scoreCalculator;
         private readonly IAdminSettingsProvider _adminSettings;
+        private readonly IPublicDataProvider _publicData;
 
         private string SiteName
         {
@@ -28,18 +28,10 @@ namespace Warhammer.Mvc.Controllers
             }
         }
 
-        private string CssOverride
+        public HomeController(IAuthenticatedDataProvider data, IAdminSettingsProvider adminSettings, IPublicDataProvider publicData) : base(data)
         {
-            get
-            {
-                return _adminSettings.GetAdminSetting(AdminSettingName.CssOverrideFilename);
-            }
-        }
-
-        public HomeController(IAuthenticatedDataProvider data, IScoreCalculator scoreCalculator, IAdminSettingsProvider adminSettings) : base(data)
-        {
-            _scoreCalculator = scoreCalculator;
             _adminSettings = adminSettings;
+            _publicData = publicData;
         }
 
         public ActionResult Index()
@@ -274,10 +266,13 @@ namespace Warhammer.Mvc.Controllers
         [AllowAnonymous]
         public ActionResult OverrideCss()
         {
-            if (!string.IsNullOrWhiteSpace(CssOverride))
+            string dbCss = _publicData.GetOverrideCssContent();
+
+            if (!string.IsNullOrWhiteSpace(dbCss))
             {
-                return PartialView("OverrideCss", CssOverride);
+                return PartialView("OverrideCss", dbCss);
             }
+
             return null;
         }
 

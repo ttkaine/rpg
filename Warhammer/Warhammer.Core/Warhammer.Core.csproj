@@ -156,14 +156,15 @@
     <Compile Include="Abstract\IApplicationInitalizeHandler.cs" />
     <Compile Include="Abstract\IAuthenticatedDataProvider.cs" />
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
-    <Compile Include="Abstract\ICurrentCampaignProvider.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
+    <Compile Include="Abstract\IDomainProvider.cs" />
     <Compile Include="Abstract\IEmailHandler.cs" />
     <Compile Include="Abstract\IExceptionLogHandler.cs" />
     <Compile Include="Abstract\IImageProcessor.cs" />
     <Compile Include="Abstract\ILogGenerator.cs" />
     <Compile Include="Abstract\IPostManager.cs" />
     <Compile Include="Abstract\IModelFactory.cs" />
+    <Compile Include="Abstract\IPublicDataProvider.cs" />
     <Compile Include="Abstract\IRandomItemGenerator.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IScoreCalculator.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Concrete\ExceptionLogHandler.cs" />
     <Compile Include="Concrete\ImageProcessor.cs" />
     <Compile Include="Concrete\InlineHtmlImage.cs" />
+    <Compile Include="Concrete\PublicDataProvider.cs" />
     <Compile Include="Concrete\RandomItemGenerator.cs" />
     <Compile Include="Concrete\SiteFeatureProvider.cs" />
     <Compile Include="Concrete\LogGenerator.cs" />
@@ -326,6 +328,7 @@
     <Compile Include="Entities\_AdminSetting.cs" />
     <Compile Include="Entities\_Asset.cs" />
     <Compile Include="Entities\_Award.cs" />
+    <Compile Include="Entities\_CampaignDetail.cs" />
     <Compile Include="Entities\_Comment.cs" />
     <Compile Include="Entities\_Creature.cs" />
     <Compile Include="Entities\_ExceptionLog.cs" />

@@ -96,6 +96,7 @@ namespace Warhammer.Core.Abstract
         bool CurrentUserIsGuest { get; }
         bool ShadowMode { get; set; }
         int CurrentPlayerId { get; }
+        int CurrentCampaignId { get; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         bool SettingIsEnabled(SettingNames settingName);
@@ -194,5 +195,7 @@ namespace Warhammer.Core.Abstract
         void ApplyShift(int id);
         List<PageLinkModel> GetRecentViewedPages();
         string GetPageName(int id);
+        void SetCustomCss(string customCss);
+        void CreateCampaign(string domain, string customCss, DateTime? gameDate, int modelGmId);
     }
 }
