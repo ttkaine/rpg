@@ -9,5 +9,6 @@ namespace Warhammer.Core.Abstract
         void NotifyNewPage(Page page, List<Player> players);
         void NotifyEditPage(Page page, List<Player> players);
         void NotifyNewComment(string commenterName, Page page, List<Player> players, string description);
+        void PasswordReset(Player player, string callbackUrl);
     }
 }

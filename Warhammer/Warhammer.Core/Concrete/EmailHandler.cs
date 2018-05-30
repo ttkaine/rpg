@@ -186,5 +186,31 @@ namespace Warhammer.Core.Concrete
 
             }
         }
+
+        public void PasswordReset(Player player, string callbackUrl)
+        {
+            string subject = string.Format("Hey, {0}! Did you forgot your password?", player.DisplayName);
+            string message = string.Format("No worries! You can just set yoursself a new one by going to this link: <a href='{0}'>'{0}'</a>", callbackUrl);
+            NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
+
+            SmtpClient client = new SmtpClient(SmtpServer)
+            {
+                Port = 25,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                EnableSsl = false,
+                Credentials = loginInfo
+            };
+
+            MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
+            MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
+            MailMessage mail = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true
+            };
+            client.Send(mail);
+        }
     }
 }
