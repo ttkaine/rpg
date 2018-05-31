@@ -223,7 +223,7 @@ namespace Warhammer.Core.Concrete
                 Description = description,
                 Gender = personGender
             };
-            if (!CurrentPlayerIsGm && !personCreateAsNpc)
+            if (!personCreateAsNpc)
             {
                 person.PlayerId = CurrentPlayer.Id;
             }
