@@ -258,6 +258,7 @@
     <Compile Include="JsonObjects\JsonResponseWithPostCollection.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
+    <Compile Include="Models\ChangePersonPlayerViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
     <Compile Include="Models\CreateOrganisationViewModel.cs" />
     <Compile Include="Models\CreatePlaceViewModel.cs" />
@@ -770,6 +771,7 @@
     <Content Include="Views\Random\Item.cshtml" />
     <Content Include="Views\Random\DisplayTemplates\RandomItemResult.cshtml" />
     <Content Include="Views\Admin\CreateCampaign.cshtml" />
+    <Content Include="Views\Person\ChangePlayer.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

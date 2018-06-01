@@ -38,6 +38,13 @@
             @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new { personId = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
         }
         
+        
+        @if (Model.CanChangePlayer)
+        {
+            @Html.ActionLink("Change Player", "ChangePlayer", "Person", new {id = Model.Page.Id}, new {@class = "btn btn-default btn-block"})
+
+            <hr/>
+        }
         @if (Model.CanKill)
         {
             @Html.ActionLink("Kill", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })

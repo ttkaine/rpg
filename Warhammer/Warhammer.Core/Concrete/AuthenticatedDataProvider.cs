@@ -2867,6 +2867,16 @@ namespace Warhammer.Core.Concrete
             return _repository.Players().FirstOrDefault(p => p.UserName == email);
         }
 
+        public void SetPersonPlayer(int personId, int? playerId)
+        {
+            Person person = GetPerson(personId);
+            if (person != null)
+            {
+                person.PlayerId = playerId;
+                Save(person);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

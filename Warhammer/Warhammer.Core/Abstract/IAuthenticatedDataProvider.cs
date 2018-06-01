@@ -198,5 +198,6 @@ namespace Warhammer.Core.Abstract
         void SetCustomCss(string customCss);
         void CreateCampaign(string domain, string customCss, DateTime? gameDate, int modelGmId);
         Player GetPlayer(string email);
+        void SetPersonPlayer(int personId, int? playerId);
     }
 }

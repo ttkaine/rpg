@@ -217,6 +217,36 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult ChangePlayer(int id)
+        {
+            Person person = DataProvider.GetPerson(id);
+            if (person != null)
+            {
+                List<Player> players = DataProvider.GetAllPlayers();
+                ChangePersonPlayerViewModel model = new ChangePersonPlayerViewModel();
+                model.AvailablePlayers = players;
+                model.PersonId = id;
+                model.PlayerId = person.PlayerId;
+                model.PersonName = person.FullName;
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Page", new { id });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ChangePlayer(ChangePersonPlayerViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetPersonPlayer(model.PersonId, model.PlayerId);
+            }
+
+            return RedirectToAction("Index", "Page", new { id = model.PersonId });
+        }
+
         private SimpleHitPointsViewModel MakeSimpleHitPointsViewModel(Person person)
         {
 

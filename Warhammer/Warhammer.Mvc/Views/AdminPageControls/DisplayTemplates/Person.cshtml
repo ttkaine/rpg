@@ -4,6 +4,7 @@
 
 <hr/>
 
+
 @if (Model.IsDead)
 {
     @Html.ActionLink("Resurrect", "KillPerson", "Admin", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
