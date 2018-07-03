@@ -194,21 +194,20 @@ namespace Warhammer.Core.Concrete
 			PlayerViewModel player = GetPlayerForCurrentUser(sessionId);
 
 			List<CharacterViewModel> viewModels = new List<CharacterViewModel>();
-			if (player != null && session != null)
-			{
-				if (player.IsGM)
-				{
-					viewModels.Add(new CharacterViewModel() {ID = 0, Name = "GM"});
-					viewModels.AddRange(session.Npcs.Select(GetCharacterViewModel));
-				}
-				else
-				{
-					viewModels.AddRange(from character in session.PlayerCharacters where character.PlayerId == player.ID select GetCharacterViewModel(character));
-					viewModels.Add(new CharacterViewModel() { ID = -1, Name = "Environment" });
-				}
-			}
+	        if (player != null && session != null)
+	        {
+	            if (player.IsGM)
+	            {
+	                viewModels.Add(new CharacterViewModel() {ID = 0, Name = "GM"});
+	                viewModels.AddRange(session.Npcs.Select(GetCharacterViewModel));
+	            }
+	            viewModels.AddRange(from character in session.PlayerCharacters
+	                where character.PlayerId == player.ID
+	                select GetCharacterViewModel(character));
+	            viewModels.Add(new CharacterViewModel() {ID = -1, Name = "Environment"});
+	        }
 
-			return viewModels;
+	        return viewModels;
 		}
 
 	    public SessionViewModel GetSession(int sessionId)
