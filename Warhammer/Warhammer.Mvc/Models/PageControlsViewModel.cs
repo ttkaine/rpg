@@ -209,6 +209,6 @@ namespace Warhammer.Mvc.Models
         public bool CanApplyShift => IsCrowMk2 && (PlayerIsAdmin || PlayerIsGm) && (IsSession || IsLivePerson);
         public bool ShiftJustApplied { get; set; }
         public bool IsCrowMk2 { get; set; }
-        public bool CanChangePlayer => PlayerIsAdmin;
+        public bool CanChangePlayer => PlayerIsAdmin && IsPerson;
     }
 }
