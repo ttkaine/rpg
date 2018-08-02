@@ -201,10 +201,14 @@ namespace Warhammer.Core.Concrete
 	                viewModels.Add(new CharacterViewModel() {ID = 0, Name = "GM"});
 	                viewModels.AddRange(session.Npcs.Select(GetCharacterViewModel));
 	            }
+	            else
+	            {
+	                viewModels.Add(new CharacterViewModel() { ID = -1, Name = "Environment" });
+                }
 	            viewModels.AddRange(from character in session.PlayerCharacters
 	                where character.PlayerId == player.ID
 	                select GetCharacterViewModel(character));
-	            viewModels.Add(new CharacterViewModel() {ID = -1, Name = "Environment"});
+	            
 	        }
 
 	        return viewModels;
