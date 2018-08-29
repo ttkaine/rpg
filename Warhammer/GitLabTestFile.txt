@@ -1,3 +1,0 @@
-This is a text file.
-It is just for Git sync testing.
-Not for code use.
