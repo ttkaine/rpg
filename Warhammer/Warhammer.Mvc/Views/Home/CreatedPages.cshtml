@@ -1,0 +1,20 @@
+﻿@model List<Warhammer.Core.Models.PageLinkModel>
+
+@if (Model.Any())
+{
+    <div class="alert alert-success">
+        <h3>New Pages</h3>
+        if (Model.Count() > 5)
+        {
+        @Html.ActionLink("Mark All as Seen", "MarkAllRead")
+        }
+        <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
+
+        <ul>
+            @foreach (var page in Model)
+            {
+                <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
+            }
+        </ul>
+    </div>
+}

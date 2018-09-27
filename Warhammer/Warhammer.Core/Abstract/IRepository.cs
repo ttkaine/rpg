@@ -78,5 +78,6 @@ namespace Warhammer.Core.Abstract
         int Save(AwardNomination awardNomination);
         IQueryable<AwardNomination> AwardNominations();
         int CurrentCampaignId { get; }
+        bool IsMasterDomain { get; }
     }
 }

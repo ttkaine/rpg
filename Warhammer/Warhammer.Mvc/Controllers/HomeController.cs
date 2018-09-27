@@ -42,7 +42,6 @@ namespace Warhammer.Mvc.Controllers
 
                 SiteName = SiteName, 
                 NewPages = DataProvider.NewPages(),
-                UpdatedPages = DataProvider.ModifiedPages(),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 OtherPeople = DataProvider.OtherPCs(),
             };
@@ -64,6 +63,32 @@ namespace Warhammer.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult CreatedPages()
+        {
+            if (DataProvider.IsMasterDomain) { return null; }
+
+            List<PageLinkModel> createdPages = DataProvider.NewPages().ToList();
+            return PartialView(createdPages);
+        }
+
+        public ActionResult SiteSelector()
+        {
+            if (!DataProvider.IsMasterDomain) { return null; }
+
+            List<CampaignDetail> campaigns = DataProvider.AllCampaigns();
+
+            return PartialView(campaigns);
+        }
+
+
+        public ActionResult UpdatedPages()
+        {
+            if (DataProvider.IsMasterDomain) { return null; }
+
+            List<PageLinkModel> updatedPages = DataProvider.ModifiedPages().ToList();
+            return PartialView(updatedPages);
         }
 
         public ActionResult FullPageList()
@@ -278,6 +303,8 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ActiveTextSessions()
         {
+            if (DataProvider.IsMasterDomain) { return null;}
+
             ActiveTextSessionViewModel model = ModelFactory.MakeActiveTextSessionViewModel();
 
             return PartialView(model);

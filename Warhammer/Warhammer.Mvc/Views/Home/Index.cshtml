@@ -50,59 +50,9 @@
 
         <div class="content-block">
 
-
             @Html.Action("ActiveTextSessions")
 
-
-
-            @if (!Model.NewPages.Any() && !Model.UpdatedPages.Any())
-            {
-                <div class="alert alert-warning">
-                    <p>No Exciting Page updates for you at the moment...</p>
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-success">
-                    @if (Model.NewPages.Any())
-                    {
-
-                        <h3>New Pages</h3>
-                        if (Model.NewPages.Count() > 5)
-                        {
-                            @Html.ActionLink("Mark All as Seen", "MarkAllRead")
-                        }
-                        <p class="note">These are pages that you've never looked at - they're all new and shiney!</p>
-
-                        <ul>
-                            @foreach (var page in Model.NewPages)
-                            {
-                                <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
-                            }
-                        </ul>
-                    }
-                    @if (Model.UpdatedPages.Any())
-                    {
-
-                        <h3>Updated Pages</h3>
-                        if (Model.UpdatedPages.Count() > 5)
-                        {
-                            @Html.ActionLink("Mark All as Seen", "MarkAllModifiedRead")
-                        }
-                        <p class="note">These are pages that have had significant updates since you last looked at them...</p>
-                        <ul>
-                            @foreach (var page in Model.UpdatedPages)
-                            {
-                                <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
-                            }
-                        </ul>
-                    }
-                </div>
-            }
-
-        </div>
-
-        <div class="content-block">
+            @Html.Action("UpdatedPages")
 
             @Html.Action("RecentActivity", "Activity")
 
@@ -185,6 +135,8 @@
         </div>
 
     <div class="core-content">
+        
+        @Html.Action("SiteSelector")
 
         @if (Model.GameDate.HasValue)
         {

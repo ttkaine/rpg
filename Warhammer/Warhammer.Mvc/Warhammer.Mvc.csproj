@@ -772,6 +772,9 @@
     <Content Include="Views\Random\DisplayTemplates\RandomItemResult.cshtml" />
     <Content Include="Views\Admin\CreateCampaign.cshtml" />
     <Content Include="Views\Person\ChangePlayer.cshtml" />
+    <Content Include="Views\Home\UpdatedPages.cshtml" />
+    <Content Include="Views\Home\CreatedPages.cshtml" />
+    <Content Include="Views\Home\SiteSelector.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

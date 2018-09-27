@@ -4,13 +4,7 @@
 
 <div id="openSessionPanel">
 
-    @if (!Model.OpenSessions.Any())
-    {
-        <div class="alert alert-warning">
-            <p>You're not in any TEXT sessions at the moment...</p>
-        </div>
-    }
-    else
+    @if (Model.OpenSessions.Any())
     {
         <div class="alert alert-success">
             <p>Your open text sessions</p>

@@ -1,0 +1,18 @@
+﻿@using Warhammer.Core.Entities
+@model List<CampaignDetail>
+
+@if (Model.Any())
+{
+    <div class="content-block">
+        <h2>Individual Sites</h2>
+        <ul>
+            @foreach (CampaignDetail campaign in Model)
+            {
+                <li>
+                    <a href="http://@campaign.Url">@campaign.Url</a>
+                </li>
+            }
+
+        </ul>
+    </div>
+}

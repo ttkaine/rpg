@@ -25,6 +25,7 @@ namespace Warhammer.Core.Concrete
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
         public int CurrentCampaignId => _repository.CurrentCampaignId;
+        public bool IsMasterDomain => _repository.IsMasterDomain;
         private List<int> _myPageIds;
         public List<int> MyPageIds
         {
@@ -674,7 +675,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<PageLinkModel> PinnedPages()
         {
-            var query =  _repository.Pages().Where(p => p.Pinned);
+            var query =  _repository.Pages().Where(p => p.Pinned).Where(p=> p.CampaignId == _repository.CurrentCampaignId);
             if (ShadowMode)
             {
                 query = ApplyShadow(query);
@@ -2880,6 +2881,11 @@ namespace Warhammer.Core.Concrete
         public List<Comment> GetCommentsForPage(int pageId)
         {
             return _repository.Comments().Where(c => c.PageId == pageId).ToList();
+        }
+
+        public List<CampaignDetail> AllCampaigns()
+        {
+            return _repository.CampaignDetails().ToList();
         }
 
         public void RemoveAward(int personId, int awardId)

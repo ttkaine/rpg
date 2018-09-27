@@ -1,0 +1,19 @@
+﻿@model List<Warhammer.Core.Models.PageLinkModel>
+
+@if (Model.Any())
+{
+    <div class="alert alert-success">
+        <h3>Updated Pages</h3>
+        if (Model.Count() > 5)
+        {
+        @Html.ActionLink("Mark All as Seen", "MarkAllModifiedRead")
+        }
+        <p class="note">These are pages that have had significant updates since you last looked at them...</p>
+        <ul>
+            @foreach (var page in Model)
+            {
+                <li><a href="@Url.Action("Index", "Page", new {id = page.Id})">@page.FullName</a></li>
+            }
+        </ul>
+    </div>
+}

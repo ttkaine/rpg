@@ -97,6 +97,7 @@ namespace Warhammer.Core.Abstract
         bool ShadowMode { get; set; }
         int CurrentPlayerId { get; }
         int CurrentCampaignId { get; }
+        bool IsMasterDomain { get; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         bool SettingIsEnabled(SettingNames settingName);
@@ -200,5 +201,6 @@ namespace Warhammer.Core.Abstract
         Player GetPlayer(string email);
         void SetPersonPlayer(int personId, int? playerId);
         List<Comment> GetCommentsForPage(int pageId);
+        List<CampaignDetail> AllCampaigns();
     }
 }
