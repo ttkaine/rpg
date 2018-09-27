@@ -23,8 +23,7 @@ namespace Warhammer.Mvc.Controllers
 
             if (id.HasValue)
             {
-                Page page = DataProvider.GetPage(id.Value);
-                model.Comments = page.Comments.OrderBy(p => p.Created).ToList();
+                model.Comments = DataProvider.GetCommentsForPage(id.Value).OrderBy(p => p.Created).ToList();
 
                 Player player = CurrentPlayer;
                 List<Person> people;

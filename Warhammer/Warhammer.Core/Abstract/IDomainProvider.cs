@@ -2,6 +2,7 @@
 {
     public interface IDomainProvider
     {
+        bool IsMasterDomain { get; }
         string CurrentDomain { get; }
     }
 }

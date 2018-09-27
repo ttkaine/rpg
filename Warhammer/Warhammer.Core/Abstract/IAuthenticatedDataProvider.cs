@@ -199,5 +199,6 @@ namespace Warhammer.Core.Abstract
         void CreateCampaign(string domain, string customCss, DateTime? gameDate, int modelGmId);
         Player GetPlayer(string email);
         void SetPersonPlayer(int personId, int? playerId);
+        List<Comment> GetCommentsForPage(int pageId);
     }
 }

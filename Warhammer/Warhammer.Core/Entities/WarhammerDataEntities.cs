@@ -23,6 +23,8 @@ namespace Warhammer.Core.Entities
             }
         }
 
+        public bool IsMasterDomain => _domainProvider.IsMasterDomain;
+
         public override int SaveChanges()
         {
             var addedAuditedEntities = ChangeTracker.Entries()

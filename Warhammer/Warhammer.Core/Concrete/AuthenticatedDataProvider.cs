@@ -2381,8 +2381,8 @@ namespace Warhammer.Core.Concrete
         public List<ChartDataItem> GetCharacterGenderReportData()
         {
             List<ChartDataItem> counts = new List<ChartDataItem>();
-            var playerData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
-            var npcData = _repository.Pages().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId == null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
+            var playerData = _repository.People().Where(p => p.GenderEnum != null && p.PlayerId != null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
+            var npcData = _repository.People().OfType<Person>().Where(p => p.GenderEnum != null && p.PlayerId == null).GroupBy(p => p.GenderEnum).Select(g => new { genderId = g.Key, Count = g.Count() });
 
             foreach (Gender gender in Gender.Female.ToList<Gender>())
             {
@@ -2875,6 +2875,11 @@ namespace Warhammer.Core.Concrete
                 person.PlayerId = playerId;
                 Save(person);
             }
+        }
+
+        public List<Comment> GetCommentsForPage(int pageId)
+        {
+            return _repository.Comments().Where(c => c.PageId == pageId).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)
