@@ -10,6 +10,9 @@ namespace Warhammer.Mvc.Models
         public bool PlayerIsGm { get; set; }
         public bool PlayerIsAdmin { get; set; }
         public int CurrentPlayerId { get; set; }
+        public int CurrentCampaignId { get; set; }
+
+        public bool IsLocalToCampaign => Page.CampaignId == CurrentCampaignId;
 
         public bool PlayerIsSessionGm
         {
@@ -33,12 +36,12 @@ namespace Warhammer.Mvc.Models
         {
             get
             {
-                if (PlayerIsGm)
+                if (PlayerIsGm && IsLocalToCampaign)
                 {
                     return true;
                 }
 
-                if (PlayerIsCreator)
+                if (PlayerIsCreator && IsLocalToCampaign)
                 {
                     return true;
                 }
@@ -51,6 +54,10 @@ namespace Warhammer.Mvc.Models
         {
             get
             {
+                if (!IsLocalToCampaign)
+                {
+                    return false;
+                }
                 Person person = Page as Person;
                 if (person != null)
                 {
@@ -75,13 +82,13 @@ namespace Warhammer.Mvc.Models
         }
 
         public bool CanAddSessionLog => CanEditPerson;
-        public bool CanKill => (CanEditPerson || PlayerIsGm) && IsLivePerson;
+        public bool CanKill => (CanEditPerson || PlayerIsGm) && IsLivePerson && IsLocalToCampaign;
         public bool CanResurrect => PlayerIsGm && IsDeadPerson;
 
         public bool IsSession => Page is Session;
         public bool IsPerson => Page is Person;
 
-        public bool CanUseSessionControls => IsSession && (PlayerIsGm || PlayerIsCreator || PlayerIsSessionGm);
+        public bool CanUseSessionControls => IsLocalToCampaign && IsSession && (PlayerIsGm || PlayerIsCreator || PlayerIsSessionGm);
 
         public bool IsDeadPerson
         {
@@ -129,7 +136,7 @@ namespace Warhammer.Mvc.Models
             }
         }
 
-        public bool CanManageAwards => PlayerIsGm && IsPerson;
+        public bool CanManageAwards => PlayerIsGm && IsPerson && IsLocalToCampaign;
 
 
         public bool CanSetAsPrivate
@@ -203,10 +210,10 @@ namespace Warhammer.Mvc.Models
         public bool GmJustSet { get; set; }
         public int? SelectedGm { get; set; }
         public SelectList Players { get; set; }
-        public bool CanPin => (PlayerIsGm || PlayerIsAdmin) && !Page.Pinned;
-        public bool CanUnpin => (PlayerIsGm || PlayerIsAdmin) && Page.Pinned;
-        public bool CanDelete => (PlayerIsGm || PlayerIsAdmin);
-        public bool CanApplyShift => IsCrowMk2 && (PlayerIsAdmin || PlayerIsGm) && (IsSession || IsLivePerson);
+        public bool CanPin => ((PlayerIsGm && IsLocalToCampaign) || PlayerIsAdmin) && !Page.Pinned;
+        public bool CanUnpin => ((PlayerIsGm && IsLocalToCampaign) || PlayerIsAdmin) && Page.Pinned;
+        public bool CanDelete => (PlayerIsGm || PlayerIsAdmin) && IsLocalToCampaign;
+        public bool CanApplyShift => IsCrowMk2 && (PlayerIsAdmin || PlayerIsGm) && (IsSession || IsLivePerson) && IsLocalToCampaign;
         public bool ShiftJustApplied { get; set; }
         public bool IsCrowMk2 { get; set; }
         public bool CanChangePlayer => PlayerIsAdmin && IsPerson;

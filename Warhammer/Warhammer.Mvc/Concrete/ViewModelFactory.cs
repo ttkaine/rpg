@@ -518,7 +518,8 @@ namespace Warhammer.Mvc.Concrete
                 PlayerIsAdmin = isAdmin,
                 PlayerIsGm = playerIsGm,
                 CurrentPlayerId = currentPlayerId,
-                Players = new SelectList(players, "Id", "DisplayName")
+                Players = new SelectList(players, "Id", "DisplayName"),
+                CurrentCampaignId = _data.CurrentCampaignId
             };
 
             Session session = page as Session;
