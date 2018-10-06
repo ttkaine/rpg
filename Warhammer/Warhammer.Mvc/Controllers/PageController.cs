@@ -437,10 +437,17 @@ namespace Warhammer.Mvc.Controllers
         {
             if (!DataProvider.IsMasterDomain) { return null; }
             CampaignDetail campaignDetail = DataProvider.GetCampaginDetailsForPage(id);
+
             if (campaignDetail == null)
             {
                 return null;
             }
+
+            if (campaignDetail.CampaignId == DataProvider.CurrentCampaignId)
+            {
+                return null;
+            }
+
             ExternalLinkModel model = new ExternalLinkModel
             {
                 Url = $"https://{campaignDetail.Url}/page/index/{id}",
