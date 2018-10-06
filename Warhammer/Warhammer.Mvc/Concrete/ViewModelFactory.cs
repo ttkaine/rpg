@@ -114,7 +114,6 @@ namespace Warhammer.Mvc.Concrete
             model.IsFuHammer = _data.SiteHasFeature(Feature.FuHammerStats);
 
             return model;
-
         }
 
         public MenuViewModel MakeMenu()
@@ -124,11 +123,7 @@ namespace Warhammer.Mvc.Concrete
                 return NoCampaignMenu();
             }
 
-
             MenuViewModel model = new MenuViewModel();
-
-
-
 
             List<MenuItemViewModel> usefulSubMenu = MakeUsefulSubmenu();
             List<MenuItemViewModel> otherSitesSubMenu = MakeOtherSitesSubmenu();
@@ -202,20 +197,6 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
-
-            if (otherSitesSubMenu.Any())
-            {
-                model.RightMenu.Add(new MenuItemViewModel
-                {
-                    Name = "",
-                    AltText = "Other Sites",
-                    Url = "#",
-                    IconUrl = _urlHelper.Content("~/Content/Images/globe.png"),
-                    SubMenu = otherSitesSubMenu
-                    //  IconCssClass = "badge"
-                });
-            }
-
             if (_data.SiteHasFeature(Feature.UserSettings) && !_data.CurrentUserIsGuest)
             {
                 model.RightMenu.Add(new MenuItemViewModel
@@ -224,7 +205,6 @@ namespace Warhammer.Mvc.Concrete
                     AltText = "Settings",
                     Url = _urlHelper.Action("Settings", "Home"),
                     IconUrl = _urlHelper.Content("~/Content/Images/Settings.png"),
-                  //  IconCssClass = "badge"
                 });
             }
 
@@ -245,7 +225,18 @@ namespace Warhammer.Mvc.Concrete
                         Url = _urlHelper.Action("Index", "Page", new { id = l.Id })
 
                     }).ToList()
-                    //  IconCssClass = "badge"
+                });
+            }
+
+            if (otherSitesSubMenu.Any())
+            {
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Other Sites",
+                    Url = "#",
+                    IconUrl = _urlHelper.Content("~/Content/Images/globe.png"),
+                    SubMenu = otherSitesSubMenu
                 });
             }
 
