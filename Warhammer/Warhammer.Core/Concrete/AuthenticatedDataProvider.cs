@@ -2888,6 +2888,16 @@ namespace Warhammer.Core.Concrete
             return _repository.CampaignDetails().ToList();
         }
 
+        public void SetCampaignName(string name)
+        {
+            CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
+            if (campaign != null)
+            {
+                campaign.Name = name;
+                _repository.Save(campaign);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

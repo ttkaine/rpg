@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Mvc.Concrete;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -57,6 +58,14 @@ namespace Warhammer.Mvc.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+
+            IPublicDataProvider data = DependencyResolver.Current.GetService<IPublicDataProvider>();
+            IDomainProvider domain = DependencyResolver.Current.GetService<IDomainProvider>();
+            if (!data.UserHasAccessToDomain(model.Email, domain.CurrentDomain))
+            {
+                ModelState.AddModelError("", "Invalid login attempt. Domain issue!");
                 return View(model);
             }
 

@@ -66,6 +66,13 @@
                     @Html.TextAreaFor(m => m.CustomCss)
                     <input type="submit" value="Set Css" />
                 }
+                
+                @using (Html.BeginForm("SetCampaignName", "Admin"))
+                {
+                    <p>Set a Name for this Campaign</p>
+                    @Html.TextBoxFor(m => m.Name)
+                    <input type="submit" value="Set Css" />
+                }
             </div>
 
         </div>

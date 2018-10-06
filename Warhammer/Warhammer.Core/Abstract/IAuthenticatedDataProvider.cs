@@ -202,5 +202,6 @@ namespace Warhammer.Core.Abstract
         void SetPersonPlayer(int personId, int? playerId);
         List<Comment> GetCommentsForPage(int pageId);
         List<CampaignDetail> AllCampaigns();
+        void SetCampaignName(string name);
     }
 }

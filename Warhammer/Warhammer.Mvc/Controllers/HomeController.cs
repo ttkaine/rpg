@@ -154,13 +154,6 @@ namespace Warhammer.Mvc.Controllers
             return View(people);
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult TrophyImage(int id)
         {

@@ -276,5 +276,15 @@ namespace Warhammer.Mvc.Controllers
             model.AvailableGms = DataProvider.GetAllPlayers();
             return View(model);
         }
+
+        public ActionResult SetCampaignName(string name)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetCampaignName(name);
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
     }
 }
