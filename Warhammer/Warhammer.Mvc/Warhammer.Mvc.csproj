@@ -265,6 +265,7 @@
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
     <Compile Include="Models\EditTrophyViewModel.cs" />
+    <Compile Include="Models\ExternalLinkModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
     <Compile Include="Models\FateAspectViewModel.cs" />
     <Compile Include="Models\FateStatsViewModel.cs" />
@@ -773,6 +774,8 @@
     <Content Include="Views\Home\UpdatedPages.cshtml" />
     <Content Include="Views\Home\CreatedPages.cshtml" />
     <Content Include="Views\Home\SiteSelector.cshtml" />
+    <Content Include="Views\Page\GetShowLocalButton.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ExternalLinkModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

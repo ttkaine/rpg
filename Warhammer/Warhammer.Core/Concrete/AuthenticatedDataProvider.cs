@@ -2898,6 +2898,12 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public CampaignDetail GetCampaginDetailsForPage(int id)
+        {
+            int campaignId = _repository.Pages().Where(p => p.Id == id).Select(p => p.CampaignId).FirstOrDefault();
+            return _repository.CampaignDetails().FirstOrDefault(c => c.CampaignId == campaignId);
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

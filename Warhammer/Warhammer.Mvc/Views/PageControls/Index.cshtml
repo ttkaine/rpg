@@ -3,7 +3,7 @@
 @if (ViewBag.EditMode)
 {
     <div id="pageControls">
-        
+
         @if (Model.CanEdit)
         {
             @Html.ActionLink("Change Image", "ChangeImage", "Page", new {id = Model.Page.Id}, new {@class = "btn btn-default btn-block"})

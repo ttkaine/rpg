@@ -94,7 +94,7 @@
                 </div>
     }
 <div class="side-bar">
-
+    @Html.Action("GetShowLocalButton", "Page", new { id = Model.Id })
     @if (ViewBag.EditMode)
     {
         <div class="content-block">

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using Microsoft.AspNet.SignalR;
+using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
@@ -430,6 +431,23 @@ namespace Warhammer.Mvc.Controllers
             List<PageLinkModel> linkedPages = DataProvider.GetRelatedPages(id);
             //return PartialView(linkedPages);
             return PartialView(new RelatedLinksModel(linkedPages));
+        }
+
+        public ActionResult GetShowLocalButton(int id)
+        {
+            if (!DataProvider.IsMasterDomain) { return null; }
+            CampaignDetail campaignDetail = DataProvider.GetCampaginDetailsForPage(id);
+            if (campaignDetail == null)
+            {
+                return null;
+            }
+            ExternalLinkModel model = new ExternalLinkModel
+            {
+                Url = $"https://{campaignDetail.Url}/page/index/{id}",
+                TypeOfLink = ExternalLinkModel.LinkType.InfoButton,
+                Text = $"Show in {campaignDetail.DisplayName}"
+            };
+            return PartialView(model);
         }
     }
 }
