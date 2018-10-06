@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -17,7 +18,7 @@ namespace Warhammer.Core.Concrete
     public class Repository : IRepository, IDisposable
     {
         private readonly WarhammerDataEntities _entities = new WarhammerDataEntities();
-
+        private readonly IAuthenticatedUserProvider _user = DependencyResolver.Current.GetService<IAuthenticatedUserProvider>();
         #region Accessors
 
         public int CurrentCampaignId => _entities.CurrentCampaignId;
@@ -30,7 +31,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Person> People()
         {
-            return _entities.Pages.OfType<Person>().Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Pages.OfType<Person>().Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public IQueryable<Player> Players()
@@ -55,7 +56,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Page> Pages()
         {
-            return _entities.Pages.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Pages.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public void Delete(Page page)
@@ -92,12 +93,12 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Award> Awards()
         {
-            return _entities.Awards.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Awards.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public IQueryable<PageView> PageViews()
         {
-            return _entities.PageViews.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.PageViews.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public void Delete(PageView pageView)
@@ -123,7 +124,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Post> Posts()
         {
-            return _entities.Posts.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Posts.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public void Delete(Post post)
@@ -134,7 +135,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Comment> Comments()
         {
-            return _entities.Comments.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Comments.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public void Delete(Comment comment)
@@ -205,7 +206,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<ScoreHistory> ScoreHistories()
         {
-            return _entities.ScoreHistories.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.ScoreHistories.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public int Save(ScoreHistory scoreHistory)
@@ -232,14 +233,14 @@ namespace Warhammer.Core.Concrete
                 .Include("PersonStats")
                 .Include("FateAspects")
                 .Include("FateStats")
-                .Include("FateStunts").Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain)
+                .Include("FateStunts").Where(e => VisibleCampagins.Contains(e.CampaignId))
 
                 .AsNoTracking();
         }
 
         public IQueryable<PageImage> PageImages()
         {
-            return _entities.PageImages.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.PageImages.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         #endregion
@@ -310,9 +311,36 @@ namespace Warhammer.Core.Concrete
         }
         #endregion
 
+        private List<int> _visibleCampagins = null;
+
+        public List<int> VisibleCampagins
+        {
+            get
+            {
+                if (_visibleCampagins == null)
+                {
+                    if (IsMasterDomain)
+                    {
+                        _visibleCampagins =
+                            _entities.PlayerCampaigns
+                            .Where(p => p.Player.UserName == _user.UserName)
+                            .Where(c => c.ShowInGlobal)
+                                .Select(c => c.CampaginId)
+                                .ToList();
+                    }
+                    else
+                    {
+                        _visibleCampagins = new List<int> { CurrentCampaignId };
+                    }
+                }
+                return _visibleCampagins;
+            }
+        }
+
+
         public IQueryable<FateAspect> FateAspects()
         {
-            return _entities.FateAspects.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.FateAspects.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public int Save(FateAspect fateAspect)
@@ -340,7 +368,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<FateStat> FateStats()
         {
-            return _entities.FateStats.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.FateStats.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public int Save(FateStat fateStat)
@@ -361,7 +389,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<FateStunt> FateStunts()
         {
-            return _entities.FateStunts.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.FateStunts.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public int Save(FateStunt fateStunt)
@@ -491,7 +519,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<PriceListItem> PriceListItems()
         {
-            return _entities.PriceListItems.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.PriceListItems.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public int Save(PriceListItem priceListItem)
@@ -511,12 +539,12 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<CampaignDetail> CampaignDetails()
         {
-            return _entities.CampaignDetails.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.CampaignDetails.Where(e => VisibleCampagins.Contains(e.CampaignId)).OrderByDescending(c => c.CampaignId == CurrentCampaignId).ThenBy(c => c.Name).ThenBy(c => c.Url);
         }
 
         public IQueryable<Rumour> Rumours()
         {
-            return _entities.Rumours.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Rumours.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public int Save(Rumour rumour)
@@ -583,12 +611,12 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<Asset> Assets()
         {
-            return _entities.Assets.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.Assets.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public IQueryable<PersonAttribute> PersonAttributes()
         {
-            return _entities.PersonAttributes.Where(e => e.CampaignId == CurrentCampaignId || IsMasterDomain);
+            return _entities.PersonAttributes.Where(e => VisibleCampagins.Contains(e.CampaignId));
         }
 
         public void Delete(PersonAttribute personAttribute)

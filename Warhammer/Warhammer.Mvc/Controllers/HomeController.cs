@@ -41,10 +41,14 @@ namespace Warhammer.Mvc.Controllers
             {
 
                 SiteName = SiteName, 
-                NewPages = DataProvider.NewPages(),
                 MyPeople = DataProvider.MyPeople().ToList(),
                 OtherPeople = DataProvider.OtherPCs(),
             };
+
+            if (!DataProvider.IsMasterDomain)
+            {
+                model.NewPages = DataProvider.NewPages();
+            }
 
             if (DataProvider.SiteHasFeature(Feature.ShowGameDate))
             {
