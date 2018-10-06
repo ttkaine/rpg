@@ -330,7 +330,7 @@ namespace Warhammer.Core.Concrete
             {
                 if (_visibleCampagins == null)
                 {
-                    if (IsMasterDomain)
+                    if (IsMasterDomain && _user.UserIsAuthenticated)
                     {
                         _visibleCampagins =
                             _entities.PlayerCampaigns
