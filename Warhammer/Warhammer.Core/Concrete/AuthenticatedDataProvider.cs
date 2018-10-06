@@ -2904,6 +2904,12 @@ namespace Warhammer.Core.Concrete
             return _repository.CampaignDetails().FirstOrDefault(c => c.CampaignId == campaignId);
         }
 
+        public List<CampaignDetail> GetPermittedCampaigns()
+        {
+            List<CampaignDetail> allMyCampagins = _repository.AllMyCampaigns();
+            return allMyCampagins;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

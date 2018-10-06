@@ -64,7 +64,8 @@ namespace Warhammer.Core.Entities
         XpGroups,
         CharacterWordCountChart,
         CharacterTextPostChart,
-        RandomItemGenerator
+        RandomItemGenerator,
+        ShowOtherSitesMenu
     }
 
     public partial class SiteFeature

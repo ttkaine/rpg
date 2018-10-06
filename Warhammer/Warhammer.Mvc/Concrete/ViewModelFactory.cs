@@ -131,6 +131,7 @@ namespace Warhammer.Mvc.Concrete
 
 
             List<MenuItemViewModel> usefulSubMenu = MakeUsefulSubmenu();
+            List<MenuItemViewModel> otherSitesSubMenu = MakeOtherSitesSubmenu();
             List<MenuItemViewModel> featuresMenu = MakeFeaturesSubmenu();
             List<MenuItemViewModel> peopleSubMenu = MakePeopleSubmenu();
             List<MenuItemViewModel> adminSubMenu = MakeAdminSubmenu();
@@ -202,6 +203,19 @@ namespace Warhammer.Mvc.Concrete
             }
 
 
+            if (otherSitesSubMenu.Any())
+            {
+                model.RightMenu.Add(new MenuItemViewModel
+                {
+                    Name = "",
+                    AltText = "Other Sites",
+                    Url = "#",
+                    IconUrl = _urlHelper.Content("~/Content/Images/globe.png"),
+                    SubMenu = otherSitesSubMenu
+                    //  IconCssClass = "badge"
+                });
+            }
+
             if (_data.SiteHasFeature(Feature.UserSettings) && !_data.CurrentUserIsGuest)
             {
                 model.RightMenu.Add(new MenuItemViewModel
@@ -235,6 +249,25 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            return model;
+        }
+
+        private List<MenuItemViewModel> MakeOtherSitesSubmenu()
+        {
+            List<MenuItemViewModel> model = new List<MenuItemViewModel>();
+            if (_data.SiteHasFeature(Feature.ShowOtherSitesMenu))
+            {
+                List<CampaignDetail> campaigns = _data.GetPermittedCampaigns();
+                foreach (CampaignDetail campaign in campaigns.Where(c => c.CampaignId != _data.CurrentCampaignId))
+                {
+                    model.Add(new MenuItemViewModel
+                    {
+                        Name = campaign.DisplayName,
+                        AltText = campaign.Url,
+                        Url = $"https://{campaign.Url}",
+                    });
+                }
+            }
             return model;
         }
 

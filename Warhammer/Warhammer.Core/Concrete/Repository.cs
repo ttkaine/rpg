@@ -24,6 +24,17 @@ namespace Warhammer.Core.Concrete
         public int CurrentCampaignId => _entities.CurrentCampaignId;
         public bool IsMasterDomain => _entities.IsMasterDomain;
 
+        public List<CampaignDetail> AllMyCampaigns()
+        {
+            List<int> myCampagins =
+                            _entities.PlayerCampaigns
+                            .Where(p => p.Player.UserName == _user.UserName)
+                            .Where(c => c.ShowInGlobal)
+                                .Select(c => c.CampaginId)
+                                .ToList();
+            return _entities.CampaignDetails.Where(c => myCampagins.Contains(c.CampaignId)).ToList();
+        }
+
         public IQueryable<ChangeLog> ChangeLogs()
         {
             return _entities.ChangeLogs;

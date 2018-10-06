@@ -204,5 +204,6 @@ namespace Warhammer.Core.Abstract
         List<CampaignDetail> AllCampaigns();
         void SetCampaignName(string name);
         CampaignDetail GetCampaginDetailsForPage(int id);
+        List<CampaignDetail> GetPermittedCampaigns();
     }
 }
