@@ -1,0 +1,189 @@
+
+IF(NOT EXISTS(
+	select id from dbo.ChangeLog where id = 18100601
+))
+BEGIN
+
+CREATE TABLE [dbo].[GameDate](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Year] [int] NOT NULL,
+	[Month] [int] NOT NULL,
+	[Day] [int] NOT NULL,
+	[Comment] [nvarchar](max) NULL,
+ CONSTRAINT [PK_GameDate] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+ALTER TABLE [dbo].[PlayerCampaign] DROP CONSTRAINT [FK_PlayerCampaign_CampaignDetails]
+
+ALTER TABLE dbo.Session ADD
+	GameDateId int NULL
+
+ALTER TABLE dbo.Session ADD CONSTRAINT
+	FK_Session_GameDate FOREIGN KEY
+	(
+	GameDateId
+	) REFERENCES dbo.GameDate
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  CASCADE 
+	 
+	 ALTER TABLE dbo.Person ADD
+	DateOfBirthId int NULL
+
+ALTER TABLE dbo.Person ADD CONSTRAINT
+	FK_Person_GameDate FOREIGN KEY
+	(
+	DateOfBirthId
+	) REFERENCES dbo.GameDate
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  CASCADE 
+	 
+ALTER TABLE dbo.PlayerCampaign ADD
+	ShowInGlobal bit NOT NULL CONSTRAINT DF_PlayerCampaign_ShowInGlobal DEFAULT 0
+
+CREATE TABLE dbo.Arc
+	(
+	Id int NOT NULL,
+	CurrentDateId int NULL,
+	StartDateId int NULL
+	)  ON [PRIMARY]
+
+ALTER TABLE dbo.Arc ADD CONSTRAINT
+	PK_Arc PRIMARY KEY CLUSTERED 
+	(
+	Id
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+
+ALTER TABLE dbo.Arc ADD CONSTRAINT
+	FK_Arc_Page FOREIGN KEY
+	(
+	Id
+	) REFERENCES dbo.Page
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+
+ALTER TABLE dbo.Arc ADD CONSTRAINT
+	FK_Arc_CurrentDate FOREIGN KEY
+	(
+	CurrentDateId
+	) REFERENCES dbo.GameDate
+	(
+	Id
+	) ON UPDATE  CASCADE 
+	 ON DELETE  NO ACTION 
+	
+
+ALTER TABLE dbo.Arc ADD CONSTRAINT
+	FK_Arc_StartDate FOREIGN KEY
+	(
+	StartDateId
+	) REFERENCES dbo.GameDate
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  CASCADE 
+	
+ALTER TABLE dbo.Page ADD
+	IsPublic bit NOT NULL CONSTRAINT DF_Page_IsPublic DEFAULT 0
+	
+CREATE TABLE dbo.Book
+	(
+	Id int NOT NULL IDENTITY (1, 1),
+	Title nvarchar(50) NULL,
+	ShowIndex bit NOT NULL,
+	IncludeInMenu bit NOT NULL
+	)  ON [PRIMARY]
+
+ALTER TABLE dbo.Book ADD CONSTRAINT
+	DF_Book_ShowIndex DEFAULT 0 FOR ShowIndex
+
+ALTER TABLE dbo.Book ADD CONSTRAINT
+	DF_Book_IncludeInMenu DEFAULT 0 FOR IncludeInMenu
+
+ALTER TABLE dbo.Book ADD CONSTRAINT
+	PK_Book PRIMARY KEY CLUSTERED 
+	(
+	Id
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+CREATE TABLE dbo.BookChapter
+	(
+	Id int NOT NULL,
+	Title nvarchar(50) NULL,
+	SortOrder int NULL,
+	BookId int NOT NULL
+	)  ON [PRIMARY]
+
+ALTER TABLE dbo.BookChapter ADD CONSTRAINT
+	PK_BookChapter PRIMARY KEY CLUSTERED 
+	(
+	Id
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+
+ALTER TABLE dbo.BookChapter ADD CONSTRAINT
+	FK_BookChapter_Book FOREIGN KEY
+	(
+	BookId
+	) REFERENCES dbo.Book
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  CASCADE 
+
+ALTER TABLE dbo.CampaignDetails ADD
+	IconImage varbinary(MAX) NULL,
+	Name nvarchar(50) NULL,
+	Description nvarchar(MAX) NULL	 
+	
+CREATE TABLE dbo.BookPage
+	(
+	Id int NOT NULL,
+	BookChapterId int NOT NULL,
+	PageId int NOT NULL,
+	SortOrder int NOT NULL
+	)  ON [PRIMARY]
+
+ALTER TABLE dbo.BookPage ADD CONSTRAINT
+	PK_BookPage PRIMARY KEY CLUSTERED 
+	(
+	Id
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+
+ALTER TABLE dbo.BookPage ADD CONSTRAINT
+	FK_BookPage_BookChapter FOREIGN KEY
+	(
+	BookChapterId
+	) REFERENCES dbo.BookChapter
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+
+ALTER TABLE dbo.BookPage ADD CONSTRAINT
+	FK_BookPage_Page FOREIGN KEY
+	(
+	PageId
+	) REFERENCES dbo.Page
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+		INSERT INTO dbo.ChangeLog (Id, DateTime, Comment) VALUES (18100601,GetDate(),'Set up Arcs');
+
+END		
+	
+	

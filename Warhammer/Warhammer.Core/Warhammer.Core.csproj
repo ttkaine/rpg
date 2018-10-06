@@ -189,6 +189,9 @@
     <Compile Include="Entities\AdminSetting.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Arc.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\AspNetRole.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -208,6 +211,15 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\AwardNomination.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Book.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BookChapter.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BookPage.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CampaignDetail.cs">
@@ -238,6 +250,9 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FateStunt.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GameDate.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Organisation.cs">

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Development\GitHub\rpg\Warhammer\Warhammer.Core\Entities\PageEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Development\GitLab\Warhammer\Warhammer\Warhammer.Core\Entities\PageEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

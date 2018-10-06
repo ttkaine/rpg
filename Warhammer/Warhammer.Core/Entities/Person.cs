@@ -54,6 +54,7 @@ namespace Warhammer.Core.Entities
         public int WishingWell { get; set; }
         public Nullable<int> GenderEnum { get; set; }
         public Nullable<int> XpGroup { get; set; }
+        public Nullable<int> DateOfBirthId { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }
@@ -69,5 +70,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<ScoreHistory> ScoreHistories { get; set; }
         public virtual ICollection<PersonAttribute> PersonAttributes { get; set; }
         public virtual ICollection<AwardNomination> AwardNominations { get; set; }
+        public virtual GameDate GameDate { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Warhammer.Core.Entities
             this.Related = new HashSet<Page>();
             this.Pages = new HashSet<Page>();
             this.PageImages = new HashSet<PageImage>();
+            this.BookPages = new HashSet<BookPage>();
         }
     
         public int Id { get; set; }
@@ -40,6 +41,7 @@ namespace Warhammer.Core.Entities
         public int CampaignId { get; set; }
         public string GmNotes { get; set; }
         public int WordCount { get; set; }
+        public bool IsPublic { get; set; }
     
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Player ModifiedBy { get; set; }
@@ -48,5 +50,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Page> Related { get; set; }
         public virtual ICollection<Page> Pages { get; set; }
         public virtual ICollection<PageImage> PageImages { get; set; }
+        public virtual ICollection<BookPage> BookPages { get; set; }
     }
 }

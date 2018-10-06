@@ -60,5 +60,9 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<PostOrder> PostOrders { get; set; }
         public virtual DbSet<PersonAttribute> PersonAttributes { get; set; }
         public virtual DbSet<AwardNomination> AwardNominations { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<BookChapter> BookChapters { get; set; }
+        public virtual DbSet<BookPage> BookPages { get; set; }
+        public virtual DbSet<GameDate> GameDates { get; set; }
     }
 }

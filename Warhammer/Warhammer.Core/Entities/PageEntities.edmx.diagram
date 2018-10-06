@@ -98,7 +98,20 @@
         <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Trophy" />
         <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Award" />
         <AssociationConnector Association="WarhammerModel.FK_Post_PageImage" />
-      </Diagram>
+        <EntityTypeShape EntityType="WarhammerModel.Book" Width="1.5" PointX="11.75" PointY="28.75" />
+        <EntityTypeShape EntityType="WarhammerModel.BookChapter" Width="1.5" PointX="14" PointY="28.625" />
+        <EntityTypeShape EntityType="WarhammerModel.BookPage" Width="1.5" PointX="16.25" PointY="10.625" />
+        <EntityTypeShape EntityType="WarhammerModel.GameDate" Width="1.5" PointX="16.375" PointY="7" />
+        <AssociationConnector Association="WarhammerModel.FK_BookChapter_Book" />
+        <AssociationConnector Association="WarhammerModel.FK_BookPage_BookChapter" />
+        <AssociationConnector Association="WarhammerModel.FK_BookPage_Page" />
+        <AssociationConnector Association="WarhammerModel.FK_Person_GameDate" />
+        <AssociationConnector Association="WarhammerModel.FK_Session_GameDate" />
+        <EntityTypeShape EntityType="WarhammerModel.Arc" Width="1.5" PointX="18.625" PointY="9.875" />
+        <AssociationConnector Association="WarhammerModel.FK_Arc_CurrentDate" />
+        <AssociationConnector Association="WarhammerModel.FK_Arc_StartDate" />
+        <InheritanceConnector EntityType="WarhammerModel.Arc" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

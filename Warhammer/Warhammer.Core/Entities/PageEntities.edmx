@@ -24,6 +24,14 @@
           <Property Name="SettingValue" Type="nvarchar(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Arc">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CurrentDateId" Type="int" />
+          <Property Name="StartDateId" Type="int" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -117,18 +125,48 @@
           <Property Name="AwardId" Type="int" />
           <Property Name="IsPrivate" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShowIndex" Type="bit" Nullable="false" />
+          <Property Name="IncludeInMenu" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="SortOrder" Type="int" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookPage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="BookChapterId" Type="int" Nullable="false" />
+          <Property Name="PageId" Type="int" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="CampaignDetails">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CurrentGameDate" Type="datetime2" Precision="7" />
+          <Property Name="CurrentGameDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="GmId" Type="int" Nullable="false" />
           <Property Name="AverageStat" Type="int" />
           <Property Name="CustomCss" Type="nvarchar(max)" />
           <Property Name="Url" Type="nvarchar" MaxLength="200" />
           <Property Name="BackgroundImage" Type="varbinary(max)" />
+          <Property Name="IconImage" Type="varbinary(max)" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ChangeLog">
           <Key>
@@ -220,6 +258,16 @@
           <Property Name="IsVisible" Type="bit" Nullable="false" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="GameDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Day" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Organisation">
           <Key>
             <PropertyRef Name="Id" />
@@ -248,6 +296,7 @@
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="GmNotes" Type="nvarchar(max)" />
           <Property Name="WordCount" Type="int" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PageImage">
           <Key>
@@ -297,6 +346,7 @@
           <Property Name="WishingWell" Type="int" Nullable="false" />
           <Property Name="GenderEnum" Type="int" />
           <Property Name="XpGroup" Type="int" />
+          <Property Name="DateOfBirthId" Type="int" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -359,6 +409,7 @@
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="CampaginId" Type="int" Nullable="false" />
           <Property Name="PlayerModeEnum" Type="int" Nullable="false" />
+          <Property Name="ShowInGlobal" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -459,6 +510,7 @@
           <Property Name="XpAwarded" Type="datetime" />
           <Property Name="GmIsSuspended" Type="bit" Nullable="false" />
           <Property Name="GmId" Type="int" />
+          <Property Name="GameDateId" Type="int" />
         </EntityType>
         <EntityType Name="SessionLog">
           <Key>
@@ -527,6 +579,44 @@
           <Property Name="Data" Type="nvarchar(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Arc_CurrentDate">
+          <End Role="GameDate" Type="Self.GameDate" Multiplicity="0..1" />
+          <End Role="Arc" Type="Self.Arc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arc">
+              <PropertyRef Name="CurrentDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arc_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="Arc" Type="Self.Arc" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arc">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arc_StartDate">
+          <End Role="GameDate" Type="Self.GameDate" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arc" Type="Self.Arc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arc">
+              <PropertyRef Name="StartDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Asset_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -622,6 +712,44 @@
             </Principal>
             <Dependent Role="AwardNomination">
               <PropertyRef Name="TrophyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookChapter_Book">
+          <End Role="Book" Type="Self.Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BookChapter" Type="Self.BookChapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookChapter">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookPage_BookChapter">
+          <End Role="BookChapter" Type="Self.BookChapter" Multiplicity="1" />
+          <End Role="BookPage" Type="Self.BookPage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookChapter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookPage">
+              <PropertyRef Name="BookChapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookPage_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="BookPage" Type="Self.BookPage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookPage">
+              <PropertyRef Name="PageId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -861,6 +989,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Person_GameDate">
+          <End Role="GameDate" Type="Self.GameDate" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="DateOfBirthId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Person_Page">
           <End Role="Page" Type="Self.Page" Multiplicity="1" />
           <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
@@ -956,18 +1098,6 @@
             </Principal>
             <Dependent Role="Place1">
               <PropertyRef Name="IsWithin" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PlayerCampaign_CampaignDetails">
-          <End Role="CampaignDetails" Type="Self.CampaignDetails" Multiplicity="1" />
-          <End Role="PlayerCampaign" Type="Self.PlayerCampaign" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CampaignDetails">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PlayerCampaign">
-              <PropertyRef Name="CampaginId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1117,6 +1247,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Session_GameDate">
+          <End Role="GameDate" Type="Self.GameDate" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="GameDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Session_Page">
           <End Role="Page" Type="Self.Page" Multiplicity="1" />
           <End Role="Session" Type="Self.Session" Multiplicity="0..1" />
@@ -1192,6 +1336,7 @@
         <EntityContainer Name="WarhammerModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminSetting" EntityType="Self.AdminSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Arc" EntityType="Self.Arc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -1200,6 +1345,9 @@
           <EntitySet Name="Asset" EntityType="Self.Asset" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AwardNomination" EntityType="Self.AwardNomination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookChapter" EntityType="Self.BookChapter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookPage" EntityType="Self.BookPage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CampaignDetails" EntityType="Self.CampaignDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChangeLog" EntityType="Self.ChangeLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
@@ -1209,6 +1357,7 @@
           <EntitySet Name="FateAspect" EntityType="Self.FateAspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStat" EntityType="Self.FateStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStunt" EntityType="Self.FateStunt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameDate" EntityType="Self.GameDate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organisation" EntityType="Self.Organisation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PageImage" EntityType="Self.PageImage" Schema="dbo" store:Type="Tables" />
@@ -1233,6 +1382,18 @@
           <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSetting" EntityType="Self.UserSetting" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Arc_CurrentDate" Association="Self.FK_Arc_CurrentDate">
+            <End Role="GameDate" EntitySet="GameDate" />
+            <End Role="Arc" EntitySet="Arc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arc_Page" Association="Self.FK_Arc_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="Arc" EntitySet="Arc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arc_StartDate" Association="Self.FK_Arc_StartDate">
+            <End Role="GameDate" EntitySet="GameDate" />
+            <End Role="Arc" EntitySet="Arc" />
+          </AssociationSet>
           <AssociationSet Name="FK_Asset_Person" Association="Self.FK_Asset_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="Asset" EntitySet="Asset" />
@@ -1264,6 +1425,18 @@
           <AssociationSet Name="FK_AwardNomination_Trophy" Association="Self.FK_AwardNomination_Trophy">
             <End Role="Trophy" EntitySet="Trophy" />
             <End Role="AwardNomination" EntitySet="AwardNomination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookChapter_Book" Association="Self.FK_BookChapter_Book">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookChapter" EntitySet="BookChapter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookPage_BookChapter" Association="Self.FK_BookPage_BookChapter">
+            <End Role="BookChapter" EntitySet="BookChapter" />
+            <End Role="BookPage" EntitySet="BookPage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookPage_Page" Association="Self.FK_BookPage_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="BookPage" EntitySet="BookPage" />
           </AssociationSet>
           <AssociationSet Name="FK_Comment_Page" Association="Self.FK_Comment_Page">
             <End Role="Page" EntitySet="Page" />
@@ -1341,6 +1514,10 @@
             <End Role="Player" EntitySet="Player" />
             <End Role="PageView" EntitySet="PageView" />
           </AssociationSet>
+          <AssociationSet Name="FK_Person_GameDate" Association="Self.FK_Person_GameDate">
+            <End Role="GameDate" EntitySet="GameDate" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
           <AssociationSet Name="FK_Person_Page" Association="Self.FK_Person_Page">
             <End Role="Page" EntitySet="Page" />
             <End Role="Person" EntitySet="Person" />
@@ -1372,10 +1549,6 @@
           <AssociationSet Name="FK_Place_Place" Association="Self.FK_Place_Place">
             <End Role="Place" EntitySet="Place" />
             <End Role="Place1" EntitySet="Place" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PlayerCampaign_CampaignDetails" Association="Self.FK_PlayerCampaign_CampaignDetails">
-            <End Role="CampaignDetails" EntitySet="CampaignDetails" />
-            <End Role="PlayerCampaign" EntitySet="PlayerCampaign" />
           </AssociationSet>
           <AssociationSet Name="FK_PlayerCampaign_Player" Association="Self.FK_PlayerCampaign_Player">
             <End Role="Player" EntitySet="Player" />
@@ -1424,6 +1597,10 @@
           <AssociationSet Name="FK_ScoreHistory_Person" Association="Self.FK_ScoreHistory_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="ScoreHistory" EntitySet="ScoreHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_GameDate" Association="Self.FK_Session_GameDate">
+            <End Role="GameDate" EntitySet="GameDate" />
+            <End Role="Session" EntitySet="Session" />
           </AssociationSet>
           <AssociationSet Name="FK_Session_Page" Association="Self.FK_Session_Page">
             <End Role="Page" EntitySet="Page" />
@@ -1674,6 +1851,38 @@
             <End Role="PageImage" EntitySet="PageImages" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
+          <EntitySet Name="Books" EntityType="WarhammerModel.Book" />
+          <EntitySet Name="BookChapters" EntityType="WarhammerModel.BookChapter" />
+          <EntitySet Name="BookPages" EntityType="WarhammerModel.BookPage" />
+          <EntitySet Name="GameDates" EntityType="WarhammerModel.GameDate" />
+          <AssociationSet Name="FK_BookChapter_Book" Association="WarhammerModel.FK_BookChapter_Book">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookChapter" EntitySet="BookChapters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookPage_BookChapter" Association="WarhammerModel.FK_BookPage_BookChapter">
+            <End Role="BookChapter" EntitySet="BookChapters" />
+            <End Role="BookPage" EntitySet="BookPages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookPage_Page" Association="WarhammerModel.FK_BookPage_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="BookPage" EntitySet="BookPages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_GameDate" Association="WarhammerModel.FK_Person_GameDate">
+            <End Role="GameDate" EntitySet="GameDates" />
+            <End Role="Person" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_GameDate" Association="WarhammerModel.FK_Session_GameDate">
+            <End Role="GameDate" EntitySet="GameDates" />
+            <End Role="Session" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arc_CurrentDate" Association="WarhammerModel.FK_Arc_CurrentDate">
+            <End Role="GameDate" EntitySet="GameDates" />
+            <End Role="Arc" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Arc_StartDate" Association="WarhammerModel.FK_Arc_StartDate">
+            <End Role="GameDate" EntitySet="GameDates" />
+            <End Role="Arc" EntitySet="Pages" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -1744,6 +1953,8 @@
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <Property Name="GmNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WordCount" Type="Int32" Nullable="false" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BookPages" Relationship="WarhammerModel.FK_BookPage_Page" FromRole="Page" ToRole="BookPage" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -1795,6 +2006,8 @@
           <Property Name="GenderEnum" Type="Int32" />
           <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Person" FromRole="Person" ToRole="AwardNomination" />
           <Property Name="XpGroup" Type="Int32" />
+          <Property Name="DateOfBirthId" Type="Int32" />
+          <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Person_GameDate" FromRole="Person" ToRole="GameDate" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2476,7 +2689,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CurrentGameDate" Type="DateTime" Precision="7" />
+          <Property Name="CurrentGameDate" Type="DateTime" Precision="3" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="CampaignDetail" ToRole="PlayerCampaign" />
           <Property Name="GmId" Type="Int32" Nullable="false" />
@@ -2484,6 +2697,9 @@
           <Property Name="CustomCss" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="BackgroundImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IconImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Rumour">
           <Key>
@@ -2545,6 +2761,7 @@
           <Property Name="PlayerModeEnum" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CampaignDetail" Relationship="WarhammerModel.FK_PlayerCampaign_CampaignDetails" FromRole="PlayerCampaign" ToRole="CampaignDetail" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PlayerCampaign_Player" FromRole="PlayerCampaign" ToRole="Player" />
+          <Property Name="ShowInGlobal" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_PlayerCampaign_CampaignDetails">
           <End Type="WarhammerModel.CampaignDetail" Role="CampaignDetail" Multiplicity="1" />
@@ -2632,6 +2849,8 @@
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Session" FromRole="Session" ToRole="PostOrder" />
           <NavigationProperty Name="SessionLogs" Relationship="WarhammerModel.FK_SessionLog_Session" FromRole="Session" ToRole="SessionLog" />
           <Property Name="GmId" Type="Int32" />
+          <Property Name="GameDateId" Type="Int32" />
+          <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Session_GameDate" FromRole="Session" ToRole="GameDate" />
         </EntityType>
         <Association Name="FK_PostOrder_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -2793,6 +3012,150 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShowIndex" Type="Boolean" Nullable="false" />
+          <Property Name="IncludeInMenu" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BookChapters" Relationship="WarhammerModel.FK_BookChapter_Book" FromRole="Book" ToRole="BookChapter" />
+        </EntityType>
+        <EntityType Name="BookChapter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SortOrder" Type="Int32" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="WarhammerModel.FK_BookChapter_Book" FromRole="BookChapter" ToRole="Book" />
+          <NavigationProperty Name="BookPages" Relationship="WarhammerModel.FK_BookPage_BookChapter" FromRole="BookChapter" ToRole="BookPage" />
+        </EntityType>
+        <EntityType Name="BookPage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="BookChapterId" Type="Int32" Nullable="false" />
+          <Property Name="PageId" Type="Int32" Nullable="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BookChapter" Relationship="WarhammerModel.FK_BookPage_BookChapter" FromRole="BookPage" ToRole="BookChapter" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_BookPage_Page" FromRole="BookPage" ToRole="Page" />
+        </EntityType>
+        <EntityType Name="GameDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Day" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="People" Relationship="WarhammerModel.FK_Person_GameDate" FromRole="GameDate" ToRole="Person" />
+          <NavigationProperty Name="Sessions" Relationship="WarhammerModel.FK_Session_GameDate" FromRole="GameDate" ToRole="Session" />
+          <NavigationProperty Name="Arcs" Relationship="WarhammerModel.FK_Arc_CurrentDate" FromRole="GameDate" ToRole="Arc" />
+          <NavigationProperty Name="Arcs1" Relationship="WarhammerModel.FK_Arc_StartDate" FromRole="GameDate" ToRole="Arc" />
+          </EntityType>
+        <Association Name="FK_BookChapter_Book">
+          <End Type="WarhammerModel.Book" Role="Book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.BookChapter" Role="BookChapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookChapter">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookPage_BookChapter">
+          <End Type="WarhammerModel.BookChapter" Role="BookChapter" Multiplicity="1" />
+          <End Type="WarhammerModel.BookPage" Role="BookPage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BookChapter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookPage">
+              <PropertyRef Name="BookChapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookPage_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.BookPage" Role="BookPage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookPage">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_GameDate">
+          <End Type="WarhammerModel.GameDate" Role="GameDate" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="DateOfBirthId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_GameDate">
+          <End Type="WarhammerModel.GameDate" Role="GameDate" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="GameDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Arc" BaseType="WarhammerModel.Page">
+          <Property Name="CurrentDateId" Type="Int32" />
+          <Property Name="StartDateId" Type="Int32" />
+          <NavigationProperty Name="CurrentGameDate" Relationship="WarhammerModel.FK_Arc_CurrentDate" FromRole="Arc" ToRole="GameDate" />
+          <NavigationProperty Name="StartGameDate" Relationship="WarhammerModel.FK_Arc_StartDate" FromRole="Arc" ToRole="GameDate" />
+        </EntityType>
+        <Association Name="FK_Arc_CurrentDate">
+          <End Type="WarhammerModel.GameDate" Role="GameDate" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Arc" Role="Arc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arc">
+              <PropertyRef Name="CurrentDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Arc_StartDate">
+          <End Type="WarhammerModel.GameDate" Role="GameDate" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.Arc" Role="Arc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameDate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Arc">
+              <PropertyRef Name="StartDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2839,6 +3202,7 @@
           <EntitySetMapping Name="Pages">
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="WordCount" ColumnName="WordCount" />
                 <ScalarProperty Name="GmNotes" ColumnName="GmNotes" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
@@ -2868,6 +3232,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="DateOfBirthId" ColumnName="DateOfBirthId" />
                 <ScalarProperty Name="XpGroup" ColumnName="XpGroup" />
                 <ScalarProperty Name="GenderEnum" ColumnName="GenderEnum" />
                 <ScalarProperty Name="WishingWell" ColumnName="WishingWell" />
@@ -2916,6 +3281,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="GameDateId" ColumnName="GameDateId" />
                 <ScalarProperty Name="GmId" ColumnName="GmId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -2926,6 +3292,13 @@
                 <ScalarProperty Name="IsGmTurn" ColumnName="IsGmTurn" />
                 <ScalarProperty Name="XpAwarded" ColumnName="XpAwarded" />
                 <ScalarProperty Name="GmIsSuspended" ColumnName="GmIsSuspended" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Arc)">
+              <MappingFragment StoreEntitySet="Arc">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CurrentDateId" ColumnName="CurrentDateId" />
+                <ScalarProperty Name="StartDateId" ColumnName="StartDateId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3230,6 +3603,9 @@
           <EntitySetMapping Name="CampaignDetails">
             <EntityTypeMapping TypeName="WarhammerModel.CampaignDetail">
               <MappingFragment StoreEntitySet="CampaignDetails">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IconImage" ColumnName="IconImage" />
                 <ScalarProperty Name="BackgroundImage" ColumnName="BackgroundImage" />
                 <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="CustomCss" ColumnName="CustomCss" />
@@ -3268,6 +3644,7 @@
           <EntitySetMapping Name="PlayerCampaigns">
             <EntityTypeMapping TypeName="WarhammerModel.PlayerCampaign">
               <MappingFragment StoreEntitySet="PlayerCampaign">
+                <ScalarProperty Name="ShowInGlobal" ColumnName="ShowInGlobal" />
                 <ScalarProperty Name="PlayerModeEnum" ColumnName="PlayerModeEnum" />
                 <ScalarProperty Name="CampaginId" ColumnName="CampaginId" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
@@ -3343,6 +3720,47 @@
                 <ScalarProperty Name="NominationReason" ColumnName="NominationReason" />
                 <ScalarProperty Name="TrophyId" ColumnName="TrophyId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="WarhammerModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="IncludeInMenu" ColumnName="IncludeInMenu" />
+                <ScalarProperty Name="ShowIndex" ColumnName="ShowIndex" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookChapters">
+            <EntityTypeMapping TypeName="WarhammerModel.BookChapter">
+              <MappingFragment StoreEntitySet="BookChapter">
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookPages">
+            <EntityTypeMapping TypeName="WarhammerModel.BookPage">
+              <MappingFragment StoreEntitySet="BookPage">
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="BookChapterId" ColumnName="BookChapterId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameDates">
+            <EntityTypeMapping TypeName="WarhammerModel.GameDate">
+              <MappingFragment StoreEntitySet="GameDate">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

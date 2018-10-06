@@ -12,15 +12,12 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class PlayerCampaign
+    public partial class Arc : Page
     {
-        public int Id { get; set; }
-        public int PlayerId { get; set; }
-        public int CampaginId { get; set; }
-        public int PlayerModeEnum { get; set; }
-        public bool ShowInGlobal { get; set; }
+        public Nullable<int> CurrentDateId { get; set; }
+        public Nullable<int> StartDateId { get; set; }
     
-        public virtual CampaignDetail CampaignDetail { get; set; }
-        public virtual Player Player { get; set; }
+        public virtual GameDate CurrentGameDate { get; set; }
+        public virtual GameDate StartGameDate { get; set; }
     }
 }

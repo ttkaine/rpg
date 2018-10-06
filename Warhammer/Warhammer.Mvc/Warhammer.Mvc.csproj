@@ -299,10 +299,8 @@
   <ItemGroup>
     <Content Include="Content\cowboy.css" />
     <Content Include="Content\darknet.css" />
-    <Content Include="Content\DbUpdateScripts\18022001.sql" />
-    <Content Include="Content\DbUpdateScripts\18042101.sql" />
-    <Content Include="Content\DbUpdateScripts\18052901.sql" />
-    <Content Include="Content\DbUpdateScripts\18052902.sql" />
+    <Content Include="Content\DbUpdateScripts\18100601.sql" />
+    <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />

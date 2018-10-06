@@ -12,15 +12,19 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class PlayerCampaign
+    public partial class BookChapter
     {
-        public int Id { get; set; }
-        public int PlayerId { get; set; }
-        public int CampaginId { get; set; }
-        public int PlayerModeEnum { get; set; }
-        public bool ShowInGlobal { get; set; }
+        public BookChapter()
+        {
+            this.BookPages = new HashSet<BookPage>();
+        }
     
-        public virtual CampaignDetail CampaignDetail { get; set; }
-        public virtual Player Player { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public Nullable<int> SortOrder { get; set; }
+        public int BookId { get; set; }
+    
+        public virtual Book Book { get; set; }
+        public virtual ICollection<BookPage> BookPages { get; set; }
     }
 }

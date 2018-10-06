@@ -27,6 +27,9 @@ namespace Warhammer.Core.Entities
         public string CustomCss { get; set; }
         public string Url { get; set; }
         public byte[] BackgroundImage { get; set; }
+        public byte[] IconImage { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     
         public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
     }

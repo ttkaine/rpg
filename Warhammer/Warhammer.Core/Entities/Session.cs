@@ -30,9 +30,11 @@ namespace Warhammer.Core.Entities
         public Nullable<System.DateTime> XpAwarded { get; set; }
         public bool GmIsSuspended { get; set; }
         public Nullable<int> GmId { get; set; }
+        public Nullable<int> GameDateId { get; set; }
     
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<PostOrder> PostOrders { get; set; }
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
+        public virtual GameDate GameDate { get; set; }
     }
 }
