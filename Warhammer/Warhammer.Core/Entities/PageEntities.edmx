@@ -511,6 +511,7 @@
           <Property Name="GmIsSuspended" Type="bit" Nullable="false" />
           <Property Name="GmId" Type="int" />
           <Property Name="GameDateId" Type="int" />
+          <Property Name="ArcId" Type="int" />
         </EntityType>
         <EntityType Name="SessionLog">
           <Key>
@@ -1247,6 +1248,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Session_Arc">
+          <End Role="Arc" Type="Self.Arc" Multiplicity="0..1" />
+          <End Role="Session" Type="Self.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arc">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="ArcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Session_GameDate">
           <End Role="GameDate" Type="Self.GameDate" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1598,6 +1611,10 @@
             <End Role="Person" EntitySet="Person" />
             <End Role="ScoreHistory" EntitySet="ScoreHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Session_Arc" Association="Self.FK_Session_Arc">
+            <End Role="Arc" EntitySet="Arc" />
+            <End Role="Session" EntitySet="Session" />
+          </AssociationSet>
           <AssociationSet Name="FK_Session_GameDate" Association="Self.FK_Session_GameDate">
             <End Role="GameDate" EntitySet="GameDate" />
             <End Role="Session" EntitySet="Session" />
@@ -1882,6 +1899,10 @@
           <AssociationSet Name="FK_Arc_StartDate" Association="WarhammerModel.FK_Arc_StartDate">
             <End Role="GameDate" EntitySet="GameDates" />
             <End Role="Arc" EntitySet="Pages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Session_Arc" Association="WarhammerModel.FK_Session_Arc">
+            <End Role="Arc" EntitySet="Pages" />
+            <End Role="Session" EntitySet="Pages" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
@@ -2851,6 +2872,8 @@
           <Property Name="GmId" Type="Int32" />
           <Property Name="GameDateId" Type="Int32" />
           <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Session_GameDate" FromRole="Session" ToRole="GameDate" />
+          <Property Name="ArcId" Type="Int32" />
+          <NavigationProperty Name="Arc" Relationship="WarhammerModel.FK_Session_Arc" FromRole="Session" ToRole="Arc" />
         </EntityType>
         <Association Name="FK_PostOrder_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -3129,6 +3152,7 @@
           <Property Name="StartDateId" Type="Int32" />
           <NavigationProperty Name="CurrentGameDate" Relationship="WarhammerModel.FK_Arc_CurrentDate" FromRole="Arc" ToRole="GameDate" />
           <NavigationProperty Name="StartGameDate" Relationship="WarhammerModel.FK_Arc_StartDate" FromRole="Arc" ToRole="GameDate" />
+          <NavigationProperty Name="Sessions" Relationship="WarhammerModel.FK_Session_Arc" FromRole="Arc" ToRole="Session" />
         </EntityType>
         <Association Name="FK_Arc_CurrentDate">
           <End Type="WarhammerModel.GameDate" Role="GameDate" Multiplicity="0..1" />
@@ -3153,6 +3177,18 @@
             </Principal>
             <Dependent Role="Arc">
               <PropertyRef Name="StartDateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Session_Arc">
+          <End Type="WarhammerModel.Arc" Role="Arc" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Arc">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="ArcId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3281,6 +3317,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Session)">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="ArcId" ColumnName="ArcId" />
                 <ScalarProperty Name="GameDateId" ColumnName="GameDateId" />
                 <ScalarProperty Name="GmId" ColumnName="GmId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

@@ -111,6 +111,7 @@
         <AssociationConnector Association="WarhammerModel.FK_Arc_CurrentDate" />
         <AssociationConnector Association="WarhammerModel.FK_Arc_StartDate" />
         <InheritanceConnector EntityType="WarhammerModel.Arc" />
+        <AssociationConnector Association="WarhammerModel.FK_Session_Arc" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

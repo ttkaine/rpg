@@ -14,10 +14,16 @@ namespace Warhammer.Core.Entities
     
     public partial class Arc : Page
     {
+        public Arc()
+        {
+            this.Sessions = new HashSet<Session>();
+        }
+    
         public Nullable<int> CurrentDateId { get; set; }
         public Nullable<int> StartDateId { get; set; }
     
         public virtual GameDate CurrentGameDate { get; set; }
         public virtual GameDate StartGameDate { get; set; }
+        public virtual ICollection<Session> Sessions { get; set; }
     }
 }
