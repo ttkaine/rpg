@@ -59,7 +59,7 @@ namespace Warhammer.Mvc.Controllers
                     page.PlayerIsGm = CurrentPlayerIsGm;
                     if (DataProvider.SiteHasFeature(Feature.GmNotes))
                     {
-                        page.ShowGmNotes = CurrentPlayerIsGm;
+                        page.ShowGmNotes = CurrentPlayerIsGm && page.CampaignId == DataProvider.CurrentCampaignId;
                     }
                     return View(page);
                 }

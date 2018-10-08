@@ -288,7 +288,8 @@ namespace Warhammer.Core.Concrete
                         {
                             PageId = existingPage.Id,
                             Data = existingPage.ImageData,
-                            IsPrimary = true
+                            IsPrimary = true,
+                            CampaignId = existingPage.CampaignId
                         };
 
                         _repository.Save(image);
@@ -308,7 +309,7 @@ namespace Warhammer.Core.Concrete
             string pageText = existingPage.RawText.ToLower();
 
             List<Page> pages =
-                _repository.Pages()
+                _repository.Pages().Where(c => c.CampaignId == existingPage.CampaignId)
                     .Where(p => !(p is Session) && !(p is SessionLog) && (p.Id != existingPage.Id))
                     .ToList();
 
@@ -329,7 +330,7 @@ namespace Warhammer.Core.Concrete
                 {
                     isFound = true;
                 }
-                if (pageText.Contains(string.Format("[[{0}]]", page.ShortName.ToLower())))
+                if (pageText.Contains(string.Format("{0}]]", page.ShortName.ToLower())))
                 {
                     isFound = true;
                 }
