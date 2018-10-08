@@ -6,8 +6,11 @@
     </div>
     <div class="panel-body">
         @Html.TextAreaFor(m => Model.Description, new { @class = "form-control", placeholder = "Description..." })
-        <p>Upkeep (in pennies):</p>
-        @Html.EditorFor(m => m.Upkeep, new { @class = "form-control", placeholder = "Upkeep" })
+        @if (Model.ShowUpkeep)
+        {
+            <p>Upkeep (in pennies):</p>
+            @Html.EditorFor(m => m.Upkeep, new {@class = "form-control", placeholder = "Upkeep"})
+        }
     </div>
 
     @Html.HiddenFor(m => Model.Id)

@@ -22,10 +22,13 @@
                     <div class="panel-body">
                         @Html.TextAreaFor(m => Model.AddAssetDescription, new { @class = "form-control", placeholder = "Description..." })
                     </div>
-                    <div class="panel-footer">
-                        <p>Upkeep in pennies (if any)</p>
-                        @Html.EditorFor(m => m.AddAssetUpkeep, new { @class = "form-control", placeholder = "Upkeep" })
-                    </div>
+                    @if (Model.ShowUpkeep)
+                    {
+                        <div class="panel-footer">
+                            <p>Upkeep in pennies (if any)</p>
+                            @Html.EditorFor(m => m.AddAssetUpkeep, new {@class = "form-control", placeholder = "Upkeep"})
+                        </div>
+                    }
                     <input type="submit" value="+ Add" class="btn btn-block btn-success" />
                 </div>
             </div>

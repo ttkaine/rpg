@@ -487,6 +487,13 @@ namespace Warhammer.Mvc.Concrete
             model.PersonId = person.Id;
             model.Assets = person.Assets.ToList();
             model.AllowEdit = _data.CurrentPlayerIsGm || CurrentPlayer.Id == person.PlayerId;
+
+            model.ShowUpkeep = _data.SiteHasFeature(Feature.WarhammerMoney);
+            foreach (Asset asset in model.Assets)
+            {
+                asset.ShowUpkeep = model.ShowUpkeep;
+            }
+
             return model;
         }
 

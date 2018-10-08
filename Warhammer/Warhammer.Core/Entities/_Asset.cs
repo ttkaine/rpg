@@ -6,5 +6,6 @@ namespace Warhammer.Core.Entities
     {
         public bool Delete { get; set; }
         public string UpkeepDisplay => CurrencyHelper.DisplayString(Upkeep);
+        public bool ShowUpkeep { get; set; }
     }
 }
