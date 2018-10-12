@@ -2962,6 +2962,17 @@ namespace Warhammer.Core.Concrete
                 ShortName = p.ShortName
             }).Take(10).ToList());
 
+            suggestedPageLinks.AddRange(_repository.People()
+                .OrderByDescending(p => p.Created)
+                .Where(p => !p.IsDead)
+                .Select(p => new PageToggleModel
+                {
+                    FullName = p.FullName,
+                    PageId = p.Id,
+                    Selected = false,
+                    ShortName = p.ShortName
+                }).Take(5).ToList());
+
             List<Session> lastThreeSessions = _repository.Pages().OfType<Session>().OrderByDescending(s => s.DateTime).Take(3).ToList();
 
             foreach (Session session in lastThreeSessions)
