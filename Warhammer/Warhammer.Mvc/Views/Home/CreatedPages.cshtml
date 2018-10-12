@@ -4,7 +4,7 @@
 {
     <div class="alert alert-success">
         <h3>New Pages</h3>
-        if (Model.Count() > 5)
+        @if (Model.Count() > 5)
         {
         @Html.ActionLink("Mark All as Seen", "MarkAllRead")
         }
