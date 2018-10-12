@@ -80,5 +80,7 @@ namespace Warhammer.Core.Abstract
         int CurrentCampaignId { get; }
         bool IsMasterDomain { get; }
         List<CampaignDetail> AllMyCampaigns();
+        IQueryable<BookPage> BookPages();
+        int Delete(BookPage bookPage);
     }
 }

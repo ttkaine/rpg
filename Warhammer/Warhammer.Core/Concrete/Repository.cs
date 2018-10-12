@@ -35,6 +35,26 @@ namespace Warhammer.Core.Concrete
             return _entities.CampaignDetails.Where(c => myCampagins.Contains(c.CampaignId)).ToList();
         }
 
+        public IQueryable<BookPage> BookPages()
+        {
+            return _entities.BookPages;
+        }
+
+        public int Delete(BookPage bookPage)
+        {
+            if (bookPage.Id == 0)
+            {
+                _entities.BookPages.Add(bookPage);
+            }
+            else
+            {
+                _entities.Entry(bookPage).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return bookPage.Id;
+        }
+
         public IQueryable<ChangeLog> ChangeLogs()
         {
             return _entities.ChangeLogs;

@@ -627,6 +627,14 @@ namespace Warhammer.Core.Concrete
                 {
                     RemoveLink(page.Id, relatedPage.Id);
                 }
+                foreach (Page relatedPage in page.Pages)
+                {
+                    RemoveLink(page.Id, relatedPage.Id);
+                }
+                foreach (BookPage bookPage in page.BookPages)
+                {
+                    RemoveBookPage(bookPage.Id);
+                }
                 List<PageView> views = page.PageViews.ToList();
                 foreach (PageView pageView in views)
                 {
@@ -656,6 +664,12 @@ namespace Warhammer.Core.Concrete
 
                 _repository.Delete(page);
             }
+        }
+
+        private void RemoveBookPage(int bookPageId)
+        {
+            BookPage bookPage = _repository.BookPages().FirstOrDefault(p => p.Id == bookPageId);
+            _repository.Delete(bookPage);
         }
 
         private void DeletePageView(int id)
