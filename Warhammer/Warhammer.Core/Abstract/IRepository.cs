@@ -84,3 +84,4 @@ namespace Warhammer.Core.Abstract
         int Delete(BookPage bookPage);
     }
 }
+

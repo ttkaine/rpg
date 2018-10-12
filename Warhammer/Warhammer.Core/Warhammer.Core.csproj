@@ -378,6 +378,7 @@
     <Compile Include="Models\PageLinkModel.cs" />
     <Compile Include="Models\PageLinkWithUpdateDateModel.cs" />
     <Compile Include="Models\PageListItemModel.cs" />
+    <Compile Include="Models\PageToggleModel.cs" />
     <Compile Include="Models\PersonAttributeAdvanceModel.cs" />
     <Compile Include="Models\RandomItemResult.cs" />
     <Compile Include="Models\Reports\ChartDataItem.cs" />

@@ -1,0 +1,16 @@
+﻿@model Warhammer.Core.Models.PageToggleModel
+
+<tr>
+    <td>
+        @Html.Action("PageImage", "Page", new { id = Model.PageId })
+    </td>
+    <td>
+        @Model.FullName
+        @if (Model.ShortName != Model.FullName)
+        {<span class="note">(@Model.ShortName)</span>}
+        @Html.HiddenFor(m => m.PageId)
+    </td>
+    <td>
+        @Html.CheckBoxFor(m => Model.Selected, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_offstyle = "default", data_onstyle = "success"})
+    </td>
+</tr>

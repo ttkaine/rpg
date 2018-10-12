@@ -263,6 +263,7 @@
     <Compile Include="Models\CreateOrganisationViewModel.cs" />
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
+    <Compile Include="Models\CreateSessionViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
     <Compile Include="Models\EditTrophyViewModel.cs" />
     <Compile Include="Models\ExternalLinkModel.cs" />
@@ -777,6 +778,7 @@
     <Content Include="Views\Home\SiteSelector.cshtml" />
     <Content Include="Views\Page\GetShowLocalButton.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ExternalLinkModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PageToggleModel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

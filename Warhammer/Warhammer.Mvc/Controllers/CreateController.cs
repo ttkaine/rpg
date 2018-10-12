@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NUnit.Framework;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
@@ -105,25 +107,31 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult GameSession()
         {
-            Session session = new Session {};
-            return View(session);
+            List<PageToggleModel> suggestedPageLinks = DataProvider.GetSuggestedPageLinksForNewSession();
+            CreateSessionViewModel model = new CreateSessionViewModel
+            {
+                Session = new Session(),
+                LinkPages = suggestedPageLinks
+            };
+            
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult GameSession(Session session)
+        public ActionResult GameSession(CreateSessionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                if (!session.DateTime.HasValue)
+                if (!model.Session.DateTime.HasValue)
                 {
-                    session.DateTime = DateTime.Now;
+                    model.Session.DateTime = DateTime.Now;
                 }
-                int sessionId = DataProvider.AddSession(session.FullName, session.ShortName, session.Description,
-                    session.DateTime.Value, session.CreateWithPreviousCharacterList);
+                int sessionId = DataProvider.AddSession(model.Session.FullName, model.Session.ShortName, model.Session.Description,
+                    model.Session.DateTime.Value, model.Session.CreateWithPreviousCharacterList, model.LinkPages);
                 return RedirectToAction("Index", "Page", new { id = sessionId });
             }
 
-            return View(session);
+            return View(model);
         }
 
         public ActionResult SessionLog(int? personid, int? sessionId)

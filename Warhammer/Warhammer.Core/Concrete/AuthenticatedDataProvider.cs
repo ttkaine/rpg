@@ -167,7 +167,8 @@ namespace Warhammer.Core.Concrete
             return Save(session);
         }
 
-        public int AddSession(string title, string name, string description, DateTime date, bool sessionCreateWithPreviousCharacterList)
+        public int AddSession(string title, string name, string description, DateTime date,
+            bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages)
         {
             Session session = new Session
             {
@@ -181,15 +182,7 @@ namespace Warhammer.Core.Concrete
 
             if (sessionCreateWithPreviousCharacterList)
             {
-
-                previousSession =
-                    _repository.Pages()
-                        .OfType<Session>()
-                        .OrderByDescending(s => s.DateTime)
-                        .FirstOrDefault(s => s.IsTextSession == false) ?? _repository.Pages()
-                            .OfType<Session>()
-                            .OrderByDescending(s => s.DateTime)
-                            .FirstOrDefault();
+                previousSession = GetMostRecentSession();
             }
 
             int id = Save(session);
@@ -201,7 +194,27 @@ namespace Warhammer.Core.Concrete
                     AddLink(person.Id, id);
                 }
             }
+
+            foreach (PageToggleModel linkPage in modelLinkPages.Where(s => s.Selected))
+            {
+                AddLink(linkPage.PageId, id);
+            }
+
             return id;
+        }
+
+        private Session GetMostRecentSession()
+        {
+            Session previousSession;
+            previousSession =
+                _repository.Pages()
+                    .OfType<Session>()
+                    .OrderByDescending(s => s.DateTime)
+                    .FirstOrDefault(s => s.IsTextSession == false) ?? _repository.Pages()
+                    .OfType<Session>()
+                    .OrderByDescending(s => s.DateTime)
+                    .FirstOrDefault();
+            return previousSession;
         }
 
         public int GetGmId(int sessionId)
@@ -2924,6 +2937,69 @@ namespace Warhammer.Core.Concrete
         {
             List<CampaignDetail> allMyCampagins = _repository.AllMyCampaigns();
             return allMyCampagins;
+        }
+
+        public List<PageToggleModel> GetSuggestedPageLinksForNewSession()
+        {
+            List<PageToggleModel> suggestedPageLinks = new List<PageToggleModel>();
+
+            suggestedPageLinks.AddRange(_repository.People().Where(p => p.PlayerId.HasValue && !p.IsDead).Select(p => new PageToggleModel
+            {
+                FullName = p.FullName,
+                PageId = p.Id,
+                Selected = false,
+                ShortName = p.ShortName
+            }).ToList());
+
+            suggestedPageLinks.AddRange(_repository.People()
+                .OrderByDescending(p=> p.CurrentScore)
+                .Where(p => !p.PlayerId.HasValue && !p.IsDead)
+                .Select(p => new PageToggleModel
+            {
+                FullName = p.FullName,
+                PageId = p.Id,
+                Selected = false,
+                ShortName = p.ShortName
+            }).Take(10).ToList());
+
+            List<Session> lastThreeSessions = _repository.Pages().OfType<Session>().OrderByDescending(s => s.DateTime).Take(3).ToList();
+
+            foreach (Session session in lastThreeSessions)
+            {
+                suggestedPageLinks.AddRange(session.People
+                    .Where(p => !p.IsDead)
+                    .Select(p => new PageToggleModel
+                    {
+                        FullName = p.FullName,
+                        PageId = p.Id,
+                        Selected = false,
+                        ShortName = p.ShortName
+                    }).Take(10).ToList());
+            }
+
+            List<int> distinctIds = suggestedPageLinks.Select(s => s.PageId).Distinct().ToList();
+
+            var uniquePageLinks = new List<PageToggleModel>();
+
+            foreach (int id in distinctIds)
+            {
+                uniquePageLinks.Add(suggestedPageLinks.First(p => p.PageId == id));   
+            }
+
+            Session lastSession = GetMostRecentSession();
+
+            foreach (Person person in lastSession.People)
+            {
+                foreach (PageToggleModel pageLink in uniquePageLinks)
+                {
+                    if (pageLink.PageId == person.Id)
+                    {
+                        pageLink.Selected = true;
+                    }
+                }
+            }
+
+            return uniquePageLinks.OrderBy(s => s.FullName).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)
