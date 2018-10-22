@@ -260,6 +260,7 @@
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
     <Compile Include="Models\ChangePersonPlayerViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
+    <Compile Include="Models\CreateArcViewModel.cs" />
     <Compile Include="Models\CreateOrganisationViewModel.cs" />
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
@@ -780,6 +781,7 @@
     <Content Include="Views\Page\GetShowLocalButton.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ExternalLinkModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PageToggleModel.cshtml" />
+    <Content Include="Views\Create\Arc.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

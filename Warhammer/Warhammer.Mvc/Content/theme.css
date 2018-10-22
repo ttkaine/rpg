@@ -7333,3 +7333,7 @@ img.AttributeStar {
   position: absolute;
   width: 100%;
 }
+textarea {
+  width: 100%;
+  min-height: 100px;
+}

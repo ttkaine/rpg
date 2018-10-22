@@ -18,6 +18,7 @@ namespace Warhammer.Core.Abstract
             bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages);
         int GetGmId(int sessionId);
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc, Gender personGender);
+        int AddArc(string shortName, string longName, string description, GameDate startDate);
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
         Page GetPage(int id, bool asNoTracking = false);

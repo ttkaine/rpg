@@ -245,6 +245,20 @@ namespace Warhammer.Core.Concrete
             return pageId;
         }
 
+        public int AddArc(string shortName, string longName, string description, GameDate startDate)
+        {
+            Arc arc = new Arc()
+            {
+                ShortName = shortName,
+                FullName = longName,
+                Description = description,
+                StartGameDate = new GameDate() { Year = startDate.Year, Month = startDate.Month, Day = startDate.Day, Comment = startDate.Comment },
+                CurrentGameDate = new GameDate() { Year = startDate.Year, Month = startDate.Month, Day = startDate.Day, Comment = startDate.Comment }
+            };
+            int arcId = Save(arc);
+            return arcId;
+        }
+
 
         public void ChangePicture(int id, byte[] data, string mimeType)
         {

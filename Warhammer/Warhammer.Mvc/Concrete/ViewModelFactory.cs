@@ -293,6 +293,12 @@ namespace Warhammer.Mvc.Concrete
 
             menu.Add(new MenuItemViewModel
             {
+                Name = "New Arc",
+                Url = _urlHelper.Action("Arc", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
                 Name = "New Session",
                 Url = _urlHelper.Action("GameSession", "Create")
             });

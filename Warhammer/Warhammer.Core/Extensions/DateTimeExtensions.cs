@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Warhammer.Core.Entities;
 
 namespace Warhammer.Core.Extensions
 {
@@ -50,6 +52,31 @@ namespace Warhammer.Core.Extensions
             return $"{ordinal} {day} of {month} in the Imperial year of Sigmar {year}";
         }
 
+        public static GameDate ToWarhammerGameDate(this string date)
+        {
+            string[] dateParts = date.Split(new string[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
+            if (dateParts.Length == 3 && dateParts[0].Length == 4 && dateParts[1].Length == 2 && dateParts[2].Length == 2)
+            {
+                int year;
+                int month;
+                int day;
+                if (!int.TryParse(dateParts[0], out year))
+                {
+                    return null;
+                }
+                if (!int.TryParse(dateParts[1], out month))
+                {
+                    return null;
+                }
+                if (!int.TryParse(dateParts[2], out day))
+                {
+                    return null;
+                }
+
+                return new GameDate() {Year = year, Month = month, Day = day};
+            }
+            return null;
+        }
 
         public static string NumberToWords(int number)
         {

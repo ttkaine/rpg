@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using NUnit.Framework;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
@@ -215,5 +216,32 @@ namespace Warhammer.Mvc.Controllers
             return View(model);
         }
 
+        public ActionResult Arc()
+        {
+            CreateArcViewModel model = new CreateArcViewModel();
+            model.Arc = new Arc();
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Arc(CreateArcViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                GameDate startDate = model.StartDate?.ToWarhammerGameDate();
+                if (startDate == null)
+                {
+                    CampaignDetail campaignDetail = DataProvider.GetCampaginDetails();
+                    DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
+                    startDate = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date"};
+                }
+
+                int arcId = DataProvider.AddArc(model.Arc.ShortName, model.Arc.FullName, model.Arc.Description, startDate);
+                return RedirectToAction("Index", "Page", new { id = arcId });
+            }
+
+            return View(model);
+        }
     }
 }
