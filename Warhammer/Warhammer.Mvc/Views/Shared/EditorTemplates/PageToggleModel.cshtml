@@ -1,9 +1,12 @@
 ﻿@model Warhammer.Core.Models.PageToggleModel
 
 <tr>
-    <td>
-        @Html.Action("PageImage", "Page", new { id = Model.PageId })
-    </td>
+    @if (Model.ShowImage)
+    {
+        <td>
+            @Html.Action("PageImage", "Page", new {id = Model.PageId})
+        </td>
+    }
     <td>
         @Model.FullName
         @if (Model.ShortName != Model.FullName)
