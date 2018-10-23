@@ -8,5 +8,6 @@ namespace Warhammer.Mvc.Models
         public bool CanEdit { get; set; }
         public bool CanEditGlobal { get; set; }
         public Trophy Trophy { get; set; }
+        public bool CanSetType { get; set; }
     }
 }

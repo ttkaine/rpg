@@ -583,6 +583,7 @@ namespace Warhammer.Mvc.Concrete
             model.CurrentCampaignOnly = trophy.CurrentCampaignOnly;
             model.CanEdit = playerIsAdmin || (playerIsGm && trophy.CurrentCampaignOnly);
             model.CanEditGlobal = playerIsAdmin;
+            model.CanSetType = playerIsAdmin;
             return model;
         }
 
