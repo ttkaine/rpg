@@ -1160,14 +1160,20 @@ namespace Warhammer.Mvc.Controllers
 
                 if(person != null)
                 {
-                    List<Trophy> trophies = DataProvider.Trophies().Where(t => t.TrophyType == TrophyType.DefaultAward).ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(id);
-                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+                    var model = GetTrophyNominationViewModel(person);
 
                     return PartialView(model);
                 }
             }
             return null;
+        }
+
+        private TrophyNominationViewModel GetTrophyNominationViewModel(Person person)
+        {
+            List<SelectItem> trophies = DataProvider.TrophiesForSelect().ToList();
+            List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(person.Id);
+            TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+            return model;
         }
 
         [HttpPost]
@@ -1181,9 +1187,7 @@ namespace Warhammer.Mvc.Controllers
 
                 if (person != null)
                 {
-                    List<Trophy> trophies = DataProvider.Trophies().ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(personId);
-                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+                    var model = GetTrophyNominationViewModel(person);
 
                     return PartialView("AwardNominationPanel", model);
                 }
@@ -1202,9 +1206,7 @@ namespace Warhammer.Mvc.Controllers
 
                 if (person != null)
                 {
-                    List<Trophy> trophies = DataProvider.Trophies().ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(personId);
-                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+                    var model = GetTrophyNominationViewModel(person);
 
                     return PartialView("AwardNominationPanel", model);
                 }
@@ -1223,9 +1225,7 @@ namespace Warhammer.Mvc.Controllers
 
                 if (person != null)
                 {
-                    List<Trophy> trophies = DataProvider.Trophies().ToList();
-                    List<AwardNomination> nominations = DataProvider.OutstandingPublicNominationsForPerson(personId);
-                    TrophyNominationViewModel model = _factory.MakeTrophyNominationViewModel(person, trophies, nominations);
+                    var model = GetTrophyNominationViewModel(person);
                     ModelState.Clear();
                     return PartialView("AwardNominationPanel", model);
                 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Abstract
@@ -19,6 +20,6 @@ namespace Warhammer.Mvc.Abstract
         EditTrophyViewModel Make(Trophy trophy, bool playerIsGm, bool playerIsAdmin);
         TrophyCabinetViewModel Make(List<Trophy> trophies, bool currentPlayerIsGm, bool playerIsAdmin);
         NpcSheetViewModel MakeNpcSheetViewModel(Person npc);
-        TrophyNominationViewModel MakeTrophyNominationViewModel(Person person, List<Trophy> trophies, List<AwardNomination> nominations);
+        TrophyNominationViewModel MakeTrophyNominationViewModel(Person person, List<SelectItem> trophies, List<AwardNomination> nominations);
     }
 }

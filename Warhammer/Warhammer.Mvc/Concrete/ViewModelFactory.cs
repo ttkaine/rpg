@@ -642,11 +642,18 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
-        public TrophyNominationViewModel MakeTrophyNominationViewModel(Person person, List<Trophy> trophies, List<AwardNomination> nominations)
+        public TrophyNominationViewModel MakeTrophyNominationViewModel(Person person, List<SelectItem> trophies, List<AwardNomination> nominations)
         {
+            foreach (SelectItem trophy in trophies)
+            {
+                if (trophy.Name.StartsWith("The "))
+                {
+                    trophy.Name = trophy.Name.Substring(4, trophy.Name.Length - 4);
+                }
+            }
             TrophyNominationViewModel model = new TrophyNominationViewModel();
             model.PersonId = person.Id;
-            model.Trophies = new SelectList(trophies.OrderBy(t => t.QuickName), "Id", "QuickName");
+            model.Trophies = new SelectList(trophies.OrderBy(t => t.Name), "Id", "Name");
             model.CanSetAnNemesis = person.IsNpc && person.Awards.All(a => !(a.Trophy.TypeId == (int) TrophyType.NemesisAward && a.NominatedById == CurrentPlayer.Id));
             model.CanSetAsFavourite = person.IsNpc && person.Awards.All(a => !(a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc && a.NominatedById == CurrentPlayer.Id));
             model.ExistingNominations = nominations;

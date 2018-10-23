@@ -49,6 +49,7 @@ namespace Warhammer.Core.Abstract
         void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
         void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly);
         ICollection<Trophy> Trophies();
+        List<SelectItem> TrophiesForSelect();
         int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null);
         void RemoveAward(int personId, int awardId);
         PageLinkModel PersonWithMyAward(TrophyType awardType);
@@ -207,5 +208,6 @@ namespace Warhammer.Core.Abstract
         CampaignDetail GetCampaginDetailsForPage(int id);
         List<CampaignDetail> GetPermittedCampaigns();
         List<PageToggleModel> GetSuggestedPageLinksForNewSession();
+
     }
 }

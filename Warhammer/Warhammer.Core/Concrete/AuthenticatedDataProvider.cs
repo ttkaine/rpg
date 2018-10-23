@@ -908,6 +908,13 @@ namespace Warhammer.Core.Concrete
                 .ThenBy(t => t.Name).ToList();
         }
 
+        public List<SelectItem> TrophiesForSelect()
+        {
+            return _repository.Trophies(SiteHasFeature(Feature.HideGlobalAwards))
+                .Where(t => t.TypeId == (int)TrophyType.DefaultAward)
+                .OrderBy(t => t.Name).Select(t => new SelectItem{ Id = t.Id, Name = t.Name }).ToList();
+        }
+
         public int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null)
         {
             Award award = new Award
