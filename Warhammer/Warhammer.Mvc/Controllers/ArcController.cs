@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
 {
@@ -20,6 +21,19 @@ namespace Warhammer.Mvc.Controllers
             if (arc != null)
             {
                 return PartialView(arc);
+            }
+            return null;
+        }
+
+        public ActionResult ArcSessions(int id)
+        {
+            Arc arc = DataProvider.GetArc(id);
+            if (arc != null)
+            {
+                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);
+                model.CanEdit = IsEditMode && (CurrentPlayer?.PlayerCampaigns.Any(c => c.Id == arc.CampaignId) ?? false);
+
+                return PartialView(model);
             }
             return null;
         }

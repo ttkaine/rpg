@@ -667,6 +667,15 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public ArcSessionsViewModel MakeArcSessionsViewModel(Arc arc)
+        {
+            ArcSessionsViewModel model = new ArcSessionsViewModel()
+            {
+                Sessions = arc.Sessions.OrderBy(s => (s.DateTime ?? DateTime.MinValue)).ToList()
+            };
+            return model;
+        }
+
         private string GetSettingTitle(SettingSection section)
         {
             switch (section)

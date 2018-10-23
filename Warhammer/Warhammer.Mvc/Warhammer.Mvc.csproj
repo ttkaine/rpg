@@ -259,6 +259,7 @@
     <Compile Include="JsonObjects\JsonResponseWithPostCollection.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
+    <Compile Include="Models\ArcSessionsViewModel.cs" />
     <Compile Include="Models\ChangePersonPlayerViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
     <Compile Include="Models\CreateArcViewModel.cs" />
@@ -784,6 +785,7 @@
     <Content Include="Views\Shared\EditorTemplates\PageToggleModel.cshtml" />
     <Content Include="Views\Create\Arc.cshtml" />
     <Content Include="Views\Arc\GameDateForArc.cshtml" />
+    <Content Include="Views\Arc\ArcSessions.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

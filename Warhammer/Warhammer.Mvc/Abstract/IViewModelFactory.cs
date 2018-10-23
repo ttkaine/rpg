@@ -21,5 +21,6 @@ namespace Warhammer.Mvc.Abstract
         TrophyCabinetViewModel Make(List<Trophy> trophies, bool currentPlayerIsGm, bool playerIsAdmin);
         NpcSheetViewModel MakeNpcSheetViewModel(Person npc);
         TrophyNominationViewModel MakeTrophyNominationViewModel(Person person, List<SelectItem> trophies, List<AwardNomination> nominations);
+        ArcSessionsViewModel MakeArcSessionsViewModel(Arc arc);
     }
 }
