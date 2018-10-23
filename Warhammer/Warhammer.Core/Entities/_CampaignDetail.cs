@@ -2,6 +2,14 @@
 
 namespace Warhammer.Core.Entities
 {
+    public enum SiteTheme
+    {
+        Default,
+        Dark,
+        LightGlass,
+        DarkGlass
+    }
+
     public partial class CampaignDetail
     {
         public List<Player> AvailableGms { get; set; }

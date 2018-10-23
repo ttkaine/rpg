@@ -30,6 +30,7 @@ namespace Warhammer.Core.Entities
         public byte[] IconImage { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Nullable<int> ThemeId { get; set; }
     
         public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
     }
