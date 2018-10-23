@@ -55,6 +55,12 @@ namespace Warhammer.Core.Concrete
             return bookPage.Id;
         }
 
+        public IQueryable<Arc> Arcs()
+        {
+            return _entities.Pages.OfType<Arc>();
+        }
+
+
         public IQueryable<ChangeLog> ChangeLogs()
         {
             return _entities.ChangeLogs;

@@ -209,6 +209,6 @@ namespace Warhammer.Core.Abstract
         CampaignDetail GetCampaginDetailsForPage(int id);
         List<CampaignDetail> GetPermittedCampaigns();
         List<PageToggleModel> GetSuggestedPageLinksForNewSession();
-
+        Arc GetArc(int id);
     }
 }

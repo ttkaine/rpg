@@ -3035,6 +3035,11 @@ namespace Warhammer.Core.Concrete
             return uniquePageLinks.OrderBy(s => s.FullName).ToList();
         }
 
+        public Arc GetArc(int id)
+        {
+            return _repository.Arcs().FirstOrDefault(a => a.Id == id);
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

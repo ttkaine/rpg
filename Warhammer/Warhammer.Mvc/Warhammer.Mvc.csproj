@@ -224,6 +224,7 @@
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminPageControlsController.cs" />
+    <Compile Include="Controllers\ArcController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
@@ -782,6 +783,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ExternalLinkModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PageToggleModel.cshtml" />
     <Content Include="Views\Create\Arc.cshtml" />
+    <Content Include="Views\Arc\GameDateForArc.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

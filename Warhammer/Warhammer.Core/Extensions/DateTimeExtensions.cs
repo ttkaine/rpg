@@ -81,7 +81,7 @@ namespace Warhammer.Core.Extensions
             {
                 date.Month = 12;
             }
-            string monthName = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[date.Month];
+            string monthName = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[date.Month - 1];
             string dayName = CultureInfo.CurrentCulture.DateTimeFormat.DayNames[date.DayOfWeek()];
             
             if (date.Year > 0)
