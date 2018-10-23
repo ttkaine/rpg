@@ -96,13 +96,15 @@ namespace Warhammer.Core.Extensions
 
         public static int DayOfWeek(this GameDate date)
         {
-            int rem;
-            Math.DivRem(date.Year, 4, out rem);
-            int dayOfYear = (date.Month - 1)*31;
+            int years = (date.Year < 0 ? -date.Year : date.Year) - 1;
+            int leapYearRem;
+            Math.DivRem(date.Year < 0 ? -date.Year : date.Year, 4, out leapYearRem);
+
+            int dayOfYear = ((date.Month - 1)*31) + (date.Day - 1);
             if (date.Month > 2)
             {
                 dayOfYear -= 2;
-                if (rem > 0)
+                if (leapYearRem != 0)
                 {
                     dayOfYear--;
                 }
@@ -122,17 +124,21 @@ namespace Warhammer.Core.Extensions
             if (date.Month > 11)
             {
                 dayOfYear--;
-            }
-            int years = date.Year < 0 ? -date.Year + 1 : date.Year - 1;
-            int totalDays = (years*365) + (years / 4) + dayOfYear + date.Day;
-
-            if (date.Year < 1)
+            }            
+            if (date.Year < 0)
             {
-                totalDays += 3;
+                dayOfYear = (leapYearRem == 0 ? 365 - dayOfYear : 364 - dayOfYear);
             }
+
+            int totalDays = (years*365) + (years / 4) + dayOfYear;
 
             int dayOfWeek;
             Math.DivRem(totalDays, 7, out dayOfWeek);
+
+            if (date.Year < 1)
+            {
+                dayOfWeek = 6 - dayOfWeek;
+            }
 
             return dayOfWeek;
         }

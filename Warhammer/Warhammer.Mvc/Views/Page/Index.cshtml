@@ -9,12 +9,12 @@
 
 <div class="content-wrapper">
 
-    @Html.Action("Stats", "Fate", new {id = Model.Id})
+    @Html.Action("Stats", "Fate", new { id = Model.Id })
     @Html.Action("TopStats", "Crow", new { id = Model.Id })
 
     @using (Html.BeginForm("Index", "Page", FormMethod.Post, new { id = "mainpageform" }))
     {
-        <input type="submit" style="display: none" id="hiddenPageSubmit"/>
+        <input type="submit" style="display: none" id="hiddenPageSubmit" />
         @Html.HiddenFor(m => m.Id)
         <div class="banner-content">
             <div class="header-block">
@@ -22,7 +22,7 @@
                 {
                     Person person = Model as Person;
                     if (person.HeroLevel > 0)
-                    {           
+                    {
                         @Html.Partial("_LevelStars", person.HeroLevel)
                     }
                 }
@@ -100,23 +100,23 @@
         {
             <div class="content-block">
                 <div id="saveControls" style="display: none">
-                    <input id="page-save" type="button" name="saveAction" class="btn btn-success" value="Save"/>
-                    @Html.ActionLink("Cancel", "Index", "Page", new {id = Model.Id}, new {@class = "btn btn-danger"})
+                    <input id="page-save" type="button" name="saveAction" class="btn btn-success" value="Save" />
+                    @Html.ActionLink("Cancel", "Index", "Page", new { id = Model.Id }, new { @class = "btn btn-danger" })
                 </div>
-            
+
                 @Html.Action("Index", "PageControls", new { id = Model.Id })
             </div>
         }
-    
-    
+
+
         @Html.Action("AttributesPanel", "Person", new { id = Model.Id })
 
-        @Html.Action("Aspects", "Fate", new {id = Model.Id})
-        @Html.Action("Stunts", "Fate", new {id = Model.Id})
+        @Html.Action("Aspects", "Fate", new { id = Model.Id })
+        @Html.Action("Stunts", "Fate", new { id = Model.Id })
         @Html.Action("AwardNominationPanel", "Person", new { id = Model.Id })
         @if (!ViewBag.EditMode)
         {
-            @Html.Action("AwardHistory", "Person", new {id = Model.Id})
+            @Html.Action("AwardHistory", "Person", new { id = Model.Id })
         }
 
 
@@ -128,7 +128,7 @@
                 @Html.Action("DetailsPanel", "Person", new { id = Model.Id })
                 @Html.Action("AssetsPanel", "Person", new { id = Model.Id })
                 Person person = Model as Person;
-                @Html.Action("ViewStats", "Person", new {personId = person.Id})
+                @Html.Action("ViewStats", "Person", new { personId = person.Id })
                 if (User.IsInRole("Admin"))
                 {
                     <h1>Points Value: @person.PointsValue</h1>
@@ -140,7 +140,7 @@
                     <ul>
                         @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
                         {
-                            <li>@Html.ActionLink(log.ShortName, "Index", new {id = log.Id})</li>
+                            <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
                         }
                     </ul>
                     <div class="clearfix"></div>
@@ -152,8 +152,8 @@
                 SessionLog log = Model as SessionLog;
                 <ul>
                     <li>
-                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image"/></a>
-                        @Html.ActionLink(log.Session.FullName, "Index", new {id = log.Session.Id}) (@Html.ActionLink(log.Session.ShortName, "Index", new {id = log.Session.Id}))
+                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
+                        @Html.ActionLink(log.Session.FullName, "Index", new { id = log.Session.Id }) (@Html.ActionLink(log.Session.ShortName, "Index", new { id = log.Session.Id }))
 
                     </li>
                 </ul>
@@ -166,7 +166,7 @@
 
                 if (ViewBag.ShowTextSessionLink != null && ViewBag.ShowTextSessionLink)
                 {
-                    @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new {id = Model.Id}, new {@class = "btn btn-success btn-block"})
+                    @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
                     @Html.ActionLink("Download Transcript", "TextLog", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
                 }
 
@@ -182,7 +182,7 @@
                         @foreach (Person person in session.PlayerCharacters)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
                             </li>
                         }
                     </ul>
@@ -197,7 +197,7 @@
                         @foreach (Person person in session.Npcs)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
                             </li>
                         }
                     </ul>
@@ -214,9 +214,9 @@
                             <li>
                                 <div class="profile-container">
 
-                                    @Html.ActionLink(log.FullName, "Index", new {id = log.Id})
+                                    @Html.ActionLink(log.FullName, "Index", new { id = log.Id })
                                     by
-                                    @Html.ActionLink(log.Person.FullName, "Index", new {id = log.Person.Id})
+                                    @Html.ActionLink(log.Person.FullName, "Index", new { id = log.Person.Id })
                                 </div>
                             </li>
                         }
@@ -238,7 +238,7 @@
                     <ul>
                         @while (parent != null)
                         {
-                            <li>@Html.ActionLink(parent.FullName, "Index", new {id = parent.Id})</li>
+                            <li>@Html.ActionLink(parent.FullName, "Index", new { id = parent.Id })</li>
                             parent = parent.Parent;
                         }
                     </ul>
@@ -251,13 +251,13 @@
                         @foreach (Place childPlace in place.Child)
                         {
                             <li>
-                                @Html.ActionLink(childPlace.FullName, "Index", new {id = childPlace.Id})
+                                @Html.ActionLink(childPlace.FullName, "Index", new { id = childPlace.Id })
                                 @if (childPlace.Child.Any())
                                 {
                                     <ul>
                                         @foreach (Place grandchildPlace in childPlace.Child)
                                         {
-                                            <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new {id = grandchildPlace.Id})</li>
+                                            <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new { id = grandchildPlace.Id })</li>
                                         }
                                     </ul>
                                 }
@@ -273,7 +273,17 @@
 
             @if (Model is Arc)
             {
-
+                for (int i = 30; i <= 31; i++)
+                {
+                    GameDate date = new GameDate() {Day = i, Month = 12, Year = 195 };
+                    <p>@date.ToWarhammerDateString()</p>
+                }
+                <p><strong>YEAR ZERO</strong></p>
+                for (int i = 1; i <= 5; i++)
+                {
+                    GameDate date = new GameDate() { Day = i, Month = 1, Year = 196 };
+                    <p>@date.ToWarhammerDateString()</p>
+                }
             }
 
             @if (!ViewBag.EditMode)
@@ -281,13 +291,12 @@
                 @Html.Action("RelatedLinks", "Page", new { id = Model.Id })
             }
         </div>
-      
+
         <div class="content-block">
             <h3>Comments</h3>
-            @Html.Action("Index", "Comment", new {id = Model.Id})
+            @Html.Action("Index", "Comment", new { id = Model.Id })
         </div>
     </div>
 
 
 </div>
-
