@@ -96,9 +96,15 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
-        public IQueryable<Trophy> Trophies()
+        public IQueryable<Trophy> Trophies(bool hideGlobal = false)
         {
-            return _entities.Trophies.Where(t => t.CampaignId == null || t.CampaignId == CurrentCampaignId || IsMasterDomain);
+            var query =  _entities.Trophies.Where(t => t.CampaignId == null || t.CampaignId == CurrentCampaignId || IsMasterDomain);
+            if (hideGlobal)
+            {
+                query = query.Where(t => t.CampaignId.HasValue);
+            }
+
+            return query;
         }
 
         public int Save(Trophy trophy)

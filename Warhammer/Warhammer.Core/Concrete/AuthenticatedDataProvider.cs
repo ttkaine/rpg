@@ -820,7 +820,7 @@ namespace Warhammer.Core.Concrete
 
             if (!_authenticatedUser.IsAdmin || currentCampaignOnly)
             {
-                trophy.CampaignId = Campaign.Id;
+                trophy.CampaignId = Campaign.CampaignId;
             }
             else
             {
@@ -902,7 +902,7 @@ namespace Warhammer.Core.Concrete
 
         public ICollection<Trophy> Trophies()
         {
-            return _repository.Trophies()
+            return _repository.Trophies(SiteHasFeature(Feature.HideGlobalAwards))
                 .OrderBy(t => t.TypeId == (int)TrophyType.DefaultAward)
                 .ThenBy(t => t.TypeId).ThenByDescending(t => t.PointsValue)
                 .ThenBy(t => t.Name).ToList();
