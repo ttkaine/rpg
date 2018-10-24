@@ -3201,6 +3201,16 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void SetSiteTheme(SiteTheme theme)
+        {
+            CampaignDetail campaign = _repository.CampaignDetails().FirstOrDefault();
+            if (campaign != null)
+            {
+                campaign.ThemeId = (int)theme;
+                _repository.Save(campaign);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

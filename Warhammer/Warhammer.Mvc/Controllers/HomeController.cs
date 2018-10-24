@@ -470,5 +470,13 @@ namespace Warhammer.Mvc.Controllers
             List<Award> awards = DataProvider.AwardsForTrophy(id);
             return PartialView(awards);
         }
+
+
+        [AllowAnonymous]
+        public ActionResult Css()
+        {
+            SiteTheme theme = _publicData.GetTheme();
+            return PartialView(theme);
+        }
     }
 }

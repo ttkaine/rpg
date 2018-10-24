@@ -1075,7 +1075,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #333333;
+  color: #FAFAFF;
   background-color: #fff;
 }
 input,
@@ -2307,7 +2307,7 @@ th {
   border-bottom-width: 2px;
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
+  background-color: rgba(49, 107, 169, 0.15);
 }
 .table-hover > tbody > tr:hover {
   background-color: #f5f5f5;
@@ -2896,7 +2896,7 @@ select[multiple].input-lg {
   display: block;
   margin-top: 5px;
   margin-bottom: 10px;
-  color: #737373;
+  color: #ffffff;
 }
 @media (min-width: 768px) {
   .form-inline .form-group {
@@ -5048,7 +5048,7 @@ a.thumbnail.active {
 }
 .thumbnail .caption {
   padding: 9px;
-  color: #333333;
+  color: #FAFAFF;
 }
 .alert {
   padding: 15px;
@@ -6972,7 +6972,7 @@ footer {
 .content-block h2.page-content-heading,
 .header-block h1,
 .content-block h2 {
-  font: 800 42px 'Great Vibes', Helvetica, sans-serif;
+  font: 100 42px 'Quicksand', Helvetica, sans-serif;
   text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.1);
 }
 .header-block h1 {
@@ -7171,7 +7171,7 @@ table.graveyard td {
   box-shadow: #333333 5px 5px 5px ;
 }
 .obiturary h2 {
-  font: 800 42px 'Great Vibes', Helvetica, sans-serif;
+  font: 100 42px 'Quicksand', Helvetica, sans-serif;
   color: #fff;
   text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.1);
 }
@@ -7330,141 +7330,190 @@ img.AttributeStar {
   position: absolute;
   width: 100%;
 }
-textarea {
-  width: 100%;
-  min-height: 100px;
+.content-block {
+  border-style: inset;
+  box-shadow: inset 0 0 30px 5px rgba(100, 200, 255, 0.3);
+  background: -moz-linear-gradient(-45deg, rgba(30, 87, 153, 0) 5%, rgba(49, 107, 169, 0.3) 50%, rgba(125, 185, 232, 0) 100%);
 }
-.session-list {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
+.header-block {
+  border-style: inset;
+  box-shadow: inset 0 0 30px 5px rgba(100, 200, 255, 0.3);
+  background: -moz-linear-gradient(-45deg, rgba(30, 87, 153, 0) 5%, rgba(49, 107, 169, 0.3) 50%, rgba(125, 185, 232, 0) 100%);
 }
-.session-list-item {
-  display: block;
-  width: 100%;
-  margin: 0 0 15px 0;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: #333 5px 5px 15px;
-  background-color: #fff;
-  position: relative;
+h1 {
+  font-family: Quicksand, sans-serif !important;
+}
+.content-block p,
+.content-block h2,
+.content-block h3,
+.content-block h4,
+.commentdetail span,
+.commentdetail h4,
+.trophy td {
+  text-shadow: 0 0 2px #000000, 0 0 80px #64c8ff, 0 0 40px #64c8ff, 0 0 60px #64c8ff, -18px 5px rgba(255, 255, 255, 0.1);
+}
+/* jquery.Jcrop.css v0.9.12 - MIT License */
+/*
+  The outer-most container in a typical Jcrop instance
+  If you are having difficulty with formatting related to styles
+  on a parent element, place any fixes here or in a like selector
+
+  You can also style this element if you want to add a border, etc
+  A better method for styling can be seen below with .jcrop-light
+  (Add a class to the holder and style elements for that extended class)
+*/
+.jcrop-holder {
+  direction: ltr;
   text-align: left;
 }
-.session-list li:last-of-type {
-  margin: 0;
-}
-.session-list-item h2 {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 30px;
-  font-weight: normal;
-  margin: 0 0 10px 0;
-}
-.session-list-item h3 {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 25px;
-  font-weight: bold;
-  margin: 0 0 20px 0;
-  color: #333;
-}
-.session-list-item .people-box {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 15px 15px 5px 15px;
-  border-radius: 20px;
-  background: #d9edf7;
-}
-.session-list-item .people-box::after {
-  clear: both;
-  content: " ";
-  display: block;
-}
-.session-list-item .person-item {
-  display: block;
-  float: left;
-  margin: 0 10px 10px 0;
-}
-.session-list-item .person-item img {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-.session-list-item .session-description {
-  margin: 10px 0 0 0;
-  width: 100%;
-  font-size: 18px;
-  padding: 0;
-}
-.session-list-item .log-box {
-  width: 100%;
-  margin: 10px 0 0 0;
-  padding: 0;
-}
-.session-list-item .log-box:empty {
-  margin: 0;
-}
-.session-list-item .log-box::after {
-  clear: both;
-  content: " ";
-  display: block;
-}
-.session-list-item .log-box .log-item {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-.session-list-item .new-log-box {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  text-align: right;
-  transform: translate(10px, 10px);
-}
-.session-list-item .session-date {
+/* Selection Border */
+.jcrop-vline,
+.jcrop-hline {
+  background: #ffffff url("Less/Jcrop.gif");
+  font-size: 0;
   position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 16px;
-  color: #666;
-  text-align: right;
-  margin: 0;
-  padding: 0;
 }
-.date-panel,
-.session-arc-panel {
-  font-size: 18px;
-  border-radius: 10px;
-  box-shadow: #333 5px 5px 15px;
+.jcrop-vline {
+  height: 100%;
+  width: 1px !important;
 }
-.panel-button {
+.jcrop-vline.right {
+  right: 0;
+}
+.jcrop-hline {
+  height: 1px !important;
   width: 100%;
-  text-align: center;
-  margin: 0;
-  padding: 0;
 }
-.edit-date-button,
-.edit-session-arc-button {
-  display: block;
-  width: calc(100% - 20px);
-  margin: 0 10px 10px 10px;
+.jcrop-hline.bottom {
+  bottom: 0;
 }
-.arc-list-item .person-item .mini-profile-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-}
-.game-duration {
+/* Invisible click targets */
+.jcrop-tracker {
+  height: 100%;
   width: 100%;
-  margin: 10px 0 20px 0;
-  padding: 0;
-  font-size: 22px;
+  /* "turn off" link highlight */
+  -webkit-tap-highlight-color: transparent;
+  /* disable callout, image save panel */
+  -webkit-touch-callout: none;
+  /* disable cut copy paste */
+  -webkit-user-select: none;
 }
-.arc-sessions {
-  margin: 0;
-  padding: 0;
+/* Selection Handles */
+.jcrop-handle {
+  background-color: #333333;
+  border: 1px #eeeeee solid;
+  width: 7px;
+  height: 7px;
+  font-size: 1px;
 }
-.arc-sessions .current-session {
-  font-weight: bold;
+.jcrop-handle.ord-n {
+  left: 50%;
+  margin-left: -4px;
+  margin-top: -4px;
+  top: 0;
+}
+.jcrop-handle.ord-s {
+  bottom: 0;
+  left: 50%;
+  margin-bottom: -4px;
+  margin-left: -4px;
+}
+.jcrop-handle.ord-e {
+  margin-right: -4px;
+  margin-top: -4px;
+  right: 0;
+  top: 50%;
+}
+.jcrop-handle.ord-w {
+  left: 0;
+  margin-left: -4px;
+  margin-top: -4px;
+  top: 50%;
+}
+.jcrop-handle.ord-nw {
+  left: 0;
+  margin-left: -4px;
+  margin-top: -4px;
+  top: 0;
+}
+.jcrop-handle.ord-ne {
+  margin-right: -4px;
+  margin-top: -4px;
+  right: 0;
+  top: 0;
+}
+.jcrop-handle.ord-se {
+  bottom: 0;
+  margin-bottom: -4px;
+  margin-right: -4px;
+  right: 0;
+}
+.jcrop-handle.ord-sw {
+  bottom: 0;
+  left: 0;
+  margin-bottom: -4px;
+  margin-left: -4px;
+}
+/* Dragbars */
+.jcrop-dragbar.ord-n,
+.jcrop-dragbar.ord-s {
+  height: 7px;
+  width: 100%;
+}
+.jcrop-dragbar.ord-e,
+.jcrop-dragbar.ord-w {
+  height: 100%;
+  width: 7px;
+}
+.jcrop-dragbar.ord-n {
+  margin-top: -4px;
+}
+.jcrop-dragbar.ord-s {
+  bottom: 0;
+  margin-bottom: -4px;
+}
+.jcrop-dragbar.ord-e {
+  margin-right: -4px;
+  right: 0;
+}
+.jcrop-dragbar.ord-w {
+  margin-left: -4px;
+}
+/* The "jcrop-light" class/extension */
+.jcrop-light .jcrop-vline,
+.jcrop-light .jcrop-hline {
+  background: #ffffff;
+  filter: alpha(opacity=70) !important;
+  opacity: .70!important;
+}
+.jcrop-light .jcrop-handle {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #000000;
+  border-color: #ffffff;
+  border-radius: 3px;
+}
+/* The "jcrop-dark" class/extension */
+.jcrop-dark .jcrop-vline,
+.jcrop-dark .jcrop-hline {
+  background: #000000;
+  filter: alpha(opacity=70) !important;
+  opacity: 0.7 !important;
+}
+.jcrop-dark .jcrop-handle {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #ffffff;
+  border-color: #000000;
+  border-radius: 3px;
+}
+/* Simple macro to turn off the antlines */
+.solid-line .jcrop-vline,
+.solid-line .jcrop-hline {
+  background: #ffffff;
+}
+/* Fix for twitter bootstrap et al. */
+.jcrop-holder img,
+img.jcrop-preview {
+  max-width: none;
 }

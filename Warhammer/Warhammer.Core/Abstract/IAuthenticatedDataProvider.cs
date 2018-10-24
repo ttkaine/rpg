@@ -214,5 +214,6 @@ namespace Warhammer.Core.Abstract
         void AddMonthToDate(int pageId, bool isStartDate);
         List<Session> AllSessions();
         void SetSessionArc(int? arcId, int sessionId);
+        void SetSiteTheme(SiteTheme theme);
     }
 }

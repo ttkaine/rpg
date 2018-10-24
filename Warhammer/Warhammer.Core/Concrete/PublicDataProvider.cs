@@ -25,5 +25,10 @@ namespace Warhammer.Core.Concrete
             return  _repository.Players()
                     .Any(p => p.UserName == username && p.PlayerCampaigns.Any(c => c.CampaginId == campaginId));
         }
+
+        public SiteTheme GetTheme()
+        {
+            return (SiteTheme)_repository.CampaignDetails().Single().ThemeId.GetValueOrDefault(0);
+        }
     }
 }

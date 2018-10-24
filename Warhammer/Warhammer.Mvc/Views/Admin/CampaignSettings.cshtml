@@ -28,6 +28,12 @@
                     </div>
          
                     <br /><br />
+                    using (Html.BeginForm("SetTheme", "Admin"))
+                    {
+                        <p>Set Theme</p>
+                        @Html.EnumDropDownListFor(m => m.Theme )
+                        <input type="submit" value="Set Theme" />
+                    }
                     using (Html.BeginForm("SetGameDate", "Admin"))
                     {
                         <p>You can choose a new Game Date</p>

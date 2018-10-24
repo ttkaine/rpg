@@ -22,5 +22,11 @@ namespace Warhammer.Core.Entities
                 }
                 return Url;
             } }
+
+        public SiteTheme Theme
+        {
+            get => (SiteTheme) ThemeId.GetValueOrDefault(0);
+            set => ThemeId = (int) value;
+        }
     }
 }

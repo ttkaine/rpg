@@ -22,8 +22,14 @@ namespace Warhammer.Mvc
             //          "~/Scripts/bootstrap.js",
             //          "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/default").Include(
                       "~/Content/WarhammerStyle.css"));
+            bundles.Add(new StyleBundle("~/Content/dark").Include(
+                "~/Content/WarhammerStyle.css"));
+            bundles.Add(new StyleBundle("~/Content/lightglass").Include(
+                "~/Content/WarhammerStyle.css"));
+            bundles.Add(new StyleBundle("~/Content/darkglass").Include(
+                "~/Content/DarkGlassStyle.css"));
         }
     }
 }

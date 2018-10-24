@@ -6,5 +6,9 @@
   {
     "outputFile": "Content/WarhammerStyle.css",
     "inputFile": "Content/WarhammerStyle.less"
+  },
+  {
+    "outputFile": "Content/DarkGlassStyle.css",
+    "inputFile": "Content/DarkGlassStyle.less"
   }
 ]

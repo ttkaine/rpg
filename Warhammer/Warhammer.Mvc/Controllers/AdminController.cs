@@ -255,6 +255,17 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("CampaignSettings");
         }
 
+        [HttpPost]
+        public ActionResult SetTheme(SiteTheme theme)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetSiteTheme(theme);
+            }
+
+            return RedirectToAction("CampaignSettings");
+        }
+
         public ActionResult CreateCampaign()
         {
             if (DataProvider.CurrentCampaignId > 0)

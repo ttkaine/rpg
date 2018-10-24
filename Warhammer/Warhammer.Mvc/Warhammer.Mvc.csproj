@@ -525,6 +525,11 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </Content>
     <Content Include="Content\fonts\RioGrande.ttf" />
+    <Content Include="Content\DefaultTheme.less" />
+    <Content Include="Content\DefaultVariables.less" />
+    <Content Include="Content\DarkGlassTheme.less" />
+    <Content Include="Content\DarkGlassVariables.less" />
+    <Content Include="Content\DarkGlassStyle.less" />
     <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
     <None Include="Properties\PublishProfiles\CI01.pubxml" />
     <None Include="Properties\PublishProfiles\Fate_Federer.pubxml" />
@@ -790,6 +795,7 @@
     <Content Include="Views\Page\GetShowLocalButton.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ExternalLinkModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PageToggleModel.cshtml" />
+    <Content Include="Views\Home\Css.cshtml" />
     <Content Include="Views\Create\Arc.cshtml" />
     <Content Include="Views\Page\GameDate.cshtml" />
     <Content Include="Views\Page\ArcSessions.cshtml" />

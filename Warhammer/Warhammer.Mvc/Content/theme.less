@@ -1,5 +1,5 @@
-﻿@import "less/Bootstrap/bootstrap.less";
- 
+﻿
+@import "less/Bootstrap/bootstrap.less";
 body {
     background: url('images/bg-large.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -173,14 +173,12 @@ div.session-container{
 }
 
 .content-block {
-       background-color: white;
        overflow:auto;
 }
 .header-block
 {
     margin: auto;
     text-align:center;
-    background-color: black;
 }
 
 .fate-stat-block {
@@ -210,22 +208,20 @@ footer{
     text-align: center;
     color:white;
 }
- 
+
+.content-block h2.page-content-heading,
+.header-block h1,
+.content-block h2 {
+    font: @header-font;
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
+}
+
 .header-block h1 {
-font: 800 @font-size-jumbo 'Great Vibes', Helvetica, sans-serif;
-  color: #fff;
-  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+    color: #fff;
 }
 
 .content-block h2 {
-font: 800 @font-size-h2 'Great Vibes', Helvetica, sans-serif;
-  color: #000;
-  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
-}
-
-.content-block h2.page-content-heading 
-{
-    font: 600 @font-size-h1 'Great Vibes', Helvetica, sans-serif;
+    color: #000;
 }
 
 .btn-mini
@@ -471,7 +467,7 @@ table.graveyard td
 }
 
 .obiturary h2{
-    font: 800 @font-size-xtra-large 'Great Vibes', Helvetica, sans-serif;
+    font: @header-font;
   color: #fff;
   text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
 }
