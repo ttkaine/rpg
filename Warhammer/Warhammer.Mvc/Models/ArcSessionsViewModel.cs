@@ -9,7 +9,7 @@ namespace Warhammer.Mvc.Models
     public class ArcSessionsViewModel
     {
         public bool CanEdit { get; set; }
-        public List<Session> Sessions { get; set; }
+        public List<SessionListItemViewModel> Sessions { get; set; }
 
         public ArcSessionsViewModel()
         {

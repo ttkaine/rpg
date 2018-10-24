@@ -671,7 +671,7 @@ namespace Warhammer.Mvc.Concrete
         {
             ArcSessionsViewModel model = new ArcSessionsViewModel()
             {
-                Sessions = arc.Sessions.OrderBy(s => (s.DateTime ?? DateTime.MinValue)).ToList()
+                Sessions = arc.Sessions.OrderBy(s => (s.DateTime ?? DateTime.MinValue)).Select(s => new SessionListItemViewModel(s)).ToList()
             };
             return model;
         }

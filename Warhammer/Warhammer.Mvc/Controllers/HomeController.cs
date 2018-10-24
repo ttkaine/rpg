@@ -103,7 +103,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Sessions()
         {
-            List<Session> sessions = DataProvider.Sessions().OrderByDescending(s => s.DateTime).ToList();
+            List<SessionListItemViewModel> sessions = DataProvider.Sessions().OrderByDescending(s => s.DateTime).Select(s => new SessionListItemViewModel(s)).ToList();
             return View(sessions);
         }
 

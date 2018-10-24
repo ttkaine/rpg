@@ -30,13 +30,13 @@ namespace Warhammer.Mvc.Controllers
             Arc arc = DataProvider.GetArc(id);
             if (arc != null)
             {
-                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);
-                model.CanEdit = IsEditMode && (CurrentPlayer?.PlayerCampaigns.Any(c => c.Id == arc.CampaignId) ?? false);
+                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);                
 
                 return PartialView(model);
             }
             return null;
         }
+
 
     }
 }
