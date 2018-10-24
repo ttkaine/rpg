@@ -15,6 +15,8 @@ namespace Warhammer.Mvc.Models
         public List<Person> People { get; set; }
         public List<SessionLog> SessionLogs { get; set; }
 
+        public Person LogButtonPerson { get; set; }
+
         public SessionListItemViewModel()
         {
             People = new List<Person>();

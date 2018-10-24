@@ -30,7 +30,11 @@ namespace Warhammer.Mvc.Controllers
             Arc arc = DataProvider.GetArc(id);
             if (arc != null)
             {
-                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);                
+                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);
+                foreach (SessionListItemViewModel session in model.Sessions)
+                {
+                    session.LogButtonPerson = session.People.FirstOrDefault(p => p.PlayerId.HasValue && p.SessionLogs.All(l => l.SessionId != session.Id) && p.Player.UserName == User.Identity.Name);
+                }
 
                 return PartialView(model);
             }
