@@ -217,5 +217,7 @@ namespace Warhammer.Mvc.Models
         public bool ShiftJustApplied { get; set; }
         public bool IsCrowMk2 { get; set; }
         public bool CanChangePlayer => PlayerIsAdmin && IsPerson;
+        public bool CanChangeImage => IsLocalToCampaign;
+        public bool CanEditLinks => IsLocalToCampaign;
     }
 }

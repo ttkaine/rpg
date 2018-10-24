@@ -2,176 +2,178 @@
 
 @if (ViewBag.EditMode)
 {
-    <div id="pageControls">
+<div id="pageControls">
 
-        @if (Model.CanEdit)
+    @if (Model.CanChangeImage)
+    {
+        @Html.ActionLink("Change Image", "ChangeImage", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+    }
+    @if (Model.CanEditLinks)
+    {
+        @Html.ActionLink("Edit Links", "EditLinks", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+    }
+    @if (Model.CanPin)
+    {
+        <hr />
+        using (Ajax.BeginForm("TogglePin", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
         {
-            @Html.ActionLink("Change Image", "ChangeImage", "Page", new {id = Model.Page.Id}, new {@class = "btn btn-default btn-block"})
-
-            @Html.ActionLink("Edit Links", "EditLinks", "Page", new {id = Model.Page.Id}, new {@class = "btn btn-default btn-block"})
+            <input type="hidden" value="@Model.Page.Id" name="id" />
+            <input type="submit" value="Pin to menu" class="btn btn-info btn-block" />
         }
-        @if (Model.CanPin)
+    }
+
+    @if (Model.CanUnpin)
+    {
+        <hr />
+        using (Ajax.BeginForm("TogglePin", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
         {
-            <hr/>
-            using (Ajax.BeginForm("TogglePin", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-            {
-                <input type="hidden" value="@Model.Page.Id" name="id" />
-                <input type="submit" value="Pin to menu" class="btn btn-info btn-block" />
-            }
+            <input type="hidden" value="@Model.Page.Id" name="id" />
+            <input type="submit" value="Remove from Menu" class="btn btn-warning btn-block" />
         }
+    }
 
-        @if (Model.CanUnpin)
+    @if (Model.CanManageAwards)
+    {
+        @Html.ActionLink("Manage Awards", "ManageAwards", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-success btn-block" })
+    }
+
+    @if (Model.CanAddSessionLog)
+    {
+        @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new { personId = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+    }
+
+
+    @if (Model.CanChangePlayer)
+    {
+        @Html.ActionLink("Change Player", "ChangePlayer", "Person", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+
+        <hr />
+    }
+    @if (Model.CanKill)
+    {
+        @Html.ActionLink("Kill", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })
+    }
+
+    @if (Model.CanResurrect)
+    {
+        @Html.ActionLink("Resurrect", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })
+    }
+
+    @if (Model.CanResetPersonAttributes)
+    {
+        <hr />
+        using (Ajax.BeginForm("ResetPersonAttributes", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
         {
-            <hr />
-            using (Ajax.BeginForm("TogglePin", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-            {
-                <input type="hidden" value="@Model.Page.Id" name="id" />
-                <input type="submit" value="Remove from Menu" class="btn btn-warning btn-block" />
-            }
+            <input type="hidden" name="Id" value="@Model.Page.Id" />
+            <input type="submit" value="Reset All Attributes" class="btn btn-danger btn-block" />
         }
+    }
 
-        @if (Model.CanManageAwards)
+    @if (Model.CanUseSessionControls)
+    {
+        <h3>Session Controls</h3>
+
+        if (Model.CanSetSessionGm)
         {
-            @Html.ActionLink("Manage Awards", "ManageAwards", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-success btn-block" })
-        }
 
-        @if (Model.CanAddSessionLog)
-        {
-            @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new { personId = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
-        }
-        
-        
-        @if (Model.CanChangePlayer)
-        {
-            @Html.ActionLink("Change Player", "ChangePlayer", "Person", new {id = Model.Page.Id}, new {@class = "btn btn-default btn-block"})
-
-            <hr/>
-        }
-        @if (Model.CanKill)
-        {
-            @Html.ActionLink("Kill", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })
-        }
-
-        @if (Model.CanResurrect)
-        {
-            @Html.ActionLink("Resurrect", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })
-        }
-        
-        @if (Model.CanResetPersonAttributes)
-        {
-            <hr/>
-            using (Ajax.BeginForm("ResetPersonAttributes", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-            {
-               <input type="hidden" name="Id" value="@Model.Page.Id"/>
-                <input type="submit" value="Reset All Attributes" class="btn btn-danger btn-block" />
-            }
-        }
-        
-        @if (Model.CanUseSessionControls)
-        {
-            <h3>Session Controls</h3>
-
-            if (Model.CanSetSessionGm)
-            {
-
-                if (Model.GmJustSet)
-                {
-                    <div class="alert alert-success">
-                        <h3>GM SET!</h3>
-                    </div>
-                }
-
-                using (Ajax.BeginForm("SetGm", "PageControls", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls"}))
-                {
-                    <input type="hidden" name="Id" value="@Model.Page.Id"/>
-                    @Html.DropDownListFor(m => m.SelectedGm, Model.Players, "--Default--", new {@class = "form-control"})
-                    <input type="submit" value="Set GM for this Session" class="btn btn-warning btn-block"/>
-                }
-                <hr/>
-            }
-
-            if (Model.CanSetAsTextSession)
-             {
-                 using (Ajax.BeginForm("ToggleTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-                 {
-                     <input type="hidden" value="@Model.Page.Id" name="id" />
-                     <input type="submit" value="Set as TEXT Session" class="btn btn-warning btn-block" />
-                 }
-             }
-
-            if (Model.CanSetAsNotTextSession)
-            {
-                using (Ajax.BeginForm("ToggleTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-                {
-                    <input type="hidden" value="@Model.Page.Id" name="id" />
-                    <input type="submit" value="Set as not a TEXT Session" class="btn btn-info btn-block" />
-                }
-            }
-
-            if (Model.CanSetAsPublic)
-            {
-                using (Ajax.BeginForm("ToggleSessionPrivicy", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-                {
-                    <input type="hidden" value="@Model.Page.Id" name="id" />
-                    <input type="submit" value="Private" class="btn btn-danger btn-block" />
-                }
-            }
-
-            if (Model.CanSetAsPrivate)
-            {
-                using (Ajax.BeginForm("ToggleSessionPrivicy", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-                {
-                    <input type="hidden" value="@Model.Page.Id" name="id" />
-                    <input type="submit" value="Public" class="btn btn-success btn-block" />
-                }
-            }
-
-            if (Model.CanOpenTextSession)
-            {
-                using (Ajax.BeginForm("OpenCloseTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-                {
-                    <input type="hidden" value="@Model.Page.Id" name="id" />
-                    <input type="submit" value="ReOpen!" class="btn btn-info btn-block" />
-                }
-            }
-
-            if (Model.CanCloseTextSession)
-            {
-                using (Ajax.BeginForm("OpenCloseTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
-                {
-                    <input type="hidden" value="@Model.Page.Id" name="id" />
-                    <input type="submit" value="CLOSE" class="btn btn-danger btn-block" />
-                }
-            }
-        }
-        
-        @if (Model.CanApplyShift)
-        {
-            <hr/>
-            if (Model.ShiftJustApplied)
+            if (Model.GmJustSet)
             {
                 <div class="alert alert-success">
-                    <h3>Shift Applied</h3>
+                    <h3>GM SET!</h3>
                 </div>
             }
-            else
+
+            using (Ajax.BeginForm("SetGm", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
             {
-                using (Ajax.BeginForm("ApplyShift", "PageControls", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls"}))
-                {
-                    <input type="hidden" name="Id" value="@Model.Page.Id"/>
-                    <input type="submit" value="Apply Shift" class="btn btn-success btn-block"/>
-                }
+                <input type="hidden" name="Id" value="@Model.Page.Id" />
+                @Html.DropDownListFor(m => m.SelectedGm, Model.Players, "--Default--", new { @class = "form-control" })
+                <input type="submit" value="Set GM for this Session" class="btn btn-warning btn-block" />
             }
-            
+            <hr />
         }
 
-        <div class="clearfix"></div>
-        
-        <hr />
-        
-        @if (Model.CanDelete)
+        if (Model.CanSetAsTextSession)
         {
-            @Html.ActionLink("Delete", "DeletePage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-danger btn-block" })
+            using (Ajax.BeginForm("ToggleTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" value="@Model.Page.Id" name="id" />
+                <input type="submit" value="Set as TEXT Session" class="btn btn-warning btn-block" />
+            }
         }
-    </div>
+
+        if (Model.CanSetAsNotTextSession)
+        {
+            using (Ajax.BeginForm("ToggleTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" value="@Model.Page.Id" name="id" />
+                <input type="submit" value="Set as not a TEXT Session" class="btn btn-info btn-block" />
+            }
+        }
+
+        if (Model.CanSetAsPublic)
+        {
+            using (Ajax.BeginForm("ToggleSessionPrivicy", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" value="@Model.Page.Id" name="id" />
+                <input type="submit" value="Private" class="btn btn-danger btn-block" />
+            }
+        }
+
+        if (Model.CanSetAsPrivate)
+        {
+            using (Ajax.BeginForm("ToggleSessionPrivicy", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" value="@Model.Page.Id" name="id" />
+                <input type="submit" value="Public" class="btn btn-success btn-block" />
+            }
+        }
+
+        if (Model.CanOpenTextSession)
+        {
+            using (Ajax.BeginForm("OpenCloseTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" value="@Model.Page.Id" name="id" />
+                <input type="submit" value="ReOpen!" class="btn btn-info btn-block" />
+            }
+        }
+
+        if (Model.CanCloseTextSession)
+        {
+            using (Ajax.BeginForm("OpenCloseTextSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" value="@Model.Page.Id" name="id" />
+                <input type="submit" value="CLOSE" class="btn btn-danger btn-block" />
+            }
+        }
+    }
+
+    @if (Model.CanApplyShift)
+    {
+        <hr />
+        if (Model.ShiftJustApplied)
+        {
+            <div class="alert alert-success">
+                <h3>Shift Applied</h3>
+            </div>
+        }
+        else
+        {
+            using (Ajax.BeginForm("ApplyShift", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
+            {
+                <input type="hidden" name="Id" value="@Model.Page.Id" />
+                <input type="submit" value="Apply Shift" class="btn btn-success btn-block" />
+            }
+        }
+
+    }
+
+    <div class="clearfix"></div>
+
+    <hr />
+
+    @if (Model.CanDelete)
+    {
+        @Html.ActionLink("Delete", "DeletePage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-danger btn-block" })
+    }
+</div>
 }
