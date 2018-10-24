@@ -137,25 +137,17 @@
         </div>
 
     <div class="core-content">
-        
         @Html.Action("SiteSelector")
 
         @if (Model.GameDate.HasValue)
         {
-            <div class="content-block">
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">Current Game Date</div>
-                    <div class="panel-body">The @Model.GameDate.Value.ToWarhammerDateString()</div>
-                    <div class="panel-footer">@Model.GameDate.Value.ToString("dddd dd MMMM yyyy")</div>
-                </div>
-            </div>
+            @Html.Action("GameDate", "Page", new { id = 0 })
         }
 
         <div class="content-block">
             <h3>Recent Comments</h3>
             @Html.Action("Index", "Comment")
         </div>
-
     </div>
+
 </div>

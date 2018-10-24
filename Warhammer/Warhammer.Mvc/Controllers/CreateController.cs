@@ -127,8 +127,15 @@ namespace Warhammer.Mvc.Controllers
                 {
                     model.Session.DateTime = DateTime.Now;
                 }
-                int sessionId = DataProvider.AddSession(model.Session.FullName, model.Session.ShortName, model.Session.Description,
-                    model.Session.DateTime.Value, model.Session.CreateWithPreviousCharacterList, model.LinkPages);
+                GameDate gameDate = model.GameDate?.ToWarhammerGameDate();
+                if (gameDate == null)
+                {
+                    CampaignDetail campaignDetail = DataProvider.GetCampaginDetails();
+                    DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
+                    gameDate = new GameDate() { Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date" };
+                }
+
+                int sessionId = DataProvider.AddSession(model.Session.FullName, model.Session.ShortName, model.Session.Description, model.Session.DateTime.Value, model.Session.CreateWithPreviousCharacterList, model.LinkPages, gameDate);
                 return RedirectToAction("Index", "Page", new { id = sessionId });
             }
 

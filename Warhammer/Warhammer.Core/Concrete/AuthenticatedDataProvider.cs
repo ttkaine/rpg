@@ -167,15 +167,15 @@ namespace Warhammer.Core.Concrete
             return Save(session);
         }
 
-        public int AddSession(string title, string name, string description, DateTime date,
-            bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages)
+        public int AddSession(string title, string name, string description, DateTime date, bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages, GameDate gameDate)
         {
             Session session = new Session
             {
                 ShortName = name,
                 FullName = title,
                 Description = description,
-                DateTime = date
+                DateTime = date,
+                GameDate = new GameDate() { Year = gameDate.Year, Month = gameDate.Month, Day = gameDate.Day, Comment = gameDate.Comment }
             };
 
             Session previousSession = null;

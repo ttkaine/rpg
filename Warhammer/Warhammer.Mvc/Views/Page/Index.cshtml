@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            @Html.Action("ArcSessions", "Arc", new { id = Model.Id })
+            @Html.Action("ArcSessions", "Page", new { id = Model.Id })
 
             @Html.Action("CurrentScorePie", "Person")
 
@@ -124,7 +124,7 @@
             @Html.Action("AwardHistory", "Person", new { id = Model.Id })
         }
 
-        @Html.Action("GameDateForArc", "Arc", new { id = Model.Id })
+        @Html.Action("GameDate", "Page", new { id = Model.Id })
 
 
         <div class="content-block">

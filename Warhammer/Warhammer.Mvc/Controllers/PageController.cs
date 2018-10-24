@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -456,6 +457,61 @@ namespace Warhammer.Mvc.Controllers
                 Text = $"Show in {campaignDetail.DisplayName}"
             };
             return PartialView(model);
+        }
+
+
+        public ActionResult ArcSessions(int id)
+        {
+            Arc arc = DataProvider.GetArc(id);
+            if (arc != null)
+            {
+                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);
+                foreach (SessionListItemViewModel session in model.Sessions)
+                {
+                    session.LogButtonPerson = session.People.FirstOrDefault(p => p.PlayerId.HasValue && p.SessionLogs.All(l => l.SessionId != session.Id) && p.Player.UserName == User.Identity.Name);
+                }
+
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        public ActionResult GameDate(int id)
+        {
+            Page page = DataProvider.GetPage(id);
+            if ((page != null && (page is Session || page is Arc)) || id == 0)
+            {
+                GameDateViewModel model = new GameDateViewModel();
+
+                if (page != null)
+                {
+                    if (page is Session)
+                    {
+                        model.Title = "Session Date";
+                        model.Date = ((Session) page).GameDate;
+                    }
+                    if (page is Arc)
+                    {
+                        model.Title = "Current Arc Date";
+                        model.Date = ((Arc) page).CurrentGameDate;
+                    }
+                }
+                else
+                {
+                    model.Title = "Current Game Date";
+                }
+
+                if (model.Date == null)
+                {
+                    CampaignDetail campaign = DataProvider.GetCampaginDetails();
+                    DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
+                    model.Date = new GameDate() { Year = date.Year, Month = date.Month, Day = date.Day, Comment = "From Campaign Date" };
+                }
+
+                return PartialView(model);
+            }
+            return null;
+
         }
     }
 }

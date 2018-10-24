@@ -197,6 +197,14 @@ namespace Warhammer.Core.Extensions
             return null;
         }
 
+        public static string ToShortDateString(this GameDate date)
+        {
+            string day = date.Day < 10 ? "0" + date.Day.ToString() : date.Day.ToString();
+            string month = date.Month < 10 ? "0" + date.Month.ToString() : date.Month.ToString();
+
+            return $"{day}/{month}/{date.Year}";
+        }
+
         public static string NumberToWords(int number)
         {
             if (number == 0)
