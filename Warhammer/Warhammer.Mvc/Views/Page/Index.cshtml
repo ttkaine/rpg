@@ -124,7 +124,14 @@
             @Html.Action("AwardHistory", "Person", new { id = Model.Id })
         }
 
-        @Html.Action("GameDate", "Page", new { id = Model.Id })
+        @if (ViewBag.EditMode)
+        {
+            @Html.Action("EditGameDate", "Page", new { id = Model.Id })
+        }
+        else
+        {
+            @Html.Action("GameDate", "Page", new {id = Model.Id})
+        }
 
 
         <div class="content-block">

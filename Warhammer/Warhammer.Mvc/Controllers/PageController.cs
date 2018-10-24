@@ -10,6 +10,7 @@ using Microsoft.AspNet.SignalR;
 using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Concrete;
@@ -22,7 +23,7 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IImageProcessor _imageProcessor;
         private readonly ILinkGenerator _linkGenerator;
-        
+
         // GET: Page
         public PageController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, ILinkGenerator linkGenerator) : base(data)
         {
@@ -43,18 +44,18 @@ namespace Warhammer.Mvc.Controllers
                         page.Description = _linkGenerator.CreoleLinksToHtml(page.Description);
                     }
 
-	                if (page is Session)
-	                {
+                    if (page is Session)
+                    {
                         Session session = page as Session;
-	                    ViewBag.ShowTextSessionLink = 
-                            session.IsTextSession 
+                        ViewBag.ShowTextSessionLink =
+                            session.IsTextSession
                             && (
-                                !session.IsPrivate 
-                                ||         
+                                !session.IsPrivate
+                                ||
                                 session.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)
                                 ||
                                 CurrentPlayerIsGm
-                               );
+                                );
                     }
 
                     page.PlayerIsGm = CurrentPlayerIsGm;
@@ -87,7 +88,7 @@ namespace Warhammer.Mvc.Controllers
                     PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
                     string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
 
-                    int width = image.Image.Width / 5;
+                    int width = image.Image.Width/5;
                     if (width > 100)
                     {
                         width = 100;
@@ -115,7 +116,7 @@ namespace Warhammer.Mvc.Controllers
                         DataProvider.SaveGmNotes(page.Id, page.GmNotes);
                     }
                 }
-                
+
                 if (!updatedPage.HasImage)
                 {
                     ExtractedImage primaryImage = images.FirstOrDefault();
@@ -138,19 +139,19 @@ namespace Warhammer.Mvc.Controllers
 
                 return View(updatedPage);
             }
-            return RedirectToAction("index", new { id = page.Id });
+            return RedirectToAction("index", new {id = page.Id});
         }
 
         private void ClearPageCache(int id)
         {
-            string path = Url.Action("Image", new { id });
+            string path = Url.Action("Image", new {id});
 
             if (path != null)
             {
                 Response.RemoveOutputCacheItem(path);
             }
-            
-            path = Url.Action("Index", new { id });
+
+            path = Url.Action("Index", new {id});
 
             if (path != null)
             {
@@ -172,9 +173,9 @@ namespace Warhammer.Mvc.Controllers
             if (ModelState.IsValid)
             {
                 DataProvider.RemoveLink(id, linkToDeleteId);
-                return RedirectToAction("EditLinks", new { id = id });
+                return RedirectToAction("EditLinks", new {id = id});
             }
-            return RedirectToAction("index", new { id = id });
+            return RedirectToAction("index", new {id = id});
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
@@ -254,7 +255,7 @@ namespace Warhammer.Mvc.Controllers
                 if (page != null)
                 {
                     return View(page);
-                }               
+                }
             }
 
 
@@ -278,7 +279,7 @@ namespace Warhammer.Mvc.Controllers
 
 
                     return View(model);
-                }               
+                }
             }
             return RedirectToAction("index", "home");
         }
@@ -302,7 +303,7 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("index", "home");
         }
-        
+
 
         [HttpPost]
         [System.Web.Mvc.Authorize(Roles = "Player")]
@@ -329,7 +330,7 @@ namespace Warhammer.Mvc.Controllers
                 if (saveAction == "Remove Image")
                 {
                     DataProvider.RemoveProfileImage(id);
-                    return RedirectToAction("Index", new { id = id });
+                    return RedirectToAction("Index", new {id = id});
                 }
             }
             // there is something wrong with the data values
@@ -341,7 +342,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (y1.HasValue && x1.HasValue && h.HasValue && w.HasValue)
             {
-                return new Rectangle((int)x1.Value, (int)y1.Value, (int)w.Value, (int)h.Value);
+                return new Rectangle((int) x1.Value, (int) y1.Value, (int) w.Value, (int) h.Value);
             }
 
             return new Rectangle();
@@ -356,7 +357,7 @@ namespace Warhammer.Mvc.Controllers
                 {
                     int currentGmId = DataProvider.GetGmId(page.Id);
                     bool currentPlayerIsSessionGm = currentGmId == CurrentPlayer.Id;
-                    PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, currentPlayerIsSessionGm);
+                    PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer, currentPlayerIsSessionGm);
                     return PartialView(model);
                 }
             }
@@ -385,7 +386,7 @@ namespace Warhammer.Mvc.Controllers
                     UpdateRoleplayHub();
                 }
 
-                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, currentPlayerIsSessionGm);
+                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer, currentPlayerIsSessionGm);
                 return PartialView("PlayerSessionControls", model);
             }
             return null;
@@ -413,7 +414,7 @@ namespace Warhammer.Mvc.Controllers
                     UpdateRoleplayHub();
                 }
 
-                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session)page, CurrentPlayer, currentPlayerIsSessionGm);
+                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer, currentPlayerIsSessionGm);
                 return PartialView("PlayerSessionControls", model);
             }
             return null;
@@ -437,7 +438,10 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult GetShowLocalButton(int id)
         {
-            if (!DataProvider.IsMasterDomain) { return null; }
+            if (!DataProvider.IsMasterDomain)
+            {
+                return null;
+            }
             CampaignDetail campaignDetail = DataProvider.GetCampaginDetailsForPage(id);
 
             if (campaignDetail == null)
@@ -505,7 +509,7 @@ namespace Warhammer.Mvc.Controllers
                 {
                     CampaignDetail campaign = DataProvider.GetCampaginDetails();
                     DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
-                    model.Date = new GameDate() { Year = date.Year, Month = date.Month, Day = date.Day, Comment = "From Campaign Date" };
+                    model.Date = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "From Campaign Date"};
                 }
 
                 return PartialView(model);
@@ -513,5 +517,51 @@ namespace Warhammer.Mvc.Controllers
             return null;
 
         }
+
+        public ActionResult EditGameDate(int id)
+        {
+            Page page = DataProvider.GetPage(id);
+            if (page != null && (page is Session || page is Arc))
+            {
+                EditDateViewModel model = new EditDateViewModel();
+                model.PageId = page.Id;
+
+                if (page is Session)
+                {
+                    model.Title = "Session Date";
+                    model.DisplayDate = ((Session) page).GameDate;
+                }
+                if (page is Arc)
+                {
+                    model.Title = "Current Arc Date";
+                    model.DisplayDate = ((Arc) page).CurrentGameDate;
+                }
+
+                if (model.DisplayDate == null)
+                {
+                    CampaignDetail campaign = DataProvider.GetCampaginDetails();
+                    DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
+                    model.DisplayDate = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "From Campaign Date"};
+                }
+
+                model.EditableDate = model.DisplayDate.ToShortDateString(true);
+
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult UpdateGameDate(EditDateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SaveDate(model.PageId, model.EditableDate.ToWarhammerGameDate());
+            }
+
+            return RedirectToAction("Index", new { id = model.PageId });
+        }
+
     }
 }

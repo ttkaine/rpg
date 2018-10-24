@@ -7531,6 +7531,17 @@ textarea {
   border-radius: 10px;
   box-shadow: #333 5px 5px 15px;
 }
+.panel-button {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.edit-date-button {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 0 10px 10px 10px;
+}
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
   The outer-most container in a typical Jcrop instance

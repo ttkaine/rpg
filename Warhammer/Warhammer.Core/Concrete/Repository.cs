@@ -60,7 +60,6 @@ namespace Warhammer.Core.Concrete
             return _entities.Pages.OfType<Arc>();
         }
 
-
         public IQueryable<ChangeLog> ChangeLogs()
         {
             return _entities.ChangeLogs;

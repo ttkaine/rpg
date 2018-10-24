@@ -3040,6 +3040,45 @@ namespace Warhammer.Core.Concrete
             return _repository.Arcs().FirstOrDefault(a => a.Id == id);
         }
 
+        public void SaveDate(int pageId, GameDate date)
+        {
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
+            if (page != null && (page is Session || page is Arc) && date != null)
+            {
+                if (page is Arc)
+                {
+                    Arc arc = (Arc)page;
+                    if (arc.CurrentGameDate != null)
+                    {
+                        arc.CurrentGameDate.Year = date.Year;
+                        arc.CurrentGameDate.Month = date.Month;
+                        arc.CurrentGameDate.Day = date.Day;
+                    }
+                    else
+                    {
+                        arc.CurrentGameDate = date;
+                    }
+                }
+
+                if (page is Session)
+                {
+                    Session session = (Session)page;
+                    if (session.GameDate != null)
+                    {
+                        session.GameDate.Year = date.Year;
+                        session.GameDate.Month = date.Month;
+                        session.GameDate.Day = date.Day;
+                    }
+                    else
+                    {
+                        session.GameDate = date;
+                    }
+                }
+
+                _repository.Save(page);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

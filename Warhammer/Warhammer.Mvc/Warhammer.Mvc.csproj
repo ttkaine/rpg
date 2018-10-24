@@ -266,6 +266,7 @@
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\CreateSessionViewModel.cs" />
+    <Compile Include="Models\EditDateViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
     <Compile Include="Models\EditTrophyViewModel.cs" />
     <Compile Include="Models\ExternalLinkModel.cs" />
@@ -788,6 +789,7 @@
     <Content Include="Views\Page\GameDate.cshtml" />
     <Content Include="Views\Page\ArcSessions.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SessionListItemViewModel.cshtml" />
+    <Content Include="Views\Page\EditGameDate.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
