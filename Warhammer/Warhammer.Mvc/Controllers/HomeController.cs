@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using NUnit.Framework;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
@@ -110,6 +111,12 @@ namespace Warhammer.Mvc.Controllers
             }
 
             return View(sessions);
+        }
+
+        public ActionResult Arcs()
+        {
+            List<ArcListItemViewModel> arcs = DataProvider.Arcs().OrderByDescending(a => a.CurrentGameDate.Year).ThenByDescending(a => a.CurrentGameDate.Month).ThenByDescending(a => a.CurrentGameDate.Day).Select(a => new ArcListItemViewModel(a)).ToList();
+            return View(arcs);    
         }
 
         public PartialViewResult PinnedItems()

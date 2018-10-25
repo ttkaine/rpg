@@ -516,6 +516,11 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<SessionLog>().ToList();
         }
 
+        public ICollection<Arc> Arcs()
+        {
+            return _repository.Pages().OfType<Arc>().ToList();
+        }
+
         public void RemoveProfileImage(int id)
         {
             ChangePicture(id, null, null);

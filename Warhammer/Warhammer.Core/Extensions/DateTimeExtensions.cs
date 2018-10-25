@@ -143,6 +143,27 @@ namespace Warhammer.Core.Extensions
             return dayOfWeek;
         }
 
+        public static bool IsLaterThan(this GameDate date, GameDate comparisonDate)
+        {
+            if (date.Year > comparisonDate.Year)
+            {
+                return true;
+            }
+            if (date.Year == comparisonDate.Year)
+            {
+                if (date.Month > comparisonDate.Month)
+                {
+                    return true;
+                }
+                if (date.Month == comparisonDate.Month && date.Day > comparisonDate.Day)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static GameDate ToWarhammerGameDate(this string date)
         {
             string[] dateParts = date.Split(new string[] {"/"}, StringSplitOptions.RemoveEmptyEntries);

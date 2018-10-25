@@ -293,7 +293,7 @@ namespace Warhammer.Mvc.Concrete
 
             menu.Add(new MenuItemViewModel
             {
-                Name = "New Arc",
+                Name = "New Story Arc",
                 Url = _urlHelper.Action("Arc", "Create")
             });
 
@@ -814,6 +814,13 @@ namespace Warhammer.Mvc.Concrete
 
             if (_data.SiteHasFeature(Feature.SessionPage))
             {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Story Arcs",
+                    Url = _urlHelper.Action("Arcs", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
+                });
+
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Sessions",
