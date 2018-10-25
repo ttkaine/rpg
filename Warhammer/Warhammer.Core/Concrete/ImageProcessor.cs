@@ -69,6 +69,11 @@ namespace Warhammer.Core.Concrete
             return bmpCrop;
         }
 
+        public byte[] GetPngFromImage(Image image)
+        {
+            return ToByteArray(image, ImageFormat.Png);
+        }
+
         public static byte[] ToByteArray(Image image, ImageFormat format)
         {
             using (MemoryStream ms = new MemoryStream())

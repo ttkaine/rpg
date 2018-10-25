@@ -93,19 +93,28 @@ namespace Warhammer.Mvc.Controllers
             {
                 ClearTrophyCache(trophyModel.Trophy.Id);
                 byte[] imageData = null;
-
+                string mimeType = "";
                 if (imageFile != null)
                 {
                     Rectangle cropArea = GetCropArea(y1, x1, h, w);
                     Image theImage = Image.FromStream(imageFile.InputStream, true, true);
                     Image croppedImage = _imageProcessor.Crop(theImage, cropArea);
                     croppedImage = _imageProcessor.ResizeImage(croppedImage, new Size { Height = 200, Width = 200 });
-                    imageData = _imageProcessor.GetJpegFromImage(croppedImage);
+                    if (imageFile.FileName.EndsWith(".png"))
+                    {
+                        imageData = _imageProcessor.GetPngFromImage(croppedImage);
+                        mimeType = "image/png";
+                    }
+                    else
+                    {
+                        imageData = _imageProcessor.GetJpegFromImage(croppedImage);
+                        mimeType = "image/jpeg";
+                    }                    
                 }
 
                 if (trophyModel.Trophy.Id == 0)
                 {
-                    DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, "image/jpeg", trophyModel.CurrentCampaignOnly);
+                    DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, mimeType, trophyModel.CurrentCampaignOnly);
                 }
                 else
                 {

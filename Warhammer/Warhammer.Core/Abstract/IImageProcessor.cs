@@ -10,5 +10,6 @@ namespace Warhammer.Core.Abstract
         Image ResizeImage(Image imgToResize, Size destinationSize);
         byte[] GetJpegFromImage(Image image);
         Image Crop(Image image, Rectangle cropArea);
+        byte[] GetPngFromImage(Image image);
     }
 }
