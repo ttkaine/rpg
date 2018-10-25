@@ -10,6 +10,8 @@ namespace Warhammer.Mvc.Models
     {
         public int PageId { get; set; }
         public string Title { get; set; }
+        public bool IsStartDate { get; set; }
+
         public GameDate DisplayDate;
         public string EditableDate { get; set; }
     }

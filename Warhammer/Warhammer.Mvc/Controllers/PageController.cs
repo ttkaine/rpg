@@ -480,7 +480,7 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
-        public ActionResult GameDate(int id)
+        public ActionResult GameDate(int id, bool isStartDate = false)
         {
             Page page = DataProvider.GetPage(id);
             if ((page != null && (page is Session || page is Arc)) || id == 0)
@@ -496,8 +496,16 @@ namespace Warhammer.Mvc.Controllers
                     }
                     if (page is Arc)
                     {
-                        model.Title = "Current Arc Date";
-                        model.Date = ((Arc) page).CurrentGameDate;
+                        if (isStartDate)
+                        {
+                            model.Title = "Arc Start Date";
+                            model.Date = ((Arc)page).StartGameDate;
+                        }
+                        else
+                        {
+                            model.Title = "Current Arc Date";
+                            model.Date = ((Arc)page).CurrentGameDate;
+                        }
                     }
                 }
                 else
@@ -518,13 +526,14 @@ namespace Warhammer.Mvc.Controllers
 
         }
 
-        public ActionResult EditGameDate(int id)
+        public ActionResult EditGameDate(int id, bool isStartDate = false)
         {
             Page page = DataProvider.GetPage(id);
             if (page != null && (page is Session || page is Arc))
             {
                 EditDateViewModel model = new EditDateViewModel();
                 model.PageId = page.Id;
+                model.IsStartDate = isStartDate;
 
                 if (page is Session)
                 {
@@ -532,9 +541,17 @@ namespace Warhammer.Mvc.Controllers
                     model.DisplayDate = ((Session) page).GameDate;
                 }
                 if (page is Arc)
-                {
-                    model.Title = "Current Arc Date";
-                    model.DisplayDate = ((Arc) page).CurrentGameDate;
+                {                    
+                    if (isStartDate)
+                    {
+                        model.Title = "Arc Start Date";
+                        model.DisplayDate = ((Arc)page).StartGameDate;
+                    }
+                    else
+                    {
+                        model.Title = "Current Arc Date";
+                        model.DisplayDate = ((Arc)page).CurrentGameDate;
+                    }                    
                 }
 
                 if (model.DisplayDate == null)
@@ -557,10 +574,10 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataProvider.SaveDate(model.PageId, model.EditableDate.ToWarhammerGameDate());
+                DataProvider.SaveDate(model.PageId, model.EditableDate.ToWarhammerGameDate(), model.IsStartDate);
             }
 
-            return RedirectToAction("Index", new { id = model.PageId });
+            return RedirectToAction("EditGameDate", new { id = model.PageId, isStartDate = model.IsStartDate });
         }
 
     }

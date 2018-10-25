@@ -139,10 +139,10 @@
 
             @if (Model is Person)
             {
-                @Html.Action("DetailsPanel", "Person", new { id = Model.Id })
-                @Html.Action("AssetsPanel", "Person", new { id = Model.Id })
+                @Html.Action("DetailsPanel", "Person", new {id = Model.Id})
+                @Html.Action("AssetsPanel", "Person", new {id = Model.Id})
                 Person person = Model as Person;
-                @Html.Action("ViewStats", "Person", new { personId = person.Id })
+                @Html.Action("ViewStats", "Person", new {personId = person.Id})
                 if (User.IsInRole("Admin"))
                 {
                     <h1>Points Value: @person.PointsValue</h1>
@@ -154,7 +154,7 @@
                     <ul>
                         @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
                         {
-                            <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
+                            <li>@Html.ActionLink(log.ShortName, "Index", new {id = log.Id})</li>
                         }
                     </ul>
                     <div class="clearfix"></div>
@@ -166,8 +166,8 @@
                 SessionLog log = Model as SessionLog;
                 <ul>
                     <li>
-                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
-                        @Html.ActionLink(log.Session.FullName, "Index", new { id = log.Session.Id }) (@Html.ActionLink(log.Session.ShortName, "Index", new { id = log.Session.Id }))
+                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image"/></a>
+                        @Html.ActionLink(log.Session.FullName, "Index", new {id = log.Session.Id}) (@Html.ActionLink(log.Session.ShortName, "Index", new {id = log.Session.Id}))
 
                     </li>
                 </ul>
@@ -180,13 +180,13 @@
 
                 if (ViewBag.ShowTextSessionLink != null && ViewBag.ShowTextSessionLink)
                 {
-                    @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
-                    @Html.ActionLink("Download Transcript", "TextLog", "Roleplay", new { id = Model.Id }, new { @class = "btn btn-default btn-block" })
+                    @Html.ActionLink("Go To Text Session", "Index", "Roleplay", new {id = Model.Id}, new {@class = "btn btn-success btn-block"})
+                    @Html.ActionLink("Download Transcript", "TextLog", "Roleplay", new {id = Model.Id}, new {@class = "btn btn-default btn-block"})
                 }
 
                 if (session.IsTextSession && !session.IsClosed)
                 {
-                    @Html.Action("PlayerSessionControls", "Page", new { id = Model.Id })
+                    @Html.Action("PlayerSessionControls", "Page", new {id = Model.Id})
                 }
 
                 if (session.PlayerCharacters.Any())
@@ -196,7 +196,7 @@
                         @foreach (Person person in session.PlayerCharacters)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a>
                             </li>
                         }
                     </ul>
@@ -211,7 +211,7 @@
                         @foreach (Person person in session.Npcs)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/></a>
                             </li>
                         }
                     </ul>
@@ -228,9 +228,9 @@
                             <li>
                                 <div class="profile-container">
 
-                                    @Html.ActionLink(log.FullName, "Index", new { id = log.Id })
+                                    @Html.ActionLink(log.FullName, "Index", new {id = log.Id})
                                     by
-                                    @Html.ActionLink(log.Person.FullName, "Index", new { id = log.Person.Id })
+                                    @Html.ActionLink(log.Person.FullName, "Index", new {id = log.Person.Id})
                                 </div>
                             </li>
                         }
@@ -252,7 +252,7 @@
                     <ul>
                         @while (parent != null)
                         {
-                            <li>@Html.ActionLink(parent.FullName, "Index", new { id = parent.Id })</li>
+                            <li>@Html.ActionLink(parent.FullName, "Index", new {id = parent.Id})</li>
                             parent = parent.Parent;
                         }
                     </ul>
@@ -265,13 +265,13 @@
                         @foreach (Place childPlace in place.Child)
                         {
                             <li>
-                                @Html.ActionLink(childPlace.FullName, "Index", new { id = childPlace.Id })
+                                @Html.ActionLink(childPlace.FullName, "Index", new {id = childPlace.Id})
                                 @if (childPlace.Child.Any())
                                 {
                                     <ul>
                                         @foreach (Place grandchildPlace in childPlace.Child)
                                         {
-                                            <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new { id = grandchildPlace.Id })</li>
+                                            <li>@Html.ActionLink(grandchildPlace.FullName, "Index", new {id = grandchildPlace.Id})</li>
                                         }
                                     </ul>
                                 }
@@ -280,7 +280,7 @@
                         }
                     </ul>
 
-                    @Html.Action("RumoursForPlace", "Rumour", new { placeId = Model.Id })
+                    @Html.Action("RumoursForPlace", "Rumour", new {placeId = Model.Id})
                     <div class="clearfix"></div>
                 }
             }
@@ -292,15 +292,27 @@
 
             @if (!ViewBag.EditMode)
             {
-                @Html.Action("RelatedLinks", "Page", new { id = Model.Id })
+                @Html.Action("RelatedLinks", "Page", new {id = Model.Id})
             }
         </div>
 
+        @if (Model is Arc)
+        {
+            if (ViewBag.EditMode)
+            {
+                @Html.Action("EditGameDate", "Page", new {id = Model.Id, isStartDate = true})
+            }
+            else
+            {
+                @Html.Action("GameDate", "Page", new {id = Model.Id, isStartDate = true})
+            }
+        }
+
         <div class="content-block">
-            <h3>Comments</h3>
-            @Html.Action("Index", "Comment", new { id = Model.Id })
+                <h3>Comments</h3>
+                @Html.Action("Index", "Comment", new { id = Model.Id })
+            </div>
         </div>
-    </div>
 
 
 </div>

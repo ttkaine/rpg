@@ -209,6 +209,6 @@ namespace Warhammer.Core.Abstract
         List<CampaignDetail> GetPermittedCampaigns();
         List<PageToggleModel> GetSuggestedPageLinksForNewSession();
         Arc GetArc(int id);
-        void SaveDate(int pageId, GameDate date);
+        void SaveDate(int pageId, GameDate date, bool isStartDate);
     }
 }

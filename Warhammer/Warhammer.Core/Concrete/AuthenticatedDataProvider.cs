@@ -3040,7 +3040,7 @@ namespace Warhammer.Core.Concrete
             return _repository.Arcs().FirstOrDefault(a => a.Id == id);
         }
 
-        public void SaveDate(int pageId, GameDate date)
+        public void SaveDate(int pageId, GameDate date, bool isStartDate)
         {
             Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
             if (page != null && (page is Session || page is Arc) && date != null)
@@ -3048,15 +3048,31 @@ namespace Warhammer.Core.Concrete
                 if (page is Arc)
                 {
                     Arc arc = (Arc)page;
-                    if (arc.CurrentGameDate != null)
+                    if (isStartDate)
                     {
-                        arc.CurrentGameDate.Year = date.Year;
-                        arc.CurrentGameDate.Month = date.Month;
-                        arc.CurrentGameDate.Day = date.Day;
+                        if (arc.StartGameDate != null)
+                        {
+                            arc.StartGameDate.Year = date.Year;
+                            arc.StartGameDate.Month = date.Month;
+                            arc.StartGameDate.Day = date.Day;
+                        }
+                        else
+                        {
+                            arc.StartGameDate = date;
+                        }
                     }
                     else
                     {
-                        arc.CurrentGameDate = date;
+                        if (arc.CurrentGameDate != null)
+                        {
+                            arc.CurrentGameDate.Year = date.Year;
+                            arc.CurrentGameDate.Month = date.Month;
+                            arc.CurrentGameDate.Day = date.Day;
+                        }
+                        else
+                        {
+                            arc.CurrentGameDate = date;
+                        }
                     }
                 }
 
