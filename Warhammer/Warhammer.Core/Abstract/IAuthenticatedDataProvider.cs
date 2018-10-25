@@ -211,6 +211,6 @@ namespace Warhammer.Core.Abstract
         Arc GetArc(int id);
         void SaveDate(int pageId, GameDate date, bool isStartDate);
         List<Session> AllSessions();
-        void SetSessionArc(int arcId, int sessionId);
+        void SetSessionArc(int? arcId, int sessionId);
     }
 }

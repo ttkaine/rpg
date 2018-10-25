@@ -3100,14 +3100,14 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<Session>().OrderBy(s => s.DateTime).ToList();
         }
 
-        public void SetSessionArc(int arcId, int sessionId)
+        public void SetSessionArc(int? arcId, int sessionId)
         {
             Arc arc = _repository.Arcs().FirstOrDefault(a => a.Id == arcId);
             Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
 
-            if (arc != null && session != null)
+            if (session != null)
             {
-                session.ArcId = arc.Id;
+                session.ArcId = arc?.Id;
                 _repository.Save(session);
             }
         }

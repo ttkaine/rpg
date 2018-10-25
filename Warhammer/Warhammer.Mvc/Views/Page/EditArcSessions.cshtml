@@ -8,9 +8,9 @@
 
     <div class="main-content">
         <div class="content-block">
-            <h2>Edit Arc Sessions For @Html.ActionLink(Model.ArcTitle, "Index", "Page", new {id = Model.ArcId}, null)</h2>
+            <h2>Edit Arc Sessions For @Html.ActionLink(Model.ArcTitle, "Index", "Page", new { id = Model.ArcId }, null)</h2>
             <p>Add and remove sessions for this story arc.</p>
-            
+
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
@@ -41,15 +41,37 @@
                 </div>
             }
 
+            <h3>Current Sessions</h3>
+
             @foreach (SessionLinkItemViewModel session in Model.CurrentSessions)
             {
-                <p>@session.ShortName</p>
+
+                using (Html.BeginForm("RemoveSessionFromArc", "Page", FormMethod.Post))
+                {
+                    <div class="form-horizontal">
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("id", Model.ArcId)
+                        @Html.Hidden("sessionId", session.SessionId)
+
+                        <div class="form-group">
+                            <label class="control-label col-md-8">
+                                @session.FullName (@session.ShortName)
+                            </label>
+                            <div class="col-md-4">
+                                <input type="submit" value="Remove" class="btn btn-block btn-danger" />
+                            </div>
+                        </div>
+                    </div>
+                }
             }
         </div>
+
     </div>
 
     <div class="side-bar">
         <div class="content-block">
+            <p>Story Arcs</p>
+            <p>For grouping together sessions.</p>
         </div>
     </div>
 </div>

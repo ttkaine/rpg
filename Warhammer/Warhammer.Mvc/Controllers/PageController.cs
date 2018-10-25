@@ -620,5 +620,22 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult RemoveSessionFromArc(int id, int sessionId)
+        {
+            if (IsEditMode)
+            {
+                Page session = DataProvider.GetPage(sessionId);
+                if (session is Session && session.Id == sessionId)
+                {
+                    DataProvider.SetSessionArc(null, session.Id);
+                }
+
+                return RedirectToAction("EditArcSessions", new { id });
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
