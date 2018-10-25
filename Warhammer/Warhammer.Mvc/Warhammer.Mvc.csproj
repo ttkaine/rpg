@@ -791,6 +791,7 @@
     <Content Include="Views\Page\ArcSessions.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SessionListItemViewModel.cshtml" />
     <Content Include="Views\Page\EditGameDate.cshtml" />
+    <Content Include="Views\Page\EditArcSessions.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

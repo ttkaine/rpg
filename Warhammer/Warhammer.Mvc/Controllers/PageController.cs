@@ -580,5 +580,11 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("EditGameDate", new { id = model.PageId, isStartDate = model.IsStartDate });
         }
 
+        public ActionResult EditArcSessions(int id)
+        {
+
+            return View();
+        }
+
     }
 }

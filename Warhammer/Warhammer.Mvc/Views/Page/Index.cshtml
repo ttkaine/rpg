@@ -285,9 +285,9 @@
                 }
             }
 
-            @if (Model is Arc)
+            @if (Model is Arc && ViewBag.EditMode)
             {
-
+                @Html.ActionLink("Edit Arc Sessions", "EditArcSessions", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
             }
 
             @if (!ViewBag.EditMode)
