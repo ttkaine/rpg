@@ -676,6 +676,22 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public EditArcSessionsViewModel MakeEditArcSessionsViewModel(Arc arc, List<Session> sessions)
+        {
+            EditArcSessionsViewModel model = new EditArcSessionsViewModel();
+            model.ArcId = arc.Id;
+            model.ArcTitle = arc.FullName;
+            if (string.IsNullOrWhiteSpace(model.ArcTitle))
+            {
+                model.ArcTitle = arc.ShortName;
+            }
+
+            model.CurrentSessions = sessions.Where(s => s.ArcId == arc.Id).Select(s => new SessionLinkItemViewModel(s)).ToList();
+            model.OtherSessions = sessions.Where(s => s.ArcId != arc.Id).Select(s => new SessionLinkItemViewModel(s)).ToList();
+
+            return model;
+        }
+
         private string GetSettingTitle(SettingSection section)
         {
             switch (section)

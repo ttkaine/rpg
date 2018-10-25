@@ -3095,6 +3095,23 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<Session> AllSessions()
+        {
+            return _repository.Pages().OfType<Session>().OrderBy(s => s.DateTime).ToList();
+        }
+
+        public void SetSessionArc(int arcId, int sessionId)
+        {
+            Arc arc = _repository.Arcs().FirstOrDefault(a => a.Id == arcId);
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+
+            if (arc != null && session != null)
+            {
+                session.ArcId = arc.Id;
+                _repository.Save(session);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

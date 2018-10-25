@@ -266,6 +266,7 @@
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\CreateSessionViewModel.cs" />
+    <Compile Include="Models\EditArcSessionsViewModel.cs" />
     <Compile Include="Models\EditDateViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
     <Compile Include="Models\EditTrophyViewModel.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Models\RelatedLinksModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionGmViewModel.cs" />
+    <Compile Include="Models\SessionLinkItemViewModel.cs" />
     <Compile Include="Models\SessionListItemViewModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
     <Compile Include="Models\SessionXpModel.cs" />

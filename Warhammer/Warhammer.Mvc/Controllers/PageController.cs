@@ -580,10 +580,44 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("EditGameDate", new { id = model.PageId, isStartDate = model.IsStartDate });
         }
 
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditArcSessions(int id)
         {
+            if (IsEditMode)
+            {
+                Arc arc = DataProvider.GetArc(id);
+                if (arc != null)
+                {
+                    List<Session> sessions = DataProvider.AllSessions();
+                    EditArcSessionsViewModel model = ModelFactory.MakeEditArcSessionsViewModel(arc, sessions);
 
-            return View();
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult EditArcSessions(EditArcSessionsViewModel model)
+        {
+            if (IsEditMode)
+            {
+                if (ModelState.IsValid)
+                {
+                    Arc arc = DataProvider.GetArc(model.ArcId);
+                    Page sessionToAdd = DataProvider.GetPage(model.AddSessionId ?? 0);
+                    if (arc != null && sessionToAdd != null && sessionToAdd is Session && arc.Sessions.All(s => s.Id != sessionToAdd.Id))
+                    {
+                        DataProvider.SetSessionArc(arc.Id, sessionToAdd.Id);
+                    }
+                }
+
+                return RedirectToAction("EditArcSessions", new { id = model.ArcId });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
     }

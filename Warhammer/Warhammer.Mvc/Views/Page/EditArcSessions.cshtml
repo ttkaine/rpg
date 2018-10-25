@@ -1,15 +1,50 @@
-﻿@{
+﻿@using Warhammer.Mvc.Models
+@model Warhammer.Mvc.Models.EditArcSessionsViewModel
+
+@{
     ViewBag.Title = "Edit Arc Sessions";
 }
 <div class="content-wrapper">
 
     <div class="main-content">
         <div class="content-block">
-            <h2>Edit Arc Sessions For TODO</h2>
+            <h2>Edit Arc Sessions For @Html.ActionLink(Model.ArcTitle, "Index", "Page", new {id = Model.ArcId}, null)</h2>
+            <p>Add and remove sessions for this story arc.</p>
             
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
+                <div class="form-horizontal">
 
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.ArcId)
+                    <div class="form-group">
+                        @Html.Label("Select a session:", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <select name="@Html.NameFor(m => m.AddSessionId)" id="selectArcSession" class="form-control add-session-dropdown">
+                                @foreach (SessionLinkItemViewModel session in Model.OtherSessions)
+                                {
+                                    <option value="@session.SessionId" data-is-in-arc="@session.IsInArc" data-current-arc-name="@session.CurrentArcName">
+                                        @session.ShortName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Add Session" class="btn btn-default" onclick="return confirmAddSession();" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @foreach (SessionLinkItemViewModel session in Model.CurrentSessions)
+            {
+                <p>@session.ShortName</p>
+            }
         </div>
     </div>
 
