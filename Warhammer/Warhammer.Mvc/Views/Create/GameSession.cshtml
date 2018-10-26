@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.Label("Select a Story Arc", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.Label("Select a Story Arc (leave blank to set from Arc or Campaign date)", htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-8">
                             @Html.DropDownListFor(m => Model.SelectedArcId, Model.Arcs, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => Model.SelectedArcId, "", new { @class = "text-danger" })

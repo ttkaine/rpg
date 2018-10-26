@@ -133,13 +133,21 @@ namespace Warhammer.Mvc.Controllers
                     model.Session.DateTime = DateTime.Now;
                 }
                 GameDate gameDate = model.GameDate?.ToWarhammerGameDate();
+                Arc arc = DataProvider.GetArc(model.SelectedArcId);
                 if (gameDate == null)
                 {
-                    CampaignDetail campaignDetail = DataProvider.GetCampaginDetails();
-                    DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
-                    gameDate = new GameDate() { Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date" };
+                    if (arc?.CurrentGameDate != null)
+                    {
+                        gameDate = new GameDate() {Year = arc.CurrentGameDate.Year, Month = arc.CurrentGameDate.Month, Day = arc.CurrentGameDate.Day, Comment = "Set from Arc Date"};
+                    }
+                    else
+                    {
+                        CampaignDetail campaignDetail = DataProvider.GetCampaginDetails();
+                        DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
+                        gameDate = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date"};
+                    }
                 }
-                Arc arc = DataProvider.GetArc(model.SelectedArcId);
+                
                 int sessionId = DataProvider.AddSession(model.Session.FullName, model.Session.ShortName, model.Session.Description, model.Session.DateTime.Value, model.Session.CreateWithPreviousCharacterList, model.LinkPages, gameDate, arc?.Id);
                 return RedirectToAction("Index", "Page", new { id = sessionId });
             }
