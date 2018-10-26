@@ -637,5 +637,36 @@ namespace Warhammer.Mvc.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult EditSessionArc(int id)
+        {
+            Page session = DataProvider.GetPage(id);
+            if (session != null && session is Session)
+            {
+                List<Arc> arcs = DataProvider.Arcs().ToList();
+                EditSessionArcViewModel model = ModelFactory.MakeEditSessionArcViewModel((Session) session, arcs);
+
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult UpdateSessionArc(EditSessionArcViewModel model)
+        {
+            if (IsEditMode && ModelState.IsValid)
+            {
+                Page session = DataProvider.GetPage(model.SessionId);
+                if (session != null && session is Session)
+                {
+                    Arc arc = DataProvider.GetArc(model.SelectedArcId);
+                    DataProvider.SetSessionArc(arc?.Id, session.Id);
+                }
+            }
+
+            return RedirectToAction("EditSessionArc", new { id = model.SessionId });
+        }
     }
 }

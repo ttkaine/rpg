@@ -7526,7 +7526,8 @@ textarea {
   margin: 0;
   padding: 0;
 }
-.date-panel {
+.date-panel,
+.session-arc-panel {
   font-size: 18px;
   border-radius: 10px;
   box-shadow: #333 5px 5px 15px;
@@ -7537,7 +7538,8 @@ textarea {
   margin: 0;
   padding: 0;
 }
-.edit-date-button {
+.edit-date-button,
+.edit-session-arc-button {
   display: block;
   width: calc(100% - 20px);
   margin: 0 10px 10px 10px;

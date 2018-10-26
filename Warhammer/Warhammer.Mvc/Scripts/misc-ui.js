@@ -20,3 +20,11 @@ function confirmAddSession()
 
     return true;
 }
+
+function showEditSessionArc()
+{
+    $("#sessionArcDisplayPanel").slideUp(400);
+    $("#sessionArcEditPanel").slideDown(400);
+    $("#btnShowEditSessionArc").css("display", "none");
+    $("#btnUpdateSessionArc").css("display", "block");
+}

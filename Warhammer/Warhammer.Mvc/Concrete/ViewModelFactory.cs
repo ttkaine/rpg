@@ -692,6 +692,26 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public EditSessionArcViewModel MakeEditSessionArcViewModel(Session session, List<Arc> arcs)
+        {
+            EditSessionArcViewModel model = new EditSessionArcViewModel();
+            model.SessionId = session.Id;
+
+            arcs.Insert(0, new Arc() { Id = 0, ShortName = "None", FullName = "None" });
+            model.Arcs = new SelectList(arcs, "Id", "FullName");
+
+            int selectedId = session.ArcId ?? 0;
+            if (arcs.All(a => a.Id != selectedId))
+            {
+                selectedId = 0;
+            }
+
+            model.SelectedArcId = selectedId;
+            model.CurrentArcTitle = session.Arc?.FullName ?? "None Selected";
+
+            return model;
+        }
+
         private string GetSettingTitle(SettingSection section)
         {
             switch (section)

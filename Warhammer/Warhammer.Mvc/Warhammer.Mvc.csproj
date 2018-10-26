@@ -270,6 +270,7 @@
     <Compile Include="Models\EditArcSessionsViewModel.cs" />
     <Compile Include="Models\EditDateViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
+    <Compile Include="Models\EditSessionArcViewModel.cs" />
     <Compile Include="Models\EditTrophyViewModel.cs" />
     <Compile Include="Models\ExternalLinkModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
@@ -796,6 +797,7 @@
     <Content Include="Views\Page\EditGameDate.cshtml" />
     <Content Include="Views\Page\EditArcSessions.cshtml" />
     <Content Include="Views\Home\Arcs.cshtml" />
+    <Content Include="Views\Page\EditSessionArc.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

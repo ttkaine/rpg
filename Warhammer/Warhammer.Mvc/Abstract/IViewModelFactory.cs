@@ -23,5 +23,6 @@ namespace Warhammer.Mvc.Abstract
         TrophyNominationViewModel MakeTrophyNominationViewModel(Person person, List<SelectItem> trophies, List<AwardNomination> nominations);
         ArcSessionsViewModel MakeArcSessionsViewModel(Arc arc);
         EditArcSessionsViewModel MakeEditArcSessionsViewModel(Arc arc, List<Session> sessions);
+        EditSessionArcViewModel MakeEditSessionArcViewModel(Session session, List<Arc> arcs);
     }
 }
