@@ -108,13 +108,18 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult GameSession()
         {
+            List<Arc> arcs = DataProvider.Arcs().OrderByDescending(a => a.CurrentGameDate.Year).ThenByDescending(a => a.CurrentGameDate.Month).ThenByDescending(a => a.CurrentGameDate.Day).ToList();
             List<PageToggleModel> suggestedPageLinks = DataProvider.GetSuggestedPageLinksForNewSession();
             CreateSessionViewModel model = new CreateSessionViewModel
             {
                 Session = new Session(),
                 LinkPages = suggestedPageLinks
             };
-            
+
+            arcs.Insert(0, new Arc() { Id = 0, ShortName = "None", FullName = "None" });
+            model.Arcs = new SelectList(arcs, "Id", "FullName");
+            model.SelectedArcId = 0;
+
             return View(model);
         }
 
@@ -134,8 +139,8 @@ namespace Warhammer.Mvc.Controllers
                     DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
                     gameDate = new GameDate() { Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date" };
                 }
-
-                int sessionId = DataProvider.AddSession(model.Session.FullName, model.Session.ShortName, model.Session.Description, model.Session.DateTime.Value, model.Session.CreateWithPreviousCharacterList, model.LinkPages, gameDate);
+                Arc arc = DataProvider.GetArc(model.SelectedArcId);
+                int sessionId = DataProvider.AddSession(model.Session.FullName, model.Session.ShortName, model.Session.Description, model.Session.DateTime.Value, model.Session.CreateWithPreviousCharacterList, model.LinkPages, gameDate, arc?.Id);
                 return RedirectToAction("Index", "Page", new { id = sessionId });
             }
 
