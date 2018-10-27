@@ -10,5 +10,6 @@ namespace Warhammer.Mvc.Models
     {
         public string Title { get; set; }
         public GameDate Date { get; set; }
+        public bool UseWarhammerDate { get; set; }
     }
 }

@@ -3570,12 +3570,6 @@ namespace Warhammer.Core.Concrete
                     .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id).ToList();
         }
 
-        [Obsolete("Seriously... just no...", true)]
-        public List<Session> ModifiedTextSessions()
-        {           
-            return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
-        }
-
         public bool SiteHasFeature(Feature featureName)
         {
             return _feature.SiteHasFeature(featureName);

@@ -466,66 +466,87 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ArcSessions(int id)
         {
-            Arc arc = DataProvider.GetArc(id);
-            if (arc != null)
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);
-                foreach (SessionListItemViewModel session in model.Sessions)
+                Arc arc = DataProvider.GetArc(id);
+                if (arc != null)
                 {
-                    session.LogButtonPerson = session.People.FirstOrDefault(p => p.PlayerId.HasValue && p.SessionLogs.All(l => l.SessionId != session.Id) && p.Player.UserName == User.Identity.Name);
-                }
+                    ArcSessionsViewModel model = ModelFactory.MakeArcSessionsViewModel(arc);
+                    foreach (SessionListItemViewModel session in model.Sessions)
+                    {
+                        session.LogButtonPerson =
+                            session.People.FirstOrDefault(
+                                p =>
+                                    p.PlayerId.HasValue && p.SessionLogs.All(l => l.SessionId != session.Id) &&
+                                    p.Player.UserName == User.Identity.Name);
+                    }
 
-                return PartialView(model);
+                    return PartialView(model);
+                }
             }
             return null;
         }
 
         public ActionResult GameDate(int id, bool isStartDate = false)
         {
-            Page page = DataProvider.GetPage(id);
-            if ((page != null && (page is Session || page is Arc)) || id == 0)
+            if (DataProvider.SiteHasFeature(Feature.ShowGameDate))
             {
-                GameDateViewModel model = new GameDateViewModel();
-
-                if (page != null)
+                Page page = DataProvider.GetPage(id);
+                if ((page != null && (page is Session || page is Arc)) || id == 0)
                 {
-                    if (page is Session)
+                    GameDateViewModel model = new GameDateViewModel();
+
+                    if (page != null)
                     {
-                        model.Title = "Session Date";
-                        model.Date = ((Session) page).GameDate;
+                        if (page is Session)
+                        {
+                            model.Title = "Session Date";
+                            model.Date = ((Session) page).GameDate;
+                        }
+                        if (page is Arc)
+                        {
+                            if (isStartDate)
+                            {
+                                model.Title = "Arc Start Date";
+                                model.Date = ((Arc) page).StartGameDate;
+                            }
+                            else
+                            {
+                                model.Title = "Current Arc Date";
+                                model.Date = ((Arc) page).CurrentGameDate;
+                            }
+                        }
                     }
-                    if (page is Arc)
+                    else
                     {
-                        if (isStartDate)
-                        {
-                            model.Title = "Arc Start Date";
-                            model.Date = ((Arc)page).StartGameDate;
-                        }
-                        else
-                        {
-                            model.Title = "Current Arc Date";
-                            model.Date = ((Arc)page).CurrentGameDate;
-                        }
+                        model.Title = "Current Game Date";
                     }
-                }
-                else
-                {
-                    model.Title = "Current Game Date";
-                }
 
-                if (model.Date == null)
-                {
-                    CampaignDetail campaign = DataProvider.GetCampaginDetails();
-                    DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
-                    model.Date = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "From Campaign Date"};
-                }
+                    if (model.Date == null)
+                    {
+                        CampaignDetail campaign = DataProvider.GetCampaginDetails();
+                        DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
+                        model.Date = new GameDate()
+                        {
+                            Year = date.Year,
+                            Month = date.Month,
+                            Day = date.Day,
+                            Comment = "From Campaign Date"
+                        };
+                    }
 
-                return PartialView(model);
+                    if (DataProvider.SiteHasFeature(Feature.WarhammerDate))
+                    {
+                        model.UseWarhammerDate = true;
+                    }
+
+                    return PartialView(model);
+                }
             }
             return null;
-
         }
 
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditGameDate(int id, bool isStartDate = false)
         {
             Page page = DataProvider.GetPage(id);
@@ -583,18 +604,20 @@ namespace Warhammer.Mvc.Controllers
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditArcSessions(int id)
         {
-            if (IsEditMode)
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                Arc arc = DataProvider.GetArc(id);
-                if (arc != null)
+                if (IsEditMode)
                 {
-                    List<Session> sessions = DataProvider.AllSessions();
-                    EditArcSessionsViewModel model = ModelFactory.MakeEditArcSessionsViewModel(arc, sessions);
+                    Arc arc = DataProvider.GetArc(id);
+                    if (arc != null)
+                    {
+                        List<Session> sessions = DataProvider.AllSessions();
+                        EditArcSessionsViewModel model = ModelFactory.MakeEditArcSessionsViewModel(arc, sessions);
 
-                    return View(model);
+                        return View(model);
+                    }
                 }
             }
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -602,21 +625,24 @@ namespace Warhammer.Mvc.Controllers
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditArcSessions(EditArcSessionsViewModel model)
         {
-            if (IsEditMode)
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                if (ModelState.IsValid)
+                if (IsEditMode)
                 {
-                    Arc arc = DataProvider.GetArc(model.ArcId);
-                    Page sessionToAdd = DataProvider.GetPage(model.AddSessionId ?? 0);
-                    if (arc != null && sessionToAdd != null && sessionToAdd is Session && arc.Sessions.All(s => s.Id != sessionToAdd.Id))
+                    if (ModelState.IsValid)
                     {
-                        DataProvider.SetSessionArc(arc.Id, sessionToAdd.Id);
+                        Arc arc = DataProvider.GetArc(model.ArcId);
+                        Page sessionToAdd = DataProvider.GetPage(model.AddSessionId ?? 0);
+                        if (arc != null && sessionToAdd != null && sessionToAdd is Session &&
+                            arc.Sessions.All(s => s.Id != sessionToAdd.Id))
+                        {
+                            DataProvider.SetSessionArc(arc.Id, sessionToAdd.Id);
+                        }
                     }
+
+                    return RedirectToAction("EditArcSessions", new {id = model.ArcId});
                 }
-
-                return RedirectToAction("EditArcSessions", new { id = model.ArcId });
             }
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -624,30 +650,35 @@ namespace Warhammer.Mvc.Controllers
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult RemoveSessionFromArc(int id, int sessionId)
         {
-            if (IsEditMode)
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                Page session = DataProvider.GetPage(sessionId);
-                if (session is Session && session.Id == sessionId)
+                if (IsEditMode)
                 {
-                    DataProvider.SetSessionArc(null, session.Id);
+                    Page session = DataProvider.GetPage(sessionId);
+                    if (session is Session && session.Id == sessionId)
+                    {
+                        DataProvider.SetSessionArc(null, session.Id);
+                    }
+
+                    return RedirectToAction("EditArcSessions", new {id});
                 }
-
-                return RedirectToAction("EditArcSessions", new { id });
             }
-
             return RedirectToAction("Index", "Home");
         }
 
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditSessionArc(int id)
         {
-            Page session = DataProvider.GetPage(id);
-            if (session != null && session is Session)
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                List<Arc> arcs = DataProvider.Arcs().ToList();
-                EditSessionArcViewModel model = ModelFactory.MakeEditSessionArcViewModel((Session) session, arcs);
+                Page session = DataProvider.GetPage(id);
+                if (session != null && session is Session)
+                {
+                    List<Arc> arcs = DataProvider.Arcs().ToList();
+                    EditSessionArcViewModel model = ModelFactory.MakeEditSessionArcViewModel((Session) session, arcs);
 
-                return PartialView(model);
+                    return PartialView(model);
+                }
             }
             return null;
         }
@@ -656,16 +687,18 @@ namespace Warhammer.Mvc.Controllers
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult UpdateSessionArc(EditSessionArcViewModel model)
         {
-            if (IsEditMode && ModelState.IsValid)
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                Page session = DataProvider.GetPage(model.SessionId);
-                if (session != null && session is Session)
+                if (IsEditMode && ModelState.IsValid)
                 {
-                    Arc arc = DataProvider.GetArc(model.SelectedArcId);
-                    DataProvider.SetSessionArc(arc?.Id, session.Id);
+                    Page session = DataProvider.GetPage(model.SessionId);
+                    if (session != null && session is Session)
+                    {
+                        Arc arc = DataProvider.GetArc(model.SelectedArcId);
+                        DataProvider.SetSessionArc(arc?.Id, session.Id);
+                    }
                 }
             }
-
             return RedirectToAction("EditSessionArc", new { id = model.SessionId });
         }
     }

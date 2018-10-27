@@ -78,8 +78,6 @@ namespace Warhammer.Core.Abstract
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();
 		List<Session> MyOpenTextSessions();
-        [Obsolete("Seriously... just no...", true)]
-        List<Session> ModifiedTextSessions();
         bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);

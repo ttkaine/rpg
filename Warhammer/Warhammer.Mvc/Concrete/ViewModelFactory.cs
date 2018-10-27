@@ -834,12 +834,15 @@ namespace Warhammer.Mvc.Concrete
 
             if (_data.SiteHasFeature(Feature.SessionPage))
             {
-                items.Add(new MenuItemViewModel
+                if (_data.SiteHasFeature(Feature.SessionArcs))
                 {
-                    Name = "Story Arcs",
-                    Url = _urlHelper.Action("Arcs", "Home"),
-                    IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
-                });
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Story Arcs",
+                        Url = _urlHelper.Action("Arcs", "Home"),
+                        IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
+                    });
+                }
 
                 items.Add(new MenuItemViewModel
                 {
