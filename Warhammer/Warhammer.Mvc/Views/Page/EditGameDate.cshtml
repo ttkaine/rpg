@@ -1,0 +1,27 @@
+﻿@using Warhammer.Core.Extensions
+@model Warhammer.Mvc.Models.EditDateViewModel
+
+<div id="gameDateEditorPanel@(Model.IsStartDate ? "2" : "1")" class="panel panel-info date-panel @(Model.IsStartDate ? "start-date" : "current-date")">
+    @using (Ajax.BeginForm("UpdateGameDate", "Page", new AjaxOptions() { InsertionMode = InsertionMode.ReplaceWith, UpdateTargetId = "gameDateEditorPanel" + (Model.IsStartDate ? "2" : "1") }))
+    {
+        @Html.HiddenFor(m => Model.PageId)
+        @Html.HiddenFor(m => Model.IsStartDate)
+
+        <div class="panel panel-info DisplayDatePanel">
+            <div class="panel-heading">@Model.Title</div>
+            <div class="panel-body">The @Model.DisplayDate.ToWarhammerDateString()</div>
+            <div class="panel-footer">@Model.DisplayDate.ToRealDateString()</div>
+        </div>
+        <div class="panel panel-info EditDatePanel" style="display: none;">
+            <div class="panel-heading">Edit @Model.Title</div>
+            <div class="panel-body">
+                @Html.EditorFor(model => Model.EditableDate, new { htmlAttributes = new { @class = "form-control" }})
+            </div>
+        </div>
+        <div class="panel-button">
+            <button class="edit-date-button btn btn-success ShowEditDateButton" type="button" onclick="showEditDate('gameDateEditorPanel@(Model.IsStartDate ? "2" : "1")');">Edit @Model.Title</button>
+            <button class="edit-date-button btn btn-success SubmitDateButton" type="submit" style="display: none;">Update</button>
+        </div>
+    }
+</div>
+

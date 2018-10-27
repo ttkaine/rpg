@@ -1,0 +1,19 @@
+﻿@using Warhammer.Core.Extensions
+@model Warhammer.Mvc.Models.GameDateViewModel
+
+@if (Model.UseWarhammerDate)
+{
+    <div class="panel panel-info date-panel">
+        <div class="panel-heading">@Model.Title</div>
+        <div class="panel-body">The @Model.Date.ToWarhammerDateString()</div>
+        <div class="panel-footer">@Model.Date.ToRealDateString()</div>
+    </div>
+}
+else
+{
+    <div class="panel panel-info date-panel">
+        <div class="panel-heading">@Model.Title</div>
+        <div class="panel-body">The @Model.Date.ToRealDateString()</div>
+    </div>
+}
+

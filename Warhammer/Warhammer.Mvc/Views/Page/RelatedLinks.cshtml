@@ -1,6 +1,7 @@
-﻿@model Warhammer.Mvc.Models.RelatedLinksModel
+﻿@using Warhammer.Core.Entities
+@model Warhammer.Mvc.Models.RelatedLinksModel
 
-@if (Model.Sessions.Any())
+@if (Model.Sessions.Any() && !(Model.Owner is Arc))
 {
     <h3>Sessions</h3>
     <ul>
@@ -24,11 +25,15 @@
     </ul>
     <div class="clearfix"></div>
 }
-@if (Model.Others.Any())
+@if (Model.Others.Any() || (Model.Sessions.Any() && Model.Owner is Arc))
 {
     <h3>Related Pages</h3>
     <ul>
         @Html.DisplayFor(m => Model.Others)
+        @if (Model.Owner is Arc)
+        {
+            @Html.DisplayFor(m => m.Sessions)
+        }
     </ul>
     <div class="clearfix"></div>
 }
@@ -39,4 +44,9 @@
         @Html.DisplayFor(m => Model.SessionLogs)
     </ul>
     <div class="clearfix"></div>
+}
+@if (!Model.Sessions.Any() && !Model.SessionLogs.Any() && !Model.People.Any() && !Model.Places.Any() && !Model.Others.Any())
+{
+    <h3>Isolated</h3>
+    <p>This page does not have any related links.</p>
 }

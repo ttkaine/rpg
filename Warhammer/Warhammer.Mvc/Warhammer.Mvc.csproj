@@ -258,13 +258,19 @@
     <Compile Include="JsonObjects\JsonResponseWithPostCollection.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
+    <Compile Include="Models\ArcListItemViewModel.cs" />
+    <Compile Include="Models\ArcSessionsViewModel.cs" />
     <Compile Include="Models\ChangePersonPlayerViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
+    <Compile Include="Models\CreateArcViewModel.cs" />
     <Compile Include="Models\CreateOrganisationViewModel.cs" />
     <Compile Include="Models\CreatePlaceViewModel.cs" />
     <Compile Include="Models\CreateSessionLogViewModel.cs" />
     <Compile Include="Models\CreateSessionViewModel.cs" />
+    <Compile Include="Models\EditArcSessionsViewModel.cs" />
+    <Compile Include="Models\EditDateViewModel.cs" />
     <Compile Include="Models\EditLinksViewModel.cs" />
+    <Compile Include="Models\EditSessionArcViewModel.cs" />
     <Compile Include="Models\EditTrophyViewModel.cs" />
     <Compile Include="Models\ExternalLinkModel.cs" />
     <Compile Include="Models\ExtractedImage.cs" />
@@ -272,6 +278,7 @@
     <Compile Include="Models\FateStatsViewModel.cs" />
     <Compile Include="Models\FateStuntsViewModel.cs" />
     <Compile Include="Models\FateStuntViewModel.cs" />
+    <Compile Include="Models\GameDateViewModel.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
@@ -288,6 +295,8 @@
     <Compile Include="Models\RelatedLinksModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionGmViewModel.cs" />
+    <Compile Include="Models\SessionLinkItemViewModel.cs" />
+    <Compile Include="Models\SessionListItemViewModel.cs" />
     <Compile Include="Models\SessionTranscriptViewModel.cs" />
     <Compile Include="Models\SessionXpModel.cs" />
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
@@ -572,6 +581,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\list.js" />
+    <Content Include="Scripts\misc-ui.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -780,6 +790,15 @@
     <Content Include="Views\Page\GetShowLocalButton.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ExternalLinkModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PageToggleModel.cshtml" />
+    <Content Include="Views\Create\Arc.cshtml" />
+    <Content Include="Views\Page\GameDate.cshtml" />
+    <Content Include="Views\Page\ArcSessions.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SessionListItemViewModel.cshtml" />
+    <Content Include="Views\Page\EditGameDate.cshtml" />
+    <Content Include="Views\Page\EditArcSessions.cshtml" />
+    <Content Include="Views\Home\Arcs.cshtml" />
+    <Content Include="Views\Page\EditSessionArc.cshtml" />
+    <Content Include="Views\Page\ArcPanel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

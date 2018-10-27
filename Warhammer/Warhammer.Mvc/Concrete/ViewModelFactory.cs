@@ -293,6 +293,12 @@ namespace Warhammer.Mvc.Concrete
 
             menu.Add(new MenuItemViewModel
             {
+                Name = "New Story Arc",
+                Url = _urlHelper.Action("Arc", "Create")
+            });
+
+            menu.Add(new MenuItemViewModel
+            {
                 Name = "New Session",
                 Url = _urlHelper.Action("GameSession", "Create")
             });
@@ -661,6 +667,51 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
+        public ArcSessionsViewModel MakeArcSessionsViewModel(Arc arc)
+        {
+            ArcSessionsViewModel model = new ArcSessionsViewModel()
+            {
+                Sessions = arc.Sessions.OrderBy(s => (s.DateTime ?? DateTime.MinValue)).Select(s => new SessionListItemViewModel(s)).ToList()
+            };
+            return model;
+        }
+
+        public EditArcSessionsViewModel MakeEditArcSessionsViewModel(Arc arc, List<Session> sessions)
+        {
+            EditArcSessionsViewModel model = new EditArcSessionsViewModel();
+            model.ArcId = arc.Id;
+            model.ArcTitle = arc.FullName;
+            if (string.IsNullOrWhiteSpace(model.ArcTitle))
+            {
+                model.ArcTitle = arc.ShortName;
+            }
+
+            model.CurrentSessions = sessions.Where(s => s.ArcId == arc.Id).Select(s => new SessionLinkItemViewModel(s)).ToList();
+            model.OtherSessions = sessions.Where(s => s.ArcId != arc.Id).Select(s => new SessionLinkItemViewModel(s)).ToList();
+
+            return model;
+        }
+
+        public EditSessionArcViewModel MakeEditSessionArcViewModel(Session session, List<Arc> arcs)
+        {
+            EditSessionArcViewModel model = new EditSessionArcViewModel();
+            model.SessionId = session.Id;
+
+            arcs.Insert(0, new Arc() { Id = 0, ShortName = "None", FullName = "None" });
+            model.Arcs = new SelectList(arcs, "Id", "FullName");
+
+            int selectedId = session.ArcId ?? 0;
+            if (arcs.All(a => a.Id != selectedId))
+            {
+                selectedId = 0;
+            }
+
+            model.SelectedArcId = selectedId;
+            model.CurrentArcTitle = session.Arc?.FullName ?? "None Selected";
+
+            return model;
+        }
+
         private string GetSettingTitle(SettingSection section)
         {
             switch (section)
@@ -783,6 +834,16 @@ namespace Warhammer.Mvc.Concrete
 
             if (_data.SiteHasFeature(Feature.SessionPage))
             {
+                if (_data.SiteHasFeature(Feature.SessionArcs))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Story Arcs",
+                        Url = _urlHelper.Action("Arcs", "Home"),
+                        IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
+                    });
+                }
+
                 items.Add(new MenuItemViewModel
                 {
                     Name = "Sessions",

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using NUnit.Framework;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
@@ -103,8 +104,19 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Sessions()
         {
-            List<Session> sessions = DataProvider.Sessions().OrderByDescending(s => s.DateTime).ToList();
+            List<SessionListItemViewModel> sessions = DataProvider.Sessions().OrderByDescending(s => s.DateTime).Select(s => new SessionListItemViewModel(s)).ToList();
+            foreach (SessionListItemViewModel session in sessions)
+            {
+                session.LogButtonPerson = session.People.FirstOrDefault(p => p.PlayerId.HasValue && p.SessionLogs.All(l => l.SessionId != session.Id) && p.Player.UserName == User.Identity.Name);                
+            }
+
             return View(sessions);
+        }
+
+        public ActionResult Arcs()
+        {
+            List<ArcListItemViewModel> arcs = DataProvider.Arcs().OrderByDescending(a => a.CurrentGameDate.Year).ThenByDescending(a => a.CurrentGameDate.Month).ThenByDescending(a => a.CurrentGameDate.Day).Select(a => new ArcListItemViewModel(a)).ToList();
+            return View(arcs);    
         }
 
         public PartialViewResult PinnedItems()

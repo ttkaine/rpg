@@ -82,6 +82,7 @@ namespace Warhammer.Core.Abstract
         List<CampaignDetail> AllMyCampaigns();
         IQueryable<BookPage> BookPages();
         int Delete(BookPage bookPage);
+        IQueryable<Arc> Arcs();
     }
 }
 

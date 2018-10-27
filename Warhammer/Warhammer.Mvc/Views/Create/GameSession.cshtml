@@ -27,10 +27,19 @@
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group">
-                        @Html.Label("When did this session happen (so we can show them in order) Format: YYYY/MM/DD", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.Label("When did this session happen (so we can show them in order) Format: YYYY/MM/DD", htmlAttributes: new {@class = "control-label col-md-4"})
                         <div class="col-md-8">
-                            @Html.EditorFor(model => model.Session.DateTime, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Session.DateTime, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Session.DateTime, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Session.DateTime, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("When did this session happen (in game date) Format: YYYY/MM/DD", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -43,13 +52,21 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.Label("Give a quick description, this can be edited and extended later", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.Label("Give a quick description, this can be edited and extended later", htmlAttributes: new {@class = "control-label col-md-4"})
                         <div class="col-md-8">
-                            @Html.TextAreaFor(model => model.Session.Description, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Session.Description, "", new { @class = "text-danger" })
+                            @Html.TextAreaFor(model => model.Session.Description, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Session.Description, "", new {@class = "text-danger"})
                         </div>
                     </div>
-                    
+
+                    <div class="form-group">
+                        @Html.Label("Select a Story Arc (leave blank to set from Arc or Campaign date)", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => Model.SelectedArcId, Model.Arcs, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => Model.SelectedArcId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                     @if (Model.LinkPages.Any())
                     {
                         <table class="table table-striped">

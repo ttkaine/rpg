@@ -1,0 +1,23 @@
+﻿@model Warhammer.Mvc.Models.EditSessionArcViewModel
+
+<div id="sessionArcEditorPanel" class="panel panel-info session-arc-panel">
+    @using (Ajax.BeginForm("UpdateSessionArc", "Page", new AjaxOptions() { InsertionMode = InsertionMode.ReplaceWith, UpdateTargetId = "sessionArcEditorPanel" }))
+    {
+        @Html.HiddenFor(m => Model.SessionId)
+
+        <div id="sessionArcDisplayPanel" class="panel panel-info">
+            <div class="panel-heading">Story Arc</div>
+            <div class="panel-body">@Model.CurrentArcTitle</div>
+        </div>
+        <div id="sessionArcEditPanel" class="panel panel-info" style="display: none;">
+            <div class="panel-heading">Select Story Arc</div>
+            <div class="panel-body">
+                @Html.DropDownListFor(m => Model.SelectedArcId, Model.Arcs, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="panel-button">
+            <button id="btnShowEditSessionArc" class="edit-session-arc-button btn btn-success" type="button" onclick="showEditSessionArc();">Select Story Arc</button>
+            <button id="btnUpdateSessionArc" class="edit-session-arc-button btn btn-success" type="submit" style="display: none;">Update</button>
+        </div>
+    }
+</div>

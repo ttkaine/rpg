@@ -167,15 +167,16 @@ namespace Warhammer.Core.Concrete
             return Save(session);
         }
 
-        public int AddSession(string title, string name, string description, DateTime date,
-            bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages)
+        public int AddSession(string title, string name, string description, DateTime date, bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages, GameDate gameDate, int? arcId)
         {
             Session session = new Session
             {
                 ShortName = name,
                 FullName = title,
                 Description = description,
-                DateTime = date
+                DateTime = date,
+                GameDate = new GameDate() { Year = gameDate.Year, Month = gameDate.Month, Day = gameDate.Day, Comment = gameDate.Comment },
+                ArcId = arcId
             };
 
             Session previousSession = null;
@@ -243,6 +244,20 @@ namespace Warhammer.Core.Concrete
             }
             int pageId = Save(person);
             return pageId;
+        }
+
+        public int AddArc(string shortName, string longName, string description, GameDate startDate)
+        {
+            Arc arc = new Arc()
+            {
+                ShortName = shortName,
+                FullName = longName,
+                Description = description,
+                StartGameDate = new GameDate() { Year = startDate.Year, Month = startDate.Month, Day = startDate.Day, Comment = startDate.Comment },
+                CurrentGameDate = new GameDate() { Year = startDate.Year, Month = startDate.Month, Day = startDate.Day, Comment = startDate.Comment }
+            };
+            int arcId = Save(arc);
+            return arcId;
         }
 
 
@@ -500,6 +515,11 @@ namespace Warhammer.Core.Concrete
         public ICollection<SessionLog> Logs()
         {
             return _repository.Pages().OfType<SessionLog>().ToList();
+        }
+
+        public ICollection<Arc> Arcs()
+        {
+            return _repository.Pages().OfType<Arc>().ToList();
         }
 
         public void RemoveProfileImage(int id)
@@ -3021,6 +3041,83 @@ namespace Warhammer.Core.Concrete
             return uniquePageLinks.OrderBy(s => s.FullName).ToList();
         }
 
+        public Arc GetArc(int id)
+        {
+            return _repository.Arcs().FirstOrDefault(a => a.Id == id);
+        }
+
+        public void SaveDate(int pageId, GameDate date, bool isStartDate)
+        {
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
+            if (page != null && (page is Session || page is Arc) && date != null)
+            {
+                if (page is Arc)
+                {
+                    Arc arc = (Arc)page;
+                    if (isStartDate)
+                    {
+                        if (arc.StartGameDate != null)
+                        {
+                            arc.StartGameDate.Year = date.Year;
+                            arc.StartGameDate.Month = date.Month;
+                            arc.StartGameDate.Day = date.Day;
+                        }
+                        else
+                        {
+                            arc.StartGameDate = date;
+                        }
+                    }
+                    else
+                    {
+                        if (arc.CurrentGameDate != null)
+                        {
+                            arc.CurrentGameDate.Year = date.Year;
+                            arc.CurrentGameDate.Month = date.Month;
+                            arc.CurrentGameDate.Day = date.Day;
+                        }
+                        else
+                        {
+                            arc.CurrentGameDate = date;
+                        }
+                    }
+                }
+
+                if (page is Session)
+                {
+                    Session session = (Session)page;
+                    if (session.GameDate != null)
+                    {
+                        session.GameDate.Year = date.Year;
+                        session.GameDate.Month = date.Month;
+                        session.GameDate.Day = date.Day;
+                    }
+                    else
+                    {
+                        session.GameDate = date;
+                    }
+                }
+
+                _repository.Save(page);
+            }
+        }
+
+        public List<Session> AllSessions()
+        {
+            return _repository.Pages().OfType<Session>().OrderBy(s => s.DateTime).ToList();
+        }
+
+        public void SetSessionArc(int? arcId, int sessionId)
+        {
+            Arc arc = _repository.Arcs().FirstOrDefault(a => a.Id == arcId);
+            Session session = _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+
+            if (session != null)
+            {
+                session.ArcId = arc?.Id;
+                _repository.Save(session);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -3471,12 +3568,6 @@ namespace Warhammer.Core.Concrete
             return
                 OpenTextSessions()
                     .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id).ToList();
-        }
-
-        [Obsolete("Seriously... just no...", true)]
-        public List<Session> ModifiedTextSessions()
-        {           
-            return _repository.Pages().OfType<Session>().ToList().Where(p => p.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < p.LastPostTime)).ToList();
         }
 
         public bool SiteHasFeature(Feature featureName)

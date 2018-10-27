@@ -14,10 +14,10 @@ namespace Warhammer.Core.Abstract
         string VersionInfo();
         ICollection<Person> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
-        int AddSession(string title, string name, string description, DateTime dateTime,
-            bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages);
+        int AddSession(string title, string name, string description, DateTime dateTime, bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages, GameDate gameDate, int? arcId);
         int GetGmId(int sessionId);
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc, Gender personGender);
+        int AddArc(string shortName, string longName, string description, GameDate startDate);
         void ChangePicture(int id, byte[] data, string mimeType);
         Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
         Page GetPage(int id, bool asNoTracking = false);
@@ -26,6 +26,7 @@ namespace Warhammer.Core.Abstract
         ICollection<Session> Sessions();
         ICollection<Person> People();
         ICollection<SessionLog> Logs();
+        ICollection<Arc> Arcs();
         void RemoveProfileImage(int id);
         int AddPage(string shortName, string fullName, string description);
         ICollection<Place> Places();
@@ -77,8 +78,6 @@ namespace Warhammer.Core.Abstract
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();
 		List<Session> MyOpenTextSessions();
-        [Obsolete("Seriously... just no...", true)]
-        List<Session> ModifiedTextSessions();
         bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);
@@ -208,6 +207,9 @@ namespace Warhammer.Core.Abstract
         CampaignDetail GetCampaginDetailsForPage(int id);
         List<CampaignDetail> GetPermittedCampaigns();
         List<PageToggleModel> GetSuggestedPageLinksForNewSession();
-
+        Arc GetArc(int id);
+        void SaveDate(int pageId, GameDate date, bool isStartDate);
+        List<Session> AllSessions();
+        void SetSessionArc(int? arcId, int sessionId);
     }
 }
