@@ -798,6 +798,7 @@
     <Content Include="Views\Page\EditArcSessions.cshtml" />
     <Content Include="Views\Home\Arcs.cshtml" />
     <Content Include="Views\Page\EditSessionArc.cshtml" />
+    <Content Include="Views\Page\ArcPanel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

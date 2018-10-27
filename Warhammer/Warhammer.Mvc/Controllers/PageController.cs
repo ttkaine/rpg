@@ -701,5 +701,20 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("EditSessionArc", new { id = model.SessionId });
         }
+
+        public ActionResult ArcPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.SessionArcs))
+            {
+                Session session = DataProvider.Sessions().FirstOrDefault(p => p.Id == id);
+                
+                if(session != null)
+                {
+                    return PartialView(session);
+                }
+                
+            }
+            return null;
+        }
     }
 }
