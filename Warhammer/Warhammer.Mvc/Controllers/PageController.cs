@@ -549,43 +549,54 @@ namespace Warhammer.Mvc.Controllers
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditGameDate(int id, bool isStartDate = false)
         {
-            Page page = DataProvider.GetPage(id);
-            if (page != null && (page is Session || page is Arc))
+            if (DataProvider.SiteHasFeature(Feature.ShowGameDate))
             {
-                EditDateViewModel model = new EditDateViewModel();
-                model.PageId = page.Id;
-                model.IsStartDate = isStartDate;
-
-                if (page is Session)
+                Page page = DataProvider.GetPage(id);
+                if (page != null && (page is Session || page is Arc))
                 {
-                    model.Title = "Session Date";
-                    model.DisplayDate = ((Session) page).GameDate;
-                }
-                if (page is Arc)
-                {                    
-                    if (isStartDate)
+                    EditDateViewModel model = new EditDateViewModel();
+                    model.PageId = page.Id;
+                    model.IsStartDate = isStartDate;
+
+                    if (page is Session)
                     {
-                        model.Title = "Arc Start Date";
-                        model.DisplayDate = ((Arc)page).StartGameDate;
+                        model.Title = "Session Date";
+                        model.DisplayDate = ((Session) page).GameDate;
                     }
-                    else
+
+                    if (page is Arc)
                     {
-                        model.Title = "Current Arc Date";
-                        model.DisplayDate = ((Arc)page).CurrentGameDate;
-                    }                    
+                        if (isStartDate)
+                        {
+                            model.Title = "Arc Start Date";
+                            model.DisplayDate = ((Arc) page).StartGameDate;
+                        }
+                        else
+                        {
+                            model.Title = "Current Arc Date";
+                            model.DisplayDate = ((Arc) page).CurrentGameDate;
+                        }
+                    }
+
+                    if (model.DisplayDate == null)
+                    {
+                        CampaignDetail campaign = DataProvider.GetCampaginDetails();
+                        DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
+                        model.DisplayDate = new GameDate()
+                        {
+                            Year = date.Year,
+                            Month = date.Month,
+                            Day = date.Day,
+                            Comment = "From Campaign Date"
+                        };
+                    }
+
+                    model.EditableDate = model.DisplayDate.ToShortDateString(true);
+
+                    return PartialView(model);
                 }
-
-                if (model.DisplayDate == null)
-                {
-                    CampaignDetail campaign = DataProvider.GetCampaginDetails();
-                    DateTime date = campaign.CurrentGameDate ?? new DateTime(2520, 09, 01);
-                    model.DisplayDate = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "From Campaign Date"};
-                }
-
-                model.EditableDate = model.DisplayDate.ToShortDateString(true);
-
-                return PartialView(model);
             }
+
             return null;
         }
 

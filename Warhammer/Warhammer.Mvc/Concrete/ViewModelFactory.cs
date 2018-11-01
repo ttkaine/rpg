@@ -832,17 +832,19 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            if (_data.SiteHasFeature(Feature.SessionArcs))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Story Arcs",
+                    Url = _urlHelper.Action("Arcs", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
+                });
+            }
+
             if (_data.SiteHasFeature(Feature.SessionPage))
             {
-                if (_data.SiteHasFeature(Feature.SessionArcs))
-                {
-                    items.Add(new MenuItemViewModel
-                    {
-                        Name = "Story Arcs",
-                        Url = _urlHelper.Action("Arcs", "Home"),
-                        IconUrl = _urlHelper.Content("~/Content/Images/sessions.png")
-                    });
-                }
+
 
                 items.Add(new MenuItemViewModel
                 {
