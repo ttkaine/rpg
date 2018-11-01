@@ -23,7 +23,7 @@
                     <h2><a href="@Url.Action("Index", "Page", new {id = item.Arc.Id})">@item.Arc.ShortName</a></h2>
                     <h3>@item.Arc.FullName</h3>
 
-                    @if (item.Duration != null)
+                    @if (item.Duration != null && item.ShowDates)
                     {
                         <div class="game-duration">
                             Duration: @item.Duration

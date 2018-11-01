@@ -115,7 +115,13 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Arcs()
         {
-            List<ArcListItemViewModel> arcs = DataProvider.Arcs().OrderByDescending(a => a.CurrentGameDate.Year).ThenByDescending(a => a.CurrentGameDate.Month).ThenByDescending(a => a.CurrentGameDate.Day).Select(a => new ArcListItemViewModel(a)).ToList();
+            bool showDates = DataProvider.SiteHasFeature(Feature.ShowGameDate);
+            List<ArcListItemViewModel> arcs = 
+                DataProvider.Arcs()
+                    .OrderByDescending(a => a.CurrentGameDate.Year)
+                    .ThenByDescending(a => a.CurrentGameDate.Month)
+                    .ThenByDescending(a => a.CurrentGameDate.Day)
+                    .Select(a => new ArcListItemViewModel(a, showDates)).ToList();
             return View(arcs);    
         }
 
