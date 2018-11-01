@@ -20,8 +20,8 @@
             @foreach (ArcListItemViewModel item in Model)
             {
                 <li class="session-list-item arc-list-item">
-                    <h2><a href="@Url.Action("Index", "Page", new {id = item.Arc.Id})">@item.Arc.ShortName</a></h2>
-                    <h3>@item.Arc.FullName</h3>
+                    <h2><a href="@Url.Action("Index", "Page", new {id = item.Arc.Id})">@item.Arc.FullName</a></h2>
+                    <h3>@item.Arc.ShortName</h3>
 
                     @if (item.Duration != null && item.ShowDates)
                     {
