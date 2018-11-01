@@ -7,15 +7,25 @@
         @Html.HiddenFor(m => Model.PageId)
         @Html.HiddenFor(m => Model.IsStartDate)
 
-        <div class="panel panel-info DisplayDatePanel">
-            <div class="panel-heading">@Model.Title</div>
-            <div class="panel-body">The @Model.DisplayDate.ToWarhammerDateString()</div>
-            <div class="panel-footer">@Model.DisplayDate.ToRealDateString()</div>
-        </div>
+        if (Model.IsWarhammerDate)
+        {
+            <div class="panel panel-info DisplayDatePanel">
+                <div class="panel-heading">@Model.Title</div>
+                <div class="panel-body">The @Model.DisplayDate.ToWarhammerDateString()</div>
+                <div class="panel-footer">@Model.DisplayDate.ToRealDateString()</div>
+            </div>
+        }
+        else
+        {
+            <div class="panel panel-info DisplayDatePanel">
+                <div class="panel-heading">@Model.Title</div>
+                <div class="panel-body">@Model.DisplayDate.ToRealDateString()</div>
+            </div>
+        }
         <div class="panel panel-info EditDatePanel" style="display: none;">
             <div class="panel-heading">Edit @Model.Title</div>
             <div class="panel-body">
-                @Html.EditorFor(model => Model.EditableDate, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.EditorFor(model => Model.EditableDate, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
         <div class="panel-button">

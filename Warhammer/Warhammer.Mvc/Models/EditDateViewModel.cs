@@ -14,5 +14,6 @@ namespace Warhammer.Mvc.Models
 
         public GameDate DisplayDate;
         public string EditableDate { get; set; }
+        public bool IsWarhammerDate { get; set; }
     }
 }

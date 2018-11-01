@@ -591,6 +591,7 @@ namespace Warhammer.Mvc.Controllers
                         };
                     }
 
+                    model.IsWarhammerDate = DataProvider.SiteHasFeature(Feature.WarhammerDate);
                     model.EditableDate = model.DisplayDate.ToShortDateString(true);
 
                     return PartialView(model);
