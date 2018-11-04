@@ -43,6 +43,11 @@ namespace Warhammer.Core.Extensions
 
     public static class DateTimeExtensions
     {
+        public static GameDate ToGameDate(this DateTime date)
+        {
+            return new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day};
+        }
+
         public static string ToWarhammerDateString(this DateTime date)
         {
             ImperialMonthName month = (ImperialMonthName)date.Month;
@@ -51,6 +56,11 @@ namespace Warhammer.Core.Extensions
             string year = NumberToWords(date.Year);
 
             return $"{ordinal} {day} of {month} in the Imperial year of Sigmar {year}";
+        }
+
+        public static GameDate Clone(this GameDate date)
+        {
+            return new GameDate() { Year = date.Year, Month = date.Month, Day = date.Day, Comment = date.Comment };
         }
 
         public static string ToWarhammerDateString(this GameDate date)
@@ -91,6 +101,78 @@ namespace Warhammer.Core.Extensions
             else
             {
                 return $"{dayName} {date.Day} {monthName} {-date.Year} BCE";
+            }
+        }
+
+        public static void AddDay(this GameDate date)
+        {
+            int leapYearRem;
+            Math.DivRem(date.Year < 0 ? -date.Year : date.Year, 4, out leapYearRem);
+
+            date.Day++;
+            if (date.Month == 2 && (date.Day > 29 || (leapYearRem != 0 && date.Day > 28)))
+            {
+                date.Day = 1;
+                date.Month++;
+            }
+            if (date.Day > 31)
+            {
+                date.Day = 1;
+                date.Month++;
+            }
+            if (date.Day > 30 && (date.Month == 4 || date.Month == 6 || date.Month == 9 || date.Month == 11))
+            {
+                date.Day = 1;
+                date.Month++;
+            }
+            if (date.Month > 12)
+            {
+                date.Month = 1;
+                date.Year++;
+            }
+            if (date.Year == 0)
+            {
+                date.Year = 1;
+            }
+        }
+
+        public static void AddWeek(this GameDate date)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                date.AddDay();
+            }
+        }
+
+        public static void AddMonth(this GameDate date)
+        {
+            int leapYearRem;
+            Math.DivRem(date.Year < 0 ? -date.Year : date.Year, 4, out leapYearRem);
+
+            date.Month++;
+            if (date.Month == 2)
+            {
+                if (date.Day > 29)
+                {
+                    date.Day = 29;
+                }
+                if (leapYearRem != 0 && date.Day > 28)
+                {
+                    date.Day = 28;
+                }
+            }
+            if (date.Day > 30 && (date.Month == 4 || date.Month == 6 || date.Month == 9 || date.Month == 11))
+            {
+                date.Day = 30;
+            }
+            if (date.Month > 12)
+            {
+                date.Month = 1;
+                date.Year++;
+            }
+            if (date.Year == 0)
+            {
+                date.Year = 1;
             }
         }
 

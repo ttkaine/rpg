@@ -74,4 +74,11 @@
         Session = 3,
         SessionLog = 4        
     }
+
+    public enum DateAddType
+    {
+        Day,
+        Week,
+        Month        
+    }
 }

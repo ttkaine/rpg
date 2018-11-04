@@ -607,7 +607,22 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataProvider.SaveDate(model.PageId, model.EditableDate.ToWarhammerGameDate(), model.IsStartDate);
+                if (model.AddDay)
+                {
+                    DataProvider.AddDayToDate(model.PageId, model.IsStartDate);    
+                }
+                else if (model.AddMonth)
+                {
+                    DataProvider.AddMonthToDate(model.PageId, model.IsStartDate);
+                }
+                else if (model.AddWeek)
+                {
+                    DataProvider.AddWeekToDate(model.PageId, model.IsStartDate);
+                }
+                else
+                {
+                    DataProvider.SaveDate(model.PageId, model.EditableDate.ToWarhammerGameDate(), model.IsStartDate);
+                }
             }
 
             return RedirectToAction("EditGameDate", new { id = model.PageId, isStartDate = model.IsStartDate });

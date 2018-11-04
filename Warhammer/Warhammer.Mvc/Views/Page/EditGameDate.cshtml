@@ -7,6 +7,10 @@
         @Html.HiddenFor(m => Model.PageId)
         @Html.HiddenFor(m => Model.IsStartDate)
 
+        @Html.HiddenFor(m => m.AddDay, new { id = "hidAddDay" + (Model.IsStartDate ? "2" : "1") })
+        @Html.HiddenFor(m => m.AddWeek, new { id = "hidAddWeek" + (Model.IsStartDate ? "2" : "1") })
+        @Html.HiddenFor(m => m.AddMonth, new { id = "hidAddMonth" + (Model.IsStartDate ? "2" : "1") })
+
         if (Model.IsWarhammerDate)
         {
             <div class="panel panel-info DisplayDatePanel">
@@ -28,8 +32,11 @@
                 @Html.EditorFor(model => Model.EditableDate, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-        <div class="panel-button">
-            <button class="edit-date-button btn btn-success ShowEditDateButton" type="button" onclick="showEditDate('gameDateEditorPanel@(Model.IsStartDate ? "2" : "1")');">Edit @Model.Title</button>
+        <div class="panel-button">            
+            <button class="edit-date-button btn btn-success AddDayButton" type="submit" onclick="$('#hidAddDay@(Model.IsStartDate ? "2" : "1")').val('True');">Add Day</button>
+            <button class="edit-date-button btn btn-success AddWeekButton" type="submit" onclick="$('#hidAddWeek@(Model.IsStartDate ? "2" : "1")').val('True');">Add Week</button>
+            <button class="edit-date-button btn btn-success AddMonthButton" type="submit" onclick="$('#hidAddMonth@(Model.IsStartDate ? "2" : "1")').val('True');">Add Month</button>
+            <button class="edit-date-button btn btn-success ShowEditDateButton" type="button" onclick="showEditDate('gameDateEditorPanel@(Model.IsStartDate ? "2" : "1")');">Manually Set @Model.Title</button>
             <button class="edit-date-button btn btn-success SubmitDateButton" type="submit" style="display: none;">Update</button>
         </div>
     }
