@@ -2240,12 +2240,17 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> PeopleWithXpToSpend()
         {
-            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(GetPageLinkModel ).ToList();
+            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(GetPageLinkModel).ToList();
         }
 
         public void AwardShiftForSession(int id)
         {
             Session session = _repository.Pages().OfType<Session>().Include(s => s.Pages).FirstOrDefault(s => s.Id == id);
+            AwardShiftForSession(session);
+        }
+
+        private void AwardShiftForSession(Session session)
+        {
             if (session != null)
             {
                 foreach (Person person in session.People.ToList())
@@ -3317,7 +3322,11 @@ namespace Warhammer.Core.Concrete
                     Save(person);
                 }
             }
+
+            AwardShiftForSession(session);
         }
+
+
 
         public void ToggleSetAsTextSession(int id)
         {
