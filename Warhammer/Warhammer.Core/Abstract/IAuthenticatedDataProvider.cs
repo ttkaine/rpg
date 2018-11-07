@@ -209,6 +209,9 @@ namespace Warhammer.Core.Abstract
         List<PageToggleModel> GetSuggestedPageLinksForNewSession();
         Arc GetArc(int id);
         void SaveDate(int pageId, GameDate date, bool isStartDate);
+        void AddDayToDate(int pageId, bool isStartDate);
+        void AddWeekToDate(int pageId, bool isStartDate);
+        void AddMonthToDate(int pageId, bool isStartDate);
         List<Session> AllSessions();
         void SetSessionArc(int? arcId, int sessionId);
     }

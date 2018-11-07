@@ -3106,6 +3106,84 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void AddDayToDate(int pageId, bool isStartDate)
+        {
+            AddToDate(pageId, DateAddType.Day, isStartDate);
+        }
+
+        public void AddWeekToDate(int pageId, bool isStartDate)
+        {
+            AddToDate(pageId, DateAddType.Week, isStartDate);
+        }
+
+        public void AddMonthToDate(int pageId, bool isStartDate)
+        {
+            AddToDate(pageId, DateAddType.Month, isStartDate);
+        }
+
+        private void AddToDate(int pageId, DateAddType dateAddType, bool isStartDate)
+        {
+            GameDate date = null;
+            Page page = _repository.Pages().FirstOrDefault(p => p.Id == pageId);
+            if (page != null && (page is Session || page is Arc))
+            {
+                if (page is Arc)
+                {
+                    Arc arc = (Arc)page;
+                    if (isStartDate && arc.StartGameDate != null)
+                    {
+                        date = arc.StartGameDate.Clone();
+                    }
+                    else if (!isStartDate && arc.CurrentGameDate != null)
+                    {
+                        date = arc.CurrentGameDate.Clone();
+                    }
+                }
+
+                if (page is Session)
+                {
+                    Session session = (Session)page;
+                    if (session.GameDate != null)
+                    {
+                        date = session.GameDate.Clone();
+                    }
+                    else if (session.Arc?.CurrentGameDate != null)
+                    {
+                        date = session.Arc.CurrentGameDate.Clone();
+                    }
+                }
+            }
+
+            if (date == null)
+            {
+                CampaignDetail campaignDetail = GetCampaginDetails();
+                if (campaignDetail?.CurrentGameDate != null)
+                {
+                    date = campaignDetail.CurrentGameDate.Value.ToGameDate();
+                }
+                else
+                {
+                    date = DateTime.Now.ToGameDate();
+                }
+            }
+
+            switch (dateAddType)
+            {
+                case DateAddType.Day:
+                    date.AddDay();
+                    break;
+                case DateAddType.Month:
+                    date.AddMonth();
+                    break;
+                case DateAddType.Week:
+                    date.AddWeek();
+                    break;
+            }
+
+            SaveDate(pageId, date, isStartDate);
+        }
+ 
+
         public List<Session> AllSessions()
         {
             return _repository.Pages().OfType<Session>().OrderBy(s => s.DateTime).ToList();

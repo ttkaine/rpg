@@ -7,12 +7,26 @@
 }
 else
 {
-    if (((Session)Model).Arc != null)
+    if (Model.Arc != null)
     {
         <div class="panel panel-info session-arc-panel">
-            <div class="panel-heading">Story Arc</div>
-            <div class="panel-body">
-                <a href="@Url.Action("Index", "Page", new { id = Model.ArcId.GetValueOrDefault() })">@(Model.Arc.FullName)</a>  
+            <div class="panel-heading"><a href="@Url.Action("Index", "Page", new {id = Model.ArcId.GetValueOrDefault()})">@(Model.Arc.FullName)</a></div>
+            <div class="panel-body">                
+                <ul class="arc-sessions">
+                    @foreach (Session arcSession in Model.Arc.Sessions.OrderBy(s => s.DateTime))
+                    {
+                        <li>
+                            @if (arcSession.Id == Model.Id)
+                            {
+                                <span class="current-session">@arcSession.ShortName</span>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Index", "Page", new {id = arcSession.Id})">@(arcSession.ShortName)</a>
+                            }
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
     }

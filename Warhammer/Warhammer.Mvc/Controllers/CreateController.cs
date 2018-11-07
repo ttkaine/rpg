@@ -138,7 +138,7 @@ namespace Warhammer.Mvc.Controllers
                 {
                     if (arc?.CurrentGameDate != null)
                     {
-                        gameDate = new GameDate() {Year = arc.CurrentGameDate.Year, Month = arc.CurrentGameDate.Month, Day = arc.CurrentGameDate.Day, Comment = "Set from Arc Date"};
+                        gameDate = new GameDate() { Year = arc.CurrentGameDate.Year, Month = arc.CurrentGameDate.Month, Day = arc.CurrentGameDate.Day, Comment = "Set from Arc Date"};
                     }
                     else
                     {
