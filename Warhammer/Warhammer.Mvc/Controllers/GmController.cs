@@ -91,6 +91,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid && (DataProvider.CurrentPlayerIsGm || _user.IsAdmin))
             {
+                int trophyId;
                 ClearTrophyCache(trophyModel.Trophy.Id);
                 byte[] imageData = null;
                 string mimeType = "";
@@ -114,10 +115,11 @@ namespace Warhammer.Mvc.Controllers
 
                 if (trophyModel.Trophy.Id == 0)
                 {
-                    DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, mimeType, trophyModel.CurrentCampaignOnly);
+                    trophyId = DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, mimeType, trophyModel.CurrentCampaignOnly);
                 }
                 else
                 {
+                    trophyId = trophyModel.Trophy.Id;
                     if (imageData != null)
                     {
                         DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue,
@@ -128,6 +130,12 @@ namespace Warhammer.Mvc.Controllers
                         DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, trophyModel.CurrentCampaignOnly);
                     }
                 }
+
+                if (_user.IsAdmin)
+                {
+                    DataProvider.UpdateTrophy(trophyId, trophyModel.Trophy.TrophyType);
+                }
+
                 return RedirectToAction("Trophies", "Home");
             }
 

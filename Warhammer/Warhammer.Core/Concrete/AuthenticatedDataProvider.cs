@@ -920,6 +920,22 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void UpdateTrophy(int trophyId, TrophyType trophyType)
+        {
+            if (!_authenticatedUser.IsAdmin)
+            {
+                return;
+            }
+
+            Trophy trophy = GetTrophy(trophyId);
+            if (trophy != null)
+            {
+                trophy.TrophyType = trophyType;
+                _repository.Save(trophy);
+            }
+
+        }
+
         public ICollection<Trophy> Trophies()
         {
             return _repository.Trophies(SiteHasFeature(Feature.HideGlobalAwards))

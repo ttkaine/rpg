@@ -133,7 +133,7 @@ namespace Warhammer.Mvc
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            if (!Context.Request.IsSecureConnection && !Request.Url.Host.Contains("localhost") && !Request.Url.Host.Contains("warhammer.local"))
+            if (!Context.Request.IsSecureConnection && !Request.Url.Host.Contains("localhost") && !Request.Url.Host.Contains("local."))
             {
                 Response.Redirect(Request.Url.AbsoluteUri.Replace("http://", "https://"));
             }

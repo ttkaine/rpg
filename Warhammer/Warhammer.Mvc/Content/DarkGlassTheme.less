@@ -3,17 +3,28 @@
 @import "theme.less";
 @import "DarkGlassVariables.less";
 
+
+//@gradient-background: -moz-linear-gradient(-45deg, fade(@brand-primary, 5%) 5%, fade(@brand-primary,50%),0.3 50%, fade(@brand-primary,5%) 100%);
+@gradient-background-image: linear-gradient(-40deg, fade(@brand-primary, 5%) 0%, fade(@brand-primary, 7%) 20%, fade(@brand-primary,30%), 40%, fade(@brand-primary, 7%) 60%, fade(@brand-primary,5%) 100%);
+@gradient-background-image-tilt: linear-gradient(-30deg, fade(@brand-primary, 0%) 0%, fade(@brand-primary,50%), 45%, fade(@brand-primary,0%) 100%);
+
 .content-block {
     border-style: inset;
-    box-shadow: inset 0 0 30px 5px rgba(100,200,255,0.3);
-    background: -moz-linear-gradient(-45deg, rgba(30,87,153,0) 5%, rgba(49,107,169,0.3) 50%, rgba(125,185,232,0) 100%);
+    box-shadow: inset 0 0 50px 1px fade(@brand-primary,20%);
+    background-image: @gradient-background-image;
 }
 
 .header-block {
     border-style: inset;
-    box-shadow: inset 0 0 30px 5px rgba(100,200,255,0.3);
-    background: -moz-linear-gradient(-45deg, rgba(30,87,153,0) 5%, rgba(49,107,169,0.3) 50%, rgba(125,185,232,0) 100%);
+    box-shadow: inset 0 0 50px 1px fade(@brand-primary,20%);
+    background-image: @gradient-background-image;
+    -webkit-transition: background-image 2s; /* For Safari 3.1 to 6.0 */
+    transition: background-image 2s;
 }
+
+.header-block:hover {
+    background-image: @gradient-background-image-tilt;
+} 
 
 h1 {
     font-family: Quicksand, sans-serif !important;
@@ -26,5 +37,10 @@ h1 {
 .commentdetail span,
 .commentdetail h4,
 .trophy td {
-    text-shadow: 0 0 2px #000000, 0 0 80px rgba(100,200,255,1), 0 0 40px rgba(100,200,255,1), 0 0 60px rgba(100,200,255,1), -18px 5px rgba(255,255,255,0.1);
+    text-shadow: 0 0 2px #000000, 0 0 80px fade(@brand-primary, 10%), 0 0 40px fade(@brand-primary, 10%), 0 0 60px fade(@brand-primary, 10%), -18px 5px fade(@brand-primary, 10%);
+}
+
+.awardBar-mini img.mini-trophy-image {
+    width: 50px;
+    height: 50px;
 }

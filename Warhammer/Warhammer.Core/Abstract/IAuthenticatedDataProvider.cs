@@ -49,6 +49,7 @@ namespace Warhammer.Core.Abstract
         int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
         void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
         void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly);
+        void UpdateTrophy(int trophyId, TrophyType trophyType);
         ICollection<Trophy> Trophies();
         List<SelectItem> TrophiesForSelect();
         int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null);
@@ -95,6 +96,9 @@ namespace Warhammer.Core.Abstract
         bool ShowLeague { get; }
         bool ShowCharacterSheet { get; }
         bool CurrentUserIsGuest { get; }
+
+
+
         bool ShadowMode { get; set; }
         int CurrentPlayerId { get; }
         int CurrentCampaignId { get; }

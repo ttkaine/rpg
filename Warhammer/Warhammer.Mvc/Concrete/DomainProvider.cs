@@ -23,6 +23,11 @@ namespace Warhammer.Mvc.Concrete
                     domain = "warhammer.sendingofeight.co.uk";
                 }
 
+                if (domain.StartsWith("local."))
+                {
+                    domain = domain.Substring(6, domain.Length - 6);
+                }
+
                 return domain;
             }
         }
