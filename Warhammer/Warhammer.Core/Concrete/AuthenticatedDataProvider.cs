@@ -149,9 +149,10 @@ namespace Warhammer.Core.Concrete
             return $"{softwareVersion} :: {databaseVersion}";
         }
 
-        public ICollection<Person> MyPeople()
+        public ICollection<PageLinkModel> MyPeople()
         {
-            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false).ToList();
+            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false)
+                .Select(p => new PageLinkModel{ Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, Type = PageLinkType.Person}).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
@@ -1348,7 +1349,7 @@ namespace Warhammer.Core.Concrete
                 awardNominations = ApplyShadow(awardNominations);
             }
 
-            List<AwardNomination> nominations = awardNominations.OrderByDescending(a => a.NominatedDate).Take(20).ToList();
+            List<AwardNomination> nominations = awardNominations.OrderByDescending(a => a.NominatedDate).Take(5).ToList();
             return nominations;
         }
 
@@ -1362,7 +1363,7 @@ namespace Warhammer.Core.Concrete
                 awardQuery = ApplyShadow(awardQuery);
             }
 
-            List<Award> awards = awardQuery.OrderByDescending(a => a.AwardedOn).Take(20).ToList();
+            List<Award> awards = awardQuery.OrderByDescending(a => a.AwardedOn).Take(5).ToList();
             return awards;
         }
 
@@ -3233,6 +3234,15 @@ namespace Warhammer.Core.Concrete
             {
                 return new SessionArcSummaryModel{ SessionId = id, Sessions = new List<PageListItemModel>() };
             }
+        }
+
+        public List<PageLinkModel> AllNpcLinks()
+        {
+            return _repository.Pages().OfType<Person>().Where(s => !s.PlayerId.HasValue && !s.IsDead)
+                .Select(p => new PageLinkModel
+                {
+                    Id = p.Id, FullName = p.FullName, ShortName = p.ShortName, Type = PageLinkType.Person
+                }).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)

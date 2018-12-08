@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -26,10 +27,10 @@ namespace Warhammer.Mvc.Controllers
                 model.Comments = DataProvider.GetCommentsForPage(id.Value).OrderBy(p => p.Created).ToList();
 
                 Player player = CurrentPlayer;
-                List<Person> people;
+                List<PageLinkModel> people;
                 if (CurrentPlayerIsGm)
                 {
-                    people = DataProvider.AllNpcs().OrderBy(p => p.FullName).ToList();
+                    people = DataProvider.AllNpcLinks().OrderBy(p => p.FullName).ToList();
                 }
                 else
                 {

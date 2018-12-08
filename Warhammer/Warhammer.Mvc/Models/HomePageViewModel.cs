@@ -12,7 +12,7 @@ namespace Warhammer.Mvc.Models
         {
             RecentChanges = new List<PageLinkModel>();
             MyStuff = new List<Page>();
-            MyPeople = new List<Person>();
+            MyPeople = new List<PageLinkModel>();
             AllPeople = new List<Person>();
             OtherPeople = new List<PageLinkModel>();
             TopNpcs = new List<PageLinkModel>();
@@ -21,7 +21,7 @@ namespace Warhammer.Mvc.Models
        public string GameDateDisplay { get; set; }
        public List<PageLinkModel> RecentChanges { get; set; }
        public List<Page> MyStuff { get; set; }
-       public List<Person> MyPeople { get; set; }
+       public List<PageLinkModel> MyPeople { get; set; }
        public List<Person> AllPeople { get; set; }
        public ICollection<PageLinkModel> NewPages { get; set; }
        public ICollection<PageLinkModel> UpdatedPages { get; set; }

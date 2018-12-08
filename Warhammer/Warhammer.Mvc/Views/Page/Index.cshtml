@@ -9,7 +9,6 @@
 
 <div class="content-wrapper">
 
-    @Html.Action("Stats", "Fate", new { id = Model.Id })
     @Html.Action("TopStats", "Crow", new { id = Model.Id })
 
     @using (Html.BeginForm("Index", "Page", FormMethod.Post, new { id = "mainpageform" }))
@@ -33,13 +32,7 @@
             <div class="content-block">
                 @if (Model is Person)
                 {
-
-
                     Person person = Model as Person;
-
-
-
-
                     if (person.Awards.Any())
                     {
                         <ul class="awardBar awardBar-mini">
@@ -68,6 +61,7 @@
                 <div id="description" class="editable">
                     @Html.Raw(Model.Description)
                 </div>
+
                 @if (Model.ShowGmNotes)
                 {
                     <div class="panel panel-info">
@@ -83,8 +77,8 @@
                             <span class="note">The GM notes section is only visible to the GM. This can be used to keep notes handy for the current page without the other players being able to see it.</span>
                         </div>
                     </div>
-
                 }
+
                 <div class="profile-footer">
                     <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br />
                     <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName</span>
@@ -93,7 +87,7 @@
 
             @Html.Action("ArcSessions", "Page", new { id = Model.Id })
 
-            @Html.Action("CurrentScorePie", "Person")
+            @Html.Action("CurrentScorePie", "Person", new { id = Model.Id })
 
         </div>
     }
