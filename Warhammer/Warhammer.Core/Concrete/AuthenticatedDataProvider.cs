@@ -3201,6 +3201,40 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public Session GetSession(int id)
+        {
+            return _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
+        }
+
+        public SessionArcSummaryModel GetSessionArcSummary(int id)
+        {
+            int? arcId = _repository.Pages().OfType<Session>().Where(s => s.Id == id).Select(s => s.ArcId).FirstOrDefault();
+            if (arcId.HasValue)
+            {
+                SessionArcSummaryModel model = _repository.Pages().OfType<Arc>().Where(a => a.Id == arcId).Select(m =>
+                    new SessionArcSummaryModel
+                    {
+                        Name = m.FullName,
+                        SessionId = id,
+                        ArcId = arcId,
+                    }).Single();
+
+                model.Sessions = _repository.Pages().OfType<Session>().Where(s => s.ArcId == arcId)
+                    .OrderBy(s => s.GameDate.Year)
+                    .ThenBy(s => s.GameDate.Month)
+                    .ThenBy(s => s.GameDate.Day)
+                    .ThenBy(s => s.DateTime)
+                    .ThenBy(s => s.Id).Select(s =>
+                    new PageListItemModel {Fullname = s.FullName, Id = s.Id, ShortName = s.ShortName}).ToList();
+
+                return model;
+            }
+            else
+            {
+                return new SessionArcSummaryModel{ SessionId = id, Sessions = new List<PageListItemModel>() };
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

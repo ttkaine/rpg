@@ -161,7 +161,7 @@ namespace Warhammer.Mvc.Controllers
             CreateSessionLogViewModel model = new CreateSessionLogViewModel
             {
                 Person = new SelectList(DataProvider.People().OrderBy(p => p.IsDead).ThenByDescending(p => p.PlayerId == playerId).ThenBy(p => p.ShortName), "Id", "ShortName"),
-                Session = new SelectList(DataProvider.Sessions().OrderByDescending(s => s.DateTime), "Id", "ShortName")
+                Session = new SelectList(DataProvider.AllSessions().OrderByDescending(s => s.DateTime), "Id", "ShortName")
                 
             };
             SessionLog sessionLog = new SessionLog();
@@ -211,7 +211,7 @@ namespace Warhammer.Mvc.Controllers
             }
 
             model.Person = new SelectList(DataProvider.People(), "Id", "ShortName");
-            model.Session = new SelectList(DataProvider.Sessions(), "Id", "ShortName");
+            model.Session = new SelectList(DataProvider.AllSessions(), "Id", "ShortName");
             return View(model);
         }
 

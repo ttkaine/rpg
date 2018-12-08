@@ -23,7 +23,6 @@ namespace Warhammer.Core.Abstract
         Page GetPage(int id, bool asNoTracking = false);
         ICollection<PageLinkWithUpdateDateModel> RecentPages();
         ICollection<Page> MyStuff();
-        ICollection<Session> Sessions();
         ICollection<Person> People();
         ICollection<SessionLog> Logs();
         ICollection<Arc> Arcs();
@@ -214,5 +213,7 @@ namespace Warhammer.Core.Abstract
         void AddMonthToDate(int pageId, bool isStartDate);
         List<Session> AllSessions();
         void SetSessionArc(int? arcId, int sessionId);
+        Session GetSession(int id);
+        SessionArcSummaryModel GetSessionArcSummary(int id);
     }
 }

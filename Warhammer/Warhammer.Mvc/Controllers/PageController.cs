@@ -733,7 +733,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
-                Session session = DataProvider.Sessions().FirstOrDefault(p => p.Id == id);
+                SessionArcSummaryModel session = DataProvider.GetSessionArcSummary(id);
                 
                 if(session != null)
                 {
