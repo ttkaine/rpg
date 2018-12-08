@@ -3209,6 +3209,10 @@ namespace Warhammer.Core.Concrete
                 Award award = person.Awards.FirstOrDefault(a => a.Id == awardId);
                 if (award != null)
                 {
+                    if (award.AwardNominations.Any())
+                    {
+                        award.AwardNominations.Clear();
+                    }
                     _repository.Delete(award);
                 }
             }
