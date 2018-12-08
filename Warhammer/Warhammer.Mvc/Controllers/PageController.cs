@@ -181,50 +181,13 @@ namespace Warhammer.Mvc.Controllers
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult Image(int id)
         {
-            Page page = DataProvider.GetPage(id);
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            if (page != null)
+            PageImage image = DataProvider.GetPageImageForPage(id);
+            if (image != null)
             {
-                if (page.HasImage)
-                {
-                    return File(page.PrimaryImage, "image/jpeg");
-                }
-
-                if (page is Session)
-                {
-                    var personPath = Path.Combine(defaultDir, "page-session.png");
-                    return File(personPath, "image/jpeg");
-                }
-
-                if (page is Place)
-                {
-                    var personPath = Path.Combine(defaultDir, "page-place.png");
-                    return File(personPath, "image/jpeg");
-                }
-
-                if (page is Person)
-                {
-                    var personPath = Path.Combine(defaultDir, "page-person.png");
-                    return File(personPath, "image/jpeg");
-                }
-
-                if (page is SessionLog)
-                {
-                    SessionLog log = page as SessionLog;
-
-                    if (log.Person.HasImage)
-                    {
-                        return File(log.Person.PrimaryImage, "image/jpeg");
-                    }
-
-                    var personPath = Path.Combine(defaultDir, "page-log.png");
-                    return File(personPath, "image/jpeg");
-                }
-
+                return File(image.Data, "image/jpeg");
             }
 
-
+            var defaultDir = Server.MapPath("/Content/Images");
 
             var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
             return File(defaultImagePath, "image/jpeg");

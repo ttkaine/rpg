@@ -2892,7 +2892,7 @@ namespace Warhammer.Core.Concrete
 
         public string GetPageName(int id)
         {
-            return _repository.Pages().Single(p => p.Id == id).FullName;
+            return _repository.Pages().Where(i => i.Id == id).Select(p => p.FullName).First();
         }
 
         public void SetCustomCss(string customCss)
@@ -3243,6 +3243,11 @@ namespace Warhammer.Core.Concrete
                 {
                     Id = p.Id, FullName = p.FullName, ShortName = p.ShortName, Type = PageLinkType.Person
                 }).ToList();
+        }
+
+        public PageImage GetPageImageForPage(int id)
+        {
+            return _repository.PageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
         }
 
         public void RemoveAward(int personId, int awardId)

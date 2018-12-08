@@ -800,6 +800,12 @@
     <Content Include="Views\Page\EditSessionArc.cshtml" />
     <Content Include="Views\Page\ArcPanel.cshtml" />
     <Content Include="Views\Activity\RecentActivityPanel.cshtml" />
+    <Content Include="Views\Timi\DisplayTemplates\Page.cshtml" />
+    <Content Include="Views\Timi\DisplayTemplates\Person.cshtml" />
+    <Content Include="Views\Timi\DisplayTemplates\SessionLog.cshtml" />
+    <Content Include="Views\Timi\Index.cshtml" />
+    <Content Include="Views\Timi\MyPeeps.cshtml" />
+    <Content Include="Views\Timi\GetMyPeeps.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

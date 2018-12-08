@@ -1,0 +1,21 @@
+﻿@model dynamic
+
+
+<h2>Peeps</h2>
+
+<div id ="peeps">
+    <p>I'm gonna get me some peeps!</p>
+</div>
+
+<script>
+    $(function () {
+        $('#peeps').hide();
+        $.ajax({
+            url: '@Url.Action("GetMyPeeps", "Timi")',
+            success: function(result) {
+                $('#peeps').html(result);
+                $('#peeps').show(500);
+            }
+        });
+    });
+</script>

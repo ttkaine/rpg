@@ -23,6 +23,17 @@ namespace Warhammer.Mvc.Controllers
         {
         }
 
+        public ActionResult MyPeeps()
+        {
+            return View();
+        }
+
+        public ActionResult GetMyPeeps()
+        {
+            var peeps = DataProvider.OtherPCs().Take(1).ToList();
+            return PartialView(peeps);
+        }
+
         public ActionResult Touch()
         {
             List<Page> all = DataProvider.AllPages();
