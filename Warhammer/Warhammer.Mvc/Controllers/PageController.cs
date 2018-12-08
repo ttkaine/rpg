@@ -391,6 +391,11 @@ namespace Warhammer.Mvc.Controllers
 
         }
 
+        public ActionResult RelatedLinksPanel(int id)
+        {
+            return PartialView(id);
+        }
+
         public ActionResult RelatedLinks(int id)
         {
             Page page = DataProvider.GetPage(id, true);

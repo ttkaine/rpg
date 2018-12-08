@@ -30,19 +30,14 @@
         </div>
         <div class="main-content">
             <div class="content-block">
+             
                 @if (Model is Person)
                 {
-                    Person person = Model as Person;
-                    if (person.Awards.Any())
-                    {
-                        <ul class="awardBar awardBar-mini">
-                            @Html.DisplayFor(m => person.OrderedAwards)
-                        </ul>
-                    }
+                    @Html.Action("AwardBar", "Person", new { id = Model.Id })
                 }
                 @if (Model is Person || Model.HasImage)
                 {
-                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
+                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200"/>
                 }
 
                 @if (Model is Person)
@@ -80,7 +75,7 @@
                 }
 
                 <div class="profile-footer">
-                    <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br />
+                    <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br/>
                     <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName</span>
                 </div>
             </div>
@@ -115,7 +110,7 @@
         @Html.Action("AwardNominationPanel", "Person", new { id = Model.Id })
         @if (!ViewBag.EditMode)
         {
-            @Html.Action("AwardHistory", "Person", new { id = Model.Id })
+            @Html.Action("AwardHistoryPanel", "Person", new { id = Model.Id })
         }
 
         @if (ViewBag.EditMode)
@@ -274,7 +269,7 @@
 
             @if (!ViewBag.EditMode)
             {
-                @Html.Action("RelatedLinks", "Page", new { id = Model.Id })
+                @Html.Action("RelatedLinksPanel", "Page", new { id = Model.Id })
             }
         </div>
 

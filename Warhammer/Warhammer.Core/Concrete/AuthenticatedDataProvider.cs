@@ -3241,6 +3241,31 @@ namespace Warhammer.Core.Concrete
                 .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
+        public List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false)
+        {
+            var query = _repository.Awards().Where(a => a.PersonId == id);
+
+            if (pointsOrder)
+            {
+                query = query.OrderBy(t => t.Trophy.TypeId == (int) TrophyType.DefaultAward)
+                    .ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name)
+                    .ThenBy(a => a.Id);
+            }
+            else
+            {
+                query = query.OrderByDescending(a => a.AwardedOn);
+            }
+
+            return query.Select(a => new AwardSummaryModel
+            {
+                AwardedOn = a.AwardedOn,
+                Id = a.Id,
+                TrophyId = a.TrophyId,
+                Reason = a.Reason,
+                TrophyName = a.Trophy.Name
+            }).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

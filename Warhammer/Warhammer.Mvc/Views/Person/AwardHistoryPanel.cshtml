@@ -1,0 +1,18 @@
+﻿@model int
+
+<div id ="awardHistory">
+    
+</div>
+
+<script>
+    $(function () {
+        $('#awardHistory').hide();
+        $.ajax({
+            url: '@Url.Action("AwardHistory", "Person", new { id = Model })',
+            success: function(result) {
+                $('#awardHistory').html(result);
+                $('#awardHistory').show(500);
+            }
+        });
+    });
+</script>

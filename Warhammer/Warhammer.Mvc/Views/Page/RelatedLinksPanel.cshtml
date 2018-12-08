@@ -1,0 +1,19 @@
+﻿@model int
+
+
+<div id="relatedLinks">
+
+</div>
+
+<script>
+    $(function () {
+        $('#relatedLinks').hide();
+        $.ajax({
+            url: '@Url.Action("RelatedLinks", "Page", new { id = Model })',
+            success: function(result) {
+                $('#relatedLinks').html(result);
+                $('#relatedLinks').show(500);
+            }
+        });
+    });
+</script>

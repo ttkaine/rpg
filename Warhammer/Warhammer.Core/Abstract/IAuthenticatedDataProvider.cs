@@ -218,5 +218,6 @@ namespace Warhammer.Core.Abstract
         List<PageLinkModel> AllNpcLinks();
         PageImage GetPageImageForPage(int id);
         List<PageLinkModel> SessionLogs(int id);
+        List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false);
     }
 }

@@ -1,0 +1,10 @@
+﻿@using Warhammer.Core.Models
+@model System.Collections.Generic.List<Warhammer.Core.Models.AwardSummaryModel>
+
+<ul class="awardBar awardBar-mini">
+    @foreach (AwardSummaryModel awardSummaryModel in Model)
+    {
+        @Html.DisplayFor(m => awardSummaryModel, "AwardBarItem")
+    }
+
+</ul>

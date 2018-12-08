@@ -370,6 +370,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />
+    <Compile Include="Models\AwardSummaryModel.cs" />
     <Compile Include="Models\SessionArcSummaryModel.cs" />
     <Compile Include="Models\CharacterAttributeModel.cs" />
     <Compile Include="Models\CharacterInitialStatsModel.cs" />
