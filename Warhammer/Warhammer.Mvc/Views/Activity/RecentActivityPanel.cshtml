@@ -1,0 +1,17 @@
+﻿
+<div id ="recentactivity">
+    
+</div>
+
+<script>
+    $(function () {
+        $('#recentactivity').hide();
+        $.ajax({
+            url: '@Url.Action("RecentActivityContent", "Activity")',
+            success: function(result) {
+                $('#recentactivity').html(result);
+                $('#recentactivity').show(500);
+            }
+            });
+    });
+</script>

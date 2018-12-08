@@ -14,6 +14,11 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult RecentActivity()
         {
+            return PartialView("RecentActivityPanel");
+        }
+
+        public ActionResult RecentActivityContent()
+        {
             List<Object> recentPages = DataProvider.RecentActivity().ToList();
             return PartialView("RecentActivity", recentPages);
         }

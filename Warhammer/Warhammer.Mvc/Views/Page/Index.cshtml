@@ -129,14 +129,7 @@
         
         @Html.Action("ArcPanel", "Page", new { id = Model.Id })
 
-    @if (Model is Session)
-        {
-
-        }
-
-
         <div class="content-block">
-
 
             @if (Model is Person)
             {
@@ -144,11 +137,13 @@
                 @Html.Action("AssetsPanel", "Person", new { id = Model.Id })
                 Person person = Model as Person;
                 @Html.Action("ViewStats", "Person", new { personId = person.Id })
+
                 if (User.IsInRole("Admin"))
                 {
                     <h1>Points Value: @person.PointsValue</h1>
                     <span class="note">Last Calcualted: @person.LastScoreCalculation</span>
                 }
+
                 if (person.SessionLogs.Any() && !ViewBag.EditMode)
                 {
                     <h3>Session Logs</h3>
@@ -235,8 +230,6 @@
                                 </div>
                             </li>
                         }
-
-
                     </ul>
                     <div class="clearfix"></div>
                 }
