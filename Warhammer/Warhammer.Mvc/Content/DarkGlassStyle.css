@@ -7330,6 +7330,144 @@ img.AttributeStar {
   position: absolute;
   width: 100%;
 }
+textarea {
+  width: 100%;
+  min-height: 100px;
+}
+.session-list {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+.session-list-item {
+  display: block;
+  width: 100%;
+  margin: 0 0 15px 0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: #333 5px 5px 15px;
+  background-color: #fff;
+  position: relative;
+  text-align: left;
+}
+.session-list li:last-of-type {
+  margin: 0;
+}
+.session-list-item h2 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 30px;
+  font-weight: normal;
+  margin: 0 0 10px 0;
+}
+.session-list-item h3 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+.session-list-item .people-box {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px 15px 5px 15px;
+  border-radius: 20px;
+  background: #d9edf7;
+}
+.session-list-item .people-box::after {
+  clear: both;
+  content: " ";
+  display: block;
+}
+.session-list-item .person-item {
+  display: block;
+  float: left;
+  margin: 0 10px 10px 0;
+}
+.session-list-item .person-item img {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.session-list-item .session-description {
+  margin: 10px 0 0 0;
+  width: 100%;
+  font-size: 18px;
+  padding: 0;
+}
+.session-list-item .log-box {
+  width: 100%;
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+.session-list-item .log-box:empty {
+  margin: 0;
+}
+.session-list-item .log-box::after {
+  clear: both;
+  content: " ";
+  display: block;
+}
+.session-list-item .log-box .log-item {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.session-list-item .new-log-box {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  transform: translate(10px, 10px);
+}
+.session-list-item .session-date {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 16px;
+  color: #666;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+.date-panel,
+.session-arc-panel {
+  font-size: 18px;
+  border-radius: 10px;
+  box-shadow: #333 5px 5px 15px;
+}
+.panel-button {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.edit-date-button,
+.edit-session-arc-button {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 0 10px 10px 10px;
+}
+.arc-list-item .person-item .mini-profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+}
+.game-duration {
+  width: 100%;
+  margin: 10px 0 20px 0;
+  padding: 0;
+  font-size: 22px;
+}
+.arc-sessions {
+  margin: 0;
+  padding: 0;
+}
+.arc-sessions .current-session {
+  font-weight: bold;
+}
 .content-block {
   border-style: inset;
   box-shadow: inset 0 0 50px 1px rgba(155, 209, 225, 0.2);

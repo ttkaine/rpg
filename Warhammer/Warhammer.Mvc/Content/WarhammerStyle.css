@@ -7330,7 +7330,6 @@ img.AttributeStar {
   position: absolute;
   width: 100%;
 }
-<<<<<<< develop
 textarea {
   width: 100%;
   min-height: 100px;
@@ -7468,13 +7467,12 @@ textarea {
 }
 .arc-sessions .current-session {
   font-weight: bold;
-=======
+}
 .content-block {
   background-color: white;
 }
 .header-block {
   background-color: black;
->>>>>>> some initial ideas on theme handling
 }
 /* jquery.Jcrop.css v0.9.12 - MIT License */
 /*
