@@ -2148,13 +2148,13 @@ namespace Warhammer.Core.Concrete
             links.AddRange(GetRelated<SessionLog>(id));
             links.AddRange(GetRelated<Person>(id));
             links.AddRange(GetRelated<Place>(id));
-            links.AddRange(GetRelated<Page>(id));
+            links.AddRange(GetRelated<Page>(id, links.Select(l => l.Id).ToList()));
 
             return links;
 
         }
 
-        private IEnumerable<PageLinkModel> GetRelated<T>(int id) where T:Page
+        private IEnumerable<PageLinkModel> GetRelated<T>(int id, List<int> exclude = null) where T:Page
         {
             var query = _repository.Pages().OfType<T>();
             if (ShadowMode)
@@ -2163,6 +2163,12 @@ namespace Warhammer.Core.Concrete
             }
 
             query = query.Where(p => p.Pages.Any(r => r.Id == id));
+
+            if (exclude != null)
+            {
+                query = query.Where(p => !exclude.Contains(p.Id));
+            }
+
             IEnumerable<PageLinkModel>  links = query.Select(p => new PageLinkModel
             {
                 Created = p.Created,
@@ -2170,10 +2176,15 @@ namespace Warhammer.Core.Concrete
                 Id = p.Id,
                 ShortName = p.ShortName
             
-            });
+            }).ToList();
 
             foreach (PageLinkModel linkModel in links)
             {
+                string typeName = typeof(T).Name;
+                if (Enum.TryParse(typeName, true, out PageLinkType linkType))
+                {
+                    linkModel.Type = linkType;
+                }
                 linkModel.BaseType = typeof(T);
             }
 
@@ -3222,6 +3233,12 @@ namespace Warhammer.Core.Concrete
         public PageImage GetPageImageForPage(int id)
         {
             return _repository.PageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
+        }
+
+        public List<PageLinkModel> SessionLogs(int id)
+        {
+            return _repository.Pages().OfType<SessionLog>().Where(s => s.PersonId == id)
+                .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)

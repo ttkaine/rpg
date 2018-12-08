@@ -143,18 +143,6 @@
                     <h1>Points Value: @person.PointsValue</h1>
                     <span class="note">Last Calcualted: @person.LastScoreCalculation</span>
                 }
-
-                if (person.SessionLogs.Any() && !ViewBag.EditMode)
-                {
-                    <h3>Session Logs</h3>
-                    <ul>
-                        @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
-                    {
-                            <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
-                        }
-                    </ul>
-                    <div class="clearfix"></div>
-                }
             }
 
             @if (Model is SessionLog)

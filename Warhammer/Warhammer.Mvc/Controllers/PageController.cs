@@ -395,7 +395,8 @@ namespace Warhammer.Mvc.Controllers
         {
             Page page = DataProvider.GetPage(id, true);
             List<PageLinkModel> linkedPages = DataProvider.GetRelatedPages(id);
-            return PartialView(new RelatedLinksModel(linkedPages, page));
+            List<PageLinkModel> sessionLogs = DataProvider.SessionLogs(id);
+            return PartialView(new RelatedLinksModel(linkedPages, page, sessionLogs));
         }
 
         public ActionResult GetShowLocalButton(int id)

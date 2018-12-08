@@ -10,7 +10,7 @@ namespace Warhammer.Mvc.Models
     {
         private List<PageLinkModel> _links;
 
-        public RelatedLinksModel(List<PageLinkModel> links, Page owner)
+        public RelatedLinksModel(List<PageLinkModel> links, Page owner, List<PageLinkModel> mySessionLogs)
         {
             _links = links ?? new List<PageLinkModel>();
 
@@ -20,8 +20,10 @@ namespace Warhammer.Mvc.Models
             People = _links.Where(l => l.Type == PageLinkType.Person).OrderBy(l => l.ShortName).ToList();
             Places = _links.Where(l => l.Type == PageLinkType.Place).OrderBy(l => l.ShortName).ToList();
             Others = _links.Where(l => l.Type == PageLinkType.Other).OrderBy(l => l.ShortName).ToList();
+            MySessionLogs = mySessionLogs.ToList();
         }
 
+        public List<PageLinkModel> MySessionLogs { get; set; }
         public Page Owner { get; private set; }
         public List<PageLinkModel> Sessions { get; private set; }
         public List<PageLinkModel> SessionLogs { get; private set; }

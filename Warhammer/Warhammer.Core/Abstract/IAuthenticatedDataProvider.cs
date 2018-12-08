@@ -217,5 +217,6 @@ namespace Warhammer.Core.Abstract
         SessionArcSummaryModel GetSessionArcSummary(int id);
         List<PageLinkModel> AllNpcLinks();
         PageImage GetPageImageForPage(int id);
+        List<PageLinkModel> SessionLogs(int id);
     }
 }

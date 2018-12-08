@@ -1,6 +1,15 @@
 ﻿@using Warhammer.Core.Entities
 @model Warhammer.Mvc.Models.RelatedLinksModel
 
+@if (Model.MySessionLogs.Any())
+{
+    <h3>Session Logs</h3>
+    <ul>
+        @Html.DisplayFor(m => Model.MySessionLogs)
+    </ul>
+    <div class="clearfix"></div>
+}
+
 @if (Model.Sessions.Any() && !(Model.Owner is Arc))
 {
     <h3>Sessions</h3>
