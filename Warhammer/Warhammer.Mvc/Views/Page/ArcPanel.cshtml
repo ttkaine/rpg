@@ -1,22 +1,26 @@
 ﻿@using Warhammer.Core.Entities
-@model Warhammer.Core.Entities.Session
+@using Warhammer.Core.Models
+@model Warhammer.Core.Models.SessionArcSummaryModel
     
 @if (ViewBag.EditMode)
 {
-    @Html.Action("EditSessionArc", "Page", new { id = Model.Id })
+    @Html.Action("EditSessionArc", "Page", new { id = Model.SessionId })
 }
 else
 {
-    if (Model.Arc != null)
+    if (Model.SessionHasArc)
     {
         <div class="panel panel-info session-arc-panel">
-            <div class="panel-heading"><a href="@Url.Action("Index", "Page", new {id = Model.ArcId.GetValueOrDefault()})">@(Model.Arc.FullName)</a></div>
+            <div class="panel-heading">
+                <a href="@Url.Action("Index", "Page", new {id = Model.ArcId})">@(Model.Name)
+                    </a>
+            </div>
             <div class="panel-body">                
                 <ul class="arc-sessions">
-                    @foreach (Session arcSession in Model.Arc.Sessions.OrderBy(s => s.DateTime))
+                    @foreach (PageListItemModel arcSession in Model.Sessions)
                     {
                         <li>
-                            @if (arcSession.Id == Model.Id)
+                            @if (arcSession.Id == Model.SessionId)
                             {
                                 <span class="current-session">@arcSession.ShortName</span>
                             }

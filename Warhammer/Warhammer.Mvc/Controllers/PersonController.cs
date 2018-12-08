@@ -400,18 +400,19 @@ namespace Warhammer.Mvc.Controllers
             return PartialView("ViewStats", model);
         }
 
+        public ActionResult AwardHistoryPanel(int id)
+        {
+            return PartialView(id);
+        }
+
         public ActionResult AwardHistory(int id)
         {
             if (DataProvider.SiteHasFeature(Feature.AwardHistory))
             {
-                Person person = DataProvider.GetPerson(id);
-                if (person != null)
+                List<AwardSummaryModel> awards = DataProvider.GetAwardsForPerson(id);
+                if (awards.Any())
                 {
-                    List<Award> awards = person.Awards.OrderByDescending(a => a.AwardedOn).ToList();
-                    if (awards.Any())
-                    {
-                        return PartialView(awards);
-                    }
+                    return PartialView(awards);
                 }
             }
             return null;
@@ -1232,5 +1233,18 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        public ActionResult AwardBar(int id)
+        {
+            List<AwardSummaryModel> model = DataProvider.GetAwardsForPerson(id, pointsOrder: true);
+            if (model.Any())
+            {
+                return PartialView(model);
+            }
+
+            return null;
+        }
+
+
     }
 }

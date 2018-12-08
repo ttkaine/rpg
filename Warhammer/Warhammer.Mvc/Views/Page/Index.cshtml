@@ -9,7 +9,6 @@
 
 <div class="content-wrapper">
 
-    @Html.Action("Stats", "Fate", new { id = Model.Id })
     @Html.Action("TopStats", "Crow", new { id = Model.Id })
 
     @using (Html.BeginForm("Index", "Page", FormMethod.Post, new { id = "mainpageform" }))
@@ -31,25 +30,14 @@
         </div>
         <div class="main-content">
             <div class="content-block">
+             
                 @if (Model is Person)
                 {
-
-
-                    Person person = Model as Person;
-
-
-
-
-                    if (person.Awards.Any())
-                    {
-                        <ul class="awardBar awardBar-mini">
-                            @Html.DisplayFor(m => person.OrderedAwards)
-                        </ul>
-                    }
+                    @Html.Action("AwardBar", "Person", new { id = Model.Id })
                 }
                 @if (Model is Person || Model.HasImage)
                 {
-                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
+                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200"/>
                 }
 
                 @if (Model is Person)
@@ -68,6 +56,7 @@
                 <div id="description" class="editable">
                     @Html.Raw(Model.Description)
                 </div>
+
                 @if (Model.ShowGmNotes)
                 {
                     <div class="panel panel-info">
@@ -83,17 +72,17 @@
                             <span class="note">The GM notes section is only visible to the GM. This can be used to keep notes handy for the current page without the other players being able to see it.</span>
                         </div>
                     </div>
-
                 }
+
                 <div class="profile-footer">
-                    <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br />
+                    <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br/>
                     <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName</span>
                 </div>
             </div>
 
             @Html.Action("ArcSessions", "Page", new { id = Model.Id })
 
-            @Html.Action("CurrentScorePie", "Person")
+            @Html.Action("CurrentScorePie", "Person", new { id = Model.Id })
 
         </div>
     }
@@ -121,7 +110,7 @@
         @Html.Action("AwardNominationPanel", "Person", new { id = Model.Id })
         @if (!ViewBag.EditMode)
         {
-            @Html.Action("AwardHistory", "Person", new { id = Model.Id })
+            @Html.Action("AwardHistoryPanel", "Person", new { id = Model.Id })
         }
 
         @if (ViewBag.EditMode)
@@ -135,14 +124,7 @@
         
         @Html.Action("ArcPanel", "Page", new { id = Model.Id })
 
-    @if (Model is Session)
-        {
-
-        }
-
-
         <div class="content-block">
-
 
             @if (Model is Person)
             {
@@ -150,21 +132,11 @@
                 @Html.Action("AssetsPanel", "Person", new { id = Model.Id })
                 Person person = Model as Person;
                 @Html.Action("ViewStats", "Person", new { personId = person.Id })
+
                 if (User.IsInRole("Admin"))
                 {
                     <h1>Points Value: @person.PointsValue</h1>
                     <span class="note">Last Calcualted: @person.LastScoreCalculation</span>
-                }
-                if (person.SessionLogs.Any() && !ViewBag.EditMode)
-                {
-                    <h3>Session Logs</h3>
-                    <ul>
-                        @foreach (SessionLog log in person.SessionLogs.OrderByDescending(s => s.Session.DateTime))
-                    {
-                            <li>@Html.ActionLink(log.ShortName, "Index", new { id = log.Id })</li>
-                        }
-                    </ul>
-                    <div class="clearfix"></div>
                 }
             }
 
@@ -241,8 +213,6 @@
                                 </div>
                             </li>
                         }
-
-
                     </ul>
                     <div class="clearfix"></div>
                 }
@@ -299,7 +269,7 @@
 
             @if (!ViewBag.EditMode)
             {
-                @Html.Action("RelatedLinks", "Page", new { id = Model.Id })
+                @Html.Action("RelatedLinksPanel", "Page", new { id = Model.Id })
             }
         </div>
 

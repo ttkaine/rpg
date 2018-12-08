@@ -12,7 +12,7 @@ namespace Warhammer.Core.Abstract
     {
         bool CurrentPlayerIsGm { get; }
         string VersionInfo();
-        ICollection<Person> MyPeople();
+        ICollection<PageLinkModel> MyPeople();
         int AddSessionLog(int sessionId, int personId, string name, string title, string description);
         int AddSession(string title, string name, string description, DateTime dateTime, bool sessionCreateWithPreviousCharacterList, List<PageToggleModel> modelLinkPages, GameDate gameDate, int? arcId);
         int GetGmId(int sessionId);
@@ -23,7 +23,6 @@ namespace Warhammer.Core.Abstract
         Page GetPage(int id, bool asNoTracking = false);
         ICollection<PageLinkWithUpdateDateModel> RecentPages();
         ICollection<Page> MyStuff();
-        ICollection<Session> Sessions();
         ICollection<Person> People();
         ICollection<SessionLog> Logs();
         ICollection<Arc> Arcs();
@@ -214,5 +213,11 @@ namespace Warhammer.Core.Abstract
         void AddMonthToDate(int pageId, bool isStartDate);
         List<Session> AllSessions();
         void SetSessionArc(int? arcId, int sessionId);
+        Session GetSession(int id);
+        SessionArcSummaryModel GetSessionArcSummary(int id);
+        List<PageLinkModel> AllNpcLinks();
+        PageImage GetPageImageForPage(int id);
+        List<PageLinkModel> SessionLogs(int id);
+        List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false);
     }
 }

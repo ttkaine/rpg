@@ -17,6 +17,13 @@ namespace Warhammer.Core.Concrete
     /// </summary>
     public class Repository : IRepository, IDisposable
     {
+        public Repository()
+        {
+#if DEBUG
+            _entities.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+#endif    
+        }
+
         private readonly WarhammerDataEntities _entities = new WarhammerDataEntities();
         private readonly IAuthenticatedUserProvider _user = DependencyResolver.Current.GetService<IAuthenticatedUserProvider>();
         #region Accessors

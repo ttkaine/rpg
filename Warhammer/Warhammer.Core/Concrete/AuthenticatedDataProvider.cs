@@ -149,9 +149,10 @@ namespace Warhammer.Core.Concrete
             return $"{softwareVersion} :: {databaseVersion}";
         }
 
-        public ICollection<Person> MyPeople()
+        public ICollection<PageLinkModel> MyPeople()
         {
-            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false).ToList();
+            return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false)
+                .Select(p => new PageLinkModel{ Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, Type = PageLinkType.Person}).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
@@ -728,7 +729,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.Select(GetPageLinkModel).ToList();
+            return query.Select(p => new PageLinkModel{ Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public ICollection<PageLinkModel> NewPages()
@@ -738,7 +739,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(GetPageLinkModel).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public ICollection<PageLinkModel> ModifiedPages()
@@ -750,7 +751,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(GetPageLinkModel).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public void TogglePagePin(int id)
@@ -1348,7 +1349,7 @@ namespace Warhammer.Core.Concrete
                 awardNominations = ApplyShadow(awardNominations);
             }
 
-            List<AwardNomination> nominations = awardNominations.OrderByDescending(a => a.NominatedDate).Take(20).ToList();
+            List<AwardNomination> nominations = awardNominations.OrderByDescending(a => a.NominatedDate).Take(5).ToList();
             return nominations;
         }
 
@@ -1362,7 +1363,7 @@ namespace Warhammer.Core.Concrete
                 awardQuery = ApplyShadow(awardQuery);
             }
 
-            List<Award> awards = awardQuery.OrderByDescending(a => a.AwardedOn).Take(20).ToList();
+            List<Award> awards = awardQuery.OrderByDescending(a => a.AwardedOn).Take(5).ToList();
             return awards;
         }
 
@@ -2141,74 +2142,56 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> GetRelatedPages(int id)
         {
-            if (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode))
-            {
-                List<PageLinkModel> shadowLinks = _repository.Pages()
-                    .Include(p => p.Pages)
-                    .Single(p => p.Id == id)
-                    .Pages.Where(p => MyPageIds.Contains(p.Id) || p.Pages.Any(r => MyPageIds.Contains(r.Id)))
-                    .Select(p => GetPageLinkModelForPage(p, id))
-                    .ToList();
+            List<PageLinkModel> links = new List<PageLinkModel>();
 
-                return shadowLinks;
+            links.AddRange(GetRelated<Session>(id));
+            links.AddRange(GetRelated<SessionLog>(id));
+            links.AddRange(GetRelated<Person>(id));
+            links.AddRange(GetRelated<Place>(id));
+            links.AddRange(GetRelated<Page>(id, links.Select(l => l.Id).ToList()));
+
+            return links;
+
+        }
+
+        private IEnumerable<PageLinkModel> GetRelated<T>(int id, List<int> exclude = null) where T:Page
+        {
+            var query = _repository.Pages().OfType<T>();
+            if (ShadowMode)
+            {
+                query = query.Where(p => MyPageIds.Contains(p.Id));
             }
 
-            List<PageLinkModel> links =
-                _repository.Pages()
-                    .Include(p => p.Pages)
-                    .Single(p => p.Id == id)
-                    .Pages.Select(p => GetPageLinkModelForPage(p, id))
-                    .ToList();
+            query = query.Where(p => p.Pages.Any(r => r.Id == id));
+
+            if (exclude != null)
+            {
+                query = query.Where(p => !exclude.Contains(p.Id));
+            }
+
+            IEnumerable<PageLinkModel>  links = query.Select(p => new PageLinkModel
+            {
+                Created = p.Created,
+                FullName = p.FullName,
+                Id = p.Id,
+                ShortName = p.ShortName
+            
+            }).ToList();
+
+            foreach (PageLinkModel linkModel in links)
+            {
+                string typeName = typeof(T).Name;
+                if (Enum.TryParse(typeName, true, out PageLinkType linkType))
+                {
+                    linkModel.Type = linkType;
+                }
+                linkModel.BaseType = typeof(T);
+            }
+
             return links;
         }
 
-        private PageLinkModel GetPageLinkModel(Page page)
-        {
-            return GetPageLinkModelForPage(page, 0);    
-        }
-
-        private PageLinkModel GetPageLinkModelForPage(Page page, int viewingPageId)
-        {
-            PageLinkModel model = new PageLinkModel
-            {
-                Id = page.Id,
-                ShortName = page.ShortName,
-                FullName = page.FullName,
-                Created = page.Created
-            };
-
-            if (page is Person)
-            {
-                model.Type = PageLinkType.Person;
-            }
-            else if (page is Place)
-            {
-                model.Type = PageLinkType.Place;
-            }
-            else if (page is Session)
-            {
-                model.Type = PageLinkType.Session;
-            }
-            else if (page is SessionLog)
-            {
-                SessionLog log = (SessionLog) page;
-                if (log.PersonId != viewingPageId)
-                {
-                    model.Type = PageLinkType.SessionLog;
-                }
-                else
-                {
-                    model.Type = PageLinkType.Other;
-                }
-            }
-            else
-            {
-                model.Type = PageLinkType.Other;
-            }
-
-            return model;
-        }
-
+ 
         public bool PlayerSettingEnabled(SettingNames setting)
         {
             Player player = CurrentPlayer;
@@ -2240,7 +2223,7 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> PeopleWithXpToSpend()
         {
-            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(GetPageLinkModel).ToList();
+            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public void AwardShiftForSession(int id)
@@ -2306,7 +2289,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyPeopleShadow(query);
             }
 
-            return query.Select(GetPageLinkModel).ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public void SetGender(int personId, Gender gender)
@@ -2879,19 +2862,22 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> GetRecentViewedPages()
         {
+            List<int> pageIds = _repository.PageViews()
+                .Where(u => u.PlayerId == CurrentPlayerId)
+                .Where(u => u.CampaignId == CurrentCampaignId)
+                .OrderByDescending(d => d.Viewed)
+                .Select(v => v.PageId)
+                .Take(15).ToList();
+
             return
-                _repository.PageViews().Include(p => p.Page)
-                    .Where(u => u.PlayerId == CurrentPlayerId)
-                    .Where(u => u.CampaignId == CurrentCampaignId)
-                    .OrderByDescending(d => d.Viewed)
-                    .Take(15).ToList()
-                    .Select(v => GetPageLinkModel(v.Page))
+                _repository.Pages().Where(p => pageIds.Contains(p.Id))
+                    .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
                     .ToList();
         }
 
         public string GetPageName(int id)
         {
-            return _repository.Pages().Single(p => p.Id == id).FullName;
+            return _repository.Pages().Where(i => i.Id == id).Select(p => p.FullName).First();
         }
 
         public void SetCustomCss(string customCss)
@@ -3201,6 +3187,85 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public Session GetSession(int id)
+        {
+            return _repository.Pages().OfType<Session>().FirstOrDefault(s => s.Id == id);
+        }
+
+        public SessionArcSummaryModel GetSessionArcSummary(int id)
+        {
+            int? arcId = _repository.Pages().OfType<Session>().Where(s => s.Id == id).Select(s => s.ArcId).FirstOrDefault();
+            if (arcId.HasValue)
+            {
+                SessionArcSummaryModel model = _repository.Pages().OfType<Arc>().Where(a => a.Id == arcId).Select(m =>
+                    new SessionArcSummaryModel
+                    {
+                        Name = m.FullName,
+                        SessionId = id,
+                        ArcId = arcId,
+                    }).Single();
+
+                model.Sessions = _repository.Pages().OfType<Session>().Where(s => s.ArcId == arcId)
+                    .OrderBy(s => s.GameDate.Year)
+                    .ThenBy(s => s.GameDate.Month)
+                    .ThenBy(s => s.GameDate.Day)
+                    .ThenBy(s => s.DateTime)
+                    .ThenBy(s => s.Id).Select(s =>
+                    new PageListItemModel {Fullname = s.FullName, Id = s.Id, ShortName = s.ShortName}).ToList();
+
+                return model;
+            }
+            else
+            {
+                return new SessionArcSummaryModel{ SessionId = id, Sessions = new List<PageListItemModel>() };
+            }
+        }
+
+        public List<PageLinkModel> AllNpcLinks()
+        {
+            return _repository.Pages().OfType<Person>().Where(s => !s.PlayerId.HasValue && !s.IsDead)
+                .Select(p => new PageLinkModel
+                {
+                    Id = p.Id, FullName = p.FullName, ShortName = p.ShortName, Type = PageLinkType.Person
+                }).ToList();
+        }
+
+        public PageImage GetPageImageForPage(int id)
+        {
+            return _repository.PageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
+        }
+
+        public List<PageLinkModel> SessionLogs(int id)
+        {
+            return _repository.Pages().OfType<SessionLog>().Where(s => s.PersonId == id)
+                .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+        }
+
+        public List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false)
+        {
+            var query = _repository.Awards().Where(a => a.PersonId == id);
+
+            if (pointsOrder)
+            {
+                query = query.OrderBy(t => t.Trophy.TypeId == (int) TrophyType.DefaultAward)
+                    .ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name)
+                    .ThenBy(a => a.Id);
+            }
+            else
+            {
+                query = query.OrderByDescending(a => a.AwardedOn);
+            }
+
+            return query.Select(a => new AwardSummaryModel
+            {
+                AwardedOn = a.AwardedOn,
+                Id = a.Id,
+                TrophyId = a.TrophyId,
+                Reason = a.Reason,
+                TrophyName = a.Trophy.Name
+            }).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -3209,6 +3274,10 @@ namespace Warhammer.Core.Concrete
                 Award award = person.Awards.FirstOrDefault(a => a.Id == awardId);
                 if (award != null)
                 {
+                    if (award.AwardNominations.Any())
+                    {
+                        award.AwardNominations.Clear();
+                    }
                     _repository.Delete(award);
                 }
             }
@@ -3216,7 +3285,9 @@ namespace Warhammer.Core.Concrete
 
         public PageLinkModel PersonWithMyAward(TrophyType awardType)
         {
-           return _repository.People().Where(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id&& a.Trophy.TypeId == (int)awardType)).Select(GetPageLinkModel).FirstOrDefault();
+           return _repository.People()
+               .Where(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id&& a.Trophy.TypeId == (int)awardType))
+               .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).FirstOrDefault();
 
         }
 
@@ -3316,7 +3387,7 @@ namespace Warhammer.Core.Concrete
             query = query.OrderByDescending(p => p.CurrentScore).Take(5);
 
 
-            return query.Select(GetPageLinkModel).ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
         public List<Person> AllNpcs()
@@ -3548,7 +3619,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyPeopleShadow(query);
             }
 
-            return query.Select(GetPageLinkModel).ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
         }
 
 

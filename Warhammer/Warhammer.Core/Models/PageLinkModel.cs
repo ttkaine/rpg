@@ -9,6 +9,7 @@ namespace Warhammer.Core.Models
         public string FullName { get; set; }
         public PageLinkType Type { get; set; }
         public DateTime Created { get; set; }
+        public Type BaseType { get; set; }
 
         public PageLinkModel()
         {

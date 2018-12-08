@@ -1,0 +1,17 @@
+﻿@model System.Collections.Generic.ICollection<Warhammer.Core.Models.PageLinkModel>
+
+
+<div class="core-content">
+    @if (Model.Any())
+    {
+        <div class="content-block">
+            <h3>Here are some peeps</h3>
+
+            <table class="table table-striped">
+                <tbody class="list">
+                    @Html.DisplayFor(m => m)
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

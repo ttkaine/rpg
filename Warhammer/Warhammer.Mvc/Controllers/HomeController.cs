@@ -104,7 +104,7 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult Sessions()
         {
-            List<SessionListItemViewModel> sessions = DataProvider.Sessions().OrderByDescending(s => s.DateTime).Select(s => new SessionListItemViewModel(s)).ToList();
+            List<SessionListItemViewModel> sessions = DataProvider.AllSessions().OrderByDescending(s => s.DateTime).Select(s => new SessionListItemViewModel(s)).ToList();
             foreach (SessionListItemViewModel session in sessions)
             {
                 session.LogButtonPerson = session.People.FirstOrDefault(p => p.PlayerId.HasValue && p.SessionLogs.All(l => l.SessionId != session.Id) && p.Player.UserName == User.Identity.Name);                

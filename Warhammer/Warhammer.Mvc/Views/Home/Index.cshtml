@@ -55,20 +55,13 @@
             @Html.Action("CreatedPages")
 
             @Html.Action("UpdatedPages")
-
+            
             @Html.Action("RecentActivity", "Activity")
 
         </div>
-
-
-
-
     </div>
 
     <div class="core-content">
-
-
-
         @if (Model.MyPeople.Any())
             {
             <div class="content-block">
@@ -76,21 +69,11 @@
 
                 <table class="table table-striped">
                     <tbody class="list">
-                        @foreach (Person person in Model.MyPeople)
-                        {
-                            <tr>
-                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
-                                <td class="name">@person.FullName</td>
-                            </tr>
-
-                        }
+                        @Html.DisplayFor(m => m.MyPeople)
                     </tbody>
                 </table>
-
             </div>
-
         }
-
 
         @if (Model.OtherPeople.Any())
             {
@@ -98,44 +81,15 @@
                 <h3>Player Characters</h3>
 
                 <table class="table table-striped">
-                    <tbody class="list">
-                        @foreach (PageLinkModel person in Model.OtherPeople)
-                        {
-                            <tr>
-                                <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
-                                <td class="name">@person.FullName</td>
-                            </tr>
-
-                        }
+                    <tbody class="list">                      
+                        @Html.DisplayFor(m => m.OtherPeople)
                     </tbody>
                 </table>
 
             </div>
-
         }
 
-            <div class="content-block">
-
-                @if (Model.TopNpcs.Any())
-            {
-                    <h3>Top NPCs</h3>
-
-                    <table class="table table-striped">
-                        <tbody class="list">
-                            @foreach (PageLinkModel person in Model.TopNpcs)
-                            {
-                                <tr>
-                                    <td><a id="personLink_@person.Id" href="@Url.Action("Index", "Page", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id}, null)" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a></td>
-                                    <td class="name">@person.FullName</td>
-                                </tr>
-
-                            }
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </div>
-
+    </div>
     <div class="core-content">
         @Html.Action("SiteSelector")
 
@@ -144,10 +98,19 @@
             @Html.Action("GameDate", "Page", new { id = 0 })
         }
 
-        <div class="content-block">
-            <h3>Recent Comments</h3>
-            @Html.Action("Index", "Comment")
-        </div>
+        @if (Model.TopNpcs.Any())
+        {
+            <div class="content-block">
+                <h3>Top NPCs</h3>
+
+                <table class="table table-striped">
+                    <tbody class="list">
+                    @Html.DisplayFor(m => m.TopNpcs)
+                    </tbody>
+                </table>
+          
+            </div>
+        }
     </div>
 
 </div>
