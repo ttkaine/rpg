@@ -36,7 +36,7 @@
                             foreach (Person person in item.People)
                             {
                                 <a class="person-item" href="@Url.Action("Index", "Page", new {id = person.Id})">
-                                    <img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/>
+                                    <img src="@Url.Action("Image", "Image", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image"/>
                                 </a>
                             }
                         }

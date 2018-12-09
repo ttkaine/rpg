@@ -56,35 +56,35 @@ namespace Warhammer.Core.Concrete
                 CampaignId = campaignId
             });
 
-            int logWords = _repo.Pages().OfType<SessionLog>().Where(s => s.PersonId == personId)
-                .Sum(p => p.WordCount);
+            int? logWords = _repo.Pages().OfType<SessionLog>().Where(s => s.PersonId == personId)
+                .Sum(p => (int?)p.WordCount);
             scores.Add(new ScoreBreakdown
             {
                 ScoreType = ScoreType.Logs,
                 DateTime = calcDate,
                 PersonId = personId,
-                PointsValue = (decimal) (logWords / 1000.0),
+                PointsValue = (decimal) (logWords.GetValueOrDefault(0) / 1000.0),
                 CampaignId = campaignId
             });
 
-            int pageWords = _repo.Pages().OfType<Person>().Where(s => s.Id == personId)
-                .Sum(p => p.WordCount);
+            int? pageWords = _repo.Pages().OfType<Person>().Where(s => s.Id == personId)
+                .Sum(p => (int?)p.WordCount);
             scores.Add(new ScoreBreakdown
             {
                 ScoreType = ScoreType.PageText,
                 DateTime = calcDate,
                 PersonId = personId,
-                PointsValue = (decimal)(pageWords / 100.0),
+                PointsValue = (decimal)(pageWords.GetValueOrDefault(0) / 100.0),
                 CampaignId = campaignId
             });
 
-            int awardValue = _repo.Awards().Where(a => a.PersonId == personId).Sum(a => a.Trophy.PointsValue);
+            int? awardValue = _repo.Awards().Where(a => a.PersonId == personId).Sum(a => (int?)a.Trophy.PointsValue);
             scores.Add(new ScoreBreakdown
             {
                 ScoreType = ScoreType.Awards,
                 DateTime = calcDate,
                 PersonId = personId,
-                PointsValue = awardValue,
+                PointsValue = awardValue.GetValueOrDefault(0),
                 CampaignId = campaignId
             });
 

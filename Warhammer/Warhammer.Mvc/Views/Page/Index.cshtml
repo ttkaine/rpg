@@ -37,7 +37,7 @@
                 }
                 @if (Model is Person || Model.HasImage)
                 {
-                    <img class="profile-image" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200"/>
+                    <img class="profile-image" src="@Url.Action("Image", "Image", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200"/>
                 }
 
                 @if (Model is Person)
@@ -145,7 +145,7 @@
                 SessionLog log = Model as SessionLog;
                 <ul>
                     <li>
-                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Page", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
+                        <a href="@Url.Action("Index", new {id = log.Person.Id})"><img src="@Url.Action("Image", "Image", new {id = log.Person.Id})" title="@log.Person.FullName" alt="Picture of @log.Person.FullName" class="mini-profile-image" /></a>
                         @Html.ActionLink(log.Session.FullName, "Index", new { id = log.Session.Id }) (@Html.ActionLink(log.Session.ShortName, "Index", new { id = log.Session.Id }))
 
                     </li>
@@ -175,7 +175,7 @@
                         @foreach (Person person in session.PlayerCharacters)
                     {
                             <li>
-                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Image", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
                             </li>
                         }
                     </ul>
@@ -190,7 +190,7 @@
                         @foreach (Person person in session.Npcs)
                     {
                             <li>
-                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Page", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
+                                <a href="@Url.Action("Index", new {id = person.Id})"><img src="@Url.Action("Image", "Image", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="mini-profile-image" /></a>
                             </li>
                         }
                     </ul>

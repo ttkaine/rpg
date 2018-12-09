@@ -32,7 +32,7 @@ else
             <div class="panel-footer">
                 @if (rumour.PlaceId.HasValue)
                 {
-                    <a href="@Url.Action("Index", "Page", new {id = rumour.PlaceId})"><img src="@Url.Action("Image", "Page", new {id = rumour.PlaceId}, null)" title="@rumour.Place.FullName" class="mini-profile-image"/></a>
+                    <a href="@Url.Action("Index", "Page", new {id = rumour.PlaceId})"><img src="@Url.Action("Image", "Image", new {id = rumour.PlaceId}, null)" title="@rumour.Place.FullName" class="mini-profile-image"/></a>
                 }
                 @if (User.IsInRole("Admin"))
                 {
