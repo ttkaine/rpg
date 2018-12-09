@@ -95,11 +95,13 @@ namespace Warhammer.Core.Concrete
         {
             var query = _repo.Pages().OfType<T>();
 
+            query = query.Where(p => p.WordCount > 0);
+            query = query.Where(p => p.Pages.Any());
             query = query.Where(p => p.Pages.Any(r => r.Id == id));
 
-            int words = query.Sum(s => s.WordCount);
+            int? words = query.Sum(s => (int?)s.WordCount);
 
-            return (decimal) (words / 2000.0);
+            return (decimal) (words.GetValueOrDefault(0) / 2000.0);
         }
 
         public void UpdatePersonScore(int personId)

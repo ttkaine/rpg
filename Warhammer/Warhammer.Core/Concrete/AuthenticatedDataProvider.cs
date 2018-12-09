@@ -3521,6 +3521,11 @@ namespace Warhammer.Core.Concrete
         public List<Session> TextSessionsWhereItisMyTurn()
         {
             bool isGm = CurrentPlayerIsGm;
+
+
+
+
+
             List<Session> pages =
                  _repository.Pages()
                      .OfType<Session>().Where(p => p.IsTextSession && !p.IsClosed && p.PostOrders.Any(po => po.PlayerId == CurrentPlayer.Id && !po.IsSuspended || isGm))
