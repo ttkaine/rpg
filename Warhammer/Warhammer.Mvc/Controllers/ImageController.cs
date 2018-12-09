@@ -11,6 +11,7 @@ using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
 {
+    [Authorize]
     public class ImageController : Controller
     {
         private readonly IImageDataProvider _imageData;
