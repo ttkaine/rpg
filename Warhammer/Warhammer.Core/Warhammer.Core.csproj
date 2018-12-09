@@ -162,6 +162,7 @@
     <Compile Include="Abstract\IEmailHandler.cs" />
     <Compile Include="Abstract\IExceptionLogHandler.cs" />
     <Compile Include="Abstract\IImageProcessor.cs" />
+    <Compile Include="Abstract\IImageRepository.cs" />
     <Compile Include="Abstract\ILogGenerator.cs" />
     <Compile Include="Abstract\IPostManager.cs" />
     <Compile Include="Abstract\IModelFactory.cs" />
@@ -178,7 +179,9 @@
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\EmailHandler.cs" />
     <Compile Include="Concrete\ExceptionLogHandler.cs" />
+    <Compile Include="Concrete\ImageDataProvider.cs" />
     <Compile Include="Concrete\ImageProcessor.cs" />
+    <Compile Include="Concrete\ImageRepository.cs" />
     <Compile Include="Concrete\InlineHtmlImage.cs" />
     <Compile Include="Concrete\PublicDataProvider.cs" />
     <Compile Include="Concrete\RandomItemGenerator.cs" />
@@ -376,7 +379,10 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />
+    <Compile Include="IImageDataProvider.cs" />
     <Compile Include="Models\AwardSummaryModel.cs" />
+    <Compile Include="Models\CharacterLeagueItemModel.cs" />
+    <Compile Include="Models\CharacterLeagueModel.cs" />
     <Compile Include="Models\SessionArcSummaryModel.cs" />
     <Compile Include="Models\CharacterAttributeModel.cs" />
     <Compile Include="Models\CharacterInitialStatsModel.cs" />

@@ -6,7 +6,7 @@
     <td>
         @if (Model.PlaceId.HasValue)
         {
-            @Html.Action("PageImage", "Page", new {id = Model.PlaceId.Value})
+            @Html.Action("PageImage", "Image", new {id = Model.PlaceId.Value})
         }
         else
         {

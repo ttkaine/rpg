@@ -1,5 +1,7 @@
-﻿@using Warhammer.Core.Entities
-@model IEnumerable<Person>
+﻿@using System.Web.Mvc.Html
+@using Warhammer.Core.Entities
+@using Warhammer.Core.Models
+@model Warhammer.Core.Models.CharacterLeagueModel
 @{
     ViewBag.Title = "Character League";
 }
@@ -11,7 +13,6 @@
         <div class="header-block banner-hallOfFame">
             <h1 id="fullName">League</h1>
         </div>
-
     </div>
 
     <div class="banner-content">
@@ -22,13 +23,16 @@
 
                 <table id="characterTable" class="table table-responsive people">
                     <tbody class="list">
-                        @foreach (Person person in Model)
+                        @foreach (CharacterLeagueItemModel person in Model.Items)
                         {
-                            Person aPerson = person;
                             <tr class="awardBar">
                                 <td colspan="3">
+                                    
                                     <ul class="awardBar">
-                                        @Html.DisplayFor(m => aPerson.OrderedAwards)
+                                        @foreach (AwardSummaryModel awardSummaryModel in person.Awards)
+                                        {
+                                            @Html.DisplayFor(m => awardSummaryModel, "AwardBarItem")
+                                        }
                                     </ul>
                                 </td>
                                 <td style="padding: 5px; text-align: right">
@@ -46,14 +50,13 @@
                                 <td class="name no-break">@person.FullName
                                     @if (person.HeroLevel > 0)
                                     {           
-                                    @Html.Partial("_LevelStars", person.HeroLevel)
+                                       @Html.Partial("_LevelStars", person.HeroLevel)
                                     }
                                 </td>
                                 <td>@Html.Raw(person.MiniSummary)</td>
                                 <td>&nbsp;</td>
                                 <td class="description" style="display: none">@Html.Raw(person.SearchString)</td>
                             </tr>
-
                         }
                     </tbody>
                 </table>

@@ -72,7 +72,7 @@ namespace Warhammer.Core.Abstract
         List<Comment> RecentComments();
         Player MyPlayer();
         void DeleteComment(int commentId);
-        List<Person> GetLeague();
+        CharacterLeagueModel GetLeague();
         List<PageLinkModel> OtherPCs();
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();
@@ -216,7 +216,6 @@ namespace Warhammer.Core.Abstract
         Session GetSession(int id);
         SessionArcSummaryModel GetSessionArcSummary(int id);
         List<PageLinkModel> AllNpcLinks();
-        PageImage GetPageImageForPage(int id);
         List<PageLinkModel> SessionLogs(int id);
         List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false);
         List<ScoreBreakdown> GetScoreBreakdown(int personId);

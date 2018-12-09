@@ -148,9 +148,9 @@ namespace Warhammer.Mvc.Controllers
         [OutputCache(Duration = 3600, Location = OutputCacheLocation.Client, NoStore = true)]
         public ActionResult CharacterLeague()
         {
-            List<Person> people = DataProvider.GetLeague();
+            CharacterLeagueModel model = DataProvider.GetLeague();
 
-            return View(people);
+            return View(model);
         }
 
         public ActionResult FavouritesGallery()

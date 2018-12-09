@@ -3,7 +3,7 @@
     @if (!Model.IsPlayerComment)
     {
 
-        @Html.Action("PageImage", "Page", new { id = Model.PersonId })
+        @Html.Action("PageImage", "Image", new { id = Model.PersonId })
         <h4>@Model.Person.FullName</h4>
     }
     else

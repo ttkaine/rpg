@@ -3237,10 +3237,7 @@ namespace Warhammer.Core.Concrete
                 }).ToList();
         }
 
-        public PageImage GetPageImageForPage(int id)
-        {
-            return _repository.PageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
-        }
+
 
         public List<PageLinkModel> SessionLogs(int id)
         {
@@ -3598,9 +3595,11 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public List<Person> GetLeague()
+        public CharacterLeagueModel GetLeague()
         {
-            List<Person> people = new List<Person>();
+            CharacterLeagueModel model = new CharacterLeagueModel();
+            
+            //List<Person> people = new List<Person>();
             if (SiteHasFeature(Feature.CharacterLeague))
             {
                 var query =_repository.People().Where(p => p.CurrentScore > 0);
@@ -3615,11 +3614,30 @@ namespace Warhammer.Core.Concrete
                     query = query.Where(p => !p.PlayerId.HasValue || p.PlayerId == CurrentPlayer.Id);
                 }
 
-                people = query.ToList()
-                    .OrderByDescending(s => s.PointsValue)
-                    .ThenByDescending(s => s.Modified).ToList();
+                query = query.OrderByDescending(s => s.CurrentScore)
+                    .ThenByDescending(s => s.Modified);
+
+                model.Items = query.Select(p => new CharacterLeagueItemModel
+                    {
+                        FullName = p.FullName,
+                        Id = p.Id,
+                        PlainText = p.PlainText,
+                        XpAwarded = p.XPAwarded,
+                        CurrentScore = p.CurrentScore,
+                        Awards = p.Awards
+                            .OrderByDescending(t => t.Trophy.PointsValue)
+                            .Select(a => new AwardSummaryModel
+                        {
+                            AwardedOn = a.AwardedOn,
+                            Id = a.Id,
+                            Reason = a.Reason,
+                            TrophyId = a.TrophyId,
+                            TrophyName = a.Trophy.Name
+                        }).ToList()
+                    }).ToList()
+                    .ToList();
             }
-            return people;
+            return model;
         }
 
         public List<PageLinkModel> OtherPCs()
