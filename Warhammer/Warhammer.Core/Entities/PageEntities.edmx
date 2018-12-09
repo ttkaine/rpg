@@ -486,6 +486,17 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ScoreBreakdown">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="ScoreTypeId" Type="int" Nullable="false" />
+          <Property Name="PointsValue" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ScoreHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -1388,6 +1399,7 @@
           <EntitySet Name="PriceListItem" EntityType="Self.PriceListItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reputation" EntityType="Self.Reputation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rumour" EntityType="Self.Rumour" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScoreBreakdown" EntityType="Self.ScoreBreakdown" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScoreHistory" EntityType="Self.ScoreHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SessionLog" EntityType="Self.SessionLog" Schema="dbo" store:Type="Tables" />
@@ -1905,6 +1917,7 @@
             <End Role="Arc" EntitySet="Pages" />
             <End Role="Session" EntitySet="Pages" />
           </AssociationSet>
+          <EntitySet Name="ScoreBreakdowns" EntityType="WarhammerModel.ScoreBreakdown" />
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -3194,6 +3207,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ScoreBreakdown">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="ScoreTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PointsValue" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3801,6 +3825,18 @@
                 <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScoreBreakdowns">
+            <EntityTypeMapping TypeName="WarhammerModel.ScoreBreakdown">
+              <MappingFragment StoreEntitySet="ScoreBreakdown">
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
+                <ScalarProperty Name="ScoreTypeId" ColumnName="ScoreTypeId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

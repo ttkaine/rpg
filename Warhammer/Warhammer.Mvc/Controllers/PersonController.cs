@@ -433,8 +433,8 @@ namespace Warhammer.Mvc.Controllers
                         }
                     }
 
-                    List<ScoreHistory> scores = DataProvider.GetCurrentScoresForPerson(person.Id);
-                        //person.ScoreHistories.OrderBy(a => a.DateTime).ToList();
+                    List<ScoreBreakdown> scores = DataProvider.GetScoreBreakdown(person.Id);
+
                     if (scores.Any())
                     {
 
@@ -514,40 +514,47 @@ namespace Warhammer.Mvc.Controllers
             switch (scoreType)
             {
                 case ScoreType.Total:
-                    baseColor =  Color.Black;
+                    baseColor = Color.Black;
                     break;
                 case ScoreType.Image:
-                    baseColor = Color.BlueViolet;
+                    baseColor = Color.MidnightBlue;
                     break;
                 case ScoreType.PageText:
-                    baseColor = Color.Blue;
+                    baseColor = Color.DarkBlue;
                     break;
                 case ScoreType.Links:
-                    baseColor = Color.DarkCyan;
+                    baseColor = Color.Blue;
                     break;
                 case ScoreType.Sessions:
-                    baseColor = Color.Green;
+                    baseColor = Color.DarkCyan;
                     break;
                 case ScoreType.Logs:
-                    baseColor = Color.YellowGreen;
+                    baseColor = Color.Green;
                     break;
                 case ScoreType.Awards:
-                    baseColor = Color.Gold;
+                    baseColor = Color.YellowGreen;
                     break;
                 case ScoreType.Stats:
-                    baseColor = Color.Orange;
+                    baseColor = Color.Yellow;
                     break;
                 case ScoreType.Roles:
+                    baseColor = Color.Gold;
+                    break;
+                case ScoreType.Descriptors:
+                    baseColor = Color.Orange;
+                    break;
                 case ScoreType.Level:
                     baseColor = Color.OrangeRed;
                     break;
-                case ScoreType.Descriptors:
+                case ScoreType.Places:
                     baseColor = Color.Red;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(scoreType), scoreType, null);
-
-
+                case ScoreType.OtherSessionLogs:
+                    baseColor = Color.MediumVioletRed;
+                    break;
+                case ScoreType.People:
+                    baseColor = Color.DarkViolet;
+                    break;
             }
 
             return Color.FromArgb(150, baseColor);

@@ -1,142 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
-using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
     public class ScoreCalculator : IScoreCalculator
     {
         private int _scoreUpdateInterval = 1440;
-        private readonly IRepository _repo;
+        private readonly IBackgroundRepo _repo;
+        
 
-        public ScoreCalculator(IRepository repo)
+        public ScoreCalculator(IBackgroundRepo repo)
         {
             _repo = repo;
         }
 
-        private IEnumerable<ScoreHistory> CalculateScoreForPerson(Person person, DateTime scoreDate)
+        private IEnumerable<ScoreBreakdown> CalculateScore(int personId, int campaignId)
         {
+            DateTime calcDate = DateTime.Now;
+            
+            List<ScoreBreakdown> scores = new List<ScoreBreakdown>();
 
-            List<ScoreHistory> scoreHistories = new List<ScoreHistory>();
-
-            if (person.Created < scoreDate)
+            scores.Add(new ScoreBreakdown
             {
+                ScoreType = ScoreType.Sessions,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = GetScoreForLinks<Session>(personId),
+                CampaignId = campaignId
+            });
+            scores.Add(new ScoreBreakdown
+            {
+                ScoreType = ScoreType.Places,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = GetScoreForLinks<Place>(personId),
+                CampaignId = campaignId
+            });
+            scores.Add(new ScoreBreakdown
+            {
+                ScoreType = ScoreType.OtherSessionLogs,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = GetScoreForLinks<SessionLog>(personId),
+                CampaignId = campaignId
+            });
+            scores.Add(new ScoreBreakdown
+            {
+                ScoreType = ScoreType.People,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = GetScoreForLinks<Person>(personId),
+                CampaignId = campaignId
+            });
 
-                List<Session> sessions = person.Related.OfType<Session>().ToList();
-                List<SessionLog> logs = (from session in sessions
-                    where person.SessionLogs.Count(l => l.SessionId == session.Id) > 0
-                    select person.SessionLogs.First(l => l.SessionId == session.Id)).ToList();
-                List<Page> relatedPages = person.Related.ToList();
-                relatedPages = relatedPages.Where(s => !sessions.Contains(s)).ToList();
-                relatedPages = relatedPages.Where(s => !logs.Contains(s)).ToList();
+            int logWords = _repo.Pages().OfType<SessionLog>().Where(s => s.PersonId == personId)
+                .Sum(p => p.WordCount);
+            scores.Add(new ScoreBreakdown
+            {
+                ScoreType = ScoreType.Logs,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = (decimal) (logWords / 1000.0),
+                CampaignId = campaignId
+            });
 
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Sessions,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = (decimal) sessions.Where(l => l.DateTime < scoreDate).Sum(l => l.BaseScore)       
-                });
+            int pageWords = _repo.Pages().OfType<Person>().Where(s => s.Id == personId)
+                .Sum(p => p.WordCount);
+            scores.Add(new ScoreBreakdown
+            {
+                ScoreType = ScoreType.PageText,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = (decimal)(pageWords / 100.0),
+                CampaignId = campaignId
+            });
 
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Logs,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = (decimal) logs.Where(l => l.Created < scoreDate).Sum(l => l.BaseScore)
-                });
+            int awardValue = _repo.Awards().Where(a => a.PersonId == personId).Sum(a => a.Trophy.PointsValue);
+            scores.Add(new ScoreBreakdown
+            {
+                ScoreType = ScoreType.Awards,
+                DateTime = calcDate,
+                PersonId = personId,
+                PointsValue = awardValue,
+                CampaignId = campaignId
+            });
 
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.PageText,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = person.WordCount/100.0m
-                });
+            return scores;
+        }
 
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Awards,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = person.Awards.Where(l => l.AwardedOn < scoreDate).Sum(a => a.Trophy.PointsValue)
-                });
+        private decimal GetScoreForLinks<T>(int id) where T : Page
+        {
+            var query = _repo.Pages().OfType<T>();
 
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Links,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = (decimal) relatedPages.Where(l => l.Created < scoreDate).Sum(l => l.BaseScore)
-                });
+            query = query.Where(p => p.Pages.Any(r => r.Id == id));
 
-                scoreHistories.Add(new ScoreHistory
-                {
-                    ScoreType = ScoreType.Image,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = person.HasImage ? 1 : 0
-                });
+            int words = query.Sum(s => s.WordCount);
 
-                if (person.HeroLevel > 0)
-                {
-                    scoreHistories.Add(new ScoreHistory
-                    {
-                        ScoreType = ScoreType.Level,
-                        DateTime = scoreDate,
-                        PersonId = person.Id,
-                        PointsValue = (int)person.HeroLevel
-                    });
-                }
-                ScoreHistory total = new ScoreHistory
-                {
-                    ScoreType = ScoreType.Total,
-                    DateTime = scoreDate,
-                    PersonId = person.Id,
-                    PointsValue = scoreHistories.Sum(s => s.PointsValue)
-                };
-
-                scoreHistories.Add(total);
-
-            }
-            return scoreHistories;
+            return (decimal) (words / 2000.0);
         }
 
         public void UpdatePersonScore(int personId)
         {
-            
-            Person person = _repo.AllPeople()
-                .Include(p => p.Awards.Select(a => a.Trophy))
-                .Include(p => p.PersonStats)
-                .Include(p => p.Pages)
+            Person person = _repo.Pages().OfType<Person>().FirstOrDefault(p => p.Id == personId);
                 
-                .FirstOrDefault(p => p.Id == personId);
             if (person != null)
             {
                 int campaignId = person.CampaignId;
-
-                List<ScoreHistory> scores = CalculateScoreForPerson(person, DateTime.Now).ToList();
-                decimal current = scores.Where(s => s.ScoreType == ScoreType.Total).Sum(s => s.PointsValue);
+                List<ScoreBreakdown> scores = CalculateScore(personId, campaignId).ToList();
+                decimal current = scores.Sum(s => s.PointsValue);
                 person.CurrentScore = current;
-
-
-                List<ScoreHistory> original = _repo.AllScoreHistories().Where(s => s.PersonId == personId).ToList();
-
-                foreach (ScoreHistory scoreHistory in original)
-                {
-                    _repo.Delete(scoreHistory);
-                }
-
-                foreach (ScoreHistory scoreHistory in scores)
-                {
-                    scoreHistory.CampaignId = campaignId;
-                    _repo.Save(scoreHistory);
-                }
-
                 person.LastScoreCalculation = DateTime.Now;
 
                 _repo.Save(person);
@@ -146,7 +121,7 @@ namespace Warhammer.Core.Concrete
         public void UpdateScores()
         {
             DateTime cutOff = DateTime.Now.AddMinutes(-_scoreUpdateInterval);
-            List<int> personIds = _repo.AllPeople()
+            List<int> personIds = _repo.Pages().OfType<Person>()
                 .Where(p => p.LastScoreCalculation < cutOff || p.LastScoreCalculation < p.Modified || p.LastScoreCalculation == null)
                 .OrderByDescending(s => s.LastScoreCalculation == null)
                 .ThenByDescending(p => p.SignificantUpdate)

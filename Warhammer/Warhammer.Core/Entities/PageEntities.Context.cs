@@ -64,5 +64,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<BookChapter> BookChapters { get; set; }
         public virtual DbSet<BookPage> BookPages { get; set; }
         public virtual DbSet<GameDate> GameDates { get; set; }
+        public virtual DbSet<ScoreBreakdown> ScoreBreakdowns { get; set; }
     }
 }

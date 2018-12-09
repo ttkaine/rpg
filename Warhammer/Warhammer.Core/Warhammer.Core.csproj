@@ -151,6 +151,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IBackgroundRepo.cs" />
     <Compile Include="Abstract\ICharacterAttributeManager.cs" />
     <Compile Include="Abstract\IAdminSettingsProvider.cs" />
     <Compile Include="Abstract\IApplicationInitalizeHandler.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Concrete\AdminSettingsProvider.cs" />
     <Compile Include="Concrete\ApplicationInitalizeHandler.cs" />
     <Compile Include="Concrete\AuthenticatedDataProvider.cs" />
+    <Compile Include="Concrete\BackgroundRepo.cs" />
     <Compile Include="Concrete\CharacterAttributeManager.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\EmailHandler.cs" />
@@ -315,6 +317,9 @@
     <Compile Include="Entities\Rumour.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ScoreBreakdown.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ScoreHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -355,6 +360,7 @@
     <Compile Include="Entities\_Player.cs" />
     <Compile Include="Entities\_PriceListItem.cs" />
     <Compile Include="Entities\_Rumour.cs" />
+    <Compile Include="Entities\_ScoreBreakdown.cs" />
     <Compile Include="Entities\_ScoreHistory.cs" />
     <Compile Include="Entities\_Session.cs" />
     <Compile Include="Entities\_SessionLog.cs" />

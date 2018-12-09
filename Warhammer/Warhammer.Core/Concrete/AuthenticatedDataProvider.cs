@@ -689,6 +689,13 @@ namespace Warhammer.Core.Concrete
                     {
                         RemoveAward(person.Id, personAward.Id);
                     }
+
+                    List<ScoreBreakdown> scoreBreakdowns =
+                        _repository.ScoreBreakDowns().Where(p => p.PersonId == person.Id).ToList();
+                    foreach (ScoreBreakdown scoreBreakdown in scoreBreakdowns)
+                    {
+                        _repository.Delete(scoreBreakdown);
+                    }
                 }
 
                 foreach (PageImage image in page.PageImages)
@@ -3264,6 +3271,11 @@ namespace Warhammer.Core.Concrete
                 Reason = a.Reason,
                 TrophyName = a.Trophy.Name
             }).ToList();
+        }
+
+        public List<ScoreBreakdown> GetScoreBreakdown(int personId)
+        {
+            return _repository.ScoreBreakDowns().Where(s => s.PersonId == personId).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)

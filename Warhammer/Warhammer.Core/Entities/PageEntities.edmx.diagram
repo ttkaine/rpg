@@ -112,6 +112,7 @@
         <AssociationConnector Association="WarhammerModel.FK_Arc_StartDate" />
         <InheritanceConnector EntityType="WarhammerModel.Arc" />
         <AssociationConnector Association="WarhammerModel.FK_Session_Arc" />
+        <EntityTypeShape EntityType="WarhammerModel.ScoreBreakdown" Width="1.5" PointX="15.375" PointY="14.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

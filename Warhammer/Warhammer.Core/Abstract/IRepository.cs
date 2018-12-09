@@ -81,8 +81,10 @@ namespace Warhammer.Core.Abstract
         bool IsMasterDomain { get; }
         List<CampaignDetail> AllMyCampaigns();
         IQueryable<BookPage> BookPages();
-        int Delete(BookPage bookPage);
+        void Delete(BookPage bookPage);
         IQueryable<Arc> Arcs();
+        IQueryable<ScoreBreakdown> ScoreBreakDowns();
+        void Delete(ScoreBreakdown scoreBreakdown);
     }
 }
 

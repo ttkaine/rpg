@@ -47,16 +47,6 @@ namespace Warhammer.Core.Entities
         Legend
     }
 
-    public struct ScoreBreakdown
-    {
-        public string Name { get; set; }
-        public double BaseValue { get; set; }
-        public double ActivityBonus { get; set; }
-        public double Score => BaseValue + ActivityBonus;
-    }
-
-
-
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
