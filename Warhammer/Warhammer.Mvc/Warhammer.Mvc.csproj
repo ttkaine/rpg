@@ -813,6 +813,7 @@
     <Content Include="Views\Person\AwardHistoryPanel.cshtml" />
     <Content Include="Views\Page\RelatedLinksPanel.cshtml" />
     <Content Include="Views\Image\PageImage.cshtml" />
+    <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

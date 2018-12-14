@@ -1230,5 +1230,14 @@ namespace Warhammer.Mvc.Controllers
         }
 
 
+        public ActionResult CurrentScorePiePanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.CurrentScorePie))
+            {
+                return PartialView(id);
+            }
+
+            return null;
+        }
     }
 }

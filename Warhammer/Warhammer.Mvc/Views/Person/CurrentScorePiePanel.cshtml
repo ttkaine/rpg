@@ -1,0 +1,20 @@
+﻿@model int
+
+
+<div id="currentScorePie">
+
+</div>
+
+<script>
+    $(function () {
+        $('#currentScorePie').hide();
+        $.ajax({
+            url: '@Url.Action("CurrentScorePie", "Person", new { id = Model })',
+            success: function(result) {
+                $('#currentScorePie').html(result);
+                $('#currentScorePie').show(500);
+            }
+        });
+    });
+</script>
+
