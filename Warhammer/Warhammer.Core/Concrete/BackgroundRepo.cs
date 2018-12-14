@@ -37,5 +37,21 @@ namespace Warhammer.Core.Concrete
         {
             return InternalSave(person);
         }
+
+        public void Delete(ScoreBreakdown scoreBreakdown)
+        {
+            _entities.ScoreBreakdowns.Remove(scoreBreakdown);
+            _entities.SaveChanges();
+        }
+
+        public IQueryable<PageImage> PageImages()
+        {
+            return _entities.PageImages;
+        }
+
+        public IQueryable<PersonAttribute> PersonAttributes()
+        {
+            return _entities.PersonAttributes;
+        }
     }
 }

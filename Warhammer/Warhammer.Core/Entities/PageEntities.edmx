@@ -1248,6 +1248,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ScoreBreakdown_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ScoreBreakdown" Type="Self.ScoreBreakdown" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScoreBreakdown">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ScoreHistory_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="ScoreHistory" Type="Self.ScoreHistory" Multiplicity="*" />
@@ -1620,6 +1634,10 @@
             <End Role="Place" EntitySet="Place" />
             <End Role="Rumour" EntitySet="Rumour" />
           </AssociationSet>
+          <AssociationSet Name="FK_ScoreBreakdown_Person" Association="Self.FK_ScoreBreakdown_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ScoreBreakdown" EntitySet="ScoreBreakdown" />
+          </AssociationSet>
           <AssociationSet Name="FK_ScoreHistory_Person" Association="Self.FK_ScoreHistory_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="ScoreHistory" EntitySet="ScoreHistory" />
@@ -1918,6 +1936,10 @@
             <End Role="Session" EntitySet="Pages" />
           </AssociationSet>
           <EntitySet Name="ScoreBreakdowns" EntityType="WarhammerModel.ScoreBreakdown" />
+          <AssociationSet Name="FK_ScoreBreakdown_Person" Association="WarhammerModel.FK_ScoreBreakdown_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="ScoreBreakdown" EntitySet="ScoreBreakdowns" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -2043,6 +2065,7 @@
           <Property Name="XpGroup" Type="Int32" />
           <Property Name="DateOfBirthId" Type="Int32" />
           <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Person_GameDate" FromRole="Person" ToRole="GameDate" />
+          <NavigationProperty Name="ScoreBreakdowns" Relationship="WarhammerModel.FK_ScoreBreakdown_Person" FromRole="Person" ToRole="ScoreBreakdown" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -3217,7 +3240,22 @@
           <Property Name="ScoreTypeId" Type="Int32" Nullable="false" />
           <Property Name="PointsValue" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ScoreBreakdown_Person" FromRole="ScoreBreakdown" ToRole="Person" />
         </EntityType>
+        <Association Name="FK_ScoreBreakdown_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WarhammerModel.ScoreBreakdown" Role="ScoreBreakdown" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScoreBreakdown">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

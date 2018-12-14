@@ -8,5 +8,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<Page> Pages();
         IQueryable<Award> Awards();
         int Save(Person person);
+        void Delete(ScoreBreakdown scoreBreakdown);
+        IQueryable<PageImage> PageImages();
+        IQueryable<PersonAttribute> PersonAttributes();
     }
 }

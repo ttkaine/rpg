@@ -1,21 +1,26 @@
-﻿namespace Warhammer.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Warhammer.Core.Entities
 {
     public enum ScoreType
     {
         Total = 0,
         Image = 1,
+        [Display(Name = "Page Text")]
         PageText = 2,
         Links = 3,
-        Sessions = 4,
-        Logs = 5,
-        Awards = 6,
-        Stats = 7,
-        Roles = 8,
-        Descriptors = 9,
-        Level = 10,
-        Places,
-        OtherSessionLogs,
-        People
+        People = 4,
+        Sessions = 5,
+        Logs = 6,
+        [Display(Name = "Other Logs")]
+        OtherSessionLogs = 7,
+        Awards = 8,
+        Stats = 9,
+        Roles = 10,
+        Skills = 11,
+        Descriptors = 12,
+        Level = 13,
+        Places = 14,
     }
 
 

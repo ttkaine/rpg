@@ -2152,7 +2152,20 @@ namespace Warhammer.Core.Concrete
             List<PageLinkModel> links = new List<PageLinkModel>();
 
             links.AddRange(GetRelated<Session>(id));
-            links.AddRange(GetRelated<SessionLog>(id));
+
+            links.AddRange(
+            _repository.Pages()
+                .OfType<SessionLog>()
+                .Where(s => s.PersonId != id)
+                .Where(p => p.Pages.Any(r => r.Id == id)).Select(p => new PageLinkModel
+                {
+                    Created = p.Created,
+                    FullName = p.FullName,
+                    Id = p.Id,
+                    ShortName = p.ShortName,
+                    Type = PageLinkType.SessionLog,                            
+                }).ToList());
+
             links.AddRange(GetRelated<Person>(id));
             links.AddRange(GetRelated<Place>(id));
             links.AddRange(GetRelated<Page>(id, links.Select(l => l.Id).ToList()));

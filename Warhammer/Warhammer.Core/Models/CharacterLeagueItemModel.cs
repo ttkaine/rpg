@@ -15,7 +15,7 @@ namespace Warhammer.Core.Models
         public decimal XpAwarded { get; set; }
 
         public HeroLevel HeroLevel => Person.GetHeroLevel(XpAwarded);
-        public int PointsValue => (int)Math.Floor(CurrentScore);
+        public int PointsValue => (int)Math.Ceiling(CurrentScore);
 
         public string SearchString
         {
