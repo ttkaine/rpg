@@ -72,7 +72,7 @@ namespace Warhammer.Core.Abstract
         List<Comment> RecentComments();
         Player MyPlayer();
         void DeleteComment(int commentId);
-        List<Person> GetLeague();
+        CharacterLeagueModel GetLeague();
         List<PageLinkModel> OtherPCs();
 	    Player PlayerToPostInSession(int sessionId);
 		List<Session> OpenTextSessions();
@@ -109,7 +109,7 @@ namespace Warhammer.Core.Abstract
         void EnsureFeatures();
         List<Object> RecentActivity();
         void ToggleSessionPrivacy(int id);
-        List<ScoreHistory> PersonScoreHistory(int id);
+       // List<ScoreHistory> PersonScoreHistory(int id);
         List<PageListItemModel> NpcList();
         List<FateAspect> GetAspects(int id);
         void SaveAspects(List<FateAspect> fateAspects);
@@ -120,7 +120,7 @@ namespace Warhammer.Core.Abstract
         void DeleteStunt(int stuntId);
         void ToggleStuntVisibility(int stuntId);
         List<Award> GetLatestAwards(int count);
-        List<ScoreHistory> GetCurrentScoresForPerson(int id);
+       // List<ScoreHistory> GetCurrentScoresForPerson(int id);
         void SetDefaultHitPoints(int id);
         void BuyHitPointSlot(int id, SimpleHitPointLevel simpleHitPointLevel, SimpleHitPointType simpleHitPointType, bool free = false);
         void AddXpForSession(int sessionId, decimal xpAwarded);
@@ -216,8 +216,8 @@ namespace Warhammer.Core.Abstract
         Session GetSession(int id);
         SessionArcSummaryModel GetSessionArcSummary(int id);
         List<PageLinkModel> AllNpcLinks();
-        PageImage GetPageImageForPage(int id);
         List<PageLinkModel> SessionLogs(int id);
         List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false);
+        List<ScoreBreakdown> GetScoreBreakdown(int personId);
     }
 }

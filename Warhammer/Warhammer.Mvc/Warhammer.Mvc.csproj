@@ -233,6 +233,7 @@
     <Compile Include="Controllers\FateController.cs" />
     <Compile Include="Controllers\GmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PageControlsController.cs" />
@@ -314,6 +315,7 @@
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
     <Content Include="Content\DbUpdateScripts\18102301.sql" />
+    <Content Include="Content\DbUpdateScripts\18120901.sql" />
     <Content Include="Content\DbUpdateScripts\Placeholder.txt" />
     <Content Include="Content\fate.css" />
     <Content Include="Content\Images\added.png" />
@@ -810,6 +812,8 @@
     <Content Include="Views\Shared\DisplayTemplates\AwardBarItem.cshtml" />
     <Content Include="Views\Person\AwardHistoryPanel.cshtml" />
     <Content Include="Views\Page\RelatedLinksPanel.cshtml" />
+    <Content Include="Views\Image\PageImage.cshtml" />
+    <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

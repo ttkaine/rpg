@@ -50,7 +50,7 @@ namespace Warhammer.Core.Entities
             get { return People.Where(p => p.PlayerId.HasValue); }
         }
 
-	    public DateTime LastPostTime
+        public DateTime LastPostTime
 	    {
 		    get
 		    {

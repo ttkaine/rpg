@@ -47,24 +47,26 @@ namespace Warhammer.Core.Concrete
             return _entities.BookPages;
         }
 
-        public int Delete(BookPage bookPage)
+        public void Delete(BookPage bookPage)
         {
-            if (bookPage.Id == 0)
-            {
-                _entities.BookPages.Add(bookPage);
-            }
-            else
-            {
-                _entities.Entry(bookPage).State = EntityState.Modified;
-            }
+            _entities.BookPages.Remove(bookPage);
             _entities.SaveChanges();
-
-            return bookPage.Id;
         }
 
         public IQueryable<Arc> Arcs()
         {
             return _entities.Pages.OfType<Arc>();
+        }
+
+        public IQueryable<ScoreBreakdown> ScoreBreakDowns()
+        {
+            return _entities.ScoreBreakdowns.Where(e => VisibleCampagins.Contains(e.CampaignId));
+        }
+
+        public void Delete(ScoreBreakdown scoreBreakdown)
+        {
+            _entities.ScoreBreakdowns.Remove(scoreBreakdown);
+            _entities.SaveChanges();
         }
 
         public IQueryable<ChangeLog> ChangeLogs()

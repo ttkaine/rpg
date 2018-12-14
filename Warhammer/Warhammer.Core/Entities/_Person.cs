@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 using System.Linq;
 
 namespace Warhammer.Core.Entities
@@ -47,16 +48,6 @@ namespace Warhammer.Core.Entities
         Legend
     }
 
-    public struct ScoreBreakdown
-    {
-        public string Name { get; set; }
-        public double BaseValue { get; set; }
-        public double ActivityBonus { get; set; }
-        public double Score => BaseValue + ActivityBonus;
-    }
-
-
-
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Person
     {
@@ -68,18 +59,17 @@ namespace Warhammer.Core.Entities
 
         public int XpLevel => (int) Math.Floor(TotalAdvancesTaken / 5.0);
 
-        public HeroLevel HeroLevel
+        public static HeroLevel GetHeroLevel(decimal xp)
         {
-            get
-            {
-                if(XPAwarded > 1200) return HeroLevel.Legend;
-                if (XPAwarded > 600) return HeroLevel.Champion;
-                if (XPAwarded > 200) return HeroLevel.Hero;
-                if (XPAwarded > 50) return HeroLevel.Veteran;
-                if (XPAwarded > 10) return HeroLevel.Adventurer;
-                return HeroLevel.Rookie;
-            }
+            if (xp > 1200) return HeroLevel.Legend;
+            if (xp > 600) return HeroLevel.Champion;
+            if (xp > 200) return HeroLevel.Hero;
+            if (xp > 50) return HeroLevel.Veteran;
+            if (xp > 10) return HeroLevel.Adventurer;
+            return HeroLevel.Rookie;
         }
+
+        public HeroLevel HeroLevel => GetHeroLevel(XPAwarded);
 
         public bool IsFuCharacter
         {
@@ -328,10 +318,10 @@ namespace Warhammer.Core.Entities
             get { return Related.OfType<Session>(); }
         }
 
-        public IEnumerable<Award> OrderedAwards
-        {
-            get { return Awards.OrderBy(t => t.Trophy.TypeId == (int)TrophyType.DefaultAward).ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name).ThenBy(a => a.Id ); }
-        }
+        //public IEnumerable<Award> OrderedAwards
+        //{
+        //    get { return Awards.OrderBy(t => t.Trophy.TypeId == (int)TrophyType.DefaultAward).ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name).ThenBy(a => a.Id ); }
+        //}
 
         public int PointsValue
         {
@@ -346,17 +336,17 @@ namespace Warhammer.Core.Entities
             }
         }
 
-        public string SearchString
-        {
-            get
-            {
-                string[] awards = Awards.Select(a => a.Trophy.Name).ToArray();
-                string[] reasons = Awards.Select(a => a.Reason).ToArray();
-                return string.Format("{0} - {1} - {2}", RawText,
-                    string.Join(",",awards ),
-                    string.Join(",", reasons));
-            }
-        }
+        //public string SearchString
+        //{
+        //    get
+        //    {
+        //        string[] awards = Awards.Select(a => a.Trophy.Name).ToArray();
+        //        string[] reasons = Awards.Select(a => a.Reason).ToArray();
+        //        return string.Format("{0} - {1} - {2}", RawText,
+        //            string.Join(",",awards ),
+        //            string.Join(",", reasons));
+        //    }
+        //}
 
         public bool InclueUplift { get; set; }
         public double UpliftFactor { get; set; }

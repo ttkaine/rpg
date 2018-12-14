@@ -4,7 +4,7 @@
     <td class="no-break">
         @if (!Model.IsPlayerComment)
         {
-            @Html.Action("PageImage", "Page", new {id = Model.PersonId})
+            @Html.Action("PageImage", "Image", new {id = Model.PersonId})
         }
         else
         {

@@ -3,7 +3,7 @@
 <tr>
     <td>
 
-        <img style="height: 80px; width: 80px; border-radius: 40px; box-shadow: #333333 5px 5px 15px; margin-right: 20px;" src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
+        <img style="height: 80px; width: 80px; border-radius: 40px; box-shadow: #333333 5px 5px 15px; margin-right: 20px;" src="@Url.Action("Image", "Image", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName" height="200" width="200" />
     </td>
 
     @foreach (KeyValuePair<StatName, int> statPair in Model.Stats)

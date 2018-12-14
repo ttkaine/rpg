@@ -18,7 +18,7 @@
 @foreach (Award award in Model.OrderByDescending(a => a.AwardedOn))
 {
     <tr>
-        <td><a href="@Url.Action("Index", "Page", new {id = award.PersonId})"><img src="@Url.Action("Image", "Page", new {id = award.PersonId}, null)" title="@award.Person.FullName" alt="Picture of @award.Person.FullName" class="mini-profile-image" /></a></td>
+        <td><a href="@Url.Action("Index", "Page", new {id = award.PersonId})"><img src="@Url.Action("Image", "Image", new {id = award.PersonId}, null)" title="@award.Person.FullName" alt="Picture of @award.Person.FullName" class="mini-profile-image" /></a></td>
         <td>@award.Person.FullName</td>
         <td>
             @award.Reason

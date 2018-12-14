@@ -178,36 +178,6 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("index", new {id = id});
         }
 
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        public ActionResult Image(int id)
-        {
-            PageImage image = DataProvider.GetPageImageForPage(id);
-            if (image != null)
-            {
-                return File(image.Data, "image/jpeg");
-            }
-
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
-            return File(defaultImagePath, "image/jpeg");
-        }
-
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        public ActionResult PageImage(int? id)
-        {
-            if (id.HasValue)
-            {
-                string name = DataProvider.GetPageName(id.Value);
-                ImageViewModel imageViewModel = new ImageViewModel
-                {
-                    Id = id.Value,
-                    Name = name
-                };
-                return PartialView(imageViewModel);
-            }
-            return null;
-        }
 
         [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult ChangeImage(int? id)

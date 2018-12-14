@@ -29,6 +29,7 @@ namespace Warhammer.Core.Entities
             this.ScoreHistories = new HashSet<ScoreHistory>();
             this.PersonAttributes = new HashSet<PersonAttribute>();
             this.AwardNominations = new HashSet<AwardNomination>();
+            this.ScoreBreakdowns = new HashSet<ScoreBreakdown>();
         }
     
         public bool IsDead { get; set; }
@@ -71,5 +72,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<PersonAttribute> PersonAttributes { get; set; }
         public virtual ICollection<AwardNomination> AwardNominations { get; set; }
         public virtual GameDate GameDate { get; set; }
+        public virtual ICollection<ScoreBreakdown> ScoreBreakdowns { get; set; }
     }
 }
