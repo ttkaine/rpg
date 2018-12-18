@@ -12,7 +12,8 @@ namespace Warhammer.Core.Abstract
     ///  </summary>
     public interface IRepository
     {
-        IQueryable<ChangeLog> ChangeLogs();
+        List<int> VisibleCampagins { get; }
+            IQueryable<ChangeLog> ChangeLogs();
         IQueryable<Person> People();
         IQueryable<Player> Players();
         int Save(Page page);

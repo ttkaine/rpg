@@ -3288,6 +3288,16 @@ namespace Warhammer.Core.Concrete
             return _repository.ScoreBreakDowns().Where(s => s.PersonId == personId).ToList();
         }
 
+        public void TogglePublicImage(int id)
+        {
+            PageImage image = _repository.PageImages().FirstOrDefault(i => i.Id == id);
+            if (image != null)
+            {
+                image.Public = !image.Public;
+                _repository.Save(image);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

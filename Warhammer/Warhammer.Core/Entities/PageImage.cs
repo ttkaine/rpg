@@ -24,6 +24,7 @@ namespace Warhammer.Core.Entities
         public bool IsPrimary { get; set; }
         public byte[] Data { get; set; }
         public int CampaignId { get; set; }
+        public bool Public { get; set; }
     
         public virtual Page Page { get; set; }
         public virtual ICollection<Post> Posts { get; set; }

@@ -63,6 +63,12 @@ namespace Warhammer.Mvc.Controllers
 
         }
 
+        public ActionResult TogglePublicImage(int id)
+        {
+            DataProvider.TogglePublicImage(id);
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         public ActionResult ManageAwards(ManageAwardsViewModel model)
         {

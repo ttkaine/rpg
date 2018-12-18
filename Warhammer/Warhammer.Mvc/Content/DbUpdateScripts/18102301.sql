@@ -11,4 +11,4 @@ BEGIN
 		
 		INSERT INTO dbo.ChangeLog (Id, DateTime, Comment) VALUES (18102301,GetDate(),'Add theme Id for CampaignDetails');
 
-END				
+END					

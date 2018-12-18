@@ -22,6 +22,7 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        [AllowAnonymous]
         public ActionResult Image(int id)
         {
             PageImage image = _imageData.GetPageImageForPage(id);

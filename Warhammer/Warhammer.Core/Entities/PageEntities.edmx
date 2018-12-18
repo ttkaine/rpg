@@ -308,6 +308,7 @@
           <Property Name="IsPrimary" Type="bit" Nullable="false" />
           <Property Name="Data" Type="varbinary(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="Public" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -2602,6 +2603,7 @@
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="PageImage" ToRole="Page" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_PageImage" FromRole="PageImage" ToRole="Post" />
+          <Property Name="Public" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_PageImage_Page">
           <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
@@ -3653,6 +3655,7 @@
           <EntitySetMapping Name="PageImages">
             <EntityTypeMapping TypeName="WarhammerModel.PageImage">
               <MappingFragment StoreEntitySet="PageImage">
+                <ScalarProperty Name="Public" ColumnName="Public" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
