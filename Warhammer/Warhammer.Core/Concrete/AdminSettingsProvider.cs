@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LazyCache;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -10,11 +11,14 @@ namespace Warhammer.Core.Concrete
     {
         readonly IRepository _repository;
         readonly IAuthenticatedUserProvider _authenticatedUser;
+        private readonly IAppCache _cache;
 
-        public AdminSettingsProvider(IRepository repo, IAuthenticatedUserProvider authenticatedUser)
+        private string CacheKey => $"admin-Settings-for-campaign-{_repository.CurrentCampaignId}";
+        public AdminSettingsProvider(IRepository repo, IAuthenticatedUserProvider authenticatedUser, IAppCache cache)
         {
             _repository = repo;
             _authenticatedUser = authenticatedUser;
+            _cache = cache;
         }
 
         public bool CurrentUserIsAdmin
@@ -24,7 +28,7 @@ namespace Warhammer.Core.Concrete
 
         public string GetAdminSetting(AdminSettingName name)
         {
-            AdminSetting setting = _repository.AdminSettings().FirstOrDefault(s => s.SettingId == (int)name);
+            AdminSetting setting = AdminSettings().FirstOrDefault(s => s.SettingId == (int)name);
             return setting?.SettingValue;
         }
 
@@ -47,10 +51,15 @@ namespace Warhammer.Core.Concrete
             setting.SettingValue = value;
 
             _repository.Save(setting);
-
+            _cache.Remove(CacheKey);
         }
 
         public List<AdminSetting> AdminSettings()
+        {
+            return _cache.GetOrAdd(CacheKey, GetAdminSettings);
+        }
+
+        private List<AdminSetting> GetAdminSettings()
         {
             var vals = Enum.GetValues(typeof(AdminSettingName));
 
@@ -72,6 +81,5 @@ namespace Warhammer.Core.Concrete
 
             return settings;
         }
-
     }
 }
