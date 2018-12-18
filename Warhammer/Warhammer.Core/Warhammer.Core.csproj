@@ -104,6 +104,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LazyCache, Version=0.7.1.44, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LazyCache.0.7.1.44\lib\net45\LazyCache.dll</HintPath>
+    </Reference>
     <Reference Include="LinqKit, Version=1.1.3.1, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqKit.1.1.3.1\lib\net45\LinqKit.dll</HintPath>
       <Private>True</Private>

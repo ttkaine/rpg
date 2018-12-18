@@ -6,7 +6,7 @@ namespace Warhammer.Mvc.App_Start
 {
     using System;
     using System.Web;
-
+    using LazyCache;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject.Extensions.Conventions;
     using Ninject;
@@ -65,6 +65,8 @@ namespace Warhammer.Mvc.App_Start
             kernel.Bind(x => x.FromAssembliesMatching("Warhammer.*")
       .SelectAllClasses().BindDefaultInterface()
       .Configure(b => b.InRequestScope()));
+
+            kernel.Bind<IAppCache>().To<CachingService>().InRequestScope();
             //kernel.Bind(x => x.FromThisAssembly()
             //      .SelectAllClasses().BindDefaultInterface()
             //      .Configure(b => b.InRequestScope()));

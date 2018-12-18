@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LazyCache;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -9,29 +10,35 @@ namespace Warhammer.Core.Concrete
     public class SiteFeatureProvider : ISiteFeatureProvider
     {
         private readonly IRepository _repository;
-        private List<Feature> _enabledFeatures = null;
+        private readonly IAppCache _cache;
+        
+        private string CacheKey => $"enabled-features-for-campaign-{_repository.CurrentCampaignId}";
 
-        public SiteFeatureProvider(IRepository repository)
+        public SiteFeatureProvider(IRepository repository, IAppCache cache)
         {
             _repository = repository;
+            _cache = cache;
         }
 
         public bool SiteHasFeature(Feature feature)
         {
-            if (_enabledFeatures == null)
+            List<Feature> enabledFeatures = _cache.GetOrAdd(CacheKey, GetEnabledFeatures);
+            return enabledFeatures.Contains(feature);
+        }
+
+        private List<Feature> GetEnabledFeatures()
+        {
+            List<string> names = _repository.SiteFeatures().Where(e => e.IsEnabled).Select(e => e.Name).ToList();
+            List<Feature> enabledFeatures = new List<Feature>();
+            foreach (string name in names)
             {
-                List<string> names = _repository.SiteFeatures().Where(e => e.IsEnabled).Select(e => e.Name).ToList();
-                _enabledFeatures = new List<Feature>();
-                foreach (string name in names)
+                if (Enum.TryParse(name, true, out Feature f))
                 {
-                    Feature f;
-                    if (Enum.TryParse(name, true, out f))
-                    {
-                        _enabledFeatures.Add(f);
-                    }
+                    enabledFeatures.Add(f);
                 }
             }
-            return _enabledFeatures.Contains(feature);
+
+            return enabledFeatures;
         }
 
         public void EnableFeature(string featureName)
@@ -47,6 +54,7 @@ namespace Warhammer.Core.Concrete
             {
                 feature.IsEnabled = true;
                 _repository.Save(feature);
+                _cache.Remove(CacheKey);
             }
         }
 
@@ -60,6 +68,7 @@ namespace Warhammer.Core.Concrete
                 {
                     feature.IsEnabled = false;
                     _repository.Save(feature);
+                    _cache.Remove(CacheKey);
                 }
             }
         }
