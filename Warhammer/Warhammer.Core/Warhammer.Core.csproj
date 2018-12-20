@@ -386,6 +386,7 @@
     <Compile Include="Models\AwardSummaryModel.cs" />
     <Compile Include="Models\CharacterLeagueItemModel.cs" />
     <Compile Include="Models\CharacterLeagueModel.cs" />
+    <Compile Include="Models\OpenTextSessionSummaryModel.cs" />
     <Compile Include="Models\SessionArcSummaryModel.cs" />
     <Compile Include="Models\CharacterAttributeModel.cs" />
     <Compile Include="Models\CharacterInitialStatsModel.cs" />
