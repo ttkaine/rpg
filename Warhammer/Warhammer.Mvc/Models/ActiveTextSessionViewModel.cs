@@ -1,62 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Mvc.Models
 {
-    public enum OpenSessionStatus
-    {
-        Stale,
-        Updated,
-        MyTurn
-    }
-
     public class ActiveTextSessionViewModel
     {
         public ActiveTextSessionViewModel()
         {
-            OpenSessions = new List<OpenSessionViewModel>();
+            OpenSessions = new List<OpenTextSessionSummaryModel>();
         }
 
-        public List<OpenSessionViewModel> OpenSessions { get; set; }
-    }
-
-
-
-    public class OpenSessionViewModel
-    {
-        public string CssClass
-        {
-            get
-            {
-                switch (Status)
-                {
-                    case OpenSessionStatus.Stale:
-                        return "btn-default";
-                    case OpenSessionStatus.Updated:
-                        return "btn-default";
-                    case OpenSessionStatus.MyTurn:
-
-                        return "btn-success";
-                    default:
-                        return "btn-default";
-                }
-            }
-        }
-
-        public DateTime LastPostTime => Session.LastPostTime;
-
-        public int DaysSinceLastPost => (int)Math.Floor((DateTime.Today - LastPostTime.Date).TotalDays);
-
-        public Session Session { get; set; }
-
-        public bool IsUpdated { get; set; }
-
-        public OpenSessionStatus Status { get; set; }
-
-        public bool IsPrivate
-        {
-            get { return Session.IsPrivate; }
-        }
+        public List<OpenTextSessionSummaryModel> OpenSessions { get; set; }
     }
 }

@@ -28,29 +28,9 @@ namespace Warhammer.Mvc.Concrete
         {
             ActiveTextSessionViewModel model = new ActiveTextSessionViewModel();
 
-            List<Session> myOpenTestSessions = _data.MyOpenTextSessions().ToList();
+            List<OpenTextSessionSummaryModel> myOpenTestSessions = _data.MyOpenTextSessions().ToList();
 
-            foreach (Session myOpenTestSession in myOpenTestSessions)
-            {
-                OpenSessionViewModel sessionViewModel = new OpenSessionViewModel {Session = myOpenTestSession, Status = OpenSessionStatus.Stale };
-
-                if(myOpenTestSession.PageViews.Any(v => v.PlayerId == CurrentPlayer.Id && v.Viewed < myOpenTestSession.LastPostTime))
-                {
-                    sessionViewModel.Status = OpenSessionStatus.Updated;
-                    sessionViewModel.IsUpdated = true;
-                }
-
-                if (_data.TextSessionsWhereItisMyTurn().Contains(myOpenTestSession))
-                {
-                    sessionViewModel.Status = OpenSessionStatus.MyTurn;
-                }
-                model.OpenSessions.Add(sessionViewModel);
-            }
-
-            model.OpenSessions =
-                model.OpenSessions.OrderByDescending(m => m.Status == OpenSessionStatus.MyTurn)
-                    .ThenBy(m => m.LastPostTime)
-                    .ToList();
+            model.OpenSessions = myOpenTestSessions;
 
             return model;
         }
@@ -221,7 +201,7 @@ namespace Warhammer.Mvc.Concrete
                     {
                         AltText = l.ShortName,
                         Name = l.FullName,
-                        IconUrl = _urlHelper.Action("Image", "Page", new { id = l.Id }),
+                        IconUrl = _urlHelper.Action("Image", "Image", new { id = l.Id }),
                         Url = _urlHelper.Action("Index", "Page", new { id = l.Id })
 
                     }).ToList()

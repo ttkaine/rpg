@@ -75,8 +75,8 @@ namespace Warhammer.Core.Abstract
         CharacterLeagueModel GetLeague();
         List<PageLinkModel> OtherPCs();
 	    Player PlayerToPostInSession(int sessionId);
-		List<Session> OpenTextSessions();
-		List<Session> MyOpenTextSessions();
+	//	List<Session> OpenTextSessions();
+		List<OpenTextSessionSummaryModel> MyOpenTextSessions();
         bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);

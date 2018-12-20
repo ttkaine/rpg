@@ -2882,15 +2882,12 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> GetRecentViewedPages()
         {
-            List<int> pageIds = _repository.PageViews()
-                .Where(u => u.PlayerId == CurrentPlayerId)
-                .Where(u => u.CampaignId == CurrentCampaignId)
-                .OrderByDescending(d => d.Viewed)
-                .Select(v => v.PageId)
-                .Take(15).ToList();
-
             return
-                _repository.Pages().Where(p => pageIds.Contains(p.Id))
+                _repository.Pages()
+                    .OrderByDescending(p => p.PageViews
+                        .Where(u => u.CampaignId == CurrentCampaignId)
+                        .Where(v => v.PlayerId == CurrentPlayerId).Select(s => s.Viewed).FirstOrDefault())
+                    .Take(15)
                     .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
                     .ToList();
         }
@@ -3779,11 +3776,29 @@ namespace Warhammer.Core.Concrete
                 .Where(s => s.IsTextSession && !s.IsClosed).ToList();
         }
 
-        public List<Session> MyOpenTextSessions()
+        public List<OpenTextSessionSummaryModel> MyOpenTextSessions()
         {
-            return
-                OpenTextSessions()
-                    .Where(s => s.PlayerCharacters.Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id).ToList();
+            return _repository.Pages().OfType<Session>()
+                .Where(s => s.IsTextSession)
+                .Where(s => !s.IsClosed)
+                .Where(s => s.Related.OfType<Person>().Where(p => p.PlayerId != null).Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id)
+                .Select(s => new OpenTextSessionSummaryModel
+                {
+                    LastPostTime = s.Posts.OrderByDescending(p => p.DatePosted).Select(d => d.DatePosted).FirstOrDefault(),
+                    IsPrivate =  s.IsPrivate,
+                    SessionId = s.Id,
+                    SessionName = s.FullName,
+                    IsUpdated = s.PageViews.Any(v => v.PlayerId == CurrentPlayerId && v.Viewed < s.Posts.OrderByDescending(p => p.DatePosted).Select(d => d.DatePosted).FirstOrDefault()),
+                    MyTurn = (
+                                !s.GmIsSuspended && 
+                                (
+                                    s.GmId.HasValue && s.GmId == CurrentPlayerId && s.IsGmTurn 
+                                    || !s.GmId.HasValue && s.IsGmTurn && CurrentPlayerIsGm
+                                )
+                                || s.PostOrders.Where(p => !p.IsSuspended).OrderBy(po => po.LastTurnEnded).Select(p=> p.PlayerId).FirstOrDefault() == CurrentPlayerId
+                             )
+                })
+                .ToList().OrderByDescending(s => s.MyTurn).ThenBy(s=> s.LastPostTime).ToList();
         }
 
         public bool SiteHasFeature(Feature featureName)
