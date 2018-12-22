@@ -3778,7 +3778,7 @@ namespace Warhammer.Core.Concrete
 
         public List<OpenTextSessionSummaryModel> MyOpenTextSessions()
         {
-            return _repository.Pages().OfType<Session>()
+            List<OpenTextSessionSummaryModel> sessions = _repository.Pages().OfType<Session>()
                 .Where(s => s.IsTextSession)
                 .Where(s => !s.IsClosed)
                 .Where(s => s.Related.OfType<Person>().Where(p => p.PlayerId != null).Any(p => p.PlayerId == CurrentPlayer.Id) || CurrentPlayerIsGm || s.GmId == CurrentPlayer.Id)
@@ -3789,16 +3789,16 @@ namespace Warhammer.Core.Concrete
                     SessionId = s.Id,
                     SessionName = s.FullName,
                     IsUpdated = s.PageViews.Any(v => v.PlayerId == CurrentPlayerId && v.Viewed < s.Posts.OrderByDescending(p => p.DatePosted).Select(d => d.DatePosted).FirstOrDefault()),
-                    MyTurn = (
-                                !s.GmIsSuspended && 
-                                (
-                                    s.GmId.HasValue && s.GmId == CurrentPlayerId && s.IsGmTurn 
-                                    || !s.GmId.HasValue && s.IsGmTurn && CurrentPlayerIsGm
-                                )
-                                || s.PostOrders.Where(p => !p.IsSuspended).OrderBy(po => po.LastTurnEnded).Select(p=> p.PlayerId).FirstOrDefault() == CurrentPlayerId
-                             )
+
                 })
-                .ToList().OrderByDescending(s => s.MyTurn).ThenBy(s=> s.LastPostTime).ToList();
+                .ToList();
+        
+            foreach (OpenTextSessionSummaryModel session in sessions)
+            {
+                session.MyTurn = PlayerToPostInSession(session.SessionId)?.Id == CurrentPlayerId;
+            }
+
+            return sessions.OrderByDescending(s => s.MyTurn).ThenBy(s => s.LastPostTime).ToList();
         }
 
         public bool SiteHasFeature(Feature featureName)
