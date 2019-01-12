@@ -94,7 +94,10 @@ namespace Warhammer.Core.Concrete
                 Body = message,
                 IsBodyHtml = true
             };
+
+#if !DEBUG
             client.Send(mail);
+#endif
         }
 
         public void NotifyNewPage(Page page, List<Player> players)
@@ -122,7 +125,10 @@ namespace Warhammer.Core.Concrete
                     Body = message,
                     IsBodyHtml = true
                 };
+
+#if !DEBUG
             client.Send(mail);
+#endif
 
             }
         }
@@ -152,8 +158,10 @@ namespace Warhammer.Core.Concrete
                     Body = message,
                     IsBodyHtml = true
                 };
-                client.Send(mail);
 
+#if !DEBUG
+                client.Send(mail);
+#endif
             }
         }
 
@@ -182,8 +190,10 @@ namespace Warhammer.Core.Concrete
                     Body = message,
                     IsBodyHtml = true
                 };
-                client.Send(mail);
 
+#if !DEBUG
+                client.Send(mail);
+#endif
             }
         }
 
@@ -210,7 +220,11 @@ namespace Warhammer.Core.Concrete
                 Body = message,
                 IsBodyHtml = true
             };
+
+#if !DEBUG
             client.Send(mail);
+
+#endif
         }
     }
 }

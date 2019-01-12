@@ -283,6 +283,7 @@
     <Compile Include="Models\FateStuntsViewModel.cs" />
     <Compile Include="Models\FateStuntViewModel.cs" />
     <Compile Include="Models\GameDateViewModel.cs" />
+    <Compile Include="Models\GmReadModePageControlsViewModel.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
@@ -818,6 +819,7 @@
     <Content Include="Views\Page\RelatedLinksPanel.cshtml" />
     <Content Include="Views\Image\PageImage.cshtml" />
     <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
+    <Content Include="Views\PageControls\GmReadOnlyPageControls.cshtml" />
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

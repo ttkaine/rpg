@@ -220,5 +220,6 @@ namespace Warhammer.Core.Abstract
         List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false);
         List<ScoreBreakdown> GetScoreBreakdown(int personId);
         void TogglePublicImage(int id);
+        List<PageLinkModel> RecentSessionsToLink(int id);
     }
 }

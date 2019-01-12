@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Abstract;
 using Warhammer.Mvc.Models;
 
@@ -18,13 +19,36 @@ namespace Warhammer.Mvc.Controllers
         {
             if (id.HasValue)
             {
-                PageControlsViewModel model = GetModel(id.Value);
-
-                if (model != null)
+                if (IsEditMode)
                 {
-                    return PartialView(model);
+                    PageControlsViewModel model = GetModel(id.Value);
+
+                    if (model != null)
+                    {
+                        return PartialView(model);
+                    }
                 }
             }
+            return null;
+        }
+
+        private GmReadModePageControlsViewModel GetGmReadOnlyModel(int id)
+        {
+            Page page = DataProvider.GetPage(id);
+
+            if (page != null)
+            {
+                List<PageLinkModel> sessionsToOffer = DataProvider.RecentSessionsToLink(id);
+
+                GmReadModePageControlsViewModel model = new GmReadModePageControlsViewModel
+                {
+                    Id = id,
+                    SessionLinksToOffer = sessionsToOffer
+                };
+
+                return model;
+            }
+
             return null;
         }
 
@@ -266,6 +290,34 @@ namespace Warhammer.Mvc.Controllers
                 }
             }
 
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult LinkToSession(int id, int sessionid)
+        {
+            if (CurrentPlayerIsGm)
+            {
+                DataProvider.AddLink(id, sessionid);
+                GmReadModePageControlsViewModel gmModel = GetGmReadOnlyModel(id);
+                if (gmModel != null)
+                {
+                    return PartialView("GmReadOnlyPageControls", gmModel);
+                }
+            }
+            return null;
+        }
+
+        public ActionResult GmReadOnlyPageControls(int? id)
+        {
+            if (id.HasValue && CurrentPlayerIsGm)
+            {
+                GmReadModePageControlsViewModel gmModel = GetGmReadOnlyModel(id.Value);
+                if (gmModel != null)
+                {
+                    return PartialView("GmReadOnlyPageControls", gmModel);
+                }
+            }
             return null;
         }
     }

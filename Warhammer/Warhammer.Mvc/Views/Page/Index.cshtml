@@ -102,6 +102,13 @@
                 @Html.Action("Index", "PageControls", new { id = Model.Id })
             </div>
         }
+        else
+        {
+            if (Model.PlayerIsGm)
+            {
+                @Html.Action("GmReadOnlyPageControls", "PageControls", new { id = Model.Id })
+            }
+        }
 
         @Html.Action("AttributesPanel", "Person", new { id = Model.Id })
 

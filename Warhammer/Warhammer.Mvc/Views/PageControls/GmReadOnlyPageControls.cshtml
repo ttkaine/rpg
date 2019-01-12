@@ -1,0 +1,26 @@
+﻿@using Microsoft.Ajax.Utilities
+@using Warhammer.Core.Models
+@model Warhammer.Mvc.Models.GmReadModePageControlsViewModel
+
+@if (Model.ShowControlsPanel)
+{
+    <div id="gmReadOnlyPageControls" class="content-block">
+      
+
+            @if (Model.LinksAvailable)
+            {
+                <h4>Quick Session Links</h4>
+
+                foreach (PageLinkModel linkModel in Model.SessionLinksToOffer)
+                {
+                    using (Ajax.BeginForm("LinkToSession", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "gmReadOnlyPageControls" }))
+                    {
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <input type="hidden" name="SessionId" value="@linkModel.Id" />
+                        <input type="submit" value="@string.Format("Link to {0} ({1})", linkModel.FullName, linkModel.ShortName)" class="btn btn-info btn-block" />
+                    }
+                }
+            }
+       
+    </div>
+}

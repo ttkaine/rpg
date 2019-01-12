@@ -3295,6 +3295,23 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<PageLinkModel> RecentSessionsToLink(int id)
+        {
+            DateTime twentyFourHoursAgo = DateTime.Now.AddDays(-1);
+            return _repository.Pages().OfType<Session>()
+                .Where(s => s.Created > twentyFourHoursAgo)
+                .Where(s => s.Id != id)
+                .Where(s => s.Pages.All(a => a.Id != id))
+                .Select(s => new PageLinkModel
+                {
+                    FullName = s.FullName,
+                    ShortName = s.ShortName,
+                    Id = s.Id,
+                    Created = s.Created,
+                    Type = PageLinkType.Session
+                }).ToList();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
