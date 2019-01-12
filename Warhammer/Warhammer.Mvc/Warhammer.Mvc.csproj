@@ -532,15 +532,16 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </Content>
     <Content Include="Content\fonts\RioGrande.ttf" />
-    <None Include="Properties\PublishProfiles\B_FATE_TEST.pubxml" />
     <None Include="Properties\PublishProfiles\CI01.pubxml" />
     <None Include="Properties\PublishProfiles\Fate_Federer.pubxml" />
     <None Include="Properties\PublishProfiles\FATE_FIILE.pubxml" />
     <None Include="Properties\PublishProfiles\Pirate_Federer.pubxml" />
+    <None Include="Properties\PublishProfiles\Warhammer_Bob.pubxml" />
     <None Include="Properties\PublishProfiles\Warhammer_CI01.pubxml" />
     <None Include="Properties\PublishProfiles\Warhammer_Federer.pubxml" />
     <None Include="Properties\PublishProfiles\Warhammer_FED_FILE.pubxml" />
     <None Include="Properties\PublishProfiles\WARHAMMER_MURRAY_FILE.pubxml" />
+    <None Include="Properties\PublishProfiles\Warhammer_Osaka.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Highcharts-4.0.1\js\adapters\standalone-framework.js" />
     <Content Include="Scripts\Highcharts-4.0.1\js\adapters\standalone-framework.src.js" />
@@ -820,12 +821,18 @@
     <Content Include="Views\Image\PageImage.cshtml" />
     <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
     <Content Include="Views\PageControls\GmReadOnlyPageControls.cshtml" />
+    <None Include="Web.Bob.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.FATE.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.MURRAY.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Osaka.config">
+      <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.PIRATE.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -936,6 +943,20 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Bob|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;   </DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Osaka|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
