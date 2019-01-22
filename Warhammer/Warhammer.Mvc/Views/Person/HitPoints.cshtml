@@ -6,7 +6,7 @@
     <div class="alert alert-success" id="HitPoints">
         <div class="hitpoint-track wear-track">
             <h4>Wear</h4>
-            <table class="table table-striped">
+            <table class="table">
                 @if (ViewBag.EditMode)
                 {
                     @Html.EditorFor(m => Model.WearTrack)
@@ -20,7 +20,7 @@
         </div>
         <div class="hitpoint-track harm-track">
             <h4>Harm</h4>
-            <table class="table table-striped">
+            <table class="table">
                 @if (ViewBag.EditMode)
                 {
                     @Html.EditorFor(m => Model.HarmTrack)

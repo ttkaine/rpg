@@ -22,7 +22,7 @@
             <h2>@Model.Name</h2>
             <p>@Model.Description</p>
 
-            <table class="table table-striped">
+            <table class="table">
                 @Html.Action("AwardsForTrophy", "Home", new {id = Model.Id })
             </table>
         </div>
