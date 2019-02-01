@@ -28,14 +28,14 @@ namespace Warhammer.Mvc.Controllers
 
                 Player player = CurrentPlayer;
                 List<PageLinkModel> people;
+
+                people = DataProvider.MyPeople().OrderBy(p => p.FullName).ToList();
+
                 if (CurrentPlayerIsGm)
                 {
-                    people = DataProvider.AllNpcLinks().OrderBy(p => p.FullName).ToList();
+                    people.AddRange(DataProvider.AllNpcLinks().OrderBy(p => p.FullName).ToList());
                 }
-                else
-                {
-                    people = DataProvider.MyPeople().OrderBy(p => p.FullName).ToList();
-                }
+
                 model.PlayerName = player.DisplayName;
                 model.PostAs = new SelectList(people, "Id", "FullName");
             }
