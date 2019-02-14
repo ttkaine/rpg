@@ -114,18 +114,18 @@ namespace Warhammer.Mvc.Controllers
 
                 if (trophyModel.Trophy.Id == 0)
                 {
-                    DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, mimeType, trophyModel.CurrentCampaignOnly);
+                   DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, mimeType, trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType);
                 }
                 else
                 {
                     if (imageData != null)
                     {
                         DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue,
-                            imageData, "image/jpeg", trophyModel.CurrentCampaignOnly);
+                            imageData, "image/jpeg", trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType);
                     }
                     else
                     {
-                        DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, trophyModel.CurrentCampaignOnly);
+                        DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType);
                     }
                 }
                 return RedirectToAction("Trophies", "Home");

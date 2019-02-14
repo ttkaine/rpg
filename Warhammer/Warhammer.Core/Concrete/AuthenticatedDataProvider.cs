@@ -837,7 +837,8 @@ namespace Warhammer.Core.Concrete
             return _repository.Trophies().FirstOrDefault(t => t.Id == id);
         }
 
-        public int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly)
+        public int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType,
+            bool currentCampaignOnly, TrophyType trophyTrophyType)
         {
             Trophy trophy = new Trophy();
             trophy.Name = name;
@@ -845,6 +846,11 @@ namespace Warhammer.Core.Concrete
             trophy.PointsValue = pointsValue;
             trophy.ImageData = imageData;
             trophy.MimeType = mimeType;
+
+            if (CurrentUserIsAdmin)
+            {
+                trophy.TrophyType = trophyTrophyType;
+            }
 
             if (!_authenticatedUser.IsAdmin || currentCampaignOnly)
             {
@@ -858,7 +864,8 @@ namespace Warhammer.Core.Concrete
             return _repository.Save(trophy);
         }
 
-        public void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly)
+        public void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData,
+            string mimeType, bool currentCampaignOnly, TrophyType trophyTrophyType)
         {
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
@@ -889,11 +896,17 @@ namespace Warhammer.Core.Concrete
                     }
                 }
 
+                if (CurrentUserIsAdmin)
+                {
+                    trophy.TrophyType = trophyTrophyType;
+                }
+
                 _repository.Save(trophy);
             }
         }
 
-        public void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly)
+        public void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly,
+            TrophyType trophyTrophyType)
         {
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
@@ -922,6 +935,10 @@ namespace Warhammer.Core.Concrete
                 trophy.Description = description;
                 trophy.PointsValue = pointsValue;
 
+                if (CurrentUserIsAdmin)
+                {
+                    trophy.TrophyType = trophyTrophyType;
+                }
 
 
                 _repository.Save(trophy);

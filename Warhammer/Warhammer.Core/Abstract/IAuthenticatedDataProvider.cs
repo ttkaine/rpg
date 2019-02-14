@@ -45,9 +45,12 @@ namespace Warhammer.Core.Abstract
         void ResurrectPerson(int id);
         void KillPerson(int id, string obiturary, string causeOfDeath);
         Trophy GetTrophy(int id);
-        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
-        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType, bool currentCampaignOnly);
-        void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly);
+        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType,
+            bool currentCampaignOnly, TrophyType trophyTrophyType = null);
+        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType,
+            bool currentCampaignOnly, TrophyType trophyTrophyType);
+        void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly,
+            TrophyType trophyTrophyType);
         ICollection<Trophy> Trophies();
         List<SelectItem> TrophiesForSelect();
         int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null);
