@@ -10,6 +10,7 @@
         ThirdFavouriteNpc = 5,
         LeadWeightAward = 6,
         NemesisAward = 7,
+        Insignia = 8
     }
 
     public partial class Trophy

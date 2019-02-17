@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
@@ -949,6 +949,8 @@ namespace Warhammer.Core.Concrete
         {
             return _repository.Trophies(SiteHasFeature(Feature.HideGlobalAwards))
                 .OrderBy(t => t.TypeId == (int)TrophyType.DefaultAward)
+                .ThenByDescending(t => t.TypeId == (int)TrophyType.Insignia)
+                .ThenByDescending(t => t.TypeId)
                 .ThenBy(t => t.TypeId).ThenByDescending(t => t.PointsValue)
                 .ThenBy(t => t.Name).ToList();
         }
@@ -3279,6 +3281,7 @@ namespace Warhammer.Core.Concrete
             if (pointsOrder)
             {
                 query = query.OrderBy(t => t.Trophy.TypeId == (int) TrophyType.DefaultAward)
+                    .ThenByDescending(t => t.Trophy.TypeId == (int)TrophyType.Insignia)
                     .ThenBy(m => m.Trophy.TypeId).ThenByDescending(m => m.Trophy.PointsValue).ThenBy(a => a.Trophy.Name)
                     .ThenBy(a => a.Id);
             }
