@@ -557,7 +557,7 @@ namespace Warhammer.Mvc.Concrete
                 Awards = person.Awards.ToList(),
                 PersonId = person.Id,
                 PersonName = person.FullName,
-                Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.QuickName), "Id", "QuickName")
+                Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.Insignia || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.TrophyType == TrophyType.Insignia).ThenBy(t => t.QuickName), "Id", "QuickName")
             };
             return model;
         }
