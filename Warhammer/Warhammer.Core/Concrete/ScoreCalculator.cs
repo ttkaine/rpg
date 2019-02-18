@@ -196,7 +196,10 @@ namespace Warhammer.Core.Concrete
                 CampaignId = campaignId
             });
 
-            int? awardValue = _repo.Awards().Where(a => a.PersonId == personId).Sum(a => (int?)a.Trophy.PointsValue);
+            int? awardValue = _repo.Awards()
+                .Where(a => a.PersonId == personId)
+                .Where(a => a.Trophy.TypeId != (int)TrophyType.Insignia)
+                .Sum(a => (int?)a.Trophy.PointsValue);
             scores.Add(new ScoreBreakdown
             {
                 ScoreType = ScoreType.Awards,
