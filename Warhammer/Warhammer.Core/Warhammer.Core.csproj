@@ -395,6 +395,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="IImageDataProvider.cs" />
     <Compile Include="Models\AwardSummaryModel.cs" />

@@ -82,5 +82,67 @@ namespace Warhammer.Core.Concrete
                 return ms.ToArray();
             }
         }
+
+        public Image RoundCorners(byte[] image, Color? borderColor = null, int? cornerRadius = null, Color? backgroundColor = null)
+        {
+            using (MemoryStream ms = new MemoryStream(image))
+            {
+                Image startImage = Image.FromStream(ms);
+
+                int radius = cornerRadius ?? startImage.Width / 2;
+                radius *= 2;
+
+                if (backgroundColor == null)
+                {
+                    backgroundColor = Color.Transparent;
+                }
+
+                if (borderColor == null)
+                {
+                    borderColor = Color.Green;
+                }
+
+
+                Bitmap roundedImage = new Bitmap(startImage.Width, startImage.Height);
+                Graphics g = Graphics.FromImage(roundedImage);
+                g.Clear(backgroundColor.Value);
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+
+
+                GraphicsPath path = new GraphicsPath();
+                path.AddEllipse(0,0,startImage.Width, startImage.Height);
+
+                PathGradientBrush pgb = new PathGradientBrush(path);
+
+                pgb.CenterPoint = new PointF(startImage.Width / 2,startImage.Height / 2);
+                pgb.CenterColor = Color.Transparent;
+                pgb.SurroundColors = new Color[] { borderColor.Value };
+                pgb.FocusScales = new PointF(0f, 0f);
+
+                Blend blnd = new Blend();
+                blnd.Positions = new float[] { 0f, 0.1f, 0.2f, 1f };
+                blnd.Factors = new float[] { 0f, 0f, 1f, 1f };
+                pgb.Blend = blnd;
+                g.FillPath(pgb, path);
+
+                Brush brush = new TextureBrush(startImage);
+                GraphicsPath gp = new GraphicsPath();
+                gp.AddArc(0, 0, radius, radius, 180, 90);
+                gp.AddArc(0 + roundedImage.Width - radius, 0, radius, radius, 270, 90);
+                gp.AddArc(0 + roundedImage.Width - radius, 0 + roundedImage.Height - radius, radius, radius, 0, 90);
+                gp.AddArc(0, 0 + roundedImage.Height - radius, radius, radius, 90, 90);
+                g.FillPath(brush, gp);
+                g.FillPath(pgb, path);
+                return roundedImage;
+            }
+        }
+
+        public Image GetImageFromBytes(byte[] bytes)
+        {
+            using (var ms = new MemoryStream(bytes))
+            {
+                return Image.FromStream(ms);
+            }
+        }
     }
 }

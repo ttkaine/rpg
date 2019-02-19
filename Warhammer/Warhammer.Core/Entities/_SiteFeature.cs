@@ -67,7 +67,8 @@ namespace Warhammer.Core.Entities
         RandomItemGenerator,
         ShowOtherSitesMenu,
         HideGlobalAwards,
-        SessionArcs
+        SessionArcs,
+        CharacterTokens
     }
 
     public partial class SiteFeature
