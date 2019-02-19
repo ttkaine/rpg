@@ -1,0 +1,14 @@
+﻿@model Warhammer.Mvc.Models.TokenViewModel 
+
+<div class="content-block" id="tokenImage">
+    <div class="form-group">
+        <h3>Character Play Token</h3>
+        @using (Html.BeginForm("Token", "Image"))
+        {
+            @Html.HiddenFor(m => m.Id)
+            <h4>Pick a border color</h4>
+            @Html.EnumDropDownListFor(m => m.Colour, new { @class = "form-control" })
+            <input type="Submit" value="Get Token" class="btn btn-block btn-success" />
+        }
+    </div>
+</div>

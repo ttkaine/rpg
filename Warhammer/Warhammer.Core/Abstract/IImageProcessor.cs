@@ -11,5 +11,8 @@ namespace Warhammer.Core.Abstract
         byte[] GetJpegFromImage(Image image);
         Image Crop(Image image, Rectangle cropArea);
         byte[] GetPngFromImage(Image image);
+        Image RoundCorners(byte[] imageData, Color? borderColor = null, int? cornerRadius = null, Color? backgroundColor = null);
+
+        Image GetImageFromBytes(byte[] bytes);
     }
 }

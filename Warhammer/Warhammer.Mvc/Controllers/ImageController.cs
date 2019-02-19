@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using Warhammer.Core;
+using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -15,10 +18,12 @@ namespace Warhammer.Mvc.Controllers
     public class ImageController : Controller
     {
         private readonly IImageDataProvider _imageData;
+        private readonly IImageProcessor _imageProcessor;
 
-        public ImageController(IImageDataProvider imageData)
+        public ImageController(IImageDataProvider imageData, IImageProcessor imageProcessor)
         {
             _imageData = imageData;
+            _imageProcessor = imageProcessor;
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
@@ -51,6 +56,29 @@ namespace Warhammer.Mvc.Controllers
                 return PartialView(imageViewModel);
             }
             return null;
+        }
+
+        [HttpPost]
+        public ActionResult Token(TokenViewModel model)
+        {
+            PageImage image = _imageData.GetPageImageForPage(model.Id);
+            if (image != null)
+            {
+                Image roundImage = _imageProcessor.RoundCorners(image.Data, model.DrawingColor);
+                byte[] png = _imageProcessor.GetPngFromImage(roundImage);
+                string name = _imageData.GetPageName(model.Id);
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = "Unknown";
+                }
+                string filename = $"Token_{name.ToAlpha()}.png";
+                return File(png, "image/png", $"{filename}");
+            }
+
+            var defaultDir = Server.MapPath("/Content/Images");
+
+            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
+            return File(defaultImagePath, "image/jpeg");
         }
     }
 }

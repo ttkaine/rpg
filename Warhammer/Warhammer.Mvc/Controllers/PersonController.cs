@@ -1239,5 +1239,15 @@ namespace Warhammer.Mvc.Controllers
 
             return null;
         }
+
+        public ActionResult TokenPanel(int id)
+        {
+            if (DataProvider.SiteHasFeature(Feature.CharacterTokens))
+            {
+                return PartialView(new TokenViewModel{ Id = id });
+            }
+
+            return null;
+        }
     }
 }

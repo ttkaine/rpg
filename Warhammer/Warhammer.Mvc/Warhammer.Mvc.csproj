@@ -306,6 +306,7 @@
     <Compile Include="Models\SessionXpModel.cs" />
     <Compile Include="Models\SimpleHitPointsViewModel.cs" />
     <Compile Include="Models\SuspendPlayerItemViewModel.cs" />
+    <Compile Include="Models\TokenViewModel.cs" />
     <Compile Include="Models\TrophyCabinetViewModel.cs" />
     <Compile Include="Models\TrophyNominationViewModel.cs" />
     <Compile Include="Models\UserSettingsViewModel.cs" />
@@ -821,6 +822,7 @@
     <Content Include="Views\Image\PageImage.cshtml" />
     <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
     <Content Include="Views\PageControls\GmReadOnlyPageControls.cshtml" />
+    <Content Include="Views\Person\TokenPanel.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
