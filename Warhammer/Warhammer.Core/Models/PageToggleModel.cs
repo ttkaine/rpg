@@ -11,6 +11,7 @@
         public string ShortName { get; set; }
         public string FullName { get; set; }
         public bool Selected { get; set; }
+        public bool InitialState { get; set; }
         public bool ShowImage { get; set; }
     }
 }

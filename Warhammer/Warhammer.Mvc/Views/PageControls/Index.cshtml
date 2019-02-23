@@ -3,6 +3,8 @@
 @if (ViewBag.EditMode)
 {
 <div id="pageControls">
+    
+
 
     @if (Model.CanChangeImage)
     {
@@ -11,6 +13,10 @@
     @if (Model.CanEditLinks)
     {
         @Html.ActionLink("Edit Links", "EditLinks", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+        if (Model.IsSession)
+        {
+            @Html.ActionLink("Manage People", "MangePeople", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+        }
     }
     @if (Model.CanPin)
     {

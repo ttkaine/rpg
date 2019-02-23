@@ -7,11 +7,12 @@
             @Html.Action("PageImage", "Image", new {id = Model.PageId})
         </td>
     }
-    <td>
+    <td class="name">
         @Model.FullName
         @if (Model.ShortName != Model.FullName)
         {<span class="note">(@Model.ShortName)</span>}
         @Html.HiddenFor(m => m.PageId)
+        @Html.HiddenFor(m => m.InitialState)
     </td>
     <td>
         @Html.CheckBoxFor(m => Model.Selected, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_offstyle = "default", data_onstyle = "success"})

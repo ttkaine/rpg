@@ -1,0 +1,59 @@
+﻿@model Warhammer.Mvc.Models.ManageSessionPeopleViewModel
+
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+            <h2>Manage People for @Model.SessionName</h2>
+            <div id="characterList">
+                <input class="search input-lg" placeholder="Filter" />
+                <hr />
+                @using (Html.BeginForm())
+                {
+                   @Html.HiddenFor(m => m.SessionId)
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                    <table class="table table-responsive people">
+                        <thead>
+                            <tr>
+                                <td colspan="3">People at this Session</td>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            @Html.EditorFor(m => m.People)
+                        </tbody>
+                    </table>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                 }
+            </div>
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <p></p>
+            <p></p>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/scripts/list.js")"></script>
+<script>
+    var options = {
+        valueNames: ['name'],
+        page: 2000
+    };
+
+    var userList = new List('characterList', options);
+
+</script>

@@ -288,6 +288,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\ManageAwardsViewModel.cs" />
+    <Compile Include="Models\ManageSessionPeopleViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\MyFavNpcModel.cs" />
@@ -823,6 +824,7 @@
     <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
     <Content Include="Views\PageControls\GmReadOnlyPageControls.cshtml" />
     <Content Include="Views\Person\TokenPanel.cshtml" />
+    <Content Include="Views\Page\MangePeople.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

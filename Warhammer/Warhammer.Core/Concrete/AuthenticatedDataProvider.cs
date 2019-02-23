@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
@@ -3002,6 +3002,7 @@ namespace Warhammer.Core.Concrete
                 FullName = p.FullName,
                 PageId = p.Id,
                 Selected = false,
+                InitialState = false,
                 ShortName = p.ShortName
             }).ToList());
 
@@ -3013,6 +3014,7 @@ namespace Warhammer.Core.Concrete
                 FullName = p.FullName,
                 PageId = p.Id,
                 Selected = false,
+                InitialState = false,
                 ShortName = p.ShortName
             }).Take(10).ToList());
 
@@ -3024,6 +3026,7 @@ namespace Warhammer.Core.Concrete
                     FullName = p.FullName,
                     PageId = p.Id,
                     Selected = false,
+                    InitialState = false,
                     ShortName = p.ShortName
                 }).Take(5).ToList());
 
@@ -3038,6 +3041,7 @@ namespace Warhammer.Core.Concrete
                         FullName = p.FullName,
                         PageId = p.Id,
                         Selected = false,
+                        InitialState = false,
                         ShortName = p.ShortName
                     }).Take(10).ToList());
             }
@@ -3061,6 +3065,7 @@ namespace Warhammer.Core.Concrete
                         if (pageLink.PageId == person.Id)
                         {
                             pageLink.Selected = true;
+                            pageLink.InitialState = true;
                         }
                     }
                 }
@@ -3330,6 +3335,31 @@ namespace Warhammer.Core.Concrete
                     Created = s.Created,
                     Type = PageLinkType.Session
                 }).ToList();
+        }
+
+        public List<PageToggleModel> GetAllPeopleForSession(int id)
+        {
+            List<PageToggleModel> people = new List<PageToggleModel>();
+
+            people.AddRange(_repository.People().Where(p => p.Pages.Any(g => g.Id == p.Id)).Select(p => new PageToggleModel
+            {
+                FullName = p.FullName,
+                PageId = p.Id,
+                Selected = true,
+                InitialState = true,
+                ShortName = p.ShortName
+            }).ToList());
+
+            people.AddRange(_repository.People().Where(p => p.Pages.All(g => g.Id != p.Id)).Select(p => new PageToggleModel
+            {
+                FullName = p.FullName,
+                PageId = p.Id,
+                Selected = false,
+                InitialState = false,
+                ShortName = p.ShortName
+            }).ToList());
+
+            return people.OrderBy(p => p.FullName).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)

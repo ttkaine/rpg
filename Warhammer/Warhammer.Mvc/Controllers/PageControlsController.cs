@@ -59,7 +59,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 bool playerIsGm = DataProvider.CurrentPlayerIsGm;
                 int currentPlayerId = DataProvider.CurrentPlayerId;
-                bool isAdmin = DataProvider.CurrentUserIsAdmin;
+                bool isAdmin = DataProvider.CurrentUserIsAdmin;               
                 List<Player> players = DataProvider.GetAllPlayers();
                 PageControlsViewModel model =
                     _factory.MakePageControlsViewModel(page, isAdmin, playerIsGm, currentPlayerId, players);

@@ -196,6 +196,48 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult MangePeople(int? id)
+        {
+            if (id.HasValue)
+            {
+                Page page = DataProvider.GetPage(id.Value);
+                if (page != null)
+                {
+                    ManageSessionPeopleViewModel model = new ManageSessionPeopleViewModel();
+                    List<PageToggleModel> people = DataProvider.GetAllPeopleForSession(id.Value );
+                    model.People = people.OrderByDescending(p => p.Selected).ThenBy(p => p.FullName).ToList();
+                    model.SessionId = id.Value;
+                    model.SessionName = page.FullName;
+                    return View(model);
+                }
+            }
+            return RedirectToAction("index", "home");
+        }
+
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        [HttpPost]
+        public ActionResult MangePeople(ManageSessionPeopleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var pageToggleModel in model.People.Where(p => p.InitialState != p.Selected))
+                {
+                    if (pageToggleModel.Selected)
+                    {
+                        DataProvider.AddLink(model.SessionId, pageToggleModel.PageId);
+                    }
+                    else
+                    {
+                        DataProvider.RemoveLink(model.SessionId, pageToggleModel.PageId);
+                    }
+                }
+
+                return RedirectToAction("Index", "Page", new {id = model.SessionId});
+            }
+            return RedirectToAction("index", "home");
+        }
+
+        [System.Web.Mvc.Authorize(Roles = "Player")]
         public ActionResult EditLinks(int? id)
         {
             if (id.HasValue)
@@ -681,5 +723,6 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
     }
 }

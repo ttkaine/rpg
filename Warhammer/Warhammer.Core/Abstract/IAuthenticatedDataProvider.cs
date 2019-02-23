@@ -224,5 +224,6 @@ namespace Warhammer.Core.Abstract
         List<ScoreBreakdown> GetScoreBreakdown(int personId);
         void TogglePublicImage(int id);
         List<PageLinkModel> RecentSessionsToLink(int id);
+        List<PageToggleModel> GetAllPeopleForSession(int id);
     }
 }
