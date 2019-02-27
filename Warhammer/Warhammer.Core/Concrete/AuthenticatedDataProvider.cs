@@ -70,7 +70,8 @@ namespace Warhammer.Core.Concrete
 
             if (_authenticatedUser.UserIsAuthenticated)
             {
-                ShadowMode = SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode);
+                ShadowMode = SiteHasFeature(Feature.EnforceShadowMode) || 
+                             (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode));
             }
         }
 
