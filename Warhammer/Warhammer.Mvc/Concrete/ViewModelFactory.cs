@@ -702,8 +702,10 @@ namespace Warhammer.Mvc.Concrete
                     return "Summary Emails";
                 case SettingSection.ShadowMode:
                     return "Shadow Mode";
+                case SettingSection.AwardSettings:
+                    return "Award Settings";
                 default:
-                    return "UNKNONW SETTING SECTION TITLE";
+                    return "Other Settings";
             }
         }
 
