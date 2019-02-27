@@ -536,7 +536,8 @@ namespace Warhammer.Mvc.Concrete
                 PlayerIsGm = playerIsGm,
                 CurrentPlayerId = currentPlayerId,
                 Players = new SelectList(players, "Id", "DisplayName"),
-                CurrentCampaignId = _data.CurrentCampaignId
+                CurrentCampaignId = _data.CurrentCampaignId,
+                ShowManagePeopleEnabled = _data.SiteHasFeature(Feature.ManageSessionPeople)
             };
 
             Session session = page as Session;

@@ -11,6 +11,7 @@ namespace Warhammer.Mvc.Models
         public bool PlayerIsAdmin { get; set; }
         public int CurrentPlayerId { get; set; }
         public int CurrentCampaignId { get; set; }
+        public bool ShowManagePeopleEnabled { get; set; }
 
         public bool IsLocalToCampaign => Page.CampaignId == CurrentCampaignId;
 
@@ -219,5 +220,6 @@ namespace Warhammer.Mvc.Models
         public bool CanChangePlayer => PlayerIsAdmin && IsPerson;
         public bool CanChangeImage => IsLocalToCampaign;
         public bool CanEditLinks => IsLocalToCampaign;
+        public bool ShowManagePeopleLink => IsSession && ShowManagePeopleEnabled;
     }
 }

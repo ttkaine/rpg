@@ -13,7 +13,7 @@
     @if (Model.CanEditLinks)
     {
         @Html.ActionLink("Edit Links", "EditLinks", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
-        if (Model.IsSession)
+        if (Model.ShowManagePeopleLink)
         {
             @Html.ActionLink("Manage People", "MangePeople", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
         }

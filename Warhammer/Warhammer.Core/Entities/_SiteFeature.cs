@@ -69,7 +69,8 @@ namespace Warhammer.Core.Entities
         HideGlobalAwards,
         SessionArcs,
         CharacterTokens,
-        EnforceShadowMode
+        EnforceShadowMode,
+        ManageSessionPeople
     }
 
     public partial class SiteFeature
