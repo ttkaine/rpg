@@ -68,11 +68,12 @@ namespace Warhammer.Core.Concrete
             _email = email;
             _feature = feature;
 
-            if (_authenticatedUser.UserIsAuthenticated)
+            if (_authenticatedUser.UserIsAuthenticated && !_authenticatedUser.IsAdmin)
             {
                 ShadowMode = SiteHasFeature(Feature.EnforceShadowMode) || 
                              (SiteHasFeature(Feature.ShadowMode) && PlayerSettingEnabled(SettingNames.ShadowMode));
             }
+
         }
 
         private Player _currentPlayer;
