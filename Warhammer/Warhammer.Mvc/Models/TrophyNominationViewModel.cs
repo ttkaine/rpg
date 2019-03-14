@@ -13,5 +13,6 @@ namespace Warhammer.Mvc.Models
         public int SelectedTrophy { get; set; }
         public IEnumerable<AwardNomination> ExistingNominations { get; set; }
         public bool IsPrivate { get; set; }
+        public bool JustNominated { get; set; }
     }
 }

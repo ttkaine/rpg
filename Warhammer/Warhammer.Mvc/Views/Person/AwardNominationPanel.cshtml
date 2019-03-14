@@ -37,6 +37,14 @@
             <div class="panel panel-info">
                 <div class="panel-heading">Nominate for an Award</div>
                 <div class="panel-body">
+                    
+                    @if (Model.JustNominated)
+                    {
+                        <div class="alert alert-success">
+                            <h4>Award Nomination Sent</h4>
+                            <p>Your award nomination has been sent to the GM for review!</p>
+                        </div>
+                    }
 
                     @using (Ajax.BeginForm("NominateForAward", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "award-nomination-panel", OnComplete = "applyToggles()" }))
                     {

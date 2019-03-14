@@ -1211,6 +1211,7 @@ namespace Warhammer.Mvc.Controllers
                 if (person != null)
                 {
                     var model = GetTrophyNominationViewModel(person);
+                    model.JustNominated = true;
                     ModelState.Clear();
                     return PartialView("AwardNominationPanel", model);
                 }
