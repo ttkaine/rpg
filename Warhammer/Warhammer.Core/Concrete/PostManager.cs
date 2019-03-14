@@ -136,10 +136,11 @@ namespace Warhammer.Core.Concrete
 			{
 				return PostResult.InvalidSession;
 			}
-			if (characterId == 0 && player.Id != gmId)
-			{
-				return PostResult.InvalidCharacter;
-			}
+            // commented out so that Players can do dice rolls as Environment, may need more elegant fixings 
+			//if (characterId == 0 && player.Id != gmId)
+			//{
+			//	return PostResult.InvalidCharacter;
+			//}
 			if (!CharacterIsInSession(session, characterId))
 			{
 				return PostResult.CharacterNotInCampaign;
