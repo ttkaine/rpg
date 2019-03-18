@@ -8,6 +8,7 @@ using System.Text;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 using Warhammer.Core.RoleplayViewModels;
 
 namespace Warhammer.Core.Concrete
@@ -228,7 +229,7 @@ namespace Warhammer.Core.Concrete
 				viewModel.StartDate = session.DateTime.GetValueOrDefault();
 				viewModel.Title = session.ShortName;
 				viewModel.GmId = GetGmId(sessionId);
-			    viewModel.CurrentPlayerId = GetCurrentPlayerId(session);
+			    viewModel.CurrentPlayerId = GetCurrentTurnPlayerId(session);
 				return viewModel;
 			}
 
@@ -275,20 +276,33 @@ namespace Warhammer.Core.Concrete
 				}
 
 				if (post.PlayerId == player.ID || playerIds.Contains(player.ID) || (player.ID == gmId && post.PostType == (int)PostType.DiceRoll))
-				{
-					PostViewModel viewModel = GetPostViewModelForPost(post, gmId);
-					if (viewModel != null)
-					{
-						viewModel.TargetPlayerNames = names.ToString();
-					}
-					return viewModel;
-				}			    
-		    }
+                {
+                    PageLinkModel character = GetCharacterForPost(post);
+                    PostViewModel viewModel = GetPostViewModelForPost(post, gmId, player, character);
+                    if (viewModel != null)
+                    {
+                        viewModel.TargetPlayerNames = names.ToString();
+                    }
+                    return viewModel;
+                }
+            }
 
 		    return null;
 	    }
 
-	    private int GetCurrentPlayerId(Session session)
+        private PageLinkModel GetCharacterForPost(Post post)
+        {
+            PageLinkModel character = null;
+            if (post.CharacterId.HasValue)
+            {
+                character = Repo.Pages().Where(p => p.Id == post.CharacterId.Value).Select(p =>
+                    new PageLinkModel { Id = p.Id, FullName = p.FullName, ShortName = p.ShortName }).FirstOrDefault();
+            }
+
+            return character;
+        }
+
+        private int GetCurrentTurnPlayerId(Session session)
         {
             if (!session.IsGmTurn || (session.IsGmTurn && session.GmIsSuspended))
             { 
@@ -325,19 +339,21 @@ namespace Warhammer.Core.Concrete
 
 	    public List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId, out int playerId, out bool playerIsGm)
 	    {
-		    playerIsGm = false;
-			playerId = -1;
+			int currentPlayerId = Repo.Players().Where(p => p.UserName == UserProvider.UserName).Select(p => p.Id).FirstOrDefault();
 		    int gmId = GetGmId(sessionId);
-			//PlayerModel player = Data.GetPlayerDataForUserId(currentUserId);
-			//SessionModel session = Data.GetSession(sessionId);
-			Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
-			PlayerViewModel player = GetPlayerForCurrentUser(sessionId);
+	        List<PageLinkModel> characters = Repo.Pages().OfType<Person>().Where(s => s.Pages.Any(p => p.Id == sessionId)).Select(p => new PageLinkModel{FullName = p.FullName, ShortName = p.ShortName, Id = p.Id}).ToList();
+	        List<PlayerViewModel> players = Repo.Players().Select(p => new PlayerViewModel { Name = p.DisplayName, ID = p.Id, IsGM = p.Id == gmId}).ToList();
+	        PlayerViewModel player = players.Single(p => p.ID == currentPlayerId);
+	        bool currentplayerIsGm = player.IsGM;
+            //PlayerModel player = Data.GetPlayerDataForUserId(currentUserId);
+            //SessionModel session = Data.GetSession(sessionId);
+           // Session session = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId);
+			//PlayerViewModel player = GetPlayerForCurrentUser(sessionId);
 
 			List<PostViewModel> viewModels = new List<PostViewModel>();
-			if (player != null && session != null)
-			{
+	
 				playerId = player.ID;
-				List<Post> posts = Repo.Posts().Where(p => p.SessionId == session.Id && p.Id > lastPostId && !p.IsDeleted).ToList();
+				List<Post> posts = Repo.Posts().Where(p => p.SessionId == sessionId && p.Id > lastPostId && !p.IsDeleted).ToList();
 
 				foreach (Post post in posts)
 				{
@@ -348,7 +364,7 @@ namespace Warhammer.Core.Concrete
 						playerIds.AddRange(GetIntsFromString(post.TargetPlayerIds));
 						foreach (int id in playerIds)
 						{
-							PlayerViewModel targetPlayer = GetPlayer(id, sessionId);
+							PlayerViewModel targetPlayer = players.FirstOrDefault(p => p.ID == id);
 							if (targetPlayer != null)
 							{
 								if (names.Length > 0)
@@ -370,7 +386,7 @@ namespace Warhammer.Core.Concrete
 
 					if (post.PlayerId == player.ID || playerIds.Contains(player.ID) || (player.ID == gmId && post.PostType == (int)PostType.DiceRoll))
 					{
-						PostViewModel viewModel = GetPostViewModelForPost(post, gmId);
+						PostViewModel viewModel = GetPostViewModelForPost(post, gmId, players.FirstOrDefault(p => p.ID == post.PlayerId), characters.FirstOrDefault(c => c.Id == post.CharacterId));
 						if (viewModel != null)
 						{
 							viewModel.TargetPlayerNames = names.ToString();
@@ -380,13 +396,14 @@ namespace Warhammer.Core.Concrete
 					
 				}
 				playerIsGm = player.IsGM;
-			}
+			
 
-		    
+	        playerId = currentPlayerId;
+	        playerIsGm = currentplayerIsGm;
 			return viewModels;
 	    }
 
-		private PostViewModel GetPostViewModelForPost(Post post, int gmId)
+		private PostViewModel GetPostViewModelForPost(Post post, int gmId, PlayerViewModel player, PageLinkModel character)
 		{
 			PostViewModel viewModel;
 			if (post.PostType == (int)PostType.DiceRoll)
@@ -445,7 +462,6 @@ namespace Warhammer.Core.Concrete
 
 			if (post.CharacterId != null)
 			{
-				Person character = Repo.People().FirstOrDefault(p => p.Id == post.CharacterId);
 				if (character != null)
 				{
 					viewModel.CharacterId = character.Id;
@@ -476,7 +492,6 @@ namespace Warhammer.Core.Concrete
 				}
 			}
 
-			PlayerViewModel player = GetPlayer(post.PlayerId, post.SessionId);
 			if (player != null)
 			{
 				viewModel.PlayerName = player.Name;
@@ -530,7 +545,8 @@ namespace Warhammer.Core.Concrete
 
 					if (post.PlayerId == player.ID || playerIds.Contains(player.ID) || (player.IsGM && post.PostType == (int)PostType.DiceRoll))
 					{
-						PostViewModel viewModel = GetPostViewModelForPost(post, gmId);
+					    PageLinkModel character = GetCharacterForPost(post);
+                        PostViewModel viewModel = GetPostViewModelForPost(post, gmId, player, character);
 						if (viewModel != null)
 						{
 							viewModel.TargetPlayerNames = names.ToString();
