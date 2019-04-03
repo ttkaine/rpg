@@ -72,9 +72,6 @@ namespace Warhammer.Mvc.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-
-
-
 		public JsonResult GetLatestPostsForSession(int sessionId, int lastPostId, string lastUpdateTime)
 		{
 			DateTime lastUpdate;
