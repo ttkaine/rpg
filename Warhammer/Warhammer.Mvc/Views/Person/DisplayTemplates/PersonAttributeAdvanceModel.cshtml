@@ -5,7 +5,7 @@
     string privateClass = Model.PersonAttribute.IsPrivate ? "private" : "";
 }
 
-@if (!Model.PersonAttribute.IsPrivate || Model.CharacterInfo.CanEdit)
+@if ((!Model.PersonAttribute.IsPrivate || Model.CharacterInfo.CanEdit) && Model.PersonAttribute.CurrentValue != 0)
 {
     <tr>
         <td class="personAttribute @privateClass" title="@Model.PersonAttribute.Description">@Model.PersonAttribute.Name</td>
