@@ -3848,6 +3848,8 @@ namespace Warhammer.Core.Concrete
 
         public List<OpenTextSessionSummaryModel> MyOpenTextSessions()
         {
+            List<CampaignDetail> campaigns = _repository.CampaignDetails().ToList();
+
             List<OpenTextSessionSummaryModel> sessions = _repository.Pages().OfType<Session>()
                 .Where(s => s.IsTextSession)
                 .Where(s => !s.IsClosed)
@@ -3858,6 +3860,7 @@ namespace Warhammer.Core.Concrete
                     IsPrivate =  s.IsPrivate,
                     SessionId = s.Id,
                     SessionName = s.FullName,
+                    CampaginId = s.CampaignId,
                     IsUpdated = s.PageViews.Any(v => v.PlayerId == CurrentPlayerId && v.Viewed < s.Posts.OrderByDescending(p => p.DatePosted).Select(d => d.DatePosted).FirstOrDefault()),
 
                 })
@@ -3866,6 +3869,8 @@ namespace Warhammer.Core.Concrete
             foreach (OpenTextSessionSummaryModel session in sessions)
             {
                 session.MyTurn = PlayerToPostInSession(session.SessionId)?.Id == CurrentPlayerId;
+                session.Domain = campaigns.Where(c => c.CampaignId == session.CampaginId).Select(c => c.Url)
+                    .FirstOrDefault();
             }
 
             return sessions.OrderByDescending(s => s.MyTurn).ThenBy(s => s.LastPostTime).ToList();

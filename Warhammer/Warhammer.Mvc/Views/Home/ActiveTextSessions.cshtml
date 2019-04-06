@@ -13,10 +13,10 @@
                 @foreach (OpenTextSessionSummaryModel session in Model.OpenSessions)
                 {
                     <li>
-                        <a class="btn btn-default btn-mini" href="@Url.Action("Index", "Page", new {id = session.SessionId})">
+                        <a class="btn btn-default btn-mini" href="@session.PageUrl)">
                             <img src="@Url.Content("~/Content/Images/home.png")" alt="Session Page" title="Session Page" />
                         </a>
-                        <a class="btn @session.CssClass btn-main" href="@Url.Action("Index", "Roleplay", new {id = session.SessionId})">
+                        <a class="btn @session.CssClass btn-main" href="@session.RoleplayUrl">
                             @if (session.IsPrivate)
                             {
                                 <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Session" title="Private Session"/>

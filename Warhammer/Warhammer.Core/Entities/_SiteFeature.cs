@@ -70,7 +70,8 @@ namespace Warhammer.Core.Entities
         SessionArcs,
         CharacterTokens,
         EnforceShadowMode,
-        ManageSessionPeople
+        ManageSessionPeople,
+        MasterTextSessions
     }
 
     public partial class SiteFeature

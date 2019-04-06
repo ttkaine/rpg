@@ -318,7 +318,10 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult ActiveTextSessions()
         {
-            if (DataProvider.IsMasterDomain) { return null;}
+            if (DataProvider.IsMasterDomain && !DataProvider.SiteHasFeature(Feature.MasterTextSessions))
+            {
+                 return null;
+            }
 
             ActiveTextSessionViewModel model = ModelFactory.MakeActiveTextSessionViewModel();
 
