@@ -481,13 +481,15 @@ namespace Warhammer.Mvc.Controllers
 
 		public JsonResult GetSessionTitle(int sessionId)
 		{
-			SessionViewModel session = ModelFactory.GetSession(sessionId);
+		    string sessionTitle = DataProvider.GetPageName(sessionId);
 
-			string title = "Session Title";
-			if (session != null)
-			{
-				title = session.Title;
-			}
+		    if (string.IsNullOrWhiteSpace(sessionTitle))
+		    {
+		        sessionTitle = "NO SESSION NAME";
+		    }
+
+            string title = $"<a href='/Page/Index/{sessionId}'>{sessionTitle}</a>";
+
 
 			JavaScriptSerializer serializer = new JavaScriptSerializer();
 			return Json(serializer.Serialize(title));
