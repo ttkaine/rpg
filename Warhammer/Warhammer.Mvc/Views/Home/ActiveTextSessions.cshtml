@@ -13,7 +13,7 @@
                 @foreach (OpenTextSessionSummaryModel session in Model.OpenSessions)
                 {
                     <li>
-                        <a class="btn btn-default btn-mini" href="@session.PageUrl)">
+                        <a class="btn btn-default btn-mini" href="@session.PageUrl">
                             <img src="@Url.Content("~/Content/Images/home.png")" alt="Session Page" title="Session Page" />
                         </a>
                         <a class="btn @session.CssClass btn-main" href="@session.RoleplayUrl">
