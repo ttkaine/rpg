@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using Ninject.Activation;
 using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -31,7 +33,7 @@ namespace Warhammer.Mvc.Concrete
             List<OpenTextSessionSummaryModel> myOpenTestSessions = _data.MyOpenTextSessions().ToList();
 
             model.OpenSessions = myOpenTestSessions;
-
+            
             return model;
         }
 

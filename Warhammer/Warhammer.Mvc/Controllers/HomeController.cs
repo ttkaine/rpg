@@ -325,6 +325,15 @@ namespace Warhammer.Mvc.Controllers
 
             ActiveTextSessionViewModel model = ModelFactory.MakeActiveTextSessionViewModel();
 
+
+            if (Request.IsLocal)
+            {                 
+                foreach (OpenTextSessionSummaryModel session in model.OpenSessions)
+                {
+                    session.IsLocal = true;
+                }
+            }
+
             return PartialView(model);
         }
 

@@ -79,15 +79,16 @@
                     <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName</span>
                 </div>
             </div>
-
-            @Html.Action("ArcSessions", "Page", new { id = Model.Id })
-
-            @Html.Action("CurrentScorePiePanel", "Person", new { id = Model.Id })
-
+        @if (Model is Arc)
+        {
+            @Html.Action("ArcSessions", "Page", new {id = Model.Id})
+        }
+         @if (Model is Person)
+         {
+             @Html.Action("CurrentScorePiePanel", "Person", new {id = Model.Id})
+         }
         </div>
     }
-
-
 
     <div class="side-bar">
         @Html.Action("GetShowLocalButton", "Page", new { id = Model.Id })
@@ -121,16 +122,7 @@
             @Html.Action("AwardHistoryPanel", "Person", new { id = Model.Id })
         }
 
-        @if (ViewBag.EditMode)
-        {
-            @Html.Action("EditGameDate", "Page", new { id = Model.Id })
-        }
-        else
-        {
-            @Html.Action("GameDate", "Page", new { id = Model.Id })
-        }
-        
-        @Html.Action("ArcPanel", "Page", new { id = Model.Id })
+
 
         <div class="content-block">
 
@@ -269,6 +261,8 @@
                     <div class="clearfix"></div>
                 }
             }
+            
+
 
             @if (Model is Arc && ViewBag.EditMode)
             {
@@ -280,8 +274,25 @@
                 @Html.Action("RelatedLinksPanel", "Page", new { id = Model.Id })
             }
         </div>
+    
+    
 
-        @if (Model is Arc)
+
+    @if (Model is Session)
+    {
+        if (ViewBag.EditMode)
+         {
+             @Html.Action("EditGameDate", "Page", new { id = Model.Id })
+         }
+         else
+         {
+             @Html.Action("GameDate", "Page", new { id = Model.Id })
+         }
+
+        @Html.Action("ArcPanel", "Page", new {id = Model.Id})
+    }
+
+    @if (Model is Arc)
         {
             if (ViewBag.EditMode)
             {
