@@ -117,7 +117,7 @@ namespace Warhammer.Core.Concrete
                         _repo.Save(person);
 
                         model = GetCharacterAttributes(personId);
-                        person.XpSpendAvailable = model.CanBuyAll;
+                        person.XpSpendAvailable = model.CanBuyAny;
                         person.Modified = DateTime.Now;
                         
                         _repo.Save(person);
@@ -160,7 +160,7 @@ namespace Warhammer.Core.Concrete
                     
                     _repo.Save(person);
                     model = GetCharacterAttributes(personId);
-                    person.XpSpendAvailable = model.CanBuyAll;
+                    person.XpSpendAvailable = model.CanBuyAny;
                     _repo.Save(person);
 
                     return true;
@@ -591,8 +591,7 @@ namespace Warhammer.Core.Concrete
                     _repo.Save(person);
 
                     CharacterAttributeModel model = GetCharacterAttributes(personId);
-                    model = GetCharacterAttributes(personId);
-                    person.XpSpendAvailable = model.CanBuyAll;
+                    person.XpSpendAvailable = model.CanBuyAny;
                     _repo.Save(person);
 
                     return true;

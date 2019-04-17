@@ -146,10 +146,20 @@ namespace Warhammer.Core.Models
                 return CharacterInfo.CurrentXp >= max;         
             }
         }
+        public bool CanBuyAny
+        {
+            get
+            {
+                int min = PersonAttributes.Min(a => a.Cost);
+                return CharacterInfo.CurrentXp >= min;
+            }
+        }
+
 
         public int WishingWell { get; set; }
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
         public bool CanAddXp { get; set; }
         public bool ShowWearTrack { get; set; }
+
     }
 }
