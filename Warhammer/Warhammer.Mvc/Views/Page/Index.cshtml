@@ -297,10 +297,12 @@
             if (ViewBag.EditMode)
             {
                 @Html.Action("EditGameDate", "Page", new { id = Model.Id, isStartDate = true })
+                @Html.Action("EditGameDate", "Page", new { id = Model.Id, isStartDate = false })
             }
             else
             {
                 @Html.Action("GameDate", "Page", new { id = Model.Id, isStartDate = true })
+                @Html.Action("GameDate", "Page", new { id = Model.Id, isStartDate = false })
             }
         }
 
