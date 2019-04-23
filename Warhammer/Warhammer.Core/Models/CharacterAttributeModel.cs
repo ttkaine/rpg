@@ -150,8 +150,7 @@ namespace Warhammer.Core.Models
         {
             get
             {
-                int min = PersonAttributes.Min(a => a.Cost);
-                return CharacterInfo.CurrentXp >= min;
+                return PersonAttributes.Any(c => c.CanBuy);
             }
         }
 
