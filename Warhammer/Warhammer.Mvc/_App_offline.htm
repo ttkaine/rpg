@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Offline</title>
+
+    
+<style>
+body {
+    background: url('../content/images/bg-large.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding-top: 80px;
+}
+   
+#content{
+    position: fixed;
+    top: 50%;
+    left: 40%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+	padding: 20px;
+	        -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: #333333 5px 5px 15px ;
+    -webkit-box-shadow: #333333 5px 5px 15px ;
+    box-shadow: #333333 5px 5px 15px ;
+	background-color: whitesmoke;
+}​   
+   
+</style>
+  
+</head>
+<body>
+
+<div id="content">
+<h1>
+The Site is currently down for essential works.
+</h1>
+<p>You know.... like it's broken, half baked, or otherwise just gumphed up. It's probably because I'm doing something intrusive to the database and don't want people posting stuff that will get lost when I goof it up and have to revert to a backup.</p> 
+<h2>The site should be up again soon</h2>
+<p>And when I say 'soon' I mean, when I'm damn well done with whatever bollocks I'm doing. Ping me on WhatsApp for updates if you're getting bored of waiting.</p> 
+<p>You can just leave this page open and it'll open the site as soon as service is restored. Or it'll crash horribly when service is restored. One or the other. Wait and see, I guess?</p>
+<h3>Last check to see if the site is up again: <span id="timestamp">No Check Done</span></h3>
+
+</div>
+<script>
+
+document.getElementById("timestamp").innerHTML = formatAMPM();
+
+function formatAMPM() {
+var d = new Date(),
+    minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
+    hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
+    ampm = d.getHours() >= 12 ? 'pm' : 'am',
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+return days[d.getDay()]+' '+months[d.getMonth()]+' '+d.getDate()+' '+d.getFullYear()+' '+hours+':'+minutes+ampm;
+}
+
+setTimeout(function(){
+   window.location.reload(1);
+}, 60000);
+
+</script>
+
+
+</body>
+</html>
