@@ -529,6 +529,7 @@
       <DependentUpon>variables.css</DependentUpon>
     </Content>
     <Content Include="Content\Documents\character_sheet.docx" />
+    <Content Include="_App_offline.htm" />
     <None Include="compilerconfig.json" />
     <Content Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

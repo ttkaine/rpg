@@ -291,7 +291,7 @@ namespace Warhammer.Core.Concrete
 
         public IQueryable<PageImage> PageImages()
         {
-            return _entities.PageImages.Where(e => VisibleCampagins.Contains(e.CampaignId));
+            return _entities.PageImages.Where(e => VisibleCampagins.Contains(e.CampaignId) || e.Public);
         }
 
         #endregion
