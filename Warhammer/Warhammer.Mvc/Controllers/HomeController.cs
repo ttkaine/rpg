@@ -471,6 +471,29 @@ namespace Warhammer.Mvc.Controllers
             return File(defaultImagePath, "image/jpeg");
         }
 
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        [AllowAnonymous]
+        public ActionResult PublicImage(int id)
+        {
+            PageImage iamge = _publicData.GetPageImage(id);
+            var defaultDir = Server.MapPath("/Content/Images");
+
+            if (iamge != null)
+            {
+                if (iamge.Data != null && iamge.Data.Length > 100)
+                {
+                    return File(iamge.Data, "image/jpeg");
+                }
+            }
+
+            var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
+
+            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+
+            return File(defaultImagePath, "image/jpeg");
+        }
+
         public ActionResult Bestiary()
         {
             List<Creature> creatures = DataProvider.Creatures().OrderBy(l => l.Breadcrumb).ToList();

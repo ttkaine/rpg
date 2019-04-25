@@ -25,5 +25,10 @@ namespace Warhammer.Core.Concrete
             return  _repository.Players()
                     .Any(p => p.UserName == username && p.PlayerCampaigns.Any(c => c.CampaginId == campaginId));
         }
+
+        public PageImage GetPageImage(int id)
+        {
+            return _repository.PageImages().Where(p => p.Public).FirstOrDefault(p => p.Id == id);
+        }
     }
 }
