@@ -21,7 +21,7 @@ namespace Warhammer.Mvc.JsonObjects
 		public string PlayerTurnMessage { get; set; }
 		public bool IsCurrentPlayerTurn { get; set; }
 
-        public string NotifyImage { get; set; }
+        public string NotifyImage => "/home/icon/310";
 
         public JsonResponseWithPostCollection(int campaignId)
 		{
@@ -30,7 +30,6 @@ namespace Warhammer.Mvc.JsonObjects
 			DeletedPosts = new List<int>();
 			ErrorMessage = string.Empty;
 			LastUpdate = DateTime.Now.ToString("dd MMM yyyy HH:mm:ss");
-            NotifyImage = $"/content/images/roleplayforum/notify-icon{campaignId}.jpg";
 		}
 	}
 }
