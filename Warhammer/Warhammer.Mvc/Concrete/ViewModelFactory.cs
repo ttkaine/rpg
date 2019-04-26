@@ -318,6 +318,15 @@ namespace Warhammer.Mvc.Concrete
         private List<MenuItemViewModel> MakeGmSubMenu()
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
+            if (_data.CurrentPlayerIsGm || _data.CurrentUserIsAdmin)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Update Site Icon",
+                    Url = _urlHelper.Action("UpdateSiteIcon", "Gm"),
+                });
+            }
+
             if (_data.CurrentPlayerIsGm)
             {
                 if (_data.SiteHasFeature(Feature.AwardNominations))
