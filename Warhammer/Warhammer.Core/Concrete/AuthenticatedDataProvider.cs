@@ -22,6 +22,8 @@ namespace Warhammer.Core.Concrete
         private readonly IModelFactory _factory;
         private readonly IEmailHandler _email;
         private readonly ISiteFeatureProvider _feature;
+        private readonly ICharacterAttributeManager _characterAttributeManager;
+
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
         public int CurrentCampaignId => _repository.CurrentCampaignId;
@@ -60,13 +62,14 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICharacterAttributeManager characterAttributeManager)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
             _factory = factory;
             _email = email;
             _feature = feature;
+            _characterAttributeManager = characterAttributeManager;
 
             if (_authenticatedUser.UserIsAuthenticated && !_authenticatedUser.IsAdmin)
             {
@@ -1066,6 +1069,9 @@ namespace Warhammer.Core.Concrete
         {
             Person person = GetPerson(personId);
             person.XPAwarded = person.XPAwarded + xpValue;
+
+            CharacterAttributeModel model = _characterAttributeManager.GetCharacterAttributes(personId);
+            person.XpSpendAvailable = model.CanBuyAny;
 
             if (SiteHasFeature(Feature.XpCatchup))
             {
