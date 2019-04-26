@@ -1,0 +1,108 @@
+﻿@model List<int>
+@{
+    ViewBag.Title = "Update Site Icon";
+}
+
+<div class="content-wrapper">
+    @using (Html.BeginForm("UpdateSiteIcon", "Gm", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="banner-content">
+            <div class="header-block">
+                <h1 id="fullName" class="">Change Site Icon</h1>
+            </div>
+
+        </div>
+        <div class="main-content">
+            <div class="content-block">
+
+                @if (Model.Any())
+                {
+                    <h2>Current Icons</h2>
+                    foreach (var i in Model)
+                    {
+                        <img src="@Url.Action("Icon", "Home", new {id = i})" />
+                    }
+                    
+                }
+
+                <input type="file" id="iconData" name="iconData" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+                <a href="#" id="fileSelect"><h2>Select New Image</h2></a>
+
+
+                <div id="preview">
+                    <h3>Choose your square crop</h3>
+                </div>
+                <input type="hidden" id="x1" name="x1" />
+                <input type="hidden" id="h" name="h" />
+                <input type="hidden" id="y1" name="y1" />
+                <input type="hidden" id="w" name="w" />
+                <input type="submit" class="btn btn-success" />
+               
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/scripts/jquery.Jcrop.min.js")"></script>
+    <script>
+        var jcrop_api;
+        var fileSelect = document.getElementById("fileSelect"),
+            fileElem = document.getElementById("iconData");
+        fileSelect.addEventListener("click", function(e) {
+            if (fileElem) {
+                fileElem.click();
+            }
+            e.preventDefault(); // prevent navigation to "#"
+        }, false);
+
+        function handleFiles(files) {
+
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = /^image\//;
+                if (!imageType.test(file.type)) {
+
+                    continue;
+                }
+
+                var img = document.createElement("img");
+                img.classList.add("obj");
+                img.file = file;
+                img.id = "PreviewImage";
+
+                $('#preview').append(img); // Assuming that "preview" is the div output where the content will be displayed.
+                var reader = new FileReader();
+                reader.onload = (function(aImg) {
+                    return function(e) {
+                        aImg.src = e.target.result;
+                        $(aImg).Jcrop({
+                            boxWidth: 500,
+                            boxHeight: 400,
+                            aspectRatio: 1,
+                            onChange: showCoords,
+                            onSelect: showCoords
+                            },
+
+                        function() {
+
+                            jcrop_api = this;
+                            jcrop_api.animateTo([50, 0, 400, 400]);
+                        });
+                };
+            })
+        (img);
+        reader.readAsDataURL(file);
+        }
+        }
+
+        function showCoords(c) {
+            $('#x1').val(c.x);
+            $('#y1').val(c.y);
+            $('#h').val(c.h);
+            $('#w').val(c.w);
+        };
+    </script>
+}

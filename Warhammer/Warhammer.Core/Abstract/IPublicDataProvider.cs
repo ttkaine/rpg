@@ -1,4 +1,5 @@
-﻿using Warhammer.Core.Entities;
+﻿using System.Collections.Generic;
+using Warhammer.Core.Entities;
 
 namespace Warhammer.Core.Abstract
 {
@@ -7,5 +8,7 @@ namespace Warhammer.Core.Abstract
         string GetOverrideCssContent();
         bool UserHasAccessToDomain(string username, string domain);
         PageImage GetPageImage(int id);
+        SiteIcon GetSiteIcon(int size);
+        List<int> GetSiteIconSizes();
     }
 }

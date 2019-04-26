@@ -494,6 +494,29 @@ namespace Warhammer.Mvc.Controllers
             return File(defaultImagePath, "image/jpeg");
         }
 
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        [AllowAnonymous]
+        public ActionResult IconMetaData()
+        {
+            List<int> icons = _publicData.GetSiteIconSizes();
+            return PartialView(icons);
+        }
+
+
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        [AllowAnonymous]
+        public ActionResult Icon(int id)
+        {
+            SiteIcon icon = _publicData.GetSiteIcon(id);
+
+            if (icon?.Data != null && icon.Data.Length > 100)
+            {
+                return File(icon.Data, "image/png");
+            }
+
+            return null;
+        }
+
         public ActionResult Bestiary()
         {
             List<Creature> creatures = DataProvider.Creatures().OrderBy(l => l.Breadcrumb).ToList();

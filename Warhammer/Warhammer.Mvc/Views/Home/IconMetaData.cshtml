@@ -1,0 +1,16 @@
+﻿@model List<int>
+
+@foreach (int i in Model)
+{
+    <link rel="apple-touch-icon" sizes="@(i)x@(i)" href="@Url.Action("Icon", "Home", new { id = i })" />
+}
+
+@foreach (int i in Model)
+{
+    <meta name="msapplication-square@(i)x@(i)logo" content="@Url.Action("Icon", "Home", new { id = i })" />
+}
+
+@if (Model.Any(s => s == 144))
+{
+    <meta name="msapplication-TileImage" content="/img/icons/mstile-144x144.png" />
+}

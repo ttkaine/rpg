@@ -225,5 +225,6 @@ namespace Warhammer.Core.Abstract
         void TogglePublicImage(int id);
         List<PageLinkModel> RecentSessionsToLink(int id);
         List<PageToggleModel> GetAllPeopleForSession(int id);
+        void SaveIcon(int size, byte[] imageData);
     }
 }

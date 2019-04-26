@@ -69,6 +69,26 @@ namespace Warhammer.Core.Concrete
             _entities.SaveChanges();
         }
 
+        public IQueryable<SiteIcon> SiteIcons()
+        {
+            return _entities.SiteIcons.Where(s => s.CampaignId == CurrentCampaignId);
+        }
+
+        public int Save(SiteIcon icon)
+        {
+            if (icon.Id == 0)
+            {
+                _entities.SiteIcons.Add(icon);
+            }
+            else
+            {
+                _entities.Entry(icon).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return icon.Id;
+        }
+
         public IQueryable<ChangeLog> ChangeLogs()
         {
             return _entities.ChangeLogs;

@@ -16,6 +16,7 @@ namespace Warhammer.Mvc.Controllers
         private readonly IImageProcessor _imageProcessor;
         private readonly IAuthenticatedUserProvider _user;
         private readonly IAuthenticatedDataProvider _data;
+        private readonly IPublicDataProvider _publicData;
 
         public ActionResult OutstandingXp()
         {
@@ -60,11 +61,12 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, IAuthenticatedDataProvider data1) : base(data)
+        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, IAuthenticatedDataProvider data1, IPublicDataProvider publicData) : base(data)
         {
             _imageProcessor = imageProcessor;
             _user = user;
             _data = data1;
+            _publicData = publicData;
         }
 
         public ActionResult EditTrophy(int? id)
@@ -209,6 +211,41 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("OutstandingAwardNominations");
         }
+
+        [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult UpdateSiteIcon()
+        {
+            List<int> icons = _publicData.GetSiteIconSizes();
+            return View(icons);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult UpdateSiteIcon(HttpPostedFileBase iconData, double? y1, double? x1, double? h, double? w)
+        {
+            if (ModelState.IsValid)
+            {
+                List<int> sizes = new List<int>{ 310, 180, 152, 150, 144, 120, 114, 76, 72, 70, 60, 57 };
+                Rectangle cropArea = GetCropArea(y1, x1, h, w);
+                if (iconData != null)
+                {
+                    Image theImage = Image.FromStream(iconData.InputStream, true, true);
+
+                    Image croppedImage = _imageProcessor.Crop(theImage, cropArea);
+
+                    foreach (int size in sizes)
+                    {
+                        var icon = _imageProcessor.ResizeImage(croppedImage, new Size { Height = size, Width = size });
+                        byte[] imageData = _imageProcessor.GetPngFromImage(icon);
+                        DataProvider.SaveIcon(size, imageData);
+                    }
+                }
+            }
+
+            return RedirectToAction("index", "Home");
+        }
+
 
         public ActionResult GmToolsForTrophy(int id)
         {

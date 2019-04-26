@@ -569,6 +569,15 @@
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="SiteIcon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Trophy">
           <Key>
             <PropertyRef Name="Id" />
@@ -1421,6 +1430,7 @@
           <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SimpleHitPoints" EntityType="Self.SimpleHitPoints" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiteIcon" EntityType="Self.SiteIcon" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSetting" EntityType="Self.UserSetting" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Arc_CurrentDate" Association="Self.FK_Arc_CurrentDate">
@@ -1941,6 +1951,7 @@
             <End Role="Person" EntitySet="Pages" />
             <End Role="ScoreBreakdown" EntitySet="ScoreBreakdowns" />
           </AssociationSet>
+          <EntitySet Name="SiteIcons" EntityType="WarhammerModel.SiteIcon" />
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -3258,6 +3269,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SiteIcon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3878,6 +3898,16 @@
                 <ScalarProperty Name="ScoreTypeId" ColumnName="ScoreTypeId" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteIcons">
+            <EntityTypeMapping TypeName="WarhammerModel.SiteIcon">
+              <MappingFragment StoreEntitySet="SiteIcon">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

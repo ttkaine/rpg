@@ -30,5 +30,15 @@ namespace Warhammer.Core.Concrete
         {
             return _repository.PageImages().Where(p => p.Public).FirstOrDefault(p => p.Id == id);
         }
+
+        public SiteIcon GetSiteIcon(int size)
+        {
+            return _repository.SiteIcons().FirstOrDefault(s => s.Size == size);
+        }
+
+        public List<int> GetSiteIconSizes()
+        {
+            return _repository.SiteIcons().Select(s => s.Size).ToList();
+        }
     }
 }

@@ -86,6 +86,8 @@ namespace Warhammer.Core.Abstract
         IQueryable<Arc> Arcs();
         IQueryable<ScoreBreakdown> ScoreBreakDowns();
         void Delete(ScoreBreakdown scoreBreakdown);
+        int Save(SiteIcon icon);
+        IQueryable<SiteIcon> SiteIcons();
     }
 }
 

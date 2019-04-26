@@ -320,6 +320,7 @@
     <Content Include="Content\DbUpdateScripts\18100601.sql" />
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
+    <Content Include="Content\DbUpdateScripts\19042601.sql" />
     <Content Include="Content\DbUpdateScripts\18121801.sql" />
     <Content Include="Content\DbUpdateScripts\18102301.sql" />
     <Content Include="Content\DbUpdateScripts\18120901.sql" />
@@ -826,6 +827,8 @@
     <Content Include="Views\PageControls\GmReadOnlyPageControls.cshtml" />
     <Content Include="Views\Person\TokenPanel.cshtml" />
     <Content Include="Views\Page\MangePeople.cshtml" />
+    <Content Include="Views\Home\IconMetaData.cshtml" />
+    <Content Include="Views\Gm\UpdateSiteIcon.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

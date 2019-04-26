@@ -64,18 +64,30 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        private string SmtpAccount
+        {
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.SendingSmtpAccount);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["SmtpAccount"];
+                }
+                return setting;
+            }
+        }
+
         public EmailHandler(IAuthenticatedUserProvider user, IAdminSettingsProvider settings)
         {
             _user = user;
             _settings = settings;
         }
 
-
         public void NotifyPlayerTurn(Session session, Player player)
         {
             string subject = string.Format("{0}! Ahoy! It's your turn!", player.DisplayName);
             string message = string.Format("It's totally your turn in the text session '{0}' so go have a look!", session.FullName);
-            NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
+            NetworkCredential loginInfo = new NetworkCredential(SmtpAccount, Password);
 
             SmtpClient client = new SmtpClient(SmtpServer)
             {

@@ -13,6 +13,7 @@
         SendingEmailName = 102,
         SendingEmailPassword = 103,
         SendingSmtpServer = 104,
+        SendingSmtpAccount = 105,
     }
 
     public partial class AdminSetting

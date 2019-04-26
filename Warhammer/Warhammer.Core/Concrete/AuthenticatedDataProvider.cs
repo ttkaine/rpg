@@ -3371,6 +3371,21 @@ namespace Warhammer.Core.Concrete
             return people.OrderBy(p => p.FullName).ToList();
         }
 
+        public void SaveIcon(int size, byte[] imageData)
+        {
+            SiteIcon existing = _repository.SiteIcons().FirstOrDefault(s => s.Size == size);
+            if (existing != null)
+            {
+                existing.Data = imageData;
+                _repository.Save(existing);
+            }
+            else
+            {
+                SiteIcon icon = new SiteIcon { CampaignId = CurrentCampaignId, Size = size, Data = imageData };
+                _repository.Save(icon);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
