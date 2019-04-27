@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using Warhammer.Core.Abstract;
@@ -89,13 +90,11 @@ namespace Warhammer.Core.Concrete
             string message = string.Format("It's totally your turn in the text session '{0}' so go have a look!", session.FullName);
             NetworkCredential loginInfo = new NetworkCredential(SmtpAccount, Password);
 
-            SmtpClient client = new SmtpClient(SmtpServer)
+
+            SmtpClient client = new SmtpClient
             {
-                Port = 25,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = false,
-                Credentials = loginInfo
+                Credentials = new System.Net.NetworkCredential(SmtpAccount, Password),
+                Host = SmtpServer
             };
 
             MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
@@ -108,7 +107,22 @@ namespace Warhammer.Core.Concrete
             };
 
 #if !DEBUG
-            client.Send(mail);
+            try
+            {
+                client.Send(mail);
+            }
+            catch (SmtpException ex)
+            {
+                string recipent = "Unknown Email";
+                MailAddress theToAddress = mail.To.FirstOrDefault();
+
+                if (toAddress != null)
+                {
+                    recipent = $"{toAddress.DisplayName} at {toAddress.Address}";
+                }
+
+                throw new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
+            }
 #endif
         }
 
