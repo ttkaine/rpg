@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -88,14 +90,6 @@ namespace Warhammer.Core.Concrete
         {
             string subject = string.Format("{0}! Ahoy! It's your turn!", player.DisplayName);
             string message = string.Format("It's totally your turn in the text session '{0}' so go have a look!", session.FullName);
-            NetworkCredential loginInfo = new NetworkCredential(SmtpAccount, Password);
-
-
-            SmtpClient client = new SmtpClient
-            {
-                Credentials = new System.Net.NetworkCredential(SmtpAccount, Password),
-                Host = SmtpServer
-            };
 
             MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
             MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
@@ -106,7 +100,19 @@ namespace Warhammer.Core.Concrete
                 IsBodyHtml = true
             };
 
+            SendMail(mail, toAddress);
+        }
+
+        private void SendMail(MailMessage mail, MailAddress toAddress)
+        {
 #if !DEBUG
+
+            SmtpClient client = new SmtpClient
+            {
+                Credentials = new System.Net.NetworkCredential(SmtpAccount, Password),
+                Host = SmtpServer
+            };
+
             try
             {
                 client.Send(mail);
@@ -121,7 +127,14 @@ namespace Warhammer.Core.Concrete
                     recipent = $"{toAddress.DisplayName} at {toAddress.Address}";
                 }
 
-                throw new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
+                var ex2 = new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
+                LogException(ex2, "emailer", 0, DateTime.Now);
+                throw ex2;
+            }
+            catch (Exception exception)
+            {
+                LogException(exception, "emailer", 0, DateTime.Now);
+                throw;
             }
 #endif
         }
@@ -132,16 +145,6 @@ namespace Warhammer.Core.Concrete
             {
                 string subject = string.Format("{0}! Ahoy! {1} created a page called '{2}'", player.DisplayName, page.CreatedBy.DisplayName, page.FullName);
                 string message = "So, there's this new page on the site now. So, totally check it out, right?";
-                NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
-
-                SmtpClient client = new SmtpClient(SmtpServer)
-                {
-                    Port = 25,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    EnableSsl = false,
-                    Credentials = loginInfo
-                };
 
                 MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
                 MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
@@ -152,9 +155,7 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-#if !DEBUG
-            client.Send(mail);
-#endif
+                SendMail(mail, toAddress);
 
             }
         }
@@ -165,16 +166,6 @@ namespace Warhammer.Core.Concrete
             {
                 string subject = string.Format("{0}! Ahoy! {1} edited the page called '{2}'", player.DisplayName, page.CreatedBy.DisplayName, page.FullName);
                 string message = "So, there's this page that's all updated and interesting on the site now. So, totally check it out, okay?";
-                NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
-
-                SmtpClient client = new SmtpClient(SmtpServer)
-                {
-                    Port = 25,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    EnableSsl = false,
-                    Credentials = loginInfo
-                };
 
                 MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
                 MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
@@ -185,9 +176,7 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-#if !DEBUG
-                client.Send(mail);
-#endif
+                SendMail(mail, toAddress);
             }
         }
 
@@ -197,16 +186,6 @@ namespace Warhammer.Core.Concrete
             {
                 string subject = string.Format("{0}! Ahoy! {1} commented on the page called '{2}'!", player.DisplayName, senderName, page.FullName);
                 string message = string.Format("<b>{0}:</b>{1}", senderName, description);
-                NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
-
-                SmtpClient client = new SmtpClient(SmtpServer)
-                {
-                    Port = 25,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    EnableSsl = false,
-                    Credentials = loginInfo
-                };
 
                 MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
                 MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
@@ -217,9 +196,7 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-#if !DEBUG
-                client.Send(mail);
-#endif
+                SendMail(mail, toAddress);
             }
         }
 
@@ -227,16 +204,8 @@ namespace Warhammer.Core.Concrete
         {
             string subject = string.Format("Hey, {0}! Did you forgot your password?", player.DisplayName);
             string message = string.Format("No worries! You can just set yoursself a new one by going to this link: <a href='{0}'>'{0}'</a>", callbackUrl);
-            NetworkCredential loginInfo = new NetworkCredential(SendingMailAddress, Password);
 
-            SmtpClient client = new SmtpClient(SmtpServer)
-            {
-                Port = 25,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = false,
-                Credentials = loginInfo
-            };
+
 
             MailAddress toAddress = new MailAddress(player.UserName, player.DisplayName);
             MailAddress fromAddress = new MailAddress(SendingMailAddress, SendingMailAddressName);
@@ -247,10 +216,16 @@ namespace Warhammer.Core.Concrete
                 IsBodyHtml = true
             };
 
-#if !DEBUG
-            client.Send(mail);
+            SendMail(mail, toAddress);
+        }
 
-#endif
+        private void LogException(Exception exception, string identifier, int sequence, DateTime timestamp)
+        {
+            var logger = DependencyResolver.Current.GetService<IExceptionLogHandler>();
+            if (logger != null) logger.LogException(exception, identifier, sequence, timestamp);
         }
     }
+
+
+
 }
