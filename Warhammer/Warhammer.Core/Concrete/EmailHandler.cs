@@ -119,6 +119,17 @@ namespace Warhammer.Core.Concrete
             }
             catch (SmtpException ex)
             {
+                int i = 0;
+                LogException(ex, "emailer", i, DateTime.Now);
+
+                Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    i++;
+                    LogException(inner, "emailer", i, DateTime.Now);
+                    inner = inner.InnerException;
+                }
+
                 string recipent = "Unknown Email";
                 MailAddress theToAddress = mail.To.FirstOrDefault();
 
@@ -128,7 +139,7 @@ namespace Warhammer.Core.Concrete
                 }
 
                 var ex2 = new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
-                LogException(ex2, "emailer", 0, DateTime.Now);
+                LogException(ex2, "emailer", i, DateTime.Now);
                 throw ex2;
             }
             catch (Exception exception)

@@ -23,10 +23,7 @@ namespace Warhammer.Core.Concrete
                 Sequence = sequence,
                 StackTrace = exception.StackTrace,
                 Message = exception.Message,
-                Severity = (int)LogSeverity.Exception,
-
-                
-                
+                Severity = (int)LogSeverity.Exception          
             };
 
 
