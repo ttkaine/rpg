@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using FluentScheduler;
+using Hangfire;
 using Warhammer.Core.Abstract;
 using Warhammer.Mvc.Concrete;
 using Warhammer.Mvc.Controllers;
@@ -17,6 +18,8 @@ namespace Warhammer.Mvc
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -27,8 +30,16 @@ namespace Warhammer.Mvc
 
             IExceptionLogHandler log = DependencyResolver.Current.GetService<IExceptionLogHandler>();
 
+            // HANGFIRE
+            HangfireBootstrapper.Instance.Start();
+
             JobManager.Initialize(new FluentSchedulerRegistry());
             JobManager.JobException += (info) => log.LogException(info.Exception, "JobManager", 99, DateTime.Now);
+        }
+
+        protected void Application_End(object sender, EventArgs e)
+        {
+            HangfireBootstrapper.Instance.Stop();
         }
 
         private void DatabaseUpdate()

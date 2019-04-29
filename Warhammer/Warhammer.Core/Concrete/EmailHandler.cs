@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
+using Hangfire;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 
@@ -100,12 +101,13 @@ namespace Warhammer.Core.Concrete
                 IsBodyHtml = true
             };
 
-            SendMail(mail, toAddress);
+            var jobId = BackgroundJob.Enqueue(
+                () => SendMail(mail, toAddress));    
         }
 
-        private void SendMail(MailMessage mail, MailAddress toAddress)
+        public void SendMail(MailMessage mail, MailAddress toAddress)
         {
-#if !DEBUG
+
 
             SmtpClient client = new SmtpClient
             {
@@ -115,7 +117,9 @@ namespace Warhammer.Core.Concrete
 
             try
             {
+#if !DEBUG
                 client.Send(mail);
+#endif
             }
             catch (SmtpException ex)
             {
@@ -147,8 +151,8 @@ namespace Warhammer.Core.Concrete
                 LogException(exception, "emailer", 0, DateTime.Now);
                 throw;
             }
-#endif
-        }
+
+            }
 
         public void NotifyNewPage(Page page, List<Player> players)
         {
@@ -166,7 +170,8 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-                SendMail(mail, toAddress);
+                var jobId = BackgroundJob.Enqueue(
+                    () => SendMail(mail, toAddress));
 
             }
         }
@@ -187,7 +192,8 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-                SendMail(mail, toAddress);
+                var jobId = BackgroundJob.Enqueue(
+                    () => SendMail(mail, toAddress));
             }
         }
 
@@ -207,7 +213,8 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-                SendMail(mail, toAddress);
+                var jobId = BackgroundJob.Enqueue(
+                    () => SendMail(mail, toAddress));
             }
         }
 
@@ -227,7 +234,8 @@ namespace Warhammer.Core.Concrete
                 IsBodyHtml = true
             };
 
-            SendMail(mail, toAddress);
+            var jobId = BackgroundJob.Enqueue(
+                () => SendMail(mail, toAddress));
         }
 
         private void LogException(Exception exception, string identifier, int sequence, DateTime timestamp)
