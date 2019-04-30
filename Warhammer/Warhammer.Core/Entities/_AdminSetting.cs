@@ -14,6 +14,10 @@
         SendingEmailPassword = 103,
         SendingSmtpServer = 104,
         SendingSmtpAccount = 105,
+        SendGridKey = 106,
+
+        //Configuration Options 200
+        UseHangfire = 201
     }
 
     public partial class AdminSetting

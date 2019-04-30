@@ -4,9 +4,13 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Hangfire;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Warhammer.Core.Concrete
 {
@@ -80,6 +84,32 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        private string SendGridKey
+        {
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.SendGridKey);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["SendGridKey"];
+                }
+                return setting;
+            }
+        }
+        private bool UseHangfire
+            
+        {
+            get
+            {
+                string setting = _settings.GetAdminSetting(AdminSettingName.UseHangfire);
+                if (string.IsNullOrWhiteSpace(setting))
+                {
+                    setting = ConfigurationManager.AppSettings["UseHangfire"];
+                }
+                return !string.IsNullOrWhiteSpace(setting) && setting.ToLower() == "true";
+            }
+        }
+
         public EmailHandler(IAuthenticatedUserProvider user, IAdminSettingsProvider settings)
         {
             _user = user;
@@ -100,54 +130,101 @@ namespace Warhammer.Core.Concrete
                 IsBodyHtml = true
             };
 
-            SendMail(mail, toAddress);
+            Send(toAddress, mail);
         }
 
-        private void SendMail(MailMessage mail, MailAddress toAddress)
+        private void Send(MailAddress toAddress, MailMessage mail)
         {
+            if (UseHangfire)
+            {
+                var jobId = BackgroundJob.Enqueue(
+                    () => SendMail(mail, toAddress));
+            }
+            else
+            {
+                SendMail(mail, toAddress);
+            }
+        }
+
+        public void SendMail(MailMessage mail, MailAddress toAddress)
+        {
+            if (!string.IsNullOrWhiteSpace(SendGridKey))
+            {
+                string plainText = Regex.Replace(mail.Body, "<.*?>", string.Empty);
+                
+                var apiKey = SendGridKey;
+                var client = new SendGridClient(apiKey);
+                var from = new EmailAddress(mail.From.Address, mail.From.DisplayName);
+                var subject = mail.Subject;
+                var to = new EmailAddress(toAddress.Address, toAddress.DisplayName);
+                var plainTextContent = plainText;
+                var htmlContent = mail.Body;
+                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                try
+                {
 #if !DEBUG
-
-            SmtpClient client = new SmtpClient
-            {
-                Credentials = new System.Net.NetworkCredential(SmtpAccount, Password),
-                Host = SmtpServer
-            };
-
-            try
-            {
-                client.Send(mail);
-            }
-            catch (SmtpException ex)
-            {
-                int i = 0;
-                LogException(ex, "emailer", i, DateTime.Now);
-
-                Exception inner = ex.InnerException;
-                while (inner != null)
-                {
-                    i++;
-                    LogException(inner, "emailer", i, DateTime.Now);
-                    inner = inner.InnerException;
-                }
-
-                string recipent = "Unknown Email";
-                MailAddress theToAddress = mail.To.FirstOrDefault();
-
-                if (toAddress != null)
-                {
-                    recipent = $"{toAddress.DisplayName} at {toAddress.Address}";
-                }
-
-                var ex2 = new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
-                LogException(ex2, "emailer", i, DateTime.Now);
-                throw ex2;
-            }
-            catch (Exception exception)
-            {
-                LogException(exception, "emailer", 0, DateTime.Now);
-                throw;
-            }
+                    var response = client.SendEmailAsync(msg);
 #endif
+                }
+                catch (Exception exception)
+                {
+                    int i = 0;
+                    LogException(exception, "Send Grid Emailer", i, DateTime.Now);
+                    Exception inner = exception.InnerException;
+                    while (inner != null)
+                    {
+                        i++;
+                        LogException(inner, "Send Grid Emailer", i, DateTime.Now);
+                        inner = inner.InnerException;
+                    }
+                    throw;
+                }
+            }
+            else
+            {
+                SmtpClient client = new SmtpClient
+                {
+                    Credentials = new System.Net.NetworkCredential(SmtpAccount, Password),
+                    Host = SmtpServer
+                };
+
+                try
+                {
+#if !DEBUG
+                    client.Send(mail);
+#endif
+                }
+                catch (SmtpException ex)
+                {
+                    int i = 0;
+                    LogException(ex, "emailer", i, DateTime.Now);
+
+                    Exception inner = ex.InnerException;
+                    while (inner != null)
+                    {
+                        i++;
+                        LogException(inner, "emailer", i, DateTime.Now);
+                        inner = inner.InnerException;
+                    }
+
+                    string recipent = "Unknown Email";
+                    MailAddress theToAddress = mail.To.FirstOrDefault();
+
+                    if (toAddress != null)
+                    {
+                        recipent = $"{toAddress.DisplayName} at {toAddress.Address}";
+                    }
+
+                    var ex2 = new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
+                    LogException(ex2, "emailer", i, DateTime.Now);
+                    throw ex2;
+                }
+                catch (Exception exception)
+                {
+                    LogException(exception, "emailer", 0, DateTime.Now);
+                    throw;
+                }
+            }
         }
 
         public void NotifyNewPage(Page page, List<Player> players)
@@ -166,8 +243,7 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-                SendMail(mail, toAddress);
-
+                Send(toAddress, mail);
             }
         }
 
@@ -187,7 +263,7 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-                SendMail(mail, toAddress);
+                Send(toAddress, mail);
             }
         }
 
@@ -207,7 +283,7 @@ namespace Warhammer.Core.Concrete
                     IsBodyHtml = true
                 };
 
-                SendMail(mail, toAddress);
+                Send(toAddress, mail);
             }
         }
 
@@ -227,7 +303,7 @@ namespace Warhammer.Core.Concrete
                 IsBodyHtml = true
             };
 
-            SendMail(mail, toAddress);
+            Send(toAddress, mail);
         }
 
         private void LogException(Exception exception, string identifier, int sequence, DateTime timestamp)
