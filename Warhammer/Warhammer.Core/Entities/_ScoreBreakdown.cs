@@ -21,6 +21,8 @@ namespace Warhammer.Core.Entities
         Descriptors = 12,
         Level = 13,
         Places = 14,
+        WearHarm = 15,
+        Magic = 16,
     }
 
 

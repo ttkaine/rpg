@@ -37,7 +37,7 @@ namespace Warhammer.Core.Concrete
             {
                 int totalRoles = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Role).Sum(p => p.CurrentValue);
                 int totalSkills = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Skill).Sum(p => p.CurrentValue);
-                int totalStats = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Stat).Sum(p => p.CurrentValue);
+                int totalStats = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Stat || p.AttributeType == AttributeType.Magic || p.AttributeType == AttributeType.MagicItem).Sum(p => p.CurrentValue);
                 int totalDescriptors = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Descriptor).Sum(p => p.CurrentValue);
                 int totalEdge = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Edge).Sum(p => p.CurrentValue);
                 int totalWear = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Wear).Sum(p => p.CurrentValue);
@@ -83,6 +83,7 @@ namespace Warhammer.Core.Concrete
                     WishingWell =  person.WishingWell,
                     PlayerId = player.Id,
                     FixedWearAndHarm = _featureProvider.SiteHasFeature(Feature.FixedHarmAndWear),
+                    IncludeMagic = _featureProvider.SiteHasFeature(Feature.CrowMagic),
                     CampaignDetail = campaignDetail,
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
                     ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack)
@@ -180,10 +181,10 @@ namespace Warhammer.Core.Concrete
                     {
                         PersonAttribute sourceAttribute =
                             person?.PersonAttributes.FirstOrDefault(
-                                a => a.Id == sourceAttributeId && a.AttributeType == AttributeType.Stat);
+                                a => a.Id == sourceAttributeId);
                         PersonAttribute targetAttribute =
                             person?.PersonAttributes.FirstOrDefault(
-                                a => a.Id == targetAttributeId && a.AttributeType == AttributeType.Stat);
+                                a => a.Id == targetAttributeId);
 
                         if (sourceAttribute != null && targetAttribute != null)
                         {
@@ -231,6 +232,7 @@ namespace Warhammer.Core.Concrete
             CharacterInitialStatsModel model = new CharacterInitialStatsModel();
             model.PersonId = personId;
 
+            model.IncludeMagic = _featureProvider.SiteHasFeature(Feature.CrowMagic);
 
             int? averageStatDefault = _repo.CampaignDetails().Select(c => c.AverageStat).FirstOrDefault();
 
@@ -280,7 +282,14 @@ namespace Warhammer.Core.Concrete
                     var averageStat = GetAverageStatValue();
 
                     int expectedTotal = averageStat * model.Stats.Count;
-                    if (!playerIsGm && expectedTotal != model.Stats.Sum(s => s.CurrentValue))
+
+                    List<MagicInitModel> MagicStats = model.Magic.Where(i => i.InitialValue > 0 && !string.IsNullOrWhiteSpace(i.Name)).ToList();
+                    List<MagicInitModel> MagicItems = model.MagicItems.Where(i => i.InitialValue > 0 && !string.IsNullOrWhiteSpace(i.Name)).ToList();
+
+                    int actualTotal = model.Stats.Sum(s => s.CurrentValue) + MagicStats.Sum(s => s.InitialValue) + MagicItems.Sum(s => s.InitialValue);
+
+
+                    if (!playerIsGm && expectedTotal != actualTotal)
                     {
                         return false;
                     }
@@ -303,6 +312,34 @@ namespace Warhammer.Core.Concrete
                             Description = statInitModel.StatName.ToString(),
                             CurrentValue = statInitModel.CurrentValue,
                             InitialValue = statInitModel.CurrentValue,
+                            IsPrivate = true
+                        };
+                        person.PersonAttributes.Add(addedStat);
+                    }
+
+                    foreach (MagicInitModel magic in MagicStats)
+                    {
+                        PersonAttribute addedStat = new PersonAttribute
+                        {
+                            AttributeType = AttributeType.Magic,
+                            Name = magic.Name.ToString(),
+                            Description = magic.Description,
+                            CurrentValue = magic.InitialValue,
+                            InitialValue = magic.InitialValue,
+                            IsPrivate = true
+                        };
+                        person.PersonAttributes.Add(addedStat);
+                    }
+
+                    foreach (MagicInitModel magic in MagicItems)
+                    {
+                        PersonAttribute addedStat = new PersonAttribute
+                        {
+                            AttributeType = AttributeType.MagicItem,
+                            Name = magic.Name.ToString(),
+                            Description = magic.Description,
+                            CurrentValue = magic.InitialValue,
+                            InitialValue = magic.InitialValue,
                             IsPrivate = true
                         };
                         person.PersonAttributes.Add(addedStat);

@@ -71,7 +71,8 @@ namespace Warhammer.Core.Entities
         CharacterTokens,
         EnforceShadowMode,
         ManageSessionPeople,
-        MasterTextSessions
+        MasterTextSessions,
+        CrowMagic
     }
 
     public partial class SiteFeature

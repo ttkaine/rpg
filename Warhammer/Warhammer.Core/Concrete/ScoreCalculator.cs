@@ -93,6 +93,22 @@ namespace Warhammer.Core.Concrete
                 });
             }
 
+            int? magicValue = _repo.PersonAttributes().Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Magic || a.PersonAttributeTypeEnum == (int)AttributeType.MagicItem).Sum(a => (int?)a.CurrentValue);
+
+            int magicPoints = magicValue.GetValueOrDefault(0) - 2;
+
+            if (magicPoints > 0)
+            {
+                scores.Add(new ScoreBreakdown
+                {
+                    ScoreType = ScoreType.Magic,
+                    DateTime = calcDate,
+                    PersonId = personId,
+                    PointsValue = magicPoints,
+                    CampaignId = campaignId
+                });
+            }
+
             int? descriptorValue = _repo.PersonAttributes()
                 .Where(a => a.PersonId == personId).Count(a => a.PersonAttributeTypeEnum == (int)AttributeType.Descriptor);
 
@@ -106,6 +122,23 @@ namespace Warhammer.Core.Concrete
                     DateTime = calcDate,
                     PersonId = personId,
                     PointsValue = descriptorPoints,
+                    CampaignId = campaignId
+                });
+            }
+
+            int? wearValue = _repo.PersonAttributes().Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Wear || a.PersonAttributeTypeEnum == (int)AttributeType.Harm).Sum(a => (int?)a.CurrentValue);
+    
+
+            decimal wearPoints = (wearValue.GetValueOrDefault(0) - 8) / 4m;
+
+            if (wearPoints > 0)
+            {
+                scores.Add(new ScoreBreakdown
+                {
+                    ScoreType = ScoreType.WearHarm,
+                    DateTime = calcDate,
+                    PersonId = personId,
+                    PointsValue = wearPoints,
                     CampaignId = campaignId
                 });
             }

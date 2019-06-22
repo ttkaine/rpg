@@ -12,6 +12,8 @@ namespace Warhammer.Core.Models
         public string PersonName { get; set; }
         public int PlayerId { get; set; }
         public bool FixedWearAndHarm { get; set; }
+        public bool IncludeMagic { get; set; }
+        
 
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int XpSpent => CharacterInfo.XpSpent;
@@ -27,7 +29,12 @@ namespace Warhammer.Core.Models
             get
             {
                 return new SelectList(PersonAttributes
-                    .Where(p => p.PersonAttribute.AttributeType == AttributeType.Skill || p.PersonAttribute.AttributeType == AttributeType.Role || p.PersonAttribute.AttributeType == AttributeType.Descriptor).Select(p => p), "Id", "Name");
+                    .Where(p => p.PersonAttribute.AttributeType == AttributeType.Skill 
+                    || p.PersonAttribute.AttributeType == AttributeType.Role 
+                    || p.PersonAttribute.AttributeType == AttributeType.Descriptor
+                    || p.PersonAttribute.AttributeType == AttributeType.Magic
+                    || p.PersonAttribute.AttributeType == AttributeType.MagicItem
+                    ).Select(p => p), "Id", "Name");
             }
         }
 
@@ -35,14 +42,14 @@ namespace Warhammer.Core.Models
         {
             get
             {
-                return new SelectList(PersonAttributes.Where(p => p.PersonAttribute.AttributeType == AttributeType.Stat && p.PersonAttribute.CurrentValue > CharacterInfo.AverageStatValue - 2), "Id", "Name");
+                return new SelectList(PersonAttributes.Where(p => p.PersonAttribute.IsStatType && p.PersonAttribute.CurrentValue > CharacterInfo.AverageStatValue - 2), "Id", "Name");
             }
         }
         public SelectList PossibleTargetAttributes
         {
             get
             {
-                return new SelectList(PersonAttributes.Where(p => p.PersonAttribute.AttributeType == AttributeType.Stat), "Id", "Name");
+                return new SelectList(PersonAttributes.Where(p => p.PersonAttribute.IsStatType), "Id", "Name");
             }
         }
 
@@ -51,6 +58,8 @@ namespace Warhammer.Core.Models
         public List<PersonAttributeAdvanceModel> PersonAttributes { get; set; }
 
         public List<PersonAttributeAdvanceModel> Stats => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Stat).OrderBy(a => a.PersonAttribute.Id).ToList();
+        public List<PersonAttributeAdvanceModel> Magic => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Magic).OrderBy(a => a.PersonAttribute.Id).ToList();
+        public List<PersonAttributeAdvanceModel> MagicItems => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.MagicItem).OrderBy(a => a.PersonAttribute.Id).ToList();
         public List<PersonAttributeAdvanceModel> Skills => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Skill).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Roles => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Role).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Descriptors => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Descriptor).OrderBy(a => a.PersonAttribute.Name).ToList();
@@ -64,6 +73,8 @@ namespace Warhammer.Core.Models
             {
                 case AttributeType.Stat:
                     return false;
+                case AttributeType.Magic:
+                case AttributeType.MagicItem:
                 case AttributeType.Skill:
                 case AttributeType.Role:
                 case AttributeType.Descriptor:
@@ -82,6 +93,16 @@ namespace Warhammer.Core.Models
             {
                 case AttributeType.Stat:
                     break;
+                case AttributeType.Magic:
+                case AttributeType.MagicItem:
+                    int totalValue = TotalStats;
+                    totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
+                    if (totalValue < 1)
+                    {
+                        totalValue = 1;
+                    }
+                    totalValue = totalValue * totalValue;
+                    return totalValue;
                 case AttributeType.Skill:
                     int skillCost = 1;
                     return skillCost + CharacterLevel;

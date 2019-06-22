@@ -1,0 +1,19 @@
+﻿@model Warhammer.Core.Models.MagicInitModel
+ 
+<tr>
+    <td class="personAttribute">Magic Name</td>
+    <td class="personAttribute">
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </td>
+</tr>
+<tr>
+    <td class="personAttribute">Initial Value</td>
+    <td class="personAttribute">
+        @Html.EditorFor(s => s.InitialValue)
+    </td>
+</tr>
+<tr>
+    <td colspan="2" class="personAttribute">
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+    </td>
+</tr>

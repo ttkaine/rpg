@@ -9,9 +9,11 @@ namespace Warhammer.Core.Models
         {
             Stats = new List<StatInitModel>();
         }
-
+        public bool IncludeMagic { get; set; }
         public int PersonId { get; set; }
         public List<StatInitModel> Stats { get; set; }
+        public List<MagicInitModel> Magic { get; set; } = new List<MagicInitModel> { new MagicInitModel { Name = "", Description = "" } };
+        public List<MagicInitModel> MagicItems { get; set; } = new List<MagicInitModel> { new MagicInitModel { IsItem = true, Name = "", Description = "" } };
         public int TotalStats { get; set; }
         public int AverageStat { get; set; }
         public string InitialRoleName { get; set; }
@@ -29,5 +31,13 @@ namespace Warhammer.Core.Models
         public int MinValue { get; set; }
         public int InitialValue { get; set; }
         public int CurrentValue { get; set; }
+    }
+
+    public class MagicInitModel
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int InitialValue { get; set; }
+        public bool IsItem { get; set; }
     }
 }

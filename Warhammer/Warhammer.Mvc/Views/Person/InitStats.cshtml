@@ -5,7 +5,7 @@
 
     @if (ViewBag.EditMode)
     {
-        using (Ajax.BeginForm("InitAttributes", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+        using (Ajax.BeginForm("InitAttributes", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
         {
             @Html.HiddenFor(m => m.PersonId)
             <h3>Initialize Character Attributes</h3>
@@ -20,12 +20,32 @@
                 </table>
 
             </div>
-
+            if (Model.IncludeMagic)
+            {
+            <div class="alert alert-info">
+                <h4>Magic</h4>
+                <p>Magic covers the supernatural and nonmundane aspects of a character</p>
+                <p>Magic is themed and all uses of the magic fit the chosen theme. This can take various forms for example lightning magic or snake magic.</p>
+                <p>Magic counts towards your starting stats, so the the total for all your stats (including Magic) must remain at @Model.TotalStats points.</p>
+                <table>
+                    @Html.EditorFor(m => m.Magic)
+                </table>
+            </div>
+                <div class="alert alert-info">
+                    <h4>Magic Items</h4>
+                    <p>Magic items are permement supernatural objects that the character has invested with part of themselves.</p>
+                    <p>Often these are Wands, but other magical items including weapons, armours, and enchanted jewellery are also options.</p>
+                    <p>Magic items count towards your starting stats, so the the total for all your stats (including Magic) must remain at @Model.TotalStats points.</p>
+                    <table>
+                        @Html.EditorFor(m => m.MagicItems)
+                    </table>
+                </div>
+            }
             <div class="alert alert-success">
                 <h4>Roles</h4>
                 <p>Pick your character's main role.This is usually your character's main career, but can be a hobby or previous career if that is more suitable.</p>
                 <p>For example, roles can be things like: Retired Soldier, Airline Pilot, Petty Burglar</p>
-                @Html.TextBoxFor(m => m.InitialRoleName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialRoleName, new { @class = "form-control" })
             </div>
 
             <div class="alert alert-success form-group">
@@ -33,20 +53,20 @@
                 <p>Pick three skills.</p>
                 <p>Skills are specific things the character has learned how to do. For best effect, choose skills that are not covered by your primary role as skills and roles do not stack.</p>
                 <p>Exmaple skills are things like: Pistol Shooting, Library Research, Hiding</p>
-                @Html.TextBoxFor(m => m.InitialFirstSkillName, new {@class = "form-control"})
-                @Html.TextBoxFor(m => m.InitialSecondSkillName, new {@class = "form-control"})
-                @Html.TextBoxFor(m => m.InitialThirdSkillName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialFirstSkillName, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.InitialSecondSkillName, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.InitialThirdSkillName, new { @class = "form-control" })
             </div>
 
             <div class="alert alert-warning">
                 <h4>Descriptors</h4>
                 <p>Pick three descriptors that highlight aspects of your character. Examples are things like "Strong", "Beautiful", "Sneaky"</p>
-                @Html.TextBoxFor(m => m.InitialFirstDescriptorName, new {@class = "form-control"})
-                @Html.TextBoxFor(m => m.InitialSecondDescriptorName, new {@class = "form-control"})
-                @Html.TextBoxFor(m => m.InitialThirdDescriptorName, new {@class = "form-control"})
+                @Html.TextBoxFor(m => m.InitialFirstDescriptorName, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.InitialSecondDescriptorName, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.InitialThirdDescriptorName, new { @class = "form-control" })
             </div>
 
-            <input type="submit" value="Set My Stats!" class="btn btn-block btn-success"/>
+            <input type="submit" value="Set My Stats!" class="btn btn-block btn-success" />
         }
     }
     else

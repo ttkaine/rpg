@@ -842,6 +842,7 @@
     <Content Include="Views\Page\MangePeople.cshtml" />
     <Content Include="Views\Home\IconMetaData.cshtml" />
     <Content Include="Views\Gm\UpdateSiteIcon.cshtml" />
+    <Content Include="Views\Person\EditorTemplates\MagicInitModel.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

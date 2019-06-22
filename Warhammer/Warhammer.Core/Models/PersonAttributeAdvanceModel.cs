@@ -26,6 +26,8 @@ namespace Warhammer.Core.Models
                 switch (PersonAttribute.AttributeType)
                 {
                     case AttributeType.Stat:
+                    case AttributeType.Magic:
+                    case AttributeType.MagicItem:
                         int totalValue = TotalStats;
                         totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
                         if (totalValue < 1)

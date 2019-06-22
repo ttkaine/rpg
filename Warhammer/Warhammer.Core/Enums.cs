@@ -54,7 +54,9 @@
         Descriptor = 3,
         Wear = 4,
         Harm = 5,
-        Edge = 6
+        Edge = 6,
+        Magic = 7,
+        MagicItem = 8,
     }
 
     public enum FixedWearAndHarmLevels
