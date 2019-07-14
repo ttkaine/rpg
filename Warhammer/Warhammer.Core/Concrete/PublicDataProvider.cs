@@ -40,5 +40,10 @@ namespace Warhammer.Core.Concrete
         {
             return _repository.SiteIcons().Select(s => s.Size).ToList();
         }
+
+        public IQueryable<Person> AllPeople()
+        {
+            return _repository.AllPeople();
+        }
     }
 }

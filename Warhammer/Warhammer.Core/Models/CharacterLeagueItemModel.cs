@@ -44,6 +44,8 @@ namespace Warhammer.Core.Models
             }
         }
 
-
+        public int Rank { get; set; }
+        public string Url { get; set; }
+        public int CampaignId { get; set; }
     }
 }

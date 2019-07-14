@@ -226,5 +226,6 @@ namespace Warhammer.Core.Abstract
         List<PageLinkModel> RecentSessionsToLink(int id);
         List<PageToggleModel> GetAllPeopleForSession(int id);
         void SaveIcon(int size, byte[] imageData);
+        CharacterLeagueModel GetFullLeague();
     }
 }

@@ -14,9 +14,17 @@ namespace Warhammer.Core.Concrete
             _imageRepository = imageRepository;
         }
 
-        public PageImage GetPageImageForPage(int id)
+        public PageImage GetPageImageForPage(int id, bool includeAll = false)
         {
-            return _imageRepository.PageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
+            if (includeAll)
+            {
+                return _imageRepository.AllPageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
+            }
+            else
+            {
+                return _imageRepository.PageImages().FirstOrDefault(p => p.IsPrimary && p.PageId == id);
+            }
+           
         }
 
         public string GetPageName(int id)

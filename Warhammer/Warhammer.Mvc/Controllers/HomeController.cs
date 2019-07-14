@@ -153,6 +153,19 @@ namespace Warhammer.Mvc.Controllers
             return View(model);
         }
 
+        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Client, NoStore = true)]
+        public ActionResult FullCharacterLeague()
+        {
+            if (DataProvider.SiteHasFeature(Feature.FullCharacterLeague))
+            {
+                CharacterLeagueModel model = DataProvider.GetFullLeague();
+
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult FavouritesGallery()
         {
             if (DataProvider.SiteHasFeature(Feature.FavouritesGallery))

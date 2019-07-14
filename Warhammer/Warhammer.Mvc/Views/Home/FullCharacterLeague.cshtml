@@ -1,0 +1,62 @@
+﻿@using System.Web.Mvc.Html
+@using Warhammer.Core.Entities
+@using Warhammer.Core.Models
+@model Warhammer.Core.Models.CharacterLeagueModel
+
+@{
+    ViewBag.Title = "Hall of Legends";
+}
+
+
+
+<div class="content-wrapper">
+
+    @Html.Hidden("personId", 1)
+    <div class="banner-content">
+        <div class="header-block banner-hallOfFame">
+            <h1 id="fullName">Hall of Legends</h1>
+        </div>
+    </div>
+
+    <div class="banner-content">
+        <div class="content-block session-block">
+            <table id="FullCharacterLeagueTable" class="table table-condensed">
+                <colgroup>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                    <col width="175">
+                    <col>
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Points</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>Awards</th>
+                    <th hidden="true">Meta</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var person in Model.Items)
+                {
+                    @Html.DisplayFor(m => person)
+                }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready( function () {
+        $('#FullCharacterLeagueTable').DataTable();
+    } );
+
+</script>

@@ -43,6 +43,22 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        [AllowAnonymous]
+        public ActionResult LeagueImage(int id)
+        {
+            PageImage image = _imageData.GetPageImageForPage(id, true);
+            if (image != null)
+            {
+                return File(image.Data, "image/jpeg");
+            }
+
+            var defaultDir = Server.MapPath("/Content/Images");
+
+            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
+            return File(defaultImagePath, "image/jpeg");
+        }
+
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult PageImage(int? id)
         {
             if (id.HasValue)

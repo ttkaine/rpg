@@ -1,3 +1,6 @@
 ﻿
 @model Warhammer.Mvc.Models.ImageViewModel
-<a href="@Url.Action("Index", "Page", new { id = Model.Id })"><img src="@Url.Action("Image", "Image", new {id = Model.Id}, null)" title="@Model.Name" alt="Picture of @Model.Name" class="mini-profile-image" /></a>
+<a href="@Url.Action("Index", "Page", new {id = Model.Id})">
+    <img src="@Url.Action("Image", "Image", new {id = Model.Id}, null)" title="@Model.Name" alt="Picture of @Model.Name" class="mini-profile-image"/>
+
+</a>

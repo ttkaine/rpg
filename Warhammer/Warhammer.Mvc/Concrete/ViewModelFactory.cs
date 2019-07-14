@@ -740,6 +740,16 @@ namespace Warhammer.Mvc.Concrete
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>();
 
+            if (_data.SiteHasFeature(Feature.FullCharacterLeague))
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Hall of Legends",
+                    Url = _urlHelper.Action("FullCharacterLeague", "Home"),
+                    IconUrl = _urlHelper.Content("~/Content/Images/Trophy.png")
+                });
+            }
+
             if (_data.ShowLeague)
             {
                 items.Add(new MenuItemViewModel

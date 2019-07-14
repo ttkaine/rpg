@@ -843,6 +843,9 @@
     <Content Include="Views\Home\IconMetaData.cshtml" />
     <Content Include="Views\Gm\UpdateSiteIcon.cshtml" />
     <Content Include="Views\Person\EditorTemplates\MagicInitModel.cshtml" />
+    <Content Include="Views\Home\FullCharacterLeague.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\CharacterLeagueItemModel.cshtml" />
+    <Content Include="Views\Home\DisplayTemplates\AwardSummaryModel.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

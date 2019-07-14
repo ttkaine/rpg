@@ -7,5 +7,6 @@ namespace Warhammer.Core.Abstract
     {
         IQueryable<PageImage> PageImages();
         IQueryable<Page> Pages();
+        IQueryable<PageImage> AllPageImages();
     }
 }

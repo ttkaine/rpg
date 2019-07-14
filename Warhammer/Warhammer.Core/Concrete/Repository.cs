@@ -74,6 +74,11 @@ namespace Warhammer.Core.Concrete
             return _entities.SiteIcons.Where(s => s.CampaignId == CurrentCampaignId);
         }
 
+        public IQueryable<CampaignDetail> AllCampaigns()
+        {
+            return _entities.CampaignDetails;
+        }
+
         public int Save(SiteIcon icon)
         {
             if (icon.Id == 0)

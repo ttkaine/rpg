@@ -23,6 +23,7 @@ namespace Warhammer.Core.Concrete
         private readonly IEmailHandler _email;
         private readonly ISiteFeatureProvider _feature;
         private readonly ICharacterAttributeManager _characterAttributeManager;
+        private readonly IPublicDataProvider _publicData;
 
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
@@ -62,7 +63,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICharacterAttributeManager characterAttributeManager)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICharacterAttributeManager characterAttributeManager, IPublicDataProvider publicData)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
@@ -70,6 +71,7 @@ namespace Warhammer.Core.Concrete
             _email = email;
             _feature = feature;
             _characterAttributeManager = characterAttributeManager;
+            _publicData = publicData;
 
             if (_authenticatedUser.UserIsAuthenticated && !_authenticatedUser.IsAdmin)
             {
@@ -3386,6 +3388,19 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public CharacterLeagueModel GetFullLeague()
+        {
+            CharacterLeagueModel model = new CharacterLeagueModel();
+            var peopleData = _publicData.AllPeople().OrderByDescending(c => c.CurrentScore);
+            model.Items = GetLeagueItems(peopleData);
+            int i = 1;
+            foreach (CharacterLeagueItemModel item in model.Items)
+            {
+                item.Rank = i++;
+            }
+            return model;
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -3733,27 +3748,43 @@ namespace Warhammer.Core.Concrete
                 query = query.OrderByDescending(s => s.CurrentScore)
                     .ThenByDescending(s => s.Modified);
 
-                model.Items = query.Select(p => new CharacterLeagueItemModel
-                    {
-                        FullName = p.FullName,
-                        Id = p.Id,
-                        PlainText = p.PlainText,
-                        XpAwarded = p.XPAwarded,
-                        CurrentScore = p.CurrentScore,
-                        Awards = p.Awards
-                            .OrderByDescending(t => t.Trophy.PointsValue)
-                            .Select(a => new AwardSummaryModel
+                model.Items = GetLeagueItems(query);
+            }
+            return model;
+        }
+
+        private List<CharacterLeagueItemModel> GetLeagueItems(IQueryable<Person> query)
+        {
+            Dictionary<int, string> campaginUrls = _repository.AllCampaigns().ToDictionary(t => t.Id, t => t.Url);
+            int[] campaignIds = campaginUrls.Keys.ToArray();
+            List <CharacterLeagueItemModel> data = query
+                .Where(p => campaignIds.Contains(p.CampaignId)).Select(p => new CharacterLeagueItemModel
+                {
+                    FullName = p.FullName,
+                    Id = p.Id,
+                    PlainText = p.PlainText,
+                    XpAwarded = p.XPAwarded,
+                    CurrentScore = p.CurrentScore,
+                    Awards = p.Awards
+                        .OrderByDescending(t => t.Trophy.PointsValue)
+                        .Select(a => new AwardSummaryModel
                         {
                             AwardedOn = a.AwardedOn,
                             Id = a.Id,
                             Reason = a.Reason,
                             TrophyId = a.TrophyId,
                             TrophyName = a.Trophy.Name
-                        }).ToList()
-                    }).ToList()
-                    .ToList();
+                        }).ToList(),
+                    CampaignId = p.CampaignId
+            }).ToList()
+                .ToList();
+
+            foreach (CharacterLeagueItemModel item in data)
+            {
+                item.Url = $"https://{campaginUrls[item.CampaignId]}/page/index/{item.Id}";
             }
-            return model;
+
+            return data;
         }
 
         public List<PageLinkModel> OtherPCs()

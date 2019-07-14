@@ -61,10 +61,10 @@ namespace Warhammer.Core.Entities
 
         public static HeroLevel GetHeroLevel(decimal xp)
         {
-            if (xp > 1200) return HeroLevel.Legend;
-            if (xp > 600) return HeroLevel.Champion;
-            if (xp > 200) return HeroLevel.Hero;
-            if (xp > 50) return HeroLevel.Veteran;
+            if (xp > 250) return HeroLevel.Legend;
+            if (xp > 100) return HeroLevel.Champion;
+            if (xp > 50) return HeroLevel.Hero;
+            if (xp > 20) return HeroLevel.Veteran;
             if (xp > 10) return HeroLevel.Adventurer;
             return HeroLevel.Rookie;
         }

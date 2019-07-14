@@ -88,6 +88,7 @@ namespace Warhammer.Core.Abstract
         void Delete(ScoreBreakdown scoreBreakdown);
         int Save(SiteIcon icon);
         IQueryable<SiteIcon> SiteIcons();
+        IQueryable<CampaignDetail> AllCampaigns();
     }
 }
 

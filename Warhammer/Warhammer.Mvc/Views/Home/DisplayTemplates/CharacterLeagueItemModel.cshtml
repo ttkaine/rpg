@@ -1,0 +1,19 @@
+﻿@model Warhammer.Core.Models.CharacterLeagueItemModel
+
+<tr>
+    <td>@Model.Rank</td>
+    <td>@Model.PointsValue</td>
+    <td>
+        <a href="@Model.Url"> <img src="@Url.Action("LeagueImage", "Image", new {id = Model.Id}, null)" title="@Model.FullName" alt="Picture of @Model.FullName" class="mini-profile-image" /></a>
+    </td>
+    <td>
+        @Model.FullName
+    </td>
+    <td>
+        <span hidden="">@((int)Model.HeroLevel)</span>
+        @Model.HeroLevel
+        @Html.Partial("_LevelStars", Model.HeroLevel)
+    </td>
+    <td>@Html.DisplayFor(m=> m.Awards)</td>
+    <td hidden="">@Model.PlainText</td>
+</tr>

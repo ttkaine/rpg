@@ -24,5 +24,10 @@ namespace Warhammer.Core.Concrete
         {      
             return _entities.Pages.Where(p => _campaignIds.Contains(p.CampaignId));
         }
+
+        public IQueryable<PageImage> AllPageImages()
+        {
+            return _entities.PageImages;
+        }
     }
 }
