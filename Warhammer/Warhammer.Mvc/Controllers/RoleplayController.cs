@@ -488,11 +488,8 @@ namespace Warhammer.Mvc.Controllers
 		        sessionTitle = "NO SESSION NAME";
 		    }
 
-            string title = $"<a href='/Page/Index/{sessionId}'>{sessionTitle}</a>";
-
-
 			JavaScriptSerializer serializer = new JavaScriptSerializer();
-			return Json(serializer.Serialize(title));
+			return Json(serializer.Serialize(sessionTitle));
 		}
 
 	    public JsonResult GetCurrentPlayerToPost(int sessionId)
