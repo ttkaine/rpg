@@ -13,6 +13,9 @@ namespace Warhammer.Core.Models
         public string PlainText { get; set; }
         public int Id { get; set; }
         public decimal XpAwarded { get; set; }
+        public string Player { get; set; }
+        public string PlayerName => Player ?? "NPC";
+        public string Campaign { get; set; }
 
         public HeroLevel HeroLevel => Person.GetHeroLevel(XpAwarded);
         public int PointsValue => (int)Math.Ceiling(CurrentScore);

@@ -3755,8 +3755,10 @@ namespace Warhammer.Core.Concrete
 
         private List<CharacterLeagueItemModel> GetLeagueItems(IQueryable<Person> query)
         {
-            Dictionary<int, string> campaginUrls = _repository.AllCampaigns().ToDictionary(t => t.Id, t => t.Url);
-            int[] campaignIds = campaginUrls.Keys.ToArray();
+            Dictionary<int, string> campaignUrls = _repository.AllCampaigns().ToDictionary(t => t.Id, t => t.Url);
+            Dictionary<int, string> campaignNames = _repository.AllCampaigns().ToDictionary(t => t.Id, t => t.DisplayName);
+
+            int[] campaignIds = campaignUrls.Keys.ToArray();
             List <CharacterLeagueItemModel> data = query
                 .Where(p => campaignIds.Contains(p.CampaignId)).Select(p => new CharacterLeagueItemModel
                 {
@@ -3775,13 +3777,16 @@ namespace Warhammer.Core.Concrete
                             TrophyId = a.TrophyId,
                             TrophyName = a.Trophy.Name
                         }).ToList(),
-                    CampaignId = p.CampaignId
+                    CampaignId = p.CampaignId,
+                    Player = p.Player.DisplayName
+                    
             }).ToList()
                 .ToList();
 
             foreach (CharacterLeagueItemModel item in data)
             {
-                item.Url = $"https://{campaginUrls[item.CampaignId]}/page/index/{item.Id}";
+                item.Campaign = campaignNames[item.CampaignId];
+                item.Url = $"https://{campaignUrls[item.CampaignId]}/page/index/{item.Id}";
             }
 
             return data;

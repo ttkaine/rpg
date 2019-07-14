@@ -4,6 +4,12 @@
     <td>@Model.Rank</td>
     <td>@Model.PointsValue</td>
     <td>
+        @Model.PlayerName
+    </td>
+    <td>
+        @Model.Campaign
+    </td>
+    <td>
         <a href="@Model.Url"> <img src="@Url.Action("LeagueImage", "Image", new {id = Model.Id}, null)" title="@Model.FullName" alt="Picture of @Model.FullName" class="mini-profile-image" /></a>
     </td>
     <td>

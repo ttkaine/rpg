@@ -149,7 +149,11 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult CharacterLeague()
         {
             CharacterLeagueModel model = DataProvider.GetLeague();
-
+            if (DataProvider.SiteHasFeature(Feature.UpdatedCharacterLeague))
+            {
+                model.IsSiteVersion = true;
+                return View("FullCharacterLeague", model);
+            }
             return View(model);
         }
 
