@@ -14,8 +14,18 @@
 
     <div class="main-content">
         <div class="content-block session-block">
-            <table class="table">
-                @Html.DisplayForModel()
+            <table id="AllPages" class="table table-striped">
+                <thead>
+                <tr>       
+                    <th>Image</th>
+                    <th>Short Name</th>
+                    <th>Long Name</th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.DisplayForModel()
+                </tbody>
             </table>
         </div>
     </div>
@@ -28,3 +38,11 @@
     </div>
 
 </div>
+
+
+<script>
+    $(document).ready( function () {
+        $('#AllPages').DataTable();
+    } );
+
+</script>
