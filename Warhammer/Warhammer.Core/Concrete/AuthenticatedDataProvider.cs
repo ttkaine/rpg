@@ -3755,8 +3755,11 @@ namespace Warhammer.Core.Concrete
 
         private List<CharacterLeagueItemModel> GetLeagueItems(IQueryable<Person> query)
         {
-            Dictionary<int, string> campaignUrls = _repository.AllCampaigns().ToDictionary(t => t.CampaignId, t => t.Url);
-            Dictionary<int, string> campaignNames = _repository.AllCampaigns().ToDictionary(t => t.CampaignId, t => t.DisplayName);
+            string playground = Feature.PlaygroundMode.ToString();
+            List<int> playgroundSites = _repository.SiteFeatures().Where(s => s.IsEnabled && s.Name == playground)
+                .Select(s => s.CampaignId).ToList();
+            Dictionary<int, string> campaignUrls = _repository.AllCampaigns().Where(c => !playgroundSites.Contains(c.CampaignId)).ToDictionary(t => t.CampaignId, t => t.Url);
+            Dictionary<int, string> campaignNames = _repository.AllCampaigns().Where(c => !playgroundSites.Contains(c.CampaignId)).ToDictionary(t => t.CampaignId, t => t.DisplayName);
 
             int[] campaignIds = campaignUrls.Keys.ToArray();
             List <CharacterLeagueItemModel> data = query
