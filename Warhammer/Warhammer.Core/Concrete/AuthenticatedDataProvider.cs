@@ -1676,7 +1676,7 @@ namespace Warhammer.Core.Concrete
                 if (!session.XpAwarded.HasValue)
                 {
                     session.XpAwarded = DateTime.Now;
-                    xp = 0.5m;
+                    xp = 1;
                     sessionId = session.Id;
                 }
             }
