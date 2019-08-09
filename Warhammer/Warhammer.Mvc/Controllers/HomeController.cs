@@ -152,6 +152,10 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.UpdatedCharacterLeague))
             {
                 model.IsSiteVersion = true;
+                foreach(var character in model.Items)
+                {
+                    character.IsSiteVersion = true;
+                }
                 return View("FullCharacterLeague", model);
             }
             return View(model);

@@ -4,7 +4,10 @@
 @model Warhammer.Core.Models.CharacterLeagueModel
 
 @{
-    ViewBag.Title = "Hall of Legends";
+    string banner = Model.IsSiteVersion ? "" : "banner-hallOfFame";
+    string title = Model.IsSiteVersion ? "Character League" : "Hall of Legends";
+    ViewBag.Title = title;
+    string hiddenInSiteVersion = Model.IsSiteVersion ? "hidden" : "";
 }
 
 
@@ -13,8 +16,8 @@
 
     @Html.Hidden("personId", 1)
     <div class="banner-content">
-        <div class="header-block banner-hallOfFame">
-            <h1 id="fullName">Hall of Legends</h1>
+        <div class="header-block @banner">
+            <h1 id="fullName">@title</h1>
         </div>
     </div>
 
@@ -27,23 +30,23 @@
                     <col>
                     <col>
                     <col>
+                    <col width="185">
                     <col>
-                    <col width="175">
                     <col>
                     <col>
                 </colgroup>
                 <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Points</th>
-                    <th>Player</th>
-                    <th>Campaign</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Level</th>
-                    <th>Awards</th>
-                    <th hidden="true">Meta</th>
-                </tr>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Points</th>
+                        <th>Player</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Awards</th>
+                        <th @hiddenInSiteVersion>Campaign</th>
+                        <th hidden>Meta</th>
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach (var person in Model.Items)

@@ -1,13 +1,14 @@
 ﻿@model Warhammer.Core.Models.CharacterLeagueItemModel
 
+@{ 
+    string hiddenInSiteVersion = Model.IsSiteVersion ? "hidden" : "";
+}
+
 <tr>
     <td>@Model.Rank</td>
     <td>@Model.PointsValue</td>
     <td>
         @Model.PlayerName
-    </td>
-    <td>
-        @Model.Campaign
     </td>
     <td>
         <a href="@Model.Url"> <img src="@Url.Action("LeagueImage", "Image", new {id = Model.Id}, null)" title="@Model.FullName" alt="Picture of @Model.FullName" class="mini-profile-image" /></a>
@@ -16,10 +17,13 @@
         @Model.FullName
     </td>
     <td>
-        <span hidden="">@((int)Model.HeroLevel)</span>
+        <span hidden>@((int)Model.HeroLevel)</span>
         @Model.HeroLevel
         @Html.Partial("_LevelStars", Model.HeroLevel)
     </td>
-    <td>@Html.DisplayFor(m=> m.Awards)</td>
-    <td hidden="">@Model.PlainText</td>
+    <td>@Html.DisplayFor(m => m.Awards)</td>
+    <td @hiddenInSiteVersion>
+        @Model.Campaign
+    </td>
+    <td hidden>@Model.PlainText</td>
 </tr>

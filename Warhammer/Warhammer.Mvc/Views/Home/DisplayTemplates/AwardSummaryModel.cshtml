@@ -1,2 +1,2 @@
 ﻿@model Warhammer.Core.Models.AwardSummaryModel
-<a href="@Url.Action("Trophy","Home",new { id = Model.TrophyId })"><img src="@Url.Action("TrophyImage", "Home", new { id = Model.TrophyId }, null)" title="@Model.TrophyName @Model.Reason" alt="Picture of @Model.TrophyName" class="table-trophy-image" /></a>
+<img src="@Url.Action("TrophyImage", "Home", new { id = Model.TrophyId }, null)" title="@Model.TrophyName @Model.Reason" alt="Picture of @Model.TrophyName" class="table-trophy-image" />

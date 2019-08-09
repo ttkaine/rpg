@@ -3393,11 +3393,7 @@ namespace Warhammer.Core.Concrete
             CharacterLeagueModel model = new CharacterLeagueModel();
             var peopleData = _publicData.AllPeople().OrderByDescending(c => c.CurrentScore);
             model.Items = GetLeagueItems(peopleData);
-            int i = 1;
-            foreach (CharacterLeagueItemModel item in model.Items)
-            {
-                item.Rank = i++;
-            }
+
             return model;
         }
 
@@ -3786,12 +3782,13 @@ namespace Warhammer.Core.Concrete
             }).ToList()
                 .ToList();
 
+            int i = 1;
             foreach (CharacterLeagueItemModel item in data)
             {
+                item.Rank = i++;
                 item.Campaign = campaignNames[item.CampaignId];
                 item.Url = $"https://{campaignUrls[item.CampaignId]}/page/index/{item.Id}";
             }
-
             return data;
         }
 
