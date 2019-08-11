@@ -105,6 +105,11 @@ namespace Warhammer.Core.Concrete
             return playerCampaign.Id;
         }
 
+        public IQueryable<SiteFeature> AllSiteFeatures()
+        {
+            return _entities.SiteFeatures;
+        }
+
         public int Save(SiteIcon icon)
         {
             if (icon.Id == 0)

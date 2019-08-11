@@ -12,5 +12,6 @@ namespace Warhammer.Core.Abstract
         SiteIcon GetSiteIcon(int size);
         List<int> GetSiteIconSizes();
         IQueryable<Person> AllPeople();
+        List<int> CampaignsWithFeature(Feature feature);
     }
 }

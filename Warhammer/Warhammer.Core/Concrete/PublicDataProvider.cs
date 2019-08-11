@@ -45,5 +45,13 @@ namespace Warhammer.Core.Concrete
         {
             return _repository.AllPeople();
         }
+
+        public List<int> CampaignsWithFeature(Feature feature)
+        {
+            string featureName = feature.ToString();
+           return _repository.AllSiteFeatures().Where(s => s.IsEnabled && s.Name == featureName)
+                .Select(s => s.CampaignId).ToList();
+
+        }
     }
 }

@@ -3392,7 +3392,8 @@ namespace Warhammer.Core.Concrete
         {
             CharacterLeagueModel model = new CharacterLeagueModel();
             var peopleData = _publicData.AllPeople().OrderByDescending(c => c.CurrentScore);
-            model.Items = GetLeagueItems(peopleData);
+            List<int> excludedCampaigns = _publicData.CampaignsWithFeature(Feature.PlaygroundMode);
+            model.Items = GetLeagueItems(peopleData, excludedCampaigns);
 
             return model;
         }
@@ -3795,18 +3796,16 @@ namespace Warhammer.Core.Concrete
                 query = query.OrderByDescending(s => s.CurrentScore)
                     .ThenByDescending(s => s.Modified);
 
-                model.Items = GetLeagueItems(query);
+                model.Items = GetLeagueItems(query, new List<int>());
             }
             return model;
         }
 
-        private List<CharacterLeagueItemModel> GetLeagueItems(IQueryable<Person> query)
+        private List<CharacterLeagueItemModel> GetLeagueItems(IQueryable<Person> query, List<int> excludedCampaigns)
         {
-            string playground = Feature.PlaygroundMode.ToString();
-            List<int> playgroundSites = _repository.SiteFeatures().Where(s => s.IsEnabled && s.Name == playground)
-                .Select(s => s.CampaignId).ToList();
-            Dictionary<int, string> campaignUrls = _repository.AllCampaigns().Where(c => !playgroundSites.Contains(c.CampaignId)).ToDictionary(t => t.CampaignId, t => t.Url);
-            Dictionary<int, string> campaignNames = _repository.AllCampaigns().Where(c => !playgroundSites.Contains(c.CampaignId)).ToDictionary(t => t.CampaignId, t => t.DisplayName);
+
+            Dictionary<int, string> campaignUrls = _repository.AllCampaigns().Where(c => !excludedCampaigns.Contains(c.CampaignId)).ToDictionary(t => t.CampaignId, t => t.Url);
+            Dictionary<int, string> campaignNames = _repository.AllCampaigns().Where(c => !excludedCampaigns.Contains(c.CampaignId)).ToDictionary(t => t.CampaignId, t => t.DisplayName);
 
             int[] campaignIds = campaignUrls.Keys.ToArray();
             List <CharacterLeagueItemModel> data = query
