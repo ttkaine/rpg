@@ -3397,6 +3397,57 @@ namespace Warhammer.Core.Concrete
             return model;
         }
 
+        public List<PlayerCampaign> GetAllPlayerCampaigns()
+        {
+            return _repository.PlayerCampaigns().ToList();
+        }
+
+        public List<PlayerCampaignLinkModel> GetAllPlayerCampaignLinkModels()
+        {
+            return _repository.Players().Select(p => new PlayerCampaignLinkModel
+            {
+                PlayerId = p.Id,
+                PlayerName = p.DisplayName,
+                PlayerEmail = p.UserName,
+                ShowInGlobal = p.PlayerCampaigns.Where(c => c.CampaginId == CurrentCampaignId).Select(c => c.ShowInGlobal).FirstOrDefault(),
+                PlayerCampaignId = p.PlayerCampaigns.Where(c => c.CampaginId == CurrentCampaignId).Select(c => c.Id).FirstOrDefault(),
+                IncludeInCampaign = p.PlayerCampaigns.Where(c => c.CampaginId == CurrentCampaignId).Select(c => c.Id).FirstOrDefault() > 0
+            }).ToList();
+        }
+
+        public void UpdatePlayerSiteLinks(List<PlayerCampaignLinkModel> playerLinks)
+        {
+            List<Player> players = GetAllPlayers();
+            foreach (PlayerCampaignLinkModel link in playerLinks)
+            {
+                Player player = players.FirstOrDefault(p => p.Id == link.PlayerId);
+                if (player != null)
+                {
+                    PlayerCampaign campaign = player.PlayerCampaigns.FirstOrDefault(c => c.CampaginId == CurrentCampaignId);
+                    if (link.IncludeInCampaign)
+                    {
+                        if (campaign == null)
+                        {
+                            campaign = new PlayerCampaign { PlayerId = link.PlayerId, PlayerModeEnum = 1, CampaginId = CurrentCampaignId };
+                        }
+
+                        campaign.ShowInGlobal = link.ShowInGlobal;
+                        _repository.Save(campaign);
+
+                    }
+                    else
+                    {
+                        
+                        if(campaign != null)
+                        {
+                            _repository.Delete(campaign);
+                        }
+                    }
+                }
+
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

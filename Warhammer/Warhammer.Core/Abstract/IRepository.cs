@@ -89,6 +89,9 @@ namespace Warhammer.Core.Abstract
         int Save(SiteIcon icon);
         IQueryable<SiteIcon> SiteIcons();
         IQueryable<CampaignDetail> AllCampaigns();
+        IQueryable<PlayerCampaign> PlayerCampaigns();
+        void Delete(PlayerCampaign playerCampaign);
+        int Save(PlayerCampaign playerCampaign);
     }
 }
 

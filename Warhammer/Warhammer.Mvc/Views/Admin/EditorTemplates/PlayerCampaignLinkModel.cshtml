@@ -1,0 +1,18 @@
+﻿
+@model Warhammer.Core.Models.PlayerCampaignLinkModel
+    
+<tr>
+    <td>
+        @Html.HiddenFor(m => m.PlayerId)
+        @Html.HiddenFor(m => m.PlayerCampaignId)
+        @Model.PlayerName
+    </td>
+    <td>@Model.PlayerEmail</td>
+    <td>
+        @Html.CheckBoxFor(m => Model.IncludeInCampaign, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_offstyle = "error", data_onstyle = "success"})
+    </td>
+    <td>
+        @Html.CheckBoxFor(m => Model.ShowInGlobal, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_offstyle = "info", data_onstyle = "success"})
+
+    </td>
+</tr>

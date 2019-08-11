@@ -410,7 +410,12 @@ namespace Warhammer.Mvc.Concrete
                     IconUrl = _urlHelper.Content("~/Content/Images/log.png"),
                     //  IconCssClass = "badge"
                 });
-
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Players",
+                    AltText = "Players",
+                    Url = _urlHelper.Action("PlayerSiteLinks", "Admin"),
+                });
                 if (_data.SiteHasFeature(Feature.PriceList) && !_data.SiteHasFeature(Feature.PublicPrices))
                 {
                     items.Add(new MenuItemViewModel

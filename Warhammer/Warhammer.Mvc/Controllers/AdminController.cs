@@ -292,5 +292,18 @@ namespace Warhammer.Mvc.Controllers
 
             return RedirectToAction("CampaignSettings");
         }
+
+        public ActionResult PlayerSiteLinks()
+        {
+            List<PlayerCampaignLinkModel> players = DataProvider.GetAllPlayerCampaignLinkModels();
+            return View(players);
+        }
+
+        [HttpPost]
+        public ActionResult PlayerSiteLinks(List<PlayerCampaignLinkModel> players)
+        {
+            DataProvider.UpdatePlayerSiteLinks(players);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

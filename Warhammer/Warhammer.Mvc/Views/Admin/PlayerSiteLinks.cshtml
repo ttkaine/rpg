@@ -1,0 +1,51 @@
+﻿@model List<Warhammer.Core.Models.PlayerCampaignLinkModel>
+@{
+    ViewBag.Title = "Players in Campaign";
+}
+
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+
+            <h2>Link players to this site</h2>
+            <p>Let's link up some players</p>
+            @using (Html.BeginForm())
+            {
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Email</th>
+                        <th>Is Linked</th>
+                        <th>Show In Global</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @Html.EditorForModel()
+                    </tbody>
+                </table>
+
+      
+   
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

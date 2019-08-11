@@ -79,6 +79,32 @@ namespace Warhammer.Core.Concrete
             return _entities.CampaignDetails;
         }
 
+        public IQueryable<PlayerCampaign> PlayerCampaigns()
+        {
+            return _entities.PlayerCampaigns;
+        }
+
+        public void Delete(PlayerCampaign playerCampaign)
+        {
+            _entities.PlayerCampaigns.Remove(playerCampaign);
+            _entities.SaveChanges();
+        }
+
+        public int Save(PlayerCampaign playerCampaign)
+        {
+            if (playerCampaign.Id == 0)
+            {
+                _entities.PlayerCampaigns.Add(playerCampaign);
+            }
+            else
+            {
+                _entities.Entry(playerCampaign).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return playerCampaign.Id;
+        }
+
         public int Save(SiteIcon icon)
         {
             if (icon.Id == 0)
