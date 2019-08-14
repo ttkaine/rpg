@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core.Concrete
 {
@@ -30,6 +31,13 @@ namespace Warhammer.Core.Concrete
         public string GetPageName(int id)
         {
             return _imageRepository.Pages().Where(p => p.Id == id).Select(p => p.ShortName).FirstOrDefault();
+        }
+
+        public TrophyImage GetPageImageForTrophy(int id)
+        {
+            TrophyImage image = _imageRepository.Trophies().Where(t => t.Id == id)
+                .Select(t => new TrophyImage { Data = t.ImageData, Mime = t.MimeType, Name = t.Name }).FirstOrDefault();
+            return image;
         }
     }
 

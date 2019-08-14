@@ -10,6 +10,7 @@ using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
+using Warhammer.Core.Models;
 using Warhammer.Mvc.Models;
 
 namespace Warhammer.Mvc.Controllers
@@ -34,6 +35,21 @@ namespace Warhammer.Mvc.Controllers
             if (image != null)
             {
                 return File(image.Data, "image/jpeg");
+            }
+
+            var defaultDir = Server.MapPath("/Content/Images");
+
+            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
+            return File(defaultImagePath, "image/jpeg");
+        }
+
+        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
+        public ActionResult LeagueTrophyImage(int id)
+        {
+            TrophyImage image = _imageData.GetPageImageForTrophy(id);
+            if (image != null)
+            {
+                return File(image.Data, image.Mime);
             }
 
             var defaultDir = Server.MapPath("/Content/Images");

@@ -1,4 +1,5 @@
 ﻿using Warhammer.Core.Entities;
+using Warhammer.Core.Models;
 
 namespace Warhammer.Core
 {
@@ -6,5 +7,6 @@ namespace Warhammer.Core
     {
         PageImage GetPageImageForPage(int id, bool includeAll = false);
         string GetPageName(int id);
+        TrophyImage GetPageImageForTrophy(int id);
     }
 }

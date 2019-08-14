@@ -29,5 +29,10 @@ namespace Warhammer.Core.Concrete
         {
             return _entities.PageImages;
         }
+
+        public IQueryable<Trophy> Trophies()
+        {
+            return _entities.Trophies;
+        }
     }
 }
