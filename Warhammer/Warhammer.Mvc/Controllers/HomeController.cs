@@ -515,7 +515,6 @@ namespace Warhammer.Mvc.Controllers
             return File(defaultImagePath, "image/jpeg");
         }
 
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         [AllowAnonymous]
         public ActionResult IconMetaData()
         {
@@ -523,8 +522,6 @@ namespace Warhammer.Mvc.Controllers
             return PartialView(icons);
         }
 
-
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         [AllowAnonymous]
         public ActionResult Icon(int id)
         {
