@@ -45,7 +45,7 @@ namespace Warhammer.Core.Concrete
             int? roleValue = _repo.PersonAttributes()
                 .Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Role).Sum(a => (int?)a.CurrentValue);
 
-            int rolePoints = (roleValue.GetValueOrDefault(0) - 3) * 3;
+            int rolePoints = (roleValue.GetValueOrDefault(0) - 3);
 
             if (rolePoints > 0)
             {
@@ -62,7 +62,7 @@ namespace Warhammer.Core.Concrete
             int? skillValue = _repo.PersonAttributes()
                 .Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Skill).Sum(a => (int?)a.CurrentValue);
 
-            int skillPoints = (skillValue.GetValueOrDefault(0) - 6) * 2;
+            int skillPoints = (skillValue.GetValueOrDefault(0) - 6) / 2;
 
             if (skillPoints > 0)
             {
