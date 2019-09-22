@@ -95,14 +95,12 @@ namespace Warhammer.Core.Models
                     break;
                 case AttributeType.Magic:
                 case AttributeType.MagicItem:
-                    int totalValue = TotalStats;
-                    totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
-                    if (totalValue < 1)
+                    var aStat = PersonAttributes.FirstOrDefault(s => s.PersonAttribute.IsStatType);
+                    if (aStat != null)
                     {
-                        totalValue = 1;
+                        return aStat.Cost;
                     }
-                    totalValue = totalValue * totalValue;
-                    return totalValue;
+                    return 99;
                 case AttributeType.Skill:
                     int skillCost = 1;
                     return skillCost + CharacterLevel;
