@@ -32,7 +32,7 @@
 
             @using (Ajax.BeginForm("RenameAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
             {
-                <span>Choose a Role, Skill, or Descriptior to rename:</span>
+                <span>Choose a Role, Skill, or Descriptor to rename:</span>
                 <input type="hidden" value="@Model.PersonId" name="personId" />
                 @Html.DropDownList("attributeId", Model.RenamableAttributes, new { @class = "form-control" })
                 <span>New Name:</span>
