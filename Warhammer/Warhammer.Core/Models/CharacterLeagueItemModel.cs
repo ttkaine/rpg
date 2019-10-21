@@ -50,5 +50,7 @@ namespace Warhammer.Core.Models
         public int Rank { get; set; }
         public string Url { get; set; }
         public int CampaignId { get; set; }
+        public string ImageUrl { get; set; }
+        public string ImageFile { get; set; }
     }
 }

@@ -8,5 +8,6 @@ namespace Warhammer.Core
         PageImage GetPageImageForPage(int id, bool includeAll = false);
         string GetPageName(int id);
         TrophyImage GetPageImageForTrophy(int id);
+        string GetImagefilenameForPage(int id);
     }
 }

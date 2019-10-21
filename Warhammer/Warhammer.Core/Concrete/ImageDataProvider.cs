@@ -39,6 +39,17 @@ namespace Warhammer.Core.Concrete
                 .Select(t => new TrophyImage { Data = t.ImageData, Mime = t.MimeType, Name = t.Name }).FirstOrDefault();
             return image;
         }
+
+        public string GetImagefilenameForPage(int id)
+        {
+            string fileId = _imageRepository.AllPageImages().Where(p => p.IsPrimary && p.PageId == id).Select(i => i.FileIdentifier).FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(fileId))
+            {
+                fileId = "default.png";
+            }
+
+            return fileId;
+        }
     }
 
 }

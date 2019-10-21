@@ -35,6 +35,7 @@ namespace Warhammer.Core.Entities
         public Nullable<System.DateTime> DeletedDate { get; set; }
         public int CampaignId { get; set; }
         public Nullable<int> ImageId { get; set; }
+        public int RollModifier { get; set; }
     
         public virtual Player Player { get; set; }
         public virtual Session Session { get; set; }

@@ -11,7 +11,7 @@
         @Model.PlayerName
     </td>
     <td>
-        <a href="@Model.Url"> <img src="@Url.Action("LeagueImage", "Image", new {id = Model.Id}, null)" title="@Model.FullName" alt="Picture of @Model.FullName" class="mini-profile-image" /></a>
+        <a href="@Model.Url"> <img src="@Model.ImageUrl" title="@Model.FullName" alt="Picture of @Model.FullName" class="mini-profile-image" /></a>
     </td>
     <td>
         @Model.FullName

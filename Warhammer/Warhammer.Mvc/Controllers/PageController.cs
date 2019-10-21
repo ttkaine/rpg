@@ -78,17 +78,16 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                ClearPageCache(page.Id);
-
                 List<ExtractedImage> images = _imageProcessor.GetImagesFromHtmlString(page.Description);
 
                 foreach (ExtractedImage image in images)
                 {
                     byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
                     PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
-                    string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
+                    string linkUrl =
+                        $"{DataProvider.ImageUrlBase}{pageImage.FileIdentifier}"; //Url.Action("ShowImage", "Home", new {id = pageImage.Id});
 
-                    int width = image.Image.Width/5;
+                    int width = image.Image.Width / 5;
                     if (width > 100)
                     {
                         width = 100;
@@ -97,7 +96,8 @@ namespace Warhammer.Mvc.Controllers
                     page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}' width='{width}%'");
                 }
 
-                Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, _linkGenerator.ResolveCreoleLinks(page.Description));
+                Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName,
+                    _linkGenerator.ResolveCreoleLinks(page.Description));
 
                 if (CurrentPlayerIsGm)
                 {
@@ -109,7 +109,8 @@ namespace Warhammer.Mvc.Controllers
                         {
                             byte[] imageData = _imageProcessor.GetJpegFromImage(image.Image);
                             PageImage pageImage = DataProvider.SaveImage(page.Id, imageData);
-                            string linkUrl = Url.Action("ShowImage", "Home", new {id = pageImage.Id});
+                            string linkUrl =
+                                $"{DataProvider.ImageUrlBase}{pageImage.FileIdentifier}"; //Url.Action("ShowImage", "Home", new {id = pageImage.Id});
                             page.GmNotes = page.GmNotes.Replace(image.OriginalSrc, $"src='{linkUrl}'");
                         }
 
@@ -139,31 +140,8 @@ namespace Warhammer.Mvc.Controllers
 
                 return View(updatedPage);
             }
+
             return RedirectToAction("index", new {id = page.Id});
-        }
-
-        private void ClearPageCache(int id)
-        {
-            string path = Url.Action("Image", new {id});
-
-            if (path != null)
-            {
-                Response.RemoveOutputCacheItem(path);
-            }
-
-            path = Url.Action("Index", new {id});
-
-            if (path != null)
-            {
-                Response.RemoveOutputCacheItem(path);
-            }
-
-            path = Url.Action("CharacterLeague", "Home");
-
-            if (path != null)
-            {
-                Response.RemoveOutputCacheItem(path);
-            }
         }
 
         [HttpPost]
@@ -297,7 +275,6 @@ namespace Warhammer.Mvc.Controllers
             {
                 if (saveAction == "Save")
                 {
-                    ClearPageCache(id);
                     Rectangle cropArea = GetCropArea(y1, x1, h, w);
                     if (profileImageFile != null)
                     {
