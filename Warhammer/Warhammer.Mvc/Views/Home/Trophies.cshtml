@@ -1,4 +1,5 @@
 ﻿@using Warhammer.Core.Entities
+@using Warhammer.Core.Extensions
 @model Warhammer.Mvc.Models.TrophyCabinetViewModel
 
 @{
@@ -27,7 +28,7 @@
                         {
                             <tr>
                                 <td style="display: none">@trophy.PointsValue</td>
-                                <td><a href="@Url.Action("Trophy", "Home", new { id = trophy.Id})"><img src="@Url.Action("TrophyImage", "Home", new { id = trophy.Id }, null)" title="@trophy.Name" alt="Picture of @trophy.Name" class="trophy-image" /></a></td>
+                                <td><a href="@Url.Action("Trophy", "Home", new { id = trophy.Id})"><img src="@trophy.FileIdentifier.ToImageUrl()" title="@trophy.Name" alt="Picture of @trophy.Name" class="trophy-image" /></a></td>
                                 <td class="name">@trophy.Name</td>
                                 <td class="description">@Html.Raw(trophy.Description)</td>
                                 @if (ViewBag.EditMode)

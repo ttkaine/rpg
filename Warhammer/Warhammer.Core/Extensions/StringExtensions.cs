@@ -13,5 +13,10 @@ namespace Warhammer.Core.Extensions
             }
             return s;
         }
+
+        public static string ToImageUrl(this string s)
+        {
+            return $"https://sendingofeight.blob.core.windows.net/images/{s}";
+        }
     }
 }

@@ -1,10 +1,12 @@
-﻿@model Warhammer.Core.Entities.Award
+﻿@using Warhammer.Core.Extensions
+@using Warhammer.Mvc.Models
+@model Warhammer.Core.Entities.Award
 <tr>
     <td>
-        @Html.Action("PageImage", "Image", new { id = Model.PersonId })
+        @Html.Partial("PageImage", new ImageViewModel {Id = Model.PersonId, Name = Model.Person.ShortName, Url = Model.Person.ImageUrl })
     </td>
     <td>
-        <a href="@Url.Action("Trophy", "Home", new { id = Model.Trophy.Id})"><img src="@Url.Action("TrophyImage", "Home", new {id = Model.Trophy.Id}, null)" title="@Model.Trophy.Name @Model.Reason" alt="Picture of @Model.Trophy.Name" class="mini-trophy-image" /></a>
+        <a href="@Url.Action("Trophy", "Home", new { id = Model.Trophy.Id})"><img src="@Model.Trophy.FileIdentifier.ToImageUrl()" title="@Model.Trophy.Name @Model.Reason" alt="Picture of @Model.Trophy.Name" class="mini-trophy-image" /></a>
 </td>
     <td class="name">
         @Model.Trophy.Name @Model.Reason

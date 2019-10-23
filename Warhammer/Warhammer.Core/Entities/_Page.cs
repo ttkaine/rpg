@@ -2,13 +2,13 @@
 using System.CodeDom.Compiler;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Warhammer.Core.Extensions;
 
 namespace Warhammer.Core.Entities
 {
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
     public partial class Page
     {
-
         public virtual double BaseScore
         {
             get { return 0.25; }
@@ -56,34 +56,35 @@ namespace Warhammer.Core.Entities
             }
         }
 
-        public bool HasInlineImage => ImageData != null && ImageData.Length > 50 && !string.IsNullOrWhiteSpace(ImageMime);
+        //public bool HasInlineImage => ImageData != null && ImageData.Length > 50 && !string.IsNullOrWhiteSpace(ImageMime);
 
-        public bool HasExternalImage
-        {
-            get
-            {
-                return PageImages.Any(p => p.IsPrimary);
-            }
-        }
+        //public bool HasExternalImage
+        //{
+        //    get
+        //    {
+        //        return PageImages.Any(p => p.IsPrimary);
+        //    }
+        //}
 
-        public bool HasImage => HasInlineImage || HasExternalImage;
+        public bool HasImage => FileIdentifier != "default.png";
+        public string ImageUrl => FileIdentifier.ToImageUrl();
 
-        public byte[] PrimaryImage
-        {
-            get
-            {
-                if (HasExternalImage)
-                {
-                    PageImage image = PageImages.FirstOrDefault(p => p.IsPrimary);
-                    return image?.Data;
-                }
-                if (HasInlineImage)
-                {
-                    return ImageData;
-                }
-                return null;
-            }
-        }
+        //public byte[] PrimaryImage
+        //{
+        //    get
+        //    {
+        //        if (HasExternalImage)
+        //        {
+        //            PageImage image = PageImages.FirstOrDefault(p => p.IsPrimary);
+        //            return image?.Data;
+        //        }
+        //        if (HasInlineImage)
+        //        {
+        //            return ImageData;
+        //        }
+        //        return null;
+        //    }
+        //}
  
         public string GetSummary(int length)
         {

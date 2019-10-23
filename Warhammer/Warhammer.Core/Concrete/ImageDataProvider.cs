@@ -33,22 +33,9 @@ namespace Warhammer.Core.Concrete
             return _imageRepository.Pages().Where(p => p.Id == id).Select(p => p.ShortName).FirstOrDefault();
         }
 
-        public TrophyImage GetPageImageForTrophy(int id)
-        {
-            TrophyImage image = _imageRepository.Trophies().Where(t => t.Id == id)
-                .Select(t => new TrophyImage { Data = t.ImageData, Mime = t.MimeType, Name = t.Name }).FirstOrDefault();
-            return image;
-        }
-
         public string GetImagefilenameForPage(int id)
         {
-            string fileId = _imageRepository.AllPageImages().Where(p => p.IsPrimary && p.PageId == id).Select(i => i.FileIdentifier).FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(fileId))
-            {
-                fileId = "default.png";
-            }
-
-            return fileId;
+            return _imageRepository.Pages().Where(p => p.Id == id).Select(p => p.FileIdentifier).FirstOrDefault();
         }
     }
 

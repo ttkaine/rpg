@@ -17,6 +17,7 @@ namespace Warhammer.Mvc.Controllers
         private readonly IAuthenticatedUserProvider _user;
         private readonly IAuthenticatedDataProvider _data;
         private readonly IPublicDataProvider _publicData;
+        private readonly IAzureProvider _azure;
 
         public ActionResult OutstandingXp()
         {
@@ -61,12 +62,13 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, IAuthenticatedDataProvider data1, IPublicDataProvider publicData) : base(data)
+        public GmController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, IAuthenticatedUserProvider user, IAuthenticatedDataProvider data1, IPublicDataProvider publicData, IAzureProvider azure) : base(data)
         {
             _imageProcessor = imageProcessor;
             _user = user;
             _data = data1;
             _publicData = publicData;
+            _azure = azure;
         }
 
         public ActionResult EditTrophy(int? id)
@@ -116,14 +118,15 @@ namespace Warhammer.Mvc.Controllers
 
                 if (trophyModel.Trophy.Id == 0)
                 {
-                   DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, imageData, mimeType, trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType);
+                    string fileId = _azure.CreateImageBlob(imageData, mimeType);
+                    DataProvider.AddTrophy(trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, fileId, mimeType, trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType);
                 }
                 else
                 {
                     if (imageData != null)
                     {
-                        DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue,
-                            imageData, "image/jpeg", trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType);
+                        string fileId = _azure.CreateImageBlob(imageData, mimeType);
+                        DataProvider.UpdateTrophy(trophyModel.Trophy.Id, trophyModel.Trophy.Name, trophyModel.Trophy.Description, trophyModel.Trophy.PointsValue, trophyModel.CurrentCampaignOnly, trophyModel.Trophy.TrophyType, fileId, mimeType);
                     }
                     else
                     {

@@ -28,6 +28,7 @@ namespace Warhammer.Core.Entities
         public int PointsValue { get; set; }
         public int TypeId { get; set; }
         public Nullable<int> CampaignId { get; set; }
+        public string FileIdentifier { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<AwardNomination> AwardNominations { get; set; }

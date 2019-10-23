@@ -1,7 +1,8 @@
-﻿@model Warhammer.Core.Models.PageLinkModel
+﻿@using Warhammer.Mvc.Models
+@model Warhammer.Core.Models.PageLinkModel
 <tr>
     <td>
-        @Html.Action("PageImage", "Image", new { id = Model.Id })
+        @Html.Partial("PageImage", new ImageViewModel(Model))
     </td>
     <td>
         @Model.FullName

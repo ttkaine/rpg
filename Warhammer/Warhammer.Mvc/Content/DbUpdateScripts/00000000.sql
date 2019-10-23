@@ -1,0 +1,1 @@
+DELETE FROM [ExceptionLog] WHERE [DateTime] < DATEADD(MONTH, -3, GETDATE())

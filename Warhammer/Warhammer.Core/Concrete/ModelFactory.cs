@@ -8,6 +8,7 @@ using System.Text;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
+using Warhammer.Core.Extensions;
 using Warhammer.Core.Models;
 using Warhammer.Core.RoleplayViewModels;
 
@@ -152,8 +153,7 @@ namespace Warhammer.Core.Concrete
                 viewModel.ID = character.Id;
                 viewModel.Description = character.RawText;
                 viewModel.Name = character.ShortName;
-                viewModel.Image = character.PrimaryImage;
-                viewModel.ImageMimeType = character.ImageMime;
+                viewModel.ImageUrl = character.FileIdentifier.ToImageUrl();
                 viewModel.PlayerId = character.PlayerId.GetValueOrDefault();
                 viewModel.CharacterSheet = string.Empty;
 
@@ -169,8 +169,7 @@ namespace Warhammer.Core.Concrete
             viewModel.ID = character.Id;
             viewModel.Description = character.RawText;
             viewModel.Name = character.ShortName;
-            viewModel.Image = character.PrimaryImage;
-            viewModel.ImageMimeType = character.ImageMime;
+            viewModel.ImageUrl = character.FileIdentifier.ToImageUrl();
             viewModel.PlayerId = character.PlayerId.GetValueOrDefault();
             viewModel.CharacterSheet = string.Empty;
 
@@ -295,7 +294,7 @@ namespace Warhammer.Core.Concrete
             if (post.CharacterId.HasValue)
             {
                 character = Repo.Pages().Where(p => p.Id == post.CharacterId.Value).Select(p =>
-                    new PageLinkModel { Id = p.Id, FullName = p.FullName, ShortName = p.ShortName }).FirstOrDefault();
+                    new PageLinkModel { Id = p.Id, FullName = p.FullName, ShortName = p.ShortName, FileIdentifier = p.FileIdentifier }).FirstOrDefault();
             }
 
             return character;
@@ -333,7 +332,7 @@ namespace Warhammer.Core.Concrete
         {
             int currentPlayerId = Repo.Players().Where(p => p.UserName == UserProvider.UserName).Select(p => p.Id).FirstOrDefault();
             int gmId = GetGmId(sessionId);
-            List<PageLinkModel> characters = Repo.Pages().OfType<Person>().Where(s => s.Pages.Any(p => p.Id == sessionId)).Select(p => new PageLinkModel { FullName = p.FullName, ShortName = p.ShortName, Id = p.Id }).ToList();
+            List<PageLinkModel> characters = Repo.Pages().OfType<Person>().Where(s => s.Pages.Any(p => p.Id == sessionId)).Select(p => new PageLinkModel { FullName = p.FullName, ShortName = p.ShortName, Id = p.Id, FileIdentifier = p.FileIdentifier }).ToList();
             List<PlayerViewModel> players = Repo.Players().Select(p => new PlayerViewModel { Name = p.DisplayName, ID = p.Id, IsGM = p.Id == gmId }).ToList();
             PlayerViewModel player = players.Single(p => p.ID == currentPlayerId);
             bool currentplayerIsGm = player.IsGM;
