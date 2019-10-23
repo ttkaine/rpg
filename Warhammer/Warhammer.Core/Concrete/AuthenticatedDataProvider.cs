@@ -284,10 +284,7 @@ namespace Warhammer.Core.Concrete
             }
             else
             {
-                Guid guid = Guid.NewGuid();
-                string fileId = guid.ToString();
-                _azure.SaveBlob(fileId, data, mimeType);
-                image.FileIdentifier = fileId;
+                image.FileIdentifier = _azure.CreateImageBlob(data, mimeType);
                 image.Data = null;
                 image.PageId = id;
                 image.IsPrimary = true;
@@ -1769,12 +1766,9 @@ namespace Warhammer.Core.Concrete
 
         public PageImage SaveImage(int pageId, byte[] image)
         {
-            Guid guid = Guid.NewGuid();
-            string fileId = guid.ToString();
-            _azure.SaveBlob(fileId, image, "image/Jpeg");
             PageImage pageImage = new PageImage
             {
-                FileIdentifier = fileId,
+                FileIdentifier = _azure.CreateImageBlob(image),
                 PageId = pageId
             };
             int id = _repository.Save(pageImage);

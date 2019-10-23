@@ -53,10 +53,7 @@ namespace Warhammer.Mvc.Controllers
             List<PageImage> pageImages = DataProvider.AdminGetPageImages().Where(f => string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
             foreach (var image in pageImages)
             {
-                Guid guid = Guid.NewGuid();
-                string fileId = guid.ToString();
-                _azure.SaveBlob(fileId, image.Data, "image/jpeg");
-                image.FileIdentifier = fileId;
+                image.FileIdentifier = _azure.CreateImageBlob(image.Data);
                 DataProvider.SaveImage(image);
             }
             return RedirectToAction("Index", "Home");
