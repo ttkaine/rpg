@@ -101,6 +101,7 @@ namespace Warhammer.Core.Abstract
         int CurrentPlayerId { get; }
         int CurrentCampaignId { get; }
         bool IsMasterDomain { get; }
+        string ImageUrlBase { get; }
         List<UserSetting> UserSettings();
         bool SettingIsEnabled(Setting setting);
         bool SettingIsEnabled(SettingNames settingName);
@@ -230,5 +231,8 @@ namespace Warhammer.Core.Abstract
         List<PlayerCampaign> GetAllPlayerCampaigns();
         List<PlayerCampaignLinkModel> GetAllPlayerCampaignLinkModels();
         void UpdatePlayerSiteLinks(List<PlayerCampaignLinkModel> playerLinks);
+        List<PageImage> GetPageImages();
+        void SaveImage(PageImage pageImage);
+        List<PageImage> AdminGetPageImages();
     }
 }

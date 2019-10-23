@@ -309,6 +309,7 @@
           <Property Name="Data" Type="varbinary(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="Public" Type="bit" Nullable="false" />
+          <Property Name="FileIdentifier" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -438,6 +439,7 @@
           <Property Name="DeletedDate" Type="datetime" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="ImageId" Type="int" />
+          <Property Name="RollModifier" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PostOrder">
           <Key>
@@ -2317,6 +2319,7 @@
           <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_Post_Session" FromRole="Post" ToRole="Session" />
           <Property Name="ImageId" Type="Int32" />
           <NavigationProperty Name="PageImage" Relationship="WarhammerModel.FK_Post_PageImage" FromRole="Post" ToRole="PageImage" />
+          <Property Name="RollModifier" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Post_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -2615,6 +2618,7 @@
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_PageImage" FromRole="PageImage" ToRole="Post" />
           <Property Name="Public" Type="Boolean" Nullable="false" />
+          <Property Name="FileIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_PageImage_Page">
           <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
@@ -3472,6 +3476,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="WarhammerModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="RollModifier" ColumnName="RollModifier" />
                 <ScalarProperty Name="ImageId" ColumnName="ImageId" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
@@ -3675,6 +3680,7 @@
           <EntitySetMapping Name="PageImages">
             <EntityTypeMapping TypeName="WarhammerModel.PageImage">
               <MappingFragment StoreEntitySet="PageImage">
+                <ScalarProperty Name="FileIdentifier" ColumnName="FileIdentifier" />
                 <ScalarProperty Name="Public" ColumnName="Public" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Data" ColumnName="Data" />

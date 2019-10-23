@@ -24,11 +24,15 @@ namespace Warhammer.Core.Concrete
         private readonly ISiteFeatureProvider _feature;
         private readonly ICharacterAttributeManager _characterAttributeManager;
         private readonly IPublicDataProvider _publicData;
+        private readonly IAzureProvider _azure;
+
+        public const string _imageUrlBase = "https://sendingofeight.blob.core.windows.net/images/";
 
         public bool ShadowMode { get; set; }
         public int CurrentPlayerId => CurrentPlayer.Id;
         public int CurrentCampaignId => _repository.CurrentCampaignId;
         public bool IsMasterDomain => _repository.IsMasterDomain;
+        public string ImageUrlBase => _imageUrlBase;
         private List<int> _myPageIds;
         public List<int> MyPageIds
         {
@@ -63,7 +67,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICharacterAttributeManager characterAttributeManager, IPublicDataProvider publicData)
+        public AuthenticatedDataProvider(IAuthenticatedUserProvider authenticatedUser, IRepository repository, IModelFactory factory, IEmailHandler email, ISiteFeatureProvider feature, ICharacterAttributeManager characterAttributeManager, IPublicDataProvider publicData, IAzureProvider azure)
         {
             _authenticatedUser = authenticatedUser;
             _repository = repository;
@@ -72,6 +76,7 @@ namespace Warhammer.Core.Concrete
             _feature = feature;
             _characterAttributeManager = characterAttributeManager;
             _publicData = publicData;
+            _azure = azure;
 
             if (_authenticatedUser.UserIsAuthenticated && !_authenticatedUser.IsAdmin)
             {
@@ -279,10 +284,11 @@ namespace Warhammer.Core.Concrete
             }
             else
             {
-                image.Data = data;
+                image.FileIdentifier = _azure.CreateImageBlob(data, mimeType);
+                image.Data = null;
                 image.PageId = id;
                 image.IsPrimary = true;
-
+                
                 _repository.Save(image);
             }
 
@@ -1762,7 +1768,7 @@ namespace Warhammer.Core.Concrete
         {
             PageImage pageImage = new PageImage
             {
-                Data = image,
+                FileIdentifier = _azure.CreateImageBlob(image),
                 PageId = pageId
             };
             int id = _repository.Save(pageImage);
@@ -3449,6 +3455,21 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public List<PageImage> GetPageImages()
+        {
+            return _repository.PageImages().ToList();
+        }
+
+        public void SaveImage(PageImage pageImage)
+        {
+            _repository.Save(pageImage);
+        }
+
+        public List<PageImage> AdminGetPageImages()
+        {
+            return _repository.AdminPageImages();
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
@@ -3816,6 +3837,7 @@ namespace Warhammer.Core.Concrete
                     PlainText = p.PlainText,
                     XpAwarded = p.XPAwarded,
                     CurrentScore = p.CurrentScore,
+                    ImageFile = p.PageImages.Where(s => s.IsPrimary).Select(s => s.FileIdentifier).FirstOrDefault(),
                     Awards = p.Awards
                         .OrderByDescending(t => t.Trophy.PointsValue)
                         .Select(a => new AwardSummaryModel
@@ -3838,6 +3860,14 @@ namespace Warhammer.Core.Concrete
                 item.Rank = i++;
                 item.Campaign = campaignNames[item.CampaignId];
                 item.Url = $"https://{campaignUrls[item.CampaignId]}/page/index/{item.Id}";
+                if (item.ImageFile != null)
+                {
+                    item.ImageUrl = $"{ImageUrlBase}{item.ImageFile}";
+                }
+                else
+                {
+                    item.ImageUrl = $"{ImageUrlBase}default.png";
+                }
             }
             return data;
         }

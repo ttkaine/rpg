@@ -25,6 +25,7 @@ namespace Warhammer.Core.Entities
         public byte[] Data { get; set; }
         public int CampaignId { get; set; }
         public bool Public { get; set; }
+        public string FileIdentifier { get; set; }
     
         public virtual Page Page { get; set; }
         public virtual ICollection<Post> Posts { get; set; }

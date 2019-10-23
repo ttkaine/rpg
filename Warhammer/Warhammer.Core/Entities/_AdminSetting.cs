@@ -17,7 +17,8 @@
         SendGridKey = 106,
 
         //Configuration Options 200
-        UseHangfire = 201
+        UseHangfire = 201,
+        AzureStorageConnectionString = 202
     }
 
     public partial class AdminSetting

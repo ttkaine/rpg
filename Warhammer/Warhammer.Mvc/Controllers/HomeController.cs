@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using Microsoft.WindowsAzure.Storage.Blob;
 using NUnit.Framework;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -20,6 +22,7 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IAdminSettingsProvider _adminSettings;
         private readonly IPublicDataProvider _publicData;
+        private readonly IAzureProvider _azure;
 
         private string SiteName
         {
@@ -29,10 +32,11 @@ namespace Warhammer.Mvc.Controllers
             }
         }
 
-        public HomeController(IAuthenticatedDataProvider data, IAdminSettingsProvider adminSettings, IPublicDataProvider publicData) : base(data)
+        public HomeController(IAuthenticatedDataProvider data, IAdminSettingsProvider adminSettings, IPublicDataProvider publicData, IAzureProvider azure) : base(data)
         {
             _adminSettings = adminSettings;
             _publicData = publicData;
+            _azure = azure;
         }
 
         public ActionResult Index()
@@ -471,16 +475,27 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        public ActionResult ShowImage(int id)
+        public async Task<ActionResult> ShowImage(int id)
         {
-            PageImage iamge = DataProvider.GetPageImage(id);
+            PageImage image = DataProvider.GetPageImage(id);
+
+            if (!string.IsNullOrWhiteSpace(image.FileIdentifier))
+            {
+                ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(image.FileIdentifier));
+                if (blob.Exists())
+                {
+                    return File(blob.OpenRead(), "image/jpeg");
+                }
+            }
+
+
             var defaultDir = Server.MapPath("/Content/Images");
 
-            if (iamge != null)
+            if (image != null)
             {
-                if (iamge.Data != null && iamge.Data.Length > 100)
+                if (image.Data != null && image.Data.Length > 100)
                 {
-                    return File(iamge.Data, "image/jpeg");
+                    return File(image.Data, "image/jpeg");
                 }
             }
 

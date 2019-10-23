@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web.Mvc;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -108,6 +109,11 @@ namespace Warhammer.Core.Concrete
         public IQueryable<SiteFeature> AllSiteFeatures()
         {
             return _entities.SiteFeatures;
+        }
+
+        public List<PageImage> AdminPageImages()
+        {
+            return _entities.PageImages.ToList();
         }
 
         public int Save(SiteIcon icon)

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -20,20 +22,32 @@ namespace Warhammer.Mvc.Controllers
     {
         private readonly IImageDataProvider _imageData;
         private readonly IImageProcessor _imageProcessor;
+        private readonly IAzureProvider _azure;
+        private const string UrlBase = "https://sendingofeight.blob.core.windows.net/images/";
 
-        public ImageController(IImageDataProvider imageData, IImageProcessor imageProcessor)
+        public ImageController(IImageDataProvider imageData, IImageProcessor imageProcessor, IAzureProvider azure)
         {
             _imageData = imageData;
             _imageProcessor = imageProcessor;
+            _azure = azure;
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         [AllowAnonymous]
-        public ActionResult Image(int id)
+        public async Task<ActionResult> Image(int id)
         {
             PageImage image = _imageData.GetPageImageForPage(id);
             if (image != null)
             {
+                if (!string.IsNullOrWhiteSpace(image.FileIdentifier))
+                {
+                    ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(image.FileIdentifier));
+                    if (blob.Exists())
+                    {
+                        return File(blob.OpenRead(), "image/jpeg");
+                    }
+                }
+
                 return File(image.Data, "image/jpeg");
             }
 
@@ -60,11 +74,21 @@ namespace Warhammer.Mvc.Controllers
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         [AllowAnonymous]
-        public ActionResult LeagueImage(int id)
+        public async Task<ActionResult> LeagueImage(int id)
         {
             PageImage image = _imageData.GetPageImageForPage(id, true);
             if (image != null)
             {
+
+                if (!string.IsNullOrWhiteSpace(image.FileIdentifier))
+                {
+                    ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(image.FileIdentifier));
+                    if (blob.Exists())
+                    {
+                        return File(blob.OpenRead(), "image/jpeg");
+                    }
+                }
+
                 return File(image.Data, "image/jpeg");
             }
 
@@ -80,10 +104,17 @@ namespace Warhammer.Mvc.Controllers
             if (id.HasValue)
             {
                 string name = _imageData.GetPageName(id.Value);
+                string file = _imageData.GetImagefilenameForPage(id.Value);
+
+                string url = $"{UrlBase}{file}";
+
+           
+
                 ImageViewModel imageViewModel = new ImageViewModel
                 {
                     Id = id.Value,
-                    Name = name
+                    Name = name,
+                    Url = url
                 };
                 return PartialView(imageViewModel);
             }

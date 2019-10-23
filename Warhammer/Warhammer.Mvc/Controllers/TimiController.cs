@@ -18,9 +18,12 @@ namespace Warhammer.Mvc.Controllers
     [Authorize(Roles = "Admin")]
     public class TimiController : BaseController
     {
+        private readonly IAzureProvider _azure;
+
         // GET: Timi
-        public TimiController(IAuthenticatedDataProvider data) : base(data)
+        public TimiController(IAuthenticatedDataProvider data, IAzureProvider azure) : base(data)
         {
+            _azure = azure;
         }
 
         public ActionResult MyPeeps()
@@ -41,6 +44,30 @@ namespace Warhammer.Mvc.Controllers
             {
                 page.PlainText = page.RawText;
                 DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName, page.Description);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult MoveImages()
+        {
+            List<PageImage> pageImages = DataProvider.AdminGetPageImages().Where(f => string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
+            foreach (var image in pageImages)
+            {
+                image.FileIdentifier = _azure.CreateImageBlob(image.Data);
+                DataProvider.SaveImage(image);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ClearOldImages()
+        {
+            List<PageImage> pageImages = DataProvider.AdminGetPageImages()
+                .Where(i => i.Data != null)
+                .Where(f => !string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
+            foreach (var image in pageImages)
+            {
+                image.Data = null;
+                DataProvider.SaveImage(image);
             }
             return RedirectToAction("Index", "Home");
         }
