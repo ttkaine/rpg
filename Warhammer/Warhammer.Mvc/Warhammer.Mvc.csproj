@@ -340,6 +340,7 @@
     <Content Include="Content\DbUpdateScripts\18100601.sql" />
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
+    <Content Include="Content\DbUpdateScripts\19102302.sql" />
     <Content Include="Content\DbUpdateScripts\19102301.sql" />
     <Content Include="Content\DbUpdateScripts\19102102.sql" />
     <Content Include="Content\DbUpdateScripts\19102101.sql" />
@@ -845,7 +846,7 @@
     <Content Include="Views\Shared\DisplayTemplates\AwardBarItem.cshtml" />
     <Content Include="Views\Person\AwardHistoryPanel.cshtml" />
     <Content Include="Views\Page\RelatedLinksPanel.cshtml" />
-    <Content Include="Views\Image\PageImage.cshtml" />
+    <Content Include="Views\Shared\PageImage.cshtml" />
     <Content Include="Views\Person\CurrentScorePiePanel.cshtml" />
     <Content Include="Views\PageControls\GmReadOnlyPageControls.cshtml" />
     <Content Include="Views\Person\TokenPanel.cshtml" />
@@ -898,6 +899,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Error\" />
+    <Folder Include="Views\Image\" />
     <Folder Include="Views\Player\" />
   </ItemGroup>
   <ItemGroup>

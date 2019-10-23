@@ -165,7 +165,7 @@ namespace Warhammer.Core.Concrete
         public ICollection<PageLinkModel> MyPeople()
         {
             return _repository.People().Where(p => p.PlayerId == CurrentPlayer.Id && p.IsDead == false)
-                .Select(p => new PageLinkModel{ Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, Type = PageLinkType.Person}).ToList();
+                .Select(p => new PageLinkModel{ Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, Type = PageLinkType.Person, FileIdentifier = p.FileIdentifier}).ToList();
         }
 
         public int AddSessionLog(int sessionId, int personId, string name, string title, string description)
@@ -190,7 +190,7 @@ namespace Warhammer.Core.Concrete
                 Description = description,
                 DateTime = date,
                 GameDate = new GameDate() { Year = gameDate.Year, Month = gameDate.Month, Day = gameDate.Day, Comment = gameDate.Comment },
-                ArcId = arcId
+                ArcId = arcId,
             };
 
             Session previousSession = null;
@@ -277,22 +277,22 @@ namespace Warhammer.Core.Concrete
 
         public void ChangePicture(int id, byte[] data, string mimeType)
         {
-            PageImage image = _repository.PageImages().FirstOrDefault(p => p.PageId == id && p.IsPrimary) ?? new PageImage();
-
-            if (data == null && image.Id > 0)
+            Page page = GetPage(id);
+            if (page != null)
             {
-                _repository.Delete(image);
-            }
-            else
-            {
-                image.FileIdentifier = _azure.CreateImageBlob(data, mimeType);
-                image.Data = null;
-                image.PageId = id;
-                image.IsPrimary = true;
-                
-                _repository.Save(image);
-            }
+                if (data != null)
+                {
+                    page.FileIdentifier = _azure.CreateImageBlob(data, mimeType);
+                    page.ImageMime = mimeType;
+                }
+                else
+                {
+                    page.FileIdentifier = "default.png";
+                    page.ImageMime = "image/png";
+                }
 
+                Save(page);
+            }
         }
 
         public Page UpdatePageDetails(int id, string shortName, string fullName, string description)
@@ -322,23 +322,6 @@ namespace Warhammer.Core.Concrete
                 existingPage.ShortName = shortName;
                 existingPage.FullName = fullName;
                 existingPage.Description = description;
-
-                if (existingPage.HasInlineImage)
-                {
-                    if (!existingPage.HasExternalImage)
-                    {
-                        PageImage image = new PageImage
-                        {
-                            PageId = existingPage.Id,
-                            Data = existingPage.ImageData,
-                            IsPrimary = true,
-                            CampaignId = existingPage.CampaignId
-                        };
-
-                        _repository.Save(image);
-                    }
-                    existingPage.ImageData = null;
-                }
             }
 
             existingPage.WordCount = existingPage.CalculatedWordCount;
@@ -423,6 +406,18 @@ namespace Warhammer.Core.Concrete
                 page.CreatedById = CurrentPlayer.Id;
                 page.SignificantUpdate = DateTime.Now;
                 page.SignificantUpdateById = CurrentPlayer.Id;
+
+                if (page is Person)
+                {
+                    page.FileIdentifier = "default_character.jpg";
+                    page.ImageMime = "image/jpg";
+                }
+                else
+                {
+                    page.FileIdentifier = "default.png";
+                    page.ImageMime = "image/png";
+                }
+
                 isNew = true;
             }
 
@@ -477,7 +472,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyShadow(query);
             }
 
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkWithUpdateDateModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, LastUpdate = p.SignificantUpdate }).Take(20).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkWithUpdateDateModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, LastUpdate = p.SignificantUpdate, FileIdentifier = p.FileIdentifier }).Take(20).ToList();
         }
 
         private IQueryable<Page> ApplyShadow(IQueryable<Page> query)
@@ -760,7 +755,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
         public ICollection<PageLinkModel> ModifiedPages()
@@ -772,7 +767,7 @@ namespace Warhammer.Core.Concrete
             {
                 query = ApplyShadow(query);
             }
-            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.OrderByDescending(p => p.SignificantUpdate).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
         public void TogglePagePin(int id)
@@ -2169,6 +2164,7 @@ namespace Warhammer.Core.Concrete
                     FullName = p.FullName,
                     Id = p.Id,
                     ShortName = p.ShortName,
+                    FileIdentifier = p.FileIdentifier,
                     Type = PageLinkType.SessionLog,                            
                 }).ToList());
 
@@ -2200,8 +2196,9 @@ namespace Warhammer.Core.Concrete
                 Created = p.Created,
                 FullName = p.FullName,
                 Id = p.Id,
-                ShortName = p.ShortName
-            
+                ShortName = p.ShortName,
+                FileIdentifier = p.FileIdentifier,
+
             }).ToList();
 
             foreach (PageLinkModel linkModel in links)
@@ -2249,7 +2246,7 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> PeopleWithXpToSpend()
         {
-            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return _repository.People().Where(p => !p.PlayerId.HasValue && p.XpSpendAvailable).Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
         public void AwardShiftForSession(int id)
@@ -2315,7 +2312,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyPeopleShadow(query);
             }
 
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
         public void SetGender(int personId, Gender gender)
@@ -2894,7 +2891,7 @@ namespace Warhammer.Core.Concrete
                         .Where(u => u.CampaignId == CurrentCampaignId)
                         .Where(v => v.PlayerId == CurrentPlayerId).Select(s => s.Viewed).FirstOrDefault())
                     .Take(15)
-                    .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName})
+                    .Select(p => new PageLinkModel {Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier })
                     .ToList();
         }
 
@@ -3254,7 +3251,8 @@ namespace Warhammer.Core.Concrete
             return _repository.Pages().OfType<Person>().Where(s => !s.PlayerId.HasValue && !s.IsDead)
                 .Select(p => new PageLinkModel
                 {
-                    Id = p.Id, FullName = p.FullName, ShortName = p.ShortName, Type = PageLinkType.Person
+                    Id = p.Id, FullName = p.FullName, ShortName = p.ShortName, Type = PageLinkType.Person,
+                    FileIdentifier = p.FileIdentifier
                 }).ToList();
         }
 
@@ -3263,7 +3261,7 @@ namespace Warhammer.Core.Concrete
         public List<PageLinkModel> SessionLogs(int id)
         {
             return _repository.Pages().OfType<SessionLog>().Where(s => s.PersonId == id)
-                .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+                .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
         public List<AwardSummaryModel> GetAwardsForPerson(int id, bool pointsOrder = false)
@@ -3322,7 +3320,8 @@ namespace Warhammer.Core.Concrete
                     ShortName = s.ShortName,
                     Id = s.Id,
                     Created = s.Created,
-                    Type = PageLinkType.Session
+                    Type = PageLinkType.Session,
+                    FileIdentifier = s.FileIdentifier
                 }).ToList();
         }
 
@@ -3463,7 +3462,7 @@ namespace Warhammer.Core.Concrete
         {
            return _repository.People()
                .Where(p => p.Awards.Any(a => a.NominatedById == CurrentPlayer.Id&& a.Trophy.TypeId == (int)awardType))
-               .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).FirstOrDefault();
+               .Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).FirstOrDefault();
 
         }
 
@@ -3563,7 +3562,7 @@ namespace Warhammer.Core.Concrete
             query = query.OrderByDescending(p => p.CurrentScore).Take(5);
 
 
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
         public List<Person> AllNpcs()
@@ -3854,7 +3853,7 @@ namespace Warhammer.Core.Concrete
                 query = ApplyPeopleShadow(query);
             }
 
-            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName }).ToList();
+            return query.Select(p => new PageLinkModel { Id = p.Id, ShortName = p.ShortName, FullName = p.FullName, FileIdentifier = p.FileIdentifier }).ToList();
         }
 
 

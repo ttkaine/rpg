@@ -58,47 +58,6 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        public ActionResult LeagueTrophyImage(int id)
-        {
-            TrophyImage image = _imageData.GetPageImageForTrophy(id);
-            if (image != null)
-            {
-                return File(image.Data, image.Mime);
-            }
-
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
-            return File(defaultImagePath, "image/jpeg");
-        }
-
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        [AllowAnonymous]
-        public async Task<ActionResult> LeagueImage(int id)
-        {
-            PageImage image = _imageData.GetPageImageForPage(id, true);
-            if (image != null)
-            {
-
-                if (!string.IsNullOrWhiteSpace(image.FileIdentifier))
-                {
-                    ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(image.FileIdentifier));
-                    if (blob.Exists())
-                    {
-                        return File(blob.OpenRead(), "image/jpeg");
-                    }
-                }
-
-                return File(image.Data, "image/jpeg");
-            }
-
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
-            return File(defaultImagePath, "image/jpeg");
-        }
-
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult PageImage(int? id)
         {
             if (id.HasValue)
@@ -122,26 +81,30 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Token(TokenViewModel model)
+        public async Task<ActionResult> Token(TokenViewModel model)
         {
-            PageImage image = _imageData.GetPageImageForPage(model.Id);
-            if (image != null)
+            string name = _imageData.GetPageName(model.Id);
+            if (string.IsNullOrWhiteSpace(name))
             {
-                Image roundImage = _imageProcessor.RoundCorners(image.Data, model.DrawingColor);
+                name = "Unknown";
+            }
+            string file = _imageData.GetImagefilenameForPage(model.Id);
+
+            ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(file));
+            if (blob.Exists())
+            {
+                blob.FetchAttributes();
+                long fileByteLength = blob.Properties.Length;
+                Byte[] data = new Byte[fileByteLength];
+                blob.DownloadToByteArray(data, 0);
+
+                Image roundImage = _imageProcessor.RoundCorners(data, model.DrawingColor);
                 byte[] png = _imageProcessor.GetPngFromImage(roundImage);
-                string name = _imageData.GetPageName(model.Id);
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    name = "Unknown";
-                }
                 string filename = $"Token_{name.ToAlpha()}.png";
                 return File(png, "image/png", $"{filename}");
             }
 
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
-            return File(defaultImagePath, "image/jpeg");
+            return null;
         }
     }
 }

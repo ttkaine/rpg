@@ -1,4 +1,5 @@
-﻿@using Page = Warhammer.Core.Entities.Page
+﻿@using Warhammer.Core.Extensions
+@using Page = Warhammer.Core.Entities.Page
 @model Page
 
 @{
@@ -19,10 +20,10 @@
         <div class="main-content">
             <div class="content-block">
 
-                @if (Model.PrimaryImage != null && Model.PrimaryImage.Length > 0 && !string.IsNullOrWhiteSpace(Model.ImageMime))
+                @if (Model.HasImage)
                 {
                     <h2>Current Image</h2>
-                    <img src="@Url.Action("Image", "Page", new {id = Model.Id})" title="@Model.FullName" alt="Picture of @Model.FullName"/>
+                    <img src="@Model.FileIdentifier.ToImageUrl()" title="@Model.FullName" alt="Picture of @Model.FullName"/>
                 }
                 
                 <input type="file" id="profileImageFile" name="profileImageFile" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">

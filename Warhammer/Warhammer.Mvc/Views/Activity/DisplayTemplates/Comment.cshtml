@@ -1,10 +1,11 @@
-﻿@model Warhammer.Core.Entities.Comment
+﻿@using Warhammer.Mvc.Models
+@model Warhammer.Core.Entities.Comment
 
 <tr>
     <td class="no-break">
         @if (!Model.IsPlayerComment)
         {
-            @Html.Action("PageImage", "Image", new {id = Model.PersonId})
+            @Html.Partial("PageImage", new ImageViewModel {Id = Model.Person.Id, Name = Model.Person.ShortName, Url = Model.Person.ImageUrl })
         }
         else
         {
