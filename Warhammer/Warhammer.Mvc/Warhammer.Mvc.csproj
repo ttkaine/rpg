@@ -336,9 +336,11 @@
   <ItemGroup>
     <Content Include="Content\cowboy.css" />
     <Content Include="Content\darknet.css" />
+    <Content Include="Content\DbUpdateScripts\00000000.sql" />
     <Content Include="Content\DbUpdateScripts\18100601.sql" />
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
+    <Content Include="Content\DbUpdateScripts\19102301.sql" />
     <Content Include="Content\DbUpdateScripts\19102102.sql" />
     <Content Include="Content\DbUpdateScripts\19102101.sql" />
     <Content Include="Content\DbUpdateScripts\19042601.sql" />

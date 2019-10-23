@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Transactions;
 using LinqKit;
+using SendGrid;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Extensions;
@@ -850,14 +851,14 @@ namespace Warhammer.Core.Concrete
             return _repository.Trophies().FirstOrDefault(t => t.Id == id);
         }
 
-        public int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType,
+        public int AddTrophy(string name, string description, int pointsValue, string fileIdentifier, string mimeType,
             bool currentCampaignOnly, TrophyType trophyTrophyType)
         {
             Trophy trophy = new Trophy();
             trophy.Name = name;
             trophy.Description = description;
             trophy.PointsValue = pointsValue;
-            trophy.ImageData = imageData;
+            trophy.FileIdentifier = fileIdentifier;
             trophy.MimeType = mimeType;
 
             if (CurrentUserIsAdmin)
@@ -877,49 +878,13 @@ namespace Warhammer.Core.Concrete
             return _repository.Save(trophy);
         }
 
-        public void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData,
-            string mimeType, bool currentCampaignOnly, TrophyType trophyTrophyType)
+        public void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly, TrophyType trophyTrophyType)
         {
-            Trophy trophy = GetTrophy(id);
-            if (trophy != null)
-            {
-                if (!_authenticatedUser.IsAdmin)
-                {
-                    if (!trophy.CurrentCampaignOnly)
-                    {
-                        return;
-                    }
-                }
-
-                trophy.Name = name;
-                trophy.Description = description;
-                trophy.PointsValue = pointsValue;
-                trophy.ImageData = imageData;
-                trophy.MimeType = mimeType;
-
-                if (currentCampaignOnly)
-                {
-                    trophy.CampaignId = Campaign.CampaignId;
-                }
-                else
-                {
-                    if (_authenticatedUser.IsAdmin)
-                    {
-                        trophy.CampaignId = null;
-                    }
-                }
-
-                if (CurrentUserIsAdmin)
-                {
-                    trophy.TrophyType = trophyTrophyType;
-                }
-
-                _repository.Save(trophy);
-            }
+            UpdateTrophy(id, name, description, pointsValue, currentCampaignOnly, trophyTrophyType, null, null);
         }
 
         public void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly,
-            TrophyType trophyTrophyType)
+            TrophyType trophyTrophyType, string fileIdentifier, string mimeType)
         {
             Trophy trophy = GetTrophy(id);
             if (trophy != null)
@@ -947,6 +912,12 @@ namespace Warhammer.Core.Concrete
                 trophy.Name = name;
                 trophy.Description = description;
                 trophy.PointsValue = pointsValue;
+
+                if (!string.IsNullOrWhiteSpace(fileIdentifier))
+                {
+                    trophy.FileIdentifier = fileIdentifier;
+                    trophy.MimeType = mimeType;
+                }
 
                 if (CurrentUserIsAdmin)
                 {
@@ -3317,7 +3288,8 @@ namespace Warhammer.Core.Concrete
                 Id = a.Id,
                 TrophyId = a.TrophyId,
                 Reason = a.Reason,
-                TrophyName = a.Trophy.Name
+                TrophyName = a.Trophy.Name,
+                FileIdentifier = a.Trophy.FileIdentifier
             }).ToList();
         }
 
@@ -3465,9 +3437,9 @@ namespace Warhammer.Core.Concrete
             _repository.Save(pageImage);
         }
 
-        public List<PageImage> AdminGetPageImages()
+        public List<Trophy> AdminGetTrophy()
         {
-            return _repository.AdminPageImages();
+            return _repository.AdminTrophies().ToList();
         }
 
         public void RemoveAward(int personId, int awardId)
@@ -3846,7 +3818,8 @@ namespace Warhammer.Core.Concrete
                             Id = a.Id,
                             Reason = a.Reason,
                             TrophyId = a.TrophyId,
-                            TrophyName = a.Trophy.Name
+                            TrophyName = a.Trophy.Name,
+                            FileIdentifier = a.Trophy.FileIdentifier
                         }).ToList(),
                     CampaignId = p.CampaignId,
                     Player = p.Player.DisplayName

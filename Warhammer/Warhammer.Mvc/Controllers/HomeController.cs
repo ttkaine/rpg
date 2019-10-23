@@ -201,27 +201,21 @@ namespace Warhammer.Mvc.Controllers
             return View(people);
         }
 
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        public ActionResult TrophyImage(int id)
-        {
-            Trophy trophy = DataProvider.GetTrophy(id);
-            var defaultDir = Server.MapPath("/Content/Images");
+        //public async Task<ActionResult> TrophyImage(int id)
+        //{
+        //    Trophy trophy = DataProvider.GetTrophy(id);
 
-            if (trophy != null)
-            {
-                if (trophy.ImageData != null && trophy.ImageData.Length > 100 && !string.IsNullOrWhiteSpace(trophy.MimeType))
-                {
-                    return File(trophy.ImageData, trophy.MimeType);
-                }
-            }
+        //    if (!string.IsNullOrWhiteSpace(trophy.FileIdentifier))
+        //    {
+        //        ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(trophy.FileIdentifier));
+        //        if (blob.Exists())
+        //        {
+        //            return File(blob.OpenRead(), trophy.MimeType);
+        //        }
+        //    }
 
-            var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
-
-            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
-            Response.Cache.SetCacheability(HttpCacheability.Public);
-
-            return File(defaultImagePath, "image/jpeg");
-        }
+        //    return null;
+        //}
 
         [HttpGet]
         public ActionResult Search()

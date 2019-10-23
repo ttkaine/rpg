@@ -50,24 +50,11 @@ namespace Warhammer.Mvc.Controllers
 
         public ActionResult MoveImages()
         {
-            List<PageImage> pageImages = DataProvider.AdminGetPageImages().Where(f => string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
-            foreach (var image in pageImages)
+            List<Trophy> allTrophies = DataProvider.AdminGetTrophy().Where(f => string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
+            foreach (var trophy in allTrophies)
             {
-                image.FileIdentifier = _azure.CreateImageBlob(image.Data);
-                DataProvider.SaveImage(image);
-            }
-            return RedirectToAction("Index", "Home");
-        }
-
-        public ActionResult ClearOldImages()
-        {
-            List<PageImage> pageImages = DataProvider.AdminGetPageImages()
-                .Where(i => i.Data != null)
-                .Where(f => !string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
-            foreach (var image in pageImages)
-            {
-                image.Data = null;
-                DataProvider.SaveImage(image);
+                trophy.FileIdentifier = _azure.CreateImageBlob(trophy.ImageData, trophy.MimeType);
+                DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue, trophy.CurrentCampaignOnly, trophy.TrophyType, trophy.FileIdentifier, trophy.MimeType);
             }
             return RedirectToAction("Index", "Home");
         }

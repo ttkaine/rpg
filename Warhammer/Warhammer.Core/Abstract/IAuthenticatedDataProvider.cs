@@ -45,12 +45,11 @@ namespace Warhammer.Core.Abstract
         void ResurrectPerson(int id);
         void KillPerson(int id, string obiturary, string causeOfDeath);
         Trophy GetTrophy(int id);
-        int AddTrophy(string name, string description, int pointsValue, byte[] imageData, string mimeType,
-            bool currentCampaignOnly, TrophyType trophyType);
-        void UpdateTrophy(int id, string name, string description, int pointsValue, byte[] imageData, string mimeType,
+        int AddTrophy(string name, string description, int pointsValue, string fileIdentifier, string mimeType, bool currentCampaignOnly, TrophyType trophyType);
+        void UpdateTrophy(int id, string name, string description, int pointsValue,
             bool currentCampaignOnly, TrophyType trophyType);
         void UpdateTrophy(int id, string name, string description, int pointsValue, bool currentCampaignOnly,
-            TrophyType trophyType);
+            TrophyType trophyType, string fileIdentifier, string mimeType);
         ICollection<Trophy> Trophies();
         List<SelectItem> TrophiesForSelect();
         int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null);
@@ -233,6 +232,6 @@ namespace Warhammer.Core.Abstract
         void UpdatePlayerSiteLinks(List<PlayerCampaignLinkModel> playerLinks);
         List<PageImage> GetPageImages();
         void SaveImage(PageImage pageImage);
-        List<PageImage> AdminGetPageImages();
+        List<Trophy> AdminGetTrophy();
     }
 }

@@ -298,6 +298,7 @@
           <Property Name="GmNotes" Type="nvarchar(max)" />
           <Property Name="WordCount" Type="int" Nullable="false" />
           <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="FileIdentifier" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PageImage">
           <Key>
@@ -592,6 +593,7 @@
           <Property Name="PointsValue" Type="int" Nullable="false" />
           <Property Name="TypeId" Type="int" Nullable="false" />
           <Property Name="CampaignId" Type="int" />
+          <Property Name="FileIdentifier" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="UserSetting">
           <Key>
@@ -2026,6 +2028,7 @@
           <Property Name="WordCount" Type="Int32" Nullable="false" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="BookPages" Relationship="WarhammerModel.FK_BookPage_Page" FromRole="Page" ToRole="BookPage" />
+          <Property Name="FileIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -2130,6 +2133,7 @@
           <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Trophy" FromRole="Trophy" ToRole="Award" />
           <Property Name="CampaignId" Type="Int32" />
           <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Trophy" FromRole="Trophy" ToRole="AwardNomination" />
+          <Property Name="FileIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Award_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
@@ -3328,6 +3332,7 @@
           <EntitySetMapping Name="Pages">
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Page)">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="FileIdentifier" ColumnName="FileIdentifier" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="WordCount" ColumnName="WordCount" />
                 <ScalarProperty Name="GmNotes" ColumnName="GmNotes" />
@@ -3454,6 +3459,7 @@
           <EntitySetMapping Name="Trophies">
             <EntityTypeMapping TypeName="WarhammerModel.Trophy">
               <MappingFragment StoreEntitySet="Trophy">
+                <ScalarProperty Name="FileIdentifier" ColumnName="FileIdentifier" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />

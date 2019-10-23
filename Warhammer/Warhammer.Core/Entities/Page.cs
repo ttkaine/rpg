@@ -42,6 +42,7 @@ namespace Warhammer.Core.Entities
         public string GmNotes { get; set; }
         public int WordCount { get; set; }
         public bool IsPublic { get; set; }
+        public string FileIdentifier { get; set; }
     
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Player ModifiedBy { get; set; }
