@@ -64,5 +64,13 @@ namespace Warhammer.Core.Concrete
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileIdentifier);
             return blockBlob;
         }
+
+        public string CreateImageBlob(byte[] bytes, string mimeType = "image/jpeg")
+        {
+            Guid guid = Guid.NewGuid();
+            string key = guid.ToString();
+            SaveBlob(key, bytes, mimeType);
+            return key;
+        }
     }
 }

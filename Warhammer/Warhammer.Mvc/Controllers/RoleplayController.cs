@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,16 +23,18 @@ namespace Warhammer.Mvc.Controllers
 	//[Authorize]
     public class RoleplayController : BaseController
     {
+        private readonly IImageProcessor _imageProcessor;
 		public new IModelFactory ModelFactory { get; set; }
 		public IPostManager PostManager { get; set; }
 		public ILogGenerator LogGenerator { get; set; }
 
 
-        public RoleplayController(IAuthenticatedDataProvider data, IModelFactory modelFactory, IPostManager postManager, ILogGenerator logGenerator) : base(data)
+        public RoleplayController(IAuthenticatedDataProvider data, IModelFactory modelFactory, IPostManager postManager, ILogGenerator logGenerator, IImageProcessor imageProcessor) : base(data)
         {
 	        ModelFactory = modelFactory;
 	        PostManager = postManager;
 	        LogGenerator = logGenerator;
+            _imageProcessor = imageProcessor;
         }   
 		
 		//
@@ -289,11 +292,11 @@ namespace Warhammer.Mvc.Controllers
             {
                 HttpPostedFileBase file = Request.Files["imageUpload"];
                 string fileName = file.FileName;
-                byte[] imageBytes = new byte[file.InputStream.Length];
-                file.InputStream.Read(imageBytes, 0, imageBytes.Length);
-                file.InputStream.Close();
 
-                PostResult result = PostManager.CreateImagePostForUser(sessionId, imageBytes, fileName);
+                Image theImage = System.Drawing.Image.FromStream(file.InputStream, true, true);
+                byte[] imageData = _imageProcessor.GetJpegFromImage(theImage);
+
+                PostResult result = PostManager.CreateImagePostForUser(sessionId, imageData, fileName);
 
                 //CallSignalRUpdate();
                 JsonResponseWithPostCollection postCollection;
@@ -804,32 +807,14 @@ namespace Warhammer.Mvc.Controllers
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult Image(int id)
-		{
-			CharacterViewModel character = ModelFactory.GetCharacter(id);
-			var defaultDir = Server.MapPath("/Content/Images/RoleplayForum");
-
-		    if (character?.Image != null && character.Image.Length > 100)
-		    {
-		        return File(character.Image, "image/jpeg");
-		    }
-
-		    var defaultImagePath = Path.Combine(defaultDir, "default_character.jpg");
-			return File(defaultImagePath, "image/jpeg");
+        {
+            return RedirectToAction("Image", "Image", new { id = id });
 		}
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
         public ActionResult ImagePost(int id)
         {
-            PostedImageViewModel image = ModelFactory.GetPostedImage(id);
-            var defaultDir = Server.MapPath("/Content/Images/RoleplayForum");
-
-            if (image?.Image != null && image.Image.Length > 100)
-            {
-                return File(image.Image, image.MimeType);
-            }
-
-            var defaultImagePath = Path.Combine(defaultDir, "default_character.jpg");
-            return File(defaultImagePath, "image/jpeg");
+            return RedirectToAction("ShowImage", "Home", new {id = id});
         }
 
         public FileContentResult TextLog(int id)

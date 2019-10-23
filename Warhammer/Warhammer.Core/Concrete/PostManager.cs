@@ -13,6 +13,7 @@ namespace Warhammer.Core.Concrete
 	public class PostManager : IPostManager
 	{
 	    private readonly IAuthenticatedDataProvider _data;
+        private readonly IAzureProvider _azureProvider;
 
         private int GetGmId(int sessionId)
 		{
@@ -34,12 +35,13 @@ namespace Warhammer.Core.Concrete
 		private readonly DiceRoller _diceRoller;
 		private DiceRoller DiceRoller { get { return _diceRoller; } }
 
-		public PostManager(IRepository repository, IAuthenticatedUserProvider userProvider, IAuthenticatedDataProvider data)
+		public PostManager(IRepository repository, IAuthenticatedUserProvider userProvider, IAuthenticatedDataProvider data, IAzureProvider azureProvider)
 		{
 			_repository = repository;
 			_userProvider = userProvider;
 		    _data = data;
-		    _diceRoller = DiceRoller.Instance;
+            _azureProvider = azureProvider;
+            _diceRoller = DiceRoller.Instance;
 		}
 
 		private Player GetCurrentPlayer()
@@ -241,34 +243,15 @@ namespace Warhammer.Core.Concrete
 	            return PostResult.ImageError;
 	        }
 
-	        Bitmap image;
-	        try
-	        {
-	            using (MemoryStream stream = new MemoryStream(imageBytes))
-	            {
-	                image = new Bitmap(stream);
-	            }
-	        }
-	        catch 
-	        {
-                return PostResult.ImageError;
-	        }
-
-	        if (image.Width <= 0 || image.Height <= 0)
-	        {
-	            return PostResult.ImageError;
-	        }
-
-	        PageImage pageImage = new PageImage()
+            PageImage pageImage = new PageImage()
 	        {
                 CampaignId = session.CampaignId,
-                Data = imageBytes,
+                FileIdentifier = _azureProvider.CreateImageBlob(imageBytes),
                 IsPrimary = false,
                 PageId = session.Id
 	        };
 
 	        int imageId = Repo.Save(pageImage);
-            image.Dispose();
 
 	        if (imageId <= 0)
 	        {

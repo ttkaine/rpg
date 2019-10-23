@@ -6,5 +6,6 @@ namespace Warhammer.Core.Abstract
     {
         string SaveBlob(string blobName, byte[] data, string mimeType);
         ICloudBlob GetImageBlobReference(string fileIdentifier);
+        string CreateImageBlob(byte[] bytes, string mimeType = "image/jpeg");
     }
 }
