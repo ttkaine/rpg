@@ -21,7 +21,9 @@ namespace Warhammer.Core.Concrete
         private IEnumerable<ScoreBreakdown> CalculateScore(int personId, int campaignId)
         {
             DateTime calcDate = DateTime.Now;
-            
+
+            Person person = _repo.Pages().OfType<Person>().FirstOrDefault(s => s.Id == personId);
+
             List<ScoreBreakdown> scores = new List<ScoreBreakdown>();
 
 
@@ -143,7 +145,7 @@ namespace Warhammer.Core.Concrete
                 });
             }
 
-            if (_repo.PageImages().Any(p => p.PageId == personId && p.IsPrimary))
+            if (person.HasImage)
             {
                 scores.Add(new ScoreBreakdown
                 {

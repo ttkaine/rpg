@@ -56,36 +56,9 @@ namespace Warhammer.Core.Entities
             }
         }
 
-        //public bool HasInlineImage => ImageData != null && ImageData.Length > 50 && !string.IsNullOrWhiteSpace(ImageMime);
-
-        //public bool HasExternalImage
-        //{
-        //    get
-        //    {
-        //        return PageImages.Any(p => p.IsPrimary);
-        //    }
-        //}
-
-        public bool HasImage => FileIdentifier != "default.png";
+        public bool HasImage => FileIdentifier != "default.png" && FileIdentifier != "default_character.jpg";
         public string ImageUrl => FileIdentifier.ToImageUrl();
 
-        //public byte[] PrimaryImage
-        //{
-        //    get
-        //    {
-        //        if (HasExternalImage)
-        //        {
-        //            PageImage image = PageImages.FirstOrDefault(p => p.IsPrimary);
-        //            return image?.Data;
-        //        }
-        //        if (HasInlineImage)
-        //        {
-        //            return ImageData;
-        //        }
-        //        return null;
-        //    }
-        //}
- 
         public string GetSummary(int length)
         {
             const string str = "...";
