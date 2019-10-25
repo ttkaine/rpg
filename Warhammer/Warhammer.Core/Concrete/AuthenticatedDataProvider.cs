@@ -3808,7 +3808,7 @@ namespace Warhammer.Core.Concrete
                     PlainText = p.PlainText,
                     XpAwarded = p.XPAwarded,
                     CurrentScore = p.CurrentScore,
-                    ImageFile = p.PageImages.Where(s => s.IsPrimary).Select(s => s.FileIdentifier).FirstOrDefault(),
+                    ImageFile = p.FileIdentifier,
                     Awards = p.Awards
                         .OrderByDescending(t => t.Trophy.PointsValue)
                         .Select(a => new AwardSummaryModel
