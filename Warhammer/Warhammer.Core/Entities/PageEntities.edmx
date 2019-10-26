@@ -307,7 +307,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PageId" Type="int" Nullable="false" />
           <Property Name="IsPrimary" Type="bit" Nullable="false" />
-          <Property Name="Data" Type="varbinary(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
           <Property Name="Public" Type="bit" Nullable="false" />
           <Property Name="FileIdentifier" Type="nvarchar" MaxLength="50" />
@@ -588,7 +587,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="ImageData" Type="varbinary(max)" />
           <Property Name="MimeType" Type="nvarchar" MaxLength="150" />
           <Property Name="PointsValue" Type="int" Nullable="false" />
           <Property Name="TypeId" Type="int" Nullable="false" />
@@ -2126,7 +2124,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="MimeType" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="PointsValue" Type="Int32" Nullable="false" />
           <Property Name="TypeId" Type="Int32" Nullable="false" />
@@ -2617,7 +2614,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PageId" Type="Int32" Nullable="false" />
           <Property Name="IsPrimary" Type="Boolean" Nullable="false" />
-          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageImage_Page" FromRole="PageImage" ToRole="Page" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Posts" Relationship="WarhammerModel.FK_Post_PageImage" FromRole="PageImage" ToRole="Post" />
@@ -3464,7 +3460,6 @@
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="PointsValue" ColumnName="PointsValue" />
                 <ScalarProperty Name="MimeType" ColumnName="MimeType" />
-                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -3689,7 +3684,6 @@
                 <ScalarProperty Name="FileIdentifier" ColumnName="FileIdentifier" />
                 <ScalarProperty Name="Public" ColumnName="Public" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
-                <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

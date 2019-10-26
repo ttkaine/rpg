@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using Microsoft.Ajax.Utilities;
 using Microsoft.WindowsAzure.Storage.Blob;
 using NUnit.Framework;
 using Warhammer.Core.Abstract;
@@ -482,46 +483,7 @@ namespace Warhammer.Mvc.Controllers
                 }
             }
 
-
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            if (image != null)
-            {
-                if (image.Data != null && image.Data.Length > 100)
-                {
-                    return File(image.Data, "image/jpeg");
-                }
-            }
-
-            var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
-
-            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
-            Response.Cache.SetCacheability(HttpCacheability.Public);
-
-            return File(defaultImagePath, "image/jpeg");
-        }
-
-        [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
-        [AllowAnonymous]
-        public ActionResult PublicImage(int id)
-        {
-            PageImage iamge = _publicData.GetPageImage(id);
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            if (iamge != null)
-            {
-                if (iamge.Data != null && iamge.Data.Length > 100)
-                {
-                    return File(iamge.Data, "image/jpeg");
-                }
-            }
-
-            var defaultImagePath = Path.Combine(defaultDir, "no-image.jpg");
-
-            Response.Cache.SetExpires(DateTime.Now.AddYears(1));
-            Response.Cache.SetCacheability(HttpCacheability.Public);
-
-            return File(defaultImagePath, "image/jpeg");
+            return null;
         }
 
         [AllowAnonymous]

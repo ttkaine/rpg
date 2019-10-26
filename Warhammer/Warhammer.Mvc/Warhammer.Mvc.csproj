@@ -340,6 +340,7 @@
     <Content Include="Content\DbUpdateScripts\18100601.sql" />
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
+    <Content Include="Content\DbUpdateScripts\19102601.sql" />
     <Content Include="Content\DbUpdateScripts\19102302.sql" />
     <Content Include="Content\DbUpdateScripts\19102301.sql" />
     <Content Include="Content\DbUpdateScripts\19102102.sql" />

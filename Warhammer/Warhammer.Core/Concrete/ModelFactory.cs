@@ -555,38 +555,6 @@ namespace Warhammer.Core.Concrete
             return ids;
         }
 
-        public PostedImageViewModel GetPostedImage(int imageId)
-        {
-            PageImage image = Repo.PageImages().FirstOrDefault(i => i.Id == imageId);
-            if (image != null && image.Data.Length > 0)
-            {
-                Bitmap bmp;
-                string mimeType;
-                try
-                {
-                    using (MemoryStream stream = new MemoryStream(image.Data))
-                    {
-                        bmp = new Bitmap(stream);
-                    }
-                    mimeType = GetImageMimeType(bmp);
-                    bmp.Dispose();
-                }
-                catch
-                {
-                    mimeType = "image/unknown";
-                }
-
-                PostedImageViewModel viewModel = new PostedImageViewModel()
-                {
-                    ID = image.Id,
-                    Image = image.Data,
-                    MimeType = mimeType
-                };
-                return viewModel;
-            }
-            return null;
-        }
-
         private static string GetImageMimeType(Image i)
         {
             var imgguid = i.RawFormat.Guid;

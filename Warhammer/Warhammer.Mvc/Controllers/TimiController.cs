@@ -47,16 +47,5 @@ namespace Warhammer.Mvc.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
-        public ActionResult MoveImages()
-        {
-            List<Trophy> allTrophies = DataProvider.AdminGetTrophy().Where(f => string.IsNullOrWhiteSpace(f.FileIdentifier)).ToList();
-            foreach (var trophy in allTrophies)
-            {
-                trophy.FileIdentifier = _azure.CreateImageBlob(trophy.ImageData, trophy.MimeType);
-                DataProvider.UpdateTrophy(trophy.Id, trophy.Name, trophy.Description, trophy.PointsValue, trophy.CurrentCampaignOnly, trophy.TrophyType, trophy.FileIdentifier, trophy.MimeType);
-            }
-            return RedirectToAction("Index", "Home");
-        }
     }
 }

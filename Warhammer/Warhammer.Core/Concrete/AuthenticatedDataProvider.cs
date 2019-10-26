@@ -3436,11 +3436,6 @@ namespace Warhammer.Core.Concrete
             _repository.Save(pageImage);
         }
 
-        public List<Trophy> AdminGetTrophy()
-        {
-            return _repository.AdminTrophies().ToList();
-        }
-
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

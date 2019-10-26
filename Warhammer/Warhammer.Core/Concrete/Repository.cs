@@ -111,11 +111,6 @@ namespace Warhammer.Core.Concrete
             return _entities.SiteFeatures;
         }
 
-        public List<Trophy> AdminTrophies()
-        {
-            return _entities.Trophies.ToList();
-        }
-
         public int Save(SiteIcon icon)
         {
             if (icon.Id == 0)

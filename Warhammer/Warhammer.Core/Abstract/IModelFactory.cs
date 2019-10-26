@@ -17,7 +17,5 @@ namespace Warhammer.Core.Abstract
 		List<PostViewModel> GetPostsForCurrentUserInSessionSinceLast(int sessionId, int lastPostId, out int playerId, out bool playerIsGm);
 		List<PostViewModel> GetEditedPostsForCurrentUserInSessionSinceLast(int sessionId, DateTime lastUpdate);
 		List<int> GetDeletedPostIdsForCurrentUserInSessionSinceLast(int sessionId, DateTime lastUpdate);
-
-        PostedImageViewModel GetPostedImage(int imageId);
     }
 }

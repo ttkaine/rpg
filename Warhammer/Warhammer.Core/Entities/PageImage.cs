@@ -22,7 +22,6 @@ namespace Warhammer.Core.Entities
         public int Id { get; set; }
         public int PageId { get; set; }
         public bool IsPrimary { get; set; }
-        public byte[] Data { get; set; }
         public int CampaignId { get; set; }
         public bool Public { get; set; }
         public string FileIdentifier { get; set; }

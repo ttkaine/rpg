@@ -232,6 +232,5 @@ namespace Warhammer.Core.Abstract
         void UpdatePlayerSiteLinks(List<PlayerCampaignLinkModel> playerLinks);
         List<PageImage> GetPageImages();
         void SaveImage(PageImage pageImage);
-        List<Trophy> AdminGetTrophy();
     }
 }

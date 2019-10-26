@@ -47,14 +47,9 @@ namespace Warhammer.Mvc.Controllers
                         return File(blob.OpenRead(), "image/jpeg");
                     }
                 }
-
-                return File(image.Data, "image/jpeg");
             }
 
-            var defaultDir = Server.MapPath("/Content/Images");
-
-            var defaultImagePath = Path.Combine(defaultDir, "page-page.png");
-            return File(defaultImagePath, "image/jpeg");
+            return null;
         }
 
         [OutputCache(Duration = 360000, VaryByParam = "id", Location = OutputCacheLocation.Downstream)]
