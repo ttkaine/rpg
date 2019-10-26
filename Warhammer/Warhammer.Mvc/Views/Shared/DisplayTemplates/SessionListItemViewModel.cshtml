@@ -39,7 +39,7 @@
                         {
                             <div class="log-item">
                                 <a href="@Url.Action("Index", "Page", new {id = person.Id})">
-                                    <img src="@Url.Action("Image", "Image", new {id = person.Id})" title="@person.FullName" alt="Picture of @person.FullName" class="micro-profile-image"/>
+                                    <img src="@person.FileIdentifier.ToImageUrl()" title="@person.FullName" alt="Picture of @person.FullName" class="micro-profile-image"/>
                                 </a>
                                 @Html.ActionLink(log.FullName, "Index", "Page", new {id = log.Id}, null)
                             </div>
