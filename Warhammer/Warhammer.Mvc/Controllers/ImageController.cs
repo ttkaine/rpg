@@ -36,17 +36,11 @@ namespace Warhammer.Mvc.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Image(int id)
         {
-            PageImage image = _imageData.GetPageImageForPage(id);
-            if (image != null)
+            string pageFile = _imageData.GetImagefilenameForPage(id);
+            ICloudBlob pageBlob = await Task.FromResult(_azure.GetImageBlobReference(pageFile));
+            if (pageBlob.Exists())
             {
-                if (!string.IsNullOrWhiteSpace(image.FileIdentifier))
-                {
-                    ICloudBlob blob = await Task.FromResult(_azure.GetImageBlobReference(image.FileIdentifier));
-                    if (blob.Exists())
-                    {
-                        return File(blob.OpenRead(), "image/jpeg");
-                    }
-                }
+                return File(pageBlob.OpenRead(), "image/jpeg");
             }
 
             return null;
