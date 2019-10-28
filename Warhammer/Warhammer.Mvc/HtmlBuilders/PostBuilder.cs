@@ -304,9 +304,8 @@ namespace Warhammer.Mvc.HtmlBuilders
 			{
 				html.Append("<a onkeypress=\"window.open(this.href); return false;\" onclick=\"window.open(this.href); return false;\" href=\"/Page/Index/");
 				html.Append(post.CharacterId);
-				html.Append("\"><img src=\"/Roleplay/Image/");
-				html.Append(post.CharacterId);
-				html.Append("\" /></a>");			
+				html.Append($"\"><img src=\"{post.ImageUrl}\" />");
+                html.Append("</a>");			
 			}
 			html.Append("</span><span class=\"PostedDate\">");
 			html.Append(post.DatePosted);
