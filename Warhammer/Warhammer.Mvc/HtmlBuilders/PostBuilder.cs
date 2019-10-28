@@ -132,9 +132,9 @@ namespace Warhammer.Mvc.HtmlBuilders
 				html.Append(post.CharacterId);
 				html.Append("\">");
 			}
-			html.Append("<img src=\"/Roleplay/Image/");
-			html.Append(post.CharacterId);
-			html.Append("\" />");
+
+            html.Append($"<img src=\"{post.ImageUrl}\" />");
+
 			if (post.CharacterId > 0)
 			{
 				html.Append("</a>");

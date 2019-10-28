@@ -436,7 +436,7 @@ namespace Warhammer.Core.Concrete
                 }
 
                 textViewModel.IsOoc = post.PostType == (int)PostType.OutOfCharacter;
-
+                textViewModel.ImageUrl = character?.ImageUrl;
                 viewModel = textViewModel;
             }
 
