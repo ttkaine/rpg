@@ -74,7 +74,8 @@ namespace Warhammer.Core.Entities
         MasterTextSessions,
         CrowMagic,
         FullCharacterLeague,
-        UpdatedCharacterLeague
+        UpdatedCharacterLeague,
+        AutoTextSessionXp
     }
 
     public partial class SiteFeature

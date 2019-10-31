@@ -3602,6 +3602,11 @@ namespace Warhammer.Core.Concrete
                 session.IsClosed = !session.IsClosed;
                 Save(session);
 
+                if (SiteHasFeature(Feature.CrowStats) && session.IsClosed && SiteHasFeature(Feature.AutoTextSessionXp))
+                {
+                    AddDefaultXp(id);
+                }
+
                 if (SiteHasFeature(Feature.SimpleStats) && session.IsClosed && SiteHasFeature(Feature.SimpleAutoXp))
                 {
                     ApplyXpForSession(session);
