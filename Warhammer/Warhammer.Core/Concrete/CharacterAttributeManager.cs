@@ -86,7 +86,8 @@ namespace Warhammer.Core.Concrete
                     IncludeMagic = _featureProvider.SiteHasFeature(Feature.CrowMagic),
                     CampaignDetail = campaignDetail,
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
-                    ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack)
+                    ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack),
+                    ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell)
                 };
 
                 return model;

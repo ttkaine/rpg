@@ -75,7 +75,8 @@ namespace Warhammer.Core.Entities
         CrowMagic,
         FullCharacterLeague,
         UpdatedCharacterLeague,
-        AutoTextSessionXp
+        AutoTextSessionXp,
+        ShowWishingWell
     }
 
     public partial class SiteFeature

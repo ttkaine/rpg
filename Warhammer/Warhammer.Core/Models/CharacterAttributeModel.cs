@@ -178,6 +178,6 @@ namespace Warhammer.Core.Models
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
         public bool CanAddXp { get; set; }
         public bool ShowWearTrack { get; set; }
-
+        public bool ShowWishingWell { get; set; }
     }
 }
