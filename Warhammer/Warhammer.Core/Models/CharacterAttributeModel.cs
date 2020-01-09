@@ -127,14 +127,14 @@ namespace Warhammer.Core.Models
                     }
                     else
                     {
-                        int wearValue = CharacterInfo.TotalWear / 4;
-                        if (wearValue < 1)
+                        var aWear = PersonAttributes.FirstOrDefault(s => s.PersonAttribute.AttributeType == AttributeType.Wear);
+                        if (aWear != null)
                         {
-                            wearValue = 1;
+                            return aWear.Cost;
                         }
-                        return wearValue;
-                    }
 
+                        return 1;
+                    }
                 case AttributeType.Harm:
                     if (FixedWearAndHarm)
                     {
@@ -142,13 +142,13 @@ namespace Warhammer.Core.Models
                     }
                     else
                     {
-                        int harmValue = CharacterInfo.TotalHarm / 4;
-                        if (harmValue < 1)
+                        var aHarm = PersonAttributes.FirstOrDefault(s => s.PersonAttribute.AttributeType == AttributeType.Harm);
+                        if (aHarm != null)
                         {
-                            harmValue = 1;
+                            return aHarm.Cost;
                         }
 
-                        return harmValue;
+                        return 1;
                     }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
