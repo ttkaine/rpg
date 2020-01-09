@@ -18,7 +18,7 @@ namespace Warhammer.Core.Models
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int XpSpent => CharacterInfo.XpSpent;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
-        public int CharacterLevel => CharacterInfo.CharacterLevel;
+      //  public int CharacterLevel => CharacterInfo.CharacterLevel;
         public int TotalStats => CharacterInfo.TotalStats;
         public int TotalRoles => CharacterInfo.TotalRoles;
         public int TotalSkills => CharacterInfo.TotalSkills;
@@ -103,25 +103,27 @@ namespace Warhammer.Core.Models
                     return 99;
                 case AttributeType.Skill:
                     int skillCost = 1;
-                    return skillCost + CharacterLevel;
+                    return skillCost;
                 case AttributeType.Role:
                     int roleCost = 4;
-                    return roleCost + CharacterLevel;
+                    return roleCost;
                 case AttributeType.Descriptor:
-                    int descCost = TotalDescriptors - 3;
+                    int descCost = TotalDescriptors;
 
                     if (descCost < 1)
                     {
                         descCost = 1;
                     }
 
-                    return descCost + CharacterLevel;
+                    return descCost;
                     case  AttributeType.Edge:
-                        return 1 + (CharacterInfo.TotalEdge * CharacterInfo.TotalEdge * CharacterInfo.TotalEdge) + CharacterLevel;
+                        int edgeLevel = CharacterInfo.TotalEdge;
+                        edgeLevel++;
+                        return (edgeLevel * edgeLevel * edgeLevel);
                 case AttributeType.Wear:
                     if (FixedWearAndHarm)
                     {
-                        return level + CharacterInfo.NumberOfWear + CharacterLevel;
+                        return level + CharacterInfo.NumberOfWear;
                     }
                     else
                     {
@@ -130,13 +132,13 @@ namespace Warhammer.Core.Models
                         {
                             wearValue = 1;
                         }
-                        return wearValue + CharacterLevel;
+                        return wearValue;
                     }
 
                 case AttributeType.Harm:
                     if (FixedWearAndHarm)
                     {
-                        return level + CharacterInfo.NumberOfHarm + CharacterLevel;
+                        return level + CharacterInfo.NumberOfHarm;
                     }
                     else
                     {
@@ -146,7 +148,7 @@ namespace Warhammer.Core.Models
                             harmValue = 1;
                         }
 
-                        return harmValue + CharacterLevel;
+                        return harmValue;
                     }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

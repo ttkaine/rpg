@@ -57,7 +57,7 @@ namespace Warhammer.Core.Entities
             set { GenderEnum = (int) value;  }
         }
 
-        public int XpLevel => (int) Math.Floor(TotalAdvancesTaken / 5.0);
+      //  public int XpLevel => (int) Math.Floor(TotalAdvancesTaken / 5.0);
 
         public static HeroLevel GetHeroLevel(decimal xp)
         {

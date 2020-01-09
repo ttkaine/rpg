@@ -5,9 +5,12 @@ namespace Warhammer.Core.Models
 {
     public class PersonAttributeAdvanceModel
     {
+        public int StartingWear = 2;
+        public int StartingHarm = 6;
+        public int StartingStats = 18;
+
         public int Id => PersonAttribute.Id;
         public string Name => PersonAttribute.Name;
-        public int CharacterLevel => CharacterInfo.CharacterLevel;
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int TotalAdvancesTaken => CharacterInfo.TotalAdvancesTaken;
         public int TotalStats => CharacterInfo.TotalStats;
@@ -29,44 +32,49 @@ namespace Warhammer.Core.Models
                     case AttributeType.Magic:
                     case AttributeType.MagicItem:
                         int totalValue = TotalStats;
-                        totalValue = totalValue - CharacterInfo.TotalAverageStatValue;
+                        totalValue = totalValue - StartingStats;
+                        totalValue++;
                         if (totalValue < 1)
                         {
                             totalValue = 1;
                         }
-                        totalValue = totalValue* totalValue;
-
-                        return totalValue + CharacterLevel;
+                        totalValue = totalValue * totalValue;
+                        return totalValue;
                     case AttributeType.Skill:
-                        int skillAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
-
-                        skillAdvance = skillAdvance / 4;
-
+                        int skillAdvance = PersonAttribute.CurrentValue;
+                        skillAdvance++;
                         if (skillAdvance < 1)
                         {
                             skillAdvance = 1;
                         }
-                        return skillAdvance + CharacterLevel;
+                        return skillAdvance;
                     case AttributeType.Role:
-                        int roleAdvance = PersonAttribute.CurrentValue * PersonAttribute.CurrentValue;
-                        return roleAdvance + CharacterLevel;
+                        int roleAdvance = PersonAttribute.CurrentValue;
+                        roleAdvance++;
+                        if (roleAdvance < 1)
+                        {
+                            roleAdvance = 1;
+                        }
+                        return roleAdvance;
                     case AttributeType.Descriptor:
                     case AttributeType.Edge:
                         return -1;
                     case AttributeType.Wear:
-                        int wearValue = CharacterInfo.TotalWear / 4;
+                        int wearValue = CharacterInfo.TotalWear - StartingWear;
+                        wearValue++;
                         if (wearValue < 1)
                         {
                             wearValue = 1;
                         }
-                        return wearValue + CharacterLevel;
+                        return wearValue;
                     case AttributeType.Harm:
-                        int harmValue = CharacterInfo.TotalHarm / 4;
+                        int harmValue = CharacterInfo.TotalHarm - StartingHarm;
+                        harmValue++;
                         if (harmValue < 1)
                         {
                             harmValue = 1;
                         }
-                        return harmValue + CharacterLevel;
+                        return harmValue;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
