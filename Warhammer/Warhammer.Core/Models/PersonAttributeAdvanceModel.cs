@@ -5,9 +5,9 @@ namespace Warhammer.Core.Models
 {
     public class PersonAttributeAdvanceModel
     {
-        public int StartingWear = 2;
-        public int StartingHarm = 6;
-        public int StartingStats = 18;
+        public static int StartingWear = 2;
+        public static int StartingHarm = 6;
+        public static int StartingStats = 18;
 
         public int Id => PersonAttribute.Id;
         public string Name => PersonAttribute.Name;
@@ -21,6 +21,142 @@ namespace Warhammer.Core.Models
         public PersonAttribute PersonAttribute { get; set; }
         public bool CanBuy => CanAdvance && Cost <= CurrentXp;
         public bool CanAdvance => PersonAttribute.AttributeType != AttributeType.Descriptor && PersonAttribute.AttributeType != AttributeType.Edge;
+
+        public string SaleName
+        {
+            get
+            {
+                switch (PersonAttribute.AttributeType)
+                {
+                    case AttributeType.Stat:
+                    case AttributeType.Skill:
+                    case AttributeType.Role:
+                    case AttributeType.Magic:
+                    case AttributeType.MagicItem:
+                        return $"One point of {Name} for {SaleValue} XP";
+                    case AttributeType.Descriptor:
+                        return $"{Name} for {SaleValue} XP";
+                    case AttributeType.Wear:
+                        return $"One point from Wear ({Value}) for {SaleValue} XP";
+                    case AttributeType.Harm:
+                        return $"One point from Harm ({Value}) for {SaleValue} XP";
+                    case AttributeType.Edge:
+                        return $"One Edge for {SaleValue} XP";
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        } //=> $"{Name} for {SaleValue} XP";
+
+        public int SaleValue
+        {
+            get
+            {
+                switch (PersonAttribute.AttributeType)
+                {
+                    case AttributeType.Stat:
+                    case AttributeType.Magic:
+                    case AttributeType.MagicItem:
+                        if (TotalStats <= StartingStats)
+                            return -1;
+
+                        int totalValue = TotalStats;
+                        totalValue = totalValue - StartingStats;
+                        if (totalValue < 1)
+                        {
+                            totalValue = 1;
+                        }
+                        totalValue = totalValue * totalValue;
+                        if (totalValue <= CharacterInfo.XpSpent)
+                        {
+                            return totalValue;
+                        }
+                        return -1;
+                    case AttributeType.Skill:
+                        int skillAdvance = PersonAttribute.CurrentValue;
+                        if (skillAdvance < 1)
+                        {
+                            skillAdvance = 1;
+                        }
+
+                        if (skillAdvance <= CharacterInfo.XpSpent)
+                        {
+                            return skillAdvance;
+                        }
+                        return -1;
+
+                        
+                    case AttributeType.Role:
+                        int roleAdvance = PersonAttribute.CurrentValue;
+                        if (roleAdvance < 1)
+                        {
+                            roleAdvance = 1;
+                        }
+
+                        roleAdvance = roleAdvance * 4;
+                        if (roleAdvance <= CharacterInfo.XpSpent)
+                        {
+                            return roleAdvance;
+                        }
+                        return -1;
+                    case AttributeType.Descriptor:
+                        int descriptor = TotalDescriptors;
+                        if(descriptor > 2)
+                        {
+                            descriptor--;
+                            if (descriptor <= CharacterInfo.XpSpent)
+                            {
+                                return descriptor;
+                            }
+                        }
+
+                        return -1;
+                    case AttributeType.Edge:
+                        if (CharacterInfo.TotalEdge > 1)
+                        {
+                            int edgeLevel = CharacterInfo.TotalEdge;
+                            edgeLevel = edgeLevel * edgeLevel * edgeLevel;
+                            if (edgeLevel <= CharacterInfo.XpSpent)
+                            {
+                                return edgeLevel;
+                            }
+                        }
+                        return -1;
+                    case AttributeType.Wear:
+                        if (CharacterInfo.TotalWear > StartingWear)
+                        {
+                            int wearValue = CharacterInfo.TotalWear - StartingWear;
+                            if (wearValue < 1)
+                            {
+                                wearValue = 1;
+                            }
+                            if (wearValue <= CharacterInfo.XpSpent)
+                            {
+                                return wearValue;
+                            }
+                        }
+                        return -1;
+
+                    case AttributeType.Harm:
+                        if (CharacterInfo.TotalHarm > StartingHarm)
+                        {
+                            int harmValue = CharacterInfo.TotalHarm - StartingHarm;
+                            if (harmValue < 1)
+                            {
+                                harmValue = 1;
+                            }
+
+                            if (harmValue <= CharacterInfo.XpSpent)
+                            {
+                                return harmValue;
+                            }
+                        }
+                        return -1;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
         public int Cost
         {
@@ -55,7 +191,7 @@ namespace Warhammer.Core.Models
                         {
                             roleAdvance = 1;
                         }
-                        return roleAdvance;
+                        return roleAdvance * 4;
                     case AttributeType.Descriptor:
                     case AttributeType.Edge:
                         return -1;
@@ -114,5 +250,6 @@ namespace Warhammer.Core.Models
         }
 
         public int Value => PersonAttribute.CurrentValue;
+        public bool CanSell => SaleValue > 0;
     }
 }

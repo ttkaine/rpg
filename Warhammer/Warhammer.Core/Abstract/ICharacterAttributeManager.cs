@@ -20,5 +20,6 @@ namespace Warhammer.Core.Abstract
         bool SetAttributeVisibility(int personId, int attributeId, bool isVisible);
         bool AlterWishingWell(int personId, int amount);
         bool AddXp(int personId, decimal amount);
+        bool SellAttributePoint(int personId, int targetAttributeId);
     }
 }

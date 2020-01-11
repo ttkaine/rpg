@@ -639,6 +639,49 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public bool SellAttributePoint(int personId, int targetAttributeId)
+        {
+            lock (_editLock)
+            {
+                CharacterAttributeModel model = GetCharacterAttributes(personId);
+
+                PersonAttributeAdvanceModel attribute =
+                    model.PersonAttributes.FirstOrDefault(a => a.Id == targetAttributeId);
+
+                if (attribute == null || !attribute.CanSell)
+                {
+                    return false;
+                }
+
+                Person person = _repo.People().Include(p => p.PersonAttributes).FirstOrDefault(p => p.Id == personId);
+                if (person != null)
+                {
+                    PersonAttribute personAttribute = person.PersonAttributes.Single(p => p.Id == targetAttributeId);
+                    int saleValue = attribute.SaleValue;
+
+                    if (personAttribute.CurrentValue == 1)
+                    {
+                        _repo.Delete(personAttribute);
+                    }
+                    else
+                    {
+                        personAttribute.XpSpent -= saleValue;
+                        personAttribute.CurrentValue--;
+                    }
+                    person.XpSpent -= saleValue;
+                    person.TotalAdvancesTaken--;
+                    person.HasAttributeMoveAvailable = false;
+                    _repo.Save(person);
+                    model = GetCharacterAttributes(personId);
+                    person.XpSpendAvailable = model.CanBuyAny;
+                    _repo.Save(person);
+
+                    return true;
+                }
+                return false;
+            }
+        }
+
         private void AddDefaultWearAndHarm(Person person)
         {
             if (!person.IsNpc)

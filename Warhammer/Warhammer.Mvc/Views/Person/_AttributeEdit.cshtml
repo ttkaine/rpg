@@ -6,16 +6,35 @@
         <h3 data-toggle="collapse" data-target="#statshiftpanel">Stat Shift Available<span class="note">(Click to Expand)</span></h3>
         <div id="statshiftpanel" class="collapse">
             <p>
-                Once per session you have the option to move a stat point or rename one of your Roles, Skills, or Descriptors. This doesn't cost any XP but you can only do it once per session.
+                Once per session you have the option to sell an advance for the XP but you can only do it once per session. This allows you to spend the XP elsewhere and subtly alter your character.
             </p>
             <p>
-                If you choose not to make any changes, these do not stack (so you can't pile up a load of pending changes then move a load of stuff at once).
+                If you choose not to sell anything, these do not stack (so you can't pile up a load of Shifts and then sell a load of stuff at once).
             </p>
             <p>
-                In order to make a change, use the forms below. Once you have made a change this form will disappear and only return once you've finished another session.
+                In order to sell an advance use the form below. Once you have sold an advance this form will disappear and only return once you've finished another session.
             </p>
-            <h3>Move a stat point</h3>
-            @using (Ajax.BeginForm("MoveAttributePoint", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+            
+            @if (Model.CanSellAdvance)
+            {
+                <h3>Sell an Advance</h3>
+            
+                using (Ajax.BeginForm("SellAdvance", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                {
+                    <input type="hidden" value="@Model.PersonId" name="personId"/>
+                    <span>Sell From:</span>
+                    @Html.DropDownList("targetAttributeId", Model.PossibleAdvanceSales, new { @class = "form-control" })
+                    <br />
+                    <input type="submit" value="Sell Advance" class="btn btn-block btn-success" />
+                }
+            }
+            else
+            { 
+                <h3>Nothing to Sell</h3>
+                <p>Although you have a Shift available, you don't currently have any advances that you can sell.</p>
+            }
+
+            @*@using (Ajax.BeginForm("MoveAttributePoint", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
             {
                 <input type="hidden" value="@Model.PersonId" name="personId" />
                 <span>From:</span>
@@ -41,7 +60,7 @@
                 <textarea type="text" class="form-control" name="Description" placeholder="Description"></textarea>
                 <br />
                 <input type="submit" value="Set New Name" class="btn btn-block btn-success" />
-            }
+            }*@
         </div>
     </div>
 }

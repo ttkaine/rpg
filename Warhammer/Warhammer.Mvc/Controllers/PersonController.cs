@@ -1256,5 +1256,21 @@ namespace Warhammer.Mvc.Controllers
 
             return null;
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult SellAdvance(int personId, int targetAttributeId)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.SellAttributePoint(personId, targetAttributeId);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
     }
 }

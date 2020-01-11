@@ -38,6 +38,14 @@ namespace Warhammer.Core.Models
             }
         }
 
+        public SelectList PossibleAdvanceSales
+        {
+            get
+            {
+                return new SelectList(PersonAttributes.Where(p => p.CanSell), "Id", "SaleName");
+            }
+        }
+
         public SelectList PossibleSourceAttributes
         {
             get
@@ -109,12 +117,11 @@ namespace Warhammer.Core.Models
                     return roleCost;
                 case AttributeType.Descriptor:
                     int descCost = TotalDescriptors;
-
+                    descCost++;
                     if (descCost < 1)
                     {
                         descCost = 1;
                     }
-
                     return descCost;
                     case  AttributeType.Edge:
                         int edgeLevel = CharacterInfo.TotalEdge;
@@ -181,5 +188,6 @@ namespace Warhammer.Core.Models
         public bool CanAddXp { get; set; }
         public bool ShowWearTrack { get; set; }
         public bool ShowWishingWell { get; set; }
+        public bool CanSellAdvance => PossibleAdvanceSales.Any();
     }
 }
