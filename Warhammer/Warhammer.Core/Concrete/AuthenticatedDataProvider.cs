@@ -1045,7 +1045,7 @@ namespace Warhammer.Core.Concrete
             person.XPAwarded = person.XPAwarded + xpValue;
 
             CharacterAttributeModel model = _characterAttributeManager.GetCharacterAttributes(personId);
-            person.XpSpendAvailable = model.CanBuyAny;
+            person.XpSpendAvailable = model.NpcAdvanceAvailable;
 
             if (SiteHasFeature(Feature.XpCatchup))
             {

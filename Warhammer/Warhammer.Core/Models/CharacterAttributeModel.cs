@@ -182,6 +182,24 @@ namespace Warhammer.Core.Models
             }
         }
 
+        private readonly List<AttributeType> _npcAdvanceAttributesToWatch = new List<AttributeType>
+        {
+            AttributeType.Descriptor,
+            AttributeType.Magic,
+            AttributeType.MagicItem,
+            AttributeType.Role,
+            AttributeType.Skill,
+            AttributeType.Stat
+        };
+        public bool NpcAdvanceAvailable
+        {
+            get
+            {
+                return PersonAttributes
+                    .Where(p => _npcAdvanceAttributesToWatch.Contains(p.PersonAttribute.AttributeType)).Any(c => c.CanBuy);
+            }
+        }
+
 
         public int WishingWell { get; set; }
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
