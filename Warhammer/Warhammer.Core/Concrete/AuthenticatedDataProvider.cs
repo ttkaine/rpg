@@ -953,6 +953,29 @@ namespace Warhammer.Core.Concrete
             };
 
             int awardId = _repository.Save(award);
+
+            if (SiteHasFeature(Feature.TrophyXp))
+            {
+                Trophy trophy = _repository.Trophies().FirstOrDefault(t => t.Id == trophyId);
+                if (trophy != null)
+                {
+                    if (trophy.TrophyType == TrophyType.DefaultAward)
+                    {
+                        decimal xpValue = trophy.PointsValue;
+                        xpValue = xpValue / 2.5m;
+                        if (xpValue > 5.0m)
+                        {
+                            xpValue = 5.0m;
+                        }
+                        if(xpValue < 0.01m)
+                        {
+                            xpValue = 0.01m;
+                        }
+                        AddXp(personId, xpValue);
+                    }
+                }
+            }
+
             return awardId;
         }
 
