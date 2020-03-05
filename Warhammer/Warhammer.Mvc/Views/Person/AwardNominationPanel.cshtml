@@ -67,15 +67,15 @@
                 <div class="panel-heading">Outstanding Nominations</div>
                 <div class="panel-body">
                     <ul>
-                        @foreach (AwardNomination nomiation in Model.ExistingNominations)
+                        @foreach (AwardNomination nomination in Model.ExistingNominations.Where(n => n.Trophy != null && n.Player != null))
                         {
                             <li>      
-                                @if (nomiation.IsPrivate)
+                                @if (nomination.IsPrivate)
                                 {
                                     <img src="@Url.Content("~/Content/Images/lock.png")" alt="Private Nomination" title="Private Nomination" />
                                 }
-                                @nomiation.Trophy.Name by @nomiation.Player.DisplayName
-                                @if (nomiation.IsPrivate)
+                                @nomination.Trophy.Name by @nomination.Player.DisplayName
+                                @if (nomination.IsPrivate)
                                 {
                                     <span class="note">(Private)</span>
                                 }
