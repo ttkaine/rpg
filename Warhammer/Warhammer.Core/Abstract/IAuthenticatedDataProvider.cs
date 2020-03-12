@@ -232,5 +232,9 @@ namespace Warhammer.Core.Abstract
         void UpdatePlayerSiteLinks(List<PlayerCampaignLinkModel> playerLinks);
         List<PageImage> GetPageImages();
         void SaveImage(PageImage pageImage);
+        List<PersonAttribute> GetPersonAttributes(int id);
+        void AddPersonAttribute(int personId, AttributeType attributeType, string name, string description, int value, bool hidden);
+        void RemovePersonAttribute(int personId, int attributeId);
+        void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description, AttributeType attributeType, bool hidden);
     }
 }

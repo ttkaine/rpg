@@ -10,6 +10,8 @@
             }
         }
 
+        public bool Remove { get; set; }
+
         public AttributeType AttributeType
         {
             get { return (AttributeType)PersonAttributeTypeEnum; }

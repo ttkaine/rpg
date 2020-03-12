@@ -307,6 +307,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\ManageAwardsViewModel.cs" />
+    <Compile Include="Models\ManagePersonAttributesViewModel.cs" />
     <Compile Include="Models\ManageSessionPeopleViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
@@ -860,6 +861,8 @@
     <Content Include="Views\Home\DisplayTemplates\AwardSummaryModel.cshtml" />
     <Content Include="Views\Admin\PlayerSiteLinks.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\PlayerCampaignLinkModel.cshtml" />
+    <Content Include="Views\PageControls\ManagePersonAttributes.cshtml" />
+    <Content Include="Views\PageControls\EditorTemplates\PersonAttribute.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -36,6 +36,7 @@ namespace Warhammer.Core.Concrete
             if (person != null && player != null && campaignDetail != null)
             {
                 int totalRoles = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Role).Sum(p => p.CurrentValue);
+                int totalDisciplines = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Discipline).Sum(p => p.CurrentValue);
                 int totalSkills = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Skill).Sum(p => p.CurrentValue);
                 int totalStats = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Stat || p.AttributeType == AttributeType.Magic || p.AttributeType == AttributeType.MagicItem).Sum(p => p.CurrentValue);
                 int totalDescriptors = person.PersonAttributes.Where(p => p.AttributeType == AttributeType.Descriptor).Sum(p => p.CurrentValue);
@@ -54,6 +55,7 @@ namespace Warhammer.Core.Concrete
                    CurrentXp = person.CurrentXp,
                     XpSpent = person.XpSpent,
                     TotalRoles = totalRoles,
+                    TotalDisciplines = totalDisciplines,
                     TotalStats = totalStats,
                     TotalSkills = totalSkills,
                     TotalEdge = totalEdge,
@@ -84,6 +86,7 @@ namespace Warhammer.Core.Concrete
                     PlayerId = player.Id,
                     FixedWearAndHarm = _featureProvider.SiteHasFeature(Feature.FixedHarmAndWear),
                     IncludeMagic = _featureProvider.SiteHasFeature(Feature.CrowMagic),
+                    IncludeDisciplines = _featureProvider.SiteHasFeature(Feature.Vampire),
                     CampaignDetail = campaignDetail,
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
                     ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack),

@@ -605,7 +605,7 @@ namespace Warhammer.Mvc.Concrete
         public NpcSheetViewModel MakeNpcSheetViewModel(Person npc)
         {
             Dictionary<string, int> roles = new Dictionary<string, int>();
-            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Role))
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Role || a.AttributeType == AttributeType.Discipline))
             {
                 if (!roles.ContainsKey(attribute.Name))
                 {
@@ -706,6 +706,19 @@ namespace Warhammer.Mvc.Concrete
             model.SelectedArcId = selectedId;
             model.CurrentArcTitle = session.Arc?.FullName ?? "None Selected";
 
+            return model;
+        }
+
+        public ManagePersonAttributesViewModel MakeManagePersonAttributesViewModel(int id)
+        {
+            List<PersonAttribute> attributes = _data.GetPersonAttributes(id);
+            string personName = _data.GetPageName(id);
+            ManagePersonAttributesViewModel model = new ManagePersonAttributesViewModel
+            {
+                Attributes = attributes,
+                PersonId = id,
+                PersonName = personName
+            };
             return model;
         }
 

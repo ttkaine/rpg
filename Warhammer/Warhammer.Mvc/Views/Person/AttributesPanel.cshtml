@@ -4,109 +4,138 @@
 
 @if (Model.CharacterInfo.CanEdit || Model.PersonAttributes.Any(a => !a.PersonAttribute.IsPrivate))
 {
-<div id="characterattributes" class="content-block">
-    @if (Model.CharacterInfo.CanEdit)
-    {
-        if (Model.ShowWearTrack)
+    <div id="characterattributes" class="content-block">
+        @if (Model.CharacterInfo.CanEdit)
         {
-            @Html.Partial("_WearTrack", Model)
-        }
-        @Html.Partial("_AttributeEdit", Model)
-        <div class="alert alert-info">
-            <table class="table attribute-table">
-                <tr>
-                    <td>Current XP</td>
-                    <td><span class="personAttribute label label-success">@Model.CurrentXp</span></td>
-                </tr>
-                <tr>
-                    <td>XP Spent</td>
-                    <td><span class="personAttribute label label-danger">@(Model.XpSpent).00</span></td>
-                </tr>
-                @if (Model.CharacterInfo.HasAttributeMoveAvailable)
-                {
-                    <tr>
-                        <td>Shift Available</td>
-                        <td><span class="personAttribute label label-info">&#10004;</span></td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        <td>Shift Available</td>
-                        <td><span class="personAttribute label label-default">&#10008;</span></td>
-                    </tr>
-
-                }
-                @if (ViewBag.EditMode && Model.CanAddXp)
-                {
-                    <tr>
-                        <td>Add XP</td>
-                        <td>
-                            @using (Ajax.BeginForm("AddXp", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                            {
-                                <input type="hidden" value="@Model.PersonId" name="personId" />
-                                <input type="number" step="any" class="form-control" name="amount" />
-                                <input type="submit" value="+ Add" class="btn btn-block btn-success" />
-                            }
-                        </td>
-                    </tr>
-
-                }
-            </table>
-        </div>
-    }
-
-    @if (ViewBag.EditMode && Model.CharacterInfo.CanEdit)
-    {
-        <div class="alert alert-info">
-            <h4>Stats</h4>
-            <table class="table">
-                @Html.EditorFor(m => m.Stats)
-            </table>
-        </div>
-        if (Model.IncludeMagic)
-        {
+            if (Model.ShowWearTrack)
+            {
+                @Html.Partial("_WearTrack", Model)
+            }
+            @Html.Partial("_AttributeEdit", Model)
             <div class="alert alert-info">
-                <h4>Magic</h4>
                 <table class="table attribute-table">
-                    @Html.EditorFor(m => m.Magic)
-                    @Html.EditorFor(m => m.MagicItems)
+                    <tr>
+                        <td>Current XP</td>
+                        <td><span class="personAttribute label label-success">@Model.CurrentXp</span></td>
+                    </tr>
+                    <tr>
+                        <td>XP Spent</td>
+                        <td><span class="personAttribute label label-danger">@(Model.XpSpent).00</span></td>
+                    </tr>
+                    @if (Model.CharacterInfo.HasAttributeMoveAvailable)
+                    {
+                        <tr>
+                            <td>Shift Available</td>
+                            <td><span class="personAttribute label label-info">&#10004;</span></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Shift Available</td>
+                            <td><span class="personAttribute label label-default">&#10008;</span></td>
+                        </tr>
+
+                    }
+                    @if (ViewBag.EditMode && Model.CanAddXp)
+                    {
+                        <tr>
+                            <td>Add XP</td>
+                            <td>
+                                @using (Ajax.BeginForm("AddXp", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                                {
+                                    <input type="hidden" value="@Model.PersonId" name="personId" />
+                                    <input type="number" step="any" class="form-control" name="amount" />
+                                    <input type="submit" value="+ Add" class="btn btn-block btn-success" />
+                                }
+                            </td>
+                        </tr>
+
+                    }
                 </table>
-
-                @if (Model.CanAddNew(AttributeType.Magic))
-                {
-                using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                {
-                <input type="hidden" value="@Model.PersonId" name="personId" />
-                <input type="hidden" value="@AttributeType.Magic" name="attributeType" />
-                <input type="text" value="" placeholder="Magic Name" name="name" class="form-control" />
-                <textarea value="" placeholder="Magical Description" name="description" class="form-control"></textarea>
-                <input type="submit" value="Add Magic for @Model.NewCost(AttributeType.Magic) XP" class="btn btn-block btn-success" />
-                }
-                }
-                else
-                {
-                <input type="button" disabled="disabled" value="New Magic: @(Model.NewCost(AttributeType.Magic)) XP" class="btn btn-block btn-default" />
-                }
-
-                @if (Model.CanAddNew(AttributeType.MagicItem))
-                {
-                using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                {
-                <input type="hidden" value="@Model.PersonId" name="personId" />
-                <input type="hidden" value="@AttributeType.MagicItem" name="attributeType" />
-                <input type="text" value="" placeholder="Item Name" name="name" class="form-control" />
-                <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                <input type="submit" value="Add Magic Item for @Model.NewCost(AttributeType.MagicItem) XP" class="btn btn-block btn-success" />
-                }
-                }
-                else
-                {
-                <input type="button" disabled="disabled" value="New Magic Item: @(Model.NewCost(AttributeType.MagicItem)) XP" class="btn btn-block btn-default" />
-                }
-
             </div>
         }
+
+        @if (ViewBag.EditMode && Model.CharacterInfo.CanEdit)
+        {
+            <div class="alert alert-info">
+                <h4>Stats</h4>
+                <table class="table">
+                    @Html.EditorFor(m => m.Stats)
+                </table>
+            </div>
+            if (Model.IncludeMagic)
+            {
+                <div class="alert alert-info">
+                    <h4>Magic</h4>
+                    <table class="table attribute-table">
+                        @Html.EditorFor(m => m.Magic)
+                        @Html.EditorFor(m => m.MagicItems)
+                    </table>
+
+                    @if (Model.CanAddNew(AttributeType.Magic))
+                    {
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="hidden" value="@AttributeType.Magic" name="attributeType" />
+                            <input type="text" value="" placeholder="Magic Name" name="name" class="form-control" />
+                            <textarea value="" placeholder="Magical Description" name="description" class="form-control"></textarea>
+                            <input type="submit" value="Add Magic for @Model.NewCost(AttributeType.Magic) XP" class="btn btn-block btn-success" />
+                        }
+                    }
+                    else
+                    {
+                        <input type="button" disabled="disabled" value="New Magic: @(Model.NewCost(AttributeType.Magic)) XP" class="btn btn-block btn-default" />
+                    }
+
+                    @if (Model.CanAddNew(AttributeType.MagicItem))
+                    {
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="hidden" value="@AttributeType.MagicItem" name="attributeType" />
+                            <input type="text" value="" placeholder="Item Name" name="name" class="form-control" />
+                            <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                            <input type="submit" value="Add Magic Item for @Model.NewCost(AttributeType.MagicItem) XP" class="btn btn-block btn-success" />
+                        }
+                    }
+                    else
+                    {
+                        <input type="button" disabled="disabled" value="New Magic Item: @(Model.NewCost(AttributeType.MagicItem)) XP" class="btn btn-block btn-default" />
+                    }
+
+                </div>
+            }
+
+            if (Model.IncludeDisciplines)
+            {
+                <div class="alert alert-danger">
+                    <h4>Disciplines</h4>
+                    <table class="table attribute-table">
+                        @Html.EditorFor(m => m.Disciplines)
+                    </table>
+
+
+                    @if (Model.CanAddNew(AttributeType.Discipline))
+                    {
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="hidden" value="@AttributeType.Discipline" name="attributeType" />
+                            <input type="text" value="" placeholder="Discipline Name" name="name" class="form-control" />
+                            <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                            <input type="submit" value="Add Discipline for @Model.NewCost(AttributeType.Discipline) XP" class="btn btn-block btn-success" />
+                        }
+                    }
+                    else
+                    {
+                        <input type="button" disabled="disabled" value="New Discipline: @(Model.NewCost(AttributeType.Discipline)) XP" class="btn btn-block btn-default" />
+                    }
+                </div>
+            }
+
+
             <div class="alert alert-success">
                 <h4>Roles</h4>
                 <table class="table attribute-table">
@@ -235,6 +264,15 @@
                     <h4>Magic Items</h4>
                     <table class="table attribute-table">
                         @Html.DisplayFor(m => m.MagicItems)
+                    </table>
+                </div>
+            }
+            if ((Model.Disciplines.Any() && Model.CharacterInfo.CanEdit) || Model.Disciplines.Any(s => !s.PersonAttribute.IsPrivate))
+            {
+                <div class="alert alert-danger">
+                    <h4>Disciplines</h4>
+                    <table class="table attribute-table">
+                        @Html.DisplayFor(m => m.Disciplines)
                     </table>
                 </div>
             }

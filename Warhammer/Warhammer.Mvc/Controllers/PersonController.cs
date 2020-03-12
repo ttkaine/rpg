@@ -520,6 +520,9 @@ namespace Warhammer.Mvc.Controllers
                 case ScoreType.Roles:
                     baseColor = Color.OrangeRed;
                     break;
+                case ScoreType.Discipline:
+                    baseColor = Color.Crimson;
+                    break;
                 case ScoreType.Skills:
                     baseColor = Color.Red;
                     break;

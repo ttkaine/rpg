@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
@@ -3457,6 +3458,55 @@ namespace Warhammer.Core.Concrete
         public void SaveImage(PageImage pageImage)
         {
             _repository.Save(pageImage);
+        }
+
+        public List<PersonAttribute> GetPersonAttributes(int id)
+        {
+            return _repository.PersonAttributes().Where(a => a.PersonId == id).ToList();
+        }
+
+        public void AddPersonAttribute(int personId, AttributeType attributeType, string name, string description,
+            int value, bool hidden)
+        {
+            PersonAttribute attribute = new PersonAttribute
+            {
+                AttributeType = attributeType,
+                CampaignId = CurrentCampaignId,
+                CurrentValue = value,
+                InitialValue = value,
+                Description = description,
+                Name = name,
+                PersonId = personId,
+                IsPrivate = hidden
+
+            };
+            _repository.Save(attribute);
+        }
+
+        public void RemovePersonAttribute(int personId, int attributeId)
+        {
+            PersonAttribute attribute = _repository.PersonAttributes()
+                .FirstOrDefault(a => a.Id == attributeId && a.PersonId == personId);
+            if (attribute != null)
+            {
+                _repository.Delete(attribute);
+            }
+        }
+
+        public void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description,
+            AttributeType attributeType, bool hidden)
+        {
+            PersonAttribute attribute = _repository.PersonAttributes()
+                .FirstOrDefault(a => a.Id == attributeId);
+            if (attribute != null)
+            {
+                attribute.CurrentValue = currentValue;
+                attribute.Name = name;
+                attribute.Description = description;
+                attribute.AttributeType = attributeType;
+                attribute.IsPrivate = hidden;
+                _repository.Save(attribute);
+            }
         }
 
         public void RemoveAward(int personId, int awardId)

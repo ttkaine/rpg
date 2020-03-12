@@ -13,7 +13,7 @@ namespace Warhammer.Core.Models
         public int PlayerId { get; set; }
         public bool FixedWearAndHarm { get; set; }
         public bool IncludeMagic { get; set; }
-        
+        public bool IncludeDisciplines { get; set; }
 
         public decimal CurrentXp => CharacterInfo.CurrentXp;
         public int XpSpent => CharacterInfo.XpSpent;
@@ -70,6 +70,7 @@ namespace Warhammer.Core.Models
         public List<PersonAttributeAdvanceModel> MagicItems => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.MagicItem).OrderBy(a => a.PersonAttribute.Id).ToList();
         public List<PersonAttributeAdvanceModel> Skills => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Skill).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Roles => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Role).OrderBy(a => a.PersonAttribute.Name).ToList();
+        public List<PersonAttributeAdvanceModel> Disciplines => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Discipline).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Descriptors => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Descriptor).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Wear => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Wear).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
         public List<PersonAttributeAdvanceModel> Harm => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Harm).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
@@ -85,6 +86,7 @@ namespace Warhammer.Core.Models
                 case AttributeType.MagicItem:
                 case AttributeType.Skill:
                 case AttributeType.Role:
+                case AttributeType.Discipline:
                 case AttributeType.Descriptor:
                 case AttributeType.Harm:
                 case AttributeType.Wear:
@@ -113,6 +115,7 @@ namespace Warhammer.Core.Models
                     int skillCost = 1;
                     return skillCost;
                 case AttributeType.Role:
+                case AttributeType.Discipline:
                     int roleCost = 4;
                     return roleCost;
                 case AttributeType.Descriptor:
@@ -188,6 +191,7 @@ namespace Warhammer.Core.Models
             AttributeType.Magic,
             AttributeType.MagicItem,
             AttributeType.Role,
+            AttributeType.Discipline,
             AttributeType.Skill,
             AttributeType.Stat
         };

@@ -320,5 +320,57 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+        [HttpGet]
+        public ActionResult ManagePersonAttributes(int id)
+        {
+            PageControlsViewModel controlModel = GetModel(id);
+            if (controlModel.CanManagePersonAttributes)
+            {
+                ManagePersonAttributesViewModel model = _factory.MakeManagePersonAttributesViewModel(id);
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Page", new { id });
+        }
+
+
+        [HttpPost]
+        public ActionResult ManagePersonAttributes(ManagePersonAttributesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                PageControlsViewModel controlModel = GetModel(model.PersonId);
+
+                if (controlModel != null && controlModel.CanManagePersonAttributes)
+                {
+                    if (model.NewAttributeIsPopulated && model.NewAttributeType.HasValue)
+                    {
+                        DataProvider.AddPersonAttribute(model.PersonId, model.NewAttributeType.Value, model.NewAttributeName, model.NewAttributeDescription, model.NewAttributeValue, model.NewAttributeIsPrivate);
+                    }
+                    if (model.Attributes != null)
+                    {
+                        foreach (PersonAttribute attribute in model.Attributes)
+                        {
+                            if (attribute.Remove)
+                            {
+                                DataProvider.RemovePersonAttribute(attribute.PersonId, attribute.Id);
+                            }
+                            else
+                            {
+                                DataProvider.UpdatePersonAttribute(attribute.Id, attribute.CurrentValue, attribute.Name, attribute.Description, attribute.AttributeType, attribute.IsPrivate);
+                            }
+
+                        }
+                    }
+                    return RedirectToAction("ManagePersonAttributes", "PageControls", new { id = model.PersonId });
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return RedirectToAction("ManagePersonAttributes", "PageControls", new { id = model.PersonId });
+        }
     }
 }

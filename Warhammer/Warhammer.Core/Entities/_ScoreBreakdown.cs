@@ -23,6 +23,7 @@ namespace Warhammer.Core.Entities
         Places = 14,
         WearHarm = 15,
         Magic = 16,
+        Discipline
     }
 
 

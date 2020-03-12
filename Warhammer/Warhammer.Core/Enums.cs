@@ -57,6 +57,7 @@
         Edge = 6,
         Magic = 7,
         MagicItem = 8,
+        Discipline = 9
     }
 
     public enum FixedWearAndHarmLevels

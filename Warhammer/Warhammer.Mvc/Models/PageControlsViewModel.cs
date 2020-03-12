@@ -221,5 +221,6 @@ namespace Warhammer.Mvc.Models
         public bool CanChangeImage => IsLocalToCampaign;
         public bool CanEditLinks => IsLocalToCampaign;
         public bool ShowManagePeopleLink => IsSession && ShowManagePeopleEnabled;
+        public bool CanManagePersonAttributes => PlayerIsGm;
     }
 }

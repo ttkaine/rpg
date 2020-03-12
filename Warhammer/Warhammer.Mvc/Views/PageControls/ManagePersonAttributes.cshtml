@@ -1,0 +1,67 @@
+﻿@model Warhammer.Mvc.Models.ManagePersonAttributesViewModel
+@using Warhammer.Core.Entities
+
+@{
+    ViewBag.Title = "Manage Awards";
+}
+
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+
+
+            <h2>Manage Attributes</h2>
+
+
+            <h3>Current Awards for @Model.PersonName:</h3>
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(m => m.PersonId)
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Visibility</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Attributes.Any())
+                        {
+                            @Html.EditorFor(m => m.Attributes)
+                        }
+                        else
+                        {
+                            <tr><td colspan="6" class="text-center"><span class="alert-info">No Attributes Yet...</span></td></tr>
+                        }
+                        <tr>
+                            <td colspan="6" class="text-center"><span class="alert-info"> + Add New</span></td>
+                        </tr>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Visibility</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>@Html.EnumDropDownListFor(m => m.NewAttributeType, "- Attribute Type -", new { @class = "form-control" })</td>
+                            <td>@Html.EditorFor(m => m.NewAttributeValue, new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.NewAttributeName, new { @class = "form-control" })</td>
+                            <td colspan="2">@Html.TextAreaFor(m => m.NewAttributeDescription, new { @class = "form-control" })</td>
+                            <td>@Html.CheckBoxFor(m => Model.NewAttributeIsPrivate, new { data_toggle = "toggle", data_on = "Private", data_off = "Public", data_offstyle = "success", data_onstyle = "info" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <input type="submit" class="btn btn-block btn-success" value="Save" />
+            }
+
+        </div>
+    </div>
+</div>

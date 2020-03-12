@@ -77,7 +77,8 @@ namespace Warhammer.Core.Entities
         UpdatedCharacterLeague,
         AutoTextSessionXp,
         ShowWishingWell,
-        TrophyXp
+        TrophyXp,
+        Vampire
     }
 
     public partial class SiteFeature

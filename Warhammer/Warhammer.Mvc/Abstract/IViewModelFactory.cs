@@ -24,5 +24,6 @@ namespace Warhammer.Mvc.Abstract
         ArcSessionsViewModel MakeArcSessionsViewModel(Arc arc);
         EditArcSessionsViewModel MakeEditArcSessionsViewModel(Arc arc, List<Session> sessions);
         EditSessionArcViewModel MakeEditSessionArcViewModel(Session session, List<Arc> arcs);
+        ManagePersonAttributesViewModel MakeManagePersonAttributesViewModel(int id);
     }
 }

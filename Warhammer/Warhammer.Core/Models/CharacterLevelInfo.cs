@@ -24,5 +24,6 @@ namespace Warhammer.Core.Models
         public int NumberOfEdge { get; set; }
         public bool HasAttributeMoveAvailable { get; set; }
         public bool FixedWearAndHarm { get; set; }
+        public int TotalDisciplines { get; set; }
     }
 }

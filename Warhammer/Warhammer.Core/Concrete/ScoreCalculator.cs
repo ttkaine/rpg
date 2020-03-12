@@ -61,6 +61,25 @@ namespace Warhammer.Core.Concrete
                 });             
             }
 
+
+            int? disciplineValue = _repo.PersonAttributes()
+                .Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Discipline).Sum(a => (int?)a.CurrentValue);
+
+            int disciplinePoints = (disciplineValue.GetValueOrDefault(0) - 3);
+
+            if (disciplinePoints > 0)
+            {
+                scores.Add(new ScoreBreakdown
+                {
+                    ScoreType = ScoreType.Discipline,
+                    DateTime = calcDate,
+                    PersonId = personId,
+                    PointsValue = disciplinePoints,
+                    CampaignId = campaignId
+                });
+            }
+
+
             int? skillValue = _repo.PersonAttributes()
                 .Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Skill).Sum(a => (int?)a.CurrentValue);
 

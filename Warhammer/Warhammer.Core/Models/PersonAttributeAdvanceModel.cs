@@ -31,6 +31,7 @@ namespace Warhammer.Core.Models
                     case AttributeType.Stat:
                     case AttributeType.Skill:
                     case AttributeType.Role:
+                    case AttributeType.Discipline:
                     case AttributeType.Magic:
                     case AttributeType.MagicItem:
                         return $"One point of {Name} for {SaleValue} XP";
@@ -87,6 +88,7 @@ namespace Warhammer.Core.Models
 
                         
                     case AttributeType.Role:
+                    case AttributeType.Discipline:
                         int roleAdvance = PersonAttribute.CurrentValue;
                         if (roleAdvance < 1)
                         {
@@ -185,6 +187,7 @@ namespace Warhammer.Core.Models
                         }
                         return skillAdvance;
                     case AttributeType.Role:
+                    case AttributeType.Discipline:
                         int roleAdvance = PersonAttribute.CurrentValue;
                         roleAdvance++;
                         if (roleAdvance < 1)
