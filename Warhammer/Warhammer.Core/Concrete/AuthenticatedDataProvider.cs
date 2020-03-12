@@ -963,7 +963,7 @@ namespace Warhammer.Core.Concrete
                     if (trophy.TrophyType == TrophyType.DefaultAward)
                     {
                         decimal xpValue = trophy.PointsValue;
-                        xpValue = xpValue / 2.5m;
+                        xpValue = xpValue / 3m;
                         if (xpValue > 5.0m)
                         {
                             xpValue = 5.0m;
