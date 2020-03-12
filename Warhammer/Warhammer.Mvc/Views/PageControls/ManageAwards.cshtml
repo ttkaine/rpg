@@ -7,45 +7,46 @@
 
 <div class="content-wrapper">
 
-    <div class="main-content">
+    <div class="banner-content">
         <div class="content-block">
 
 
             <h2>Manage Awards</h2>
+            <a href="@Url.Action("Index", "Page", new { id = Model.PersonId })"><img src="@Url.Action("Image", "Image", new {id = Model.PersonId }, null)" title="@Model.PersonName" alt="Picture of @Model.PersonName" class="mini-profile-image" /></a>
 
 
             <h3>Current Awards for @Model.PersonName:</h3>
             @using (Html.BeginForm())
             {
-            
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Award</th>
-                    <th>Reason</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @if (Model.Awards.Any())
-                {
-                    @Html.DisplayFor(m => m.Awards)
-                }
-                else
-                {
-                    <tr><td colspan="4" class="text-center"><span class="alert-info">No Awards Yet...</span></td></tr>
-                }
-                <tr>
-                    <td>@Html.HiddenFor(m => m.PersonId) + Add New</td>
-                    <td>@Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--NONE--", new { @class = "form-control"})</td>
-                    <td>@Html.TextBoxFor(m => m.Reason, new { @class = "form-control"})</td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
 
-            <input type="submit" class="btn btn-block btn-success" value="Save" />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Award</th>
+                            <th>Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Awards.Any())
+                        {
+                            @Html.DisplayFor(m => m.Awards)
+                        }
+                        else
+                        {
+                            <tr><td colspan="4" class="text-center"><span class="alert-info">No Awards Yet...</span></td></tr>
+                        }
+                        <tr>
+                            <td>@Html.HiddenFor(m => m.PersonId) + Add New</td>
+                            <td>@Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--NONE--", new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.Reason, new { @class = "form-control" })</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <input type="submit" class="btn btn-block btn-success" value="Save" />
             }
 
         </div>

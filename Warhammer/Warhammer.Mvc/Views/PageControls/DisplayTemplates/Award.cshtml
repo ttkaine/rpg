@@ -7,6 +7,6 @@
         <img src="@Url.Action("TrophyImage", "Home", new {id = Model.TrophyId})" title="@Model.Trophy.Name" alt="Picture of @Model.Trophy.Name" height="50" width="50"/>
     </td>
     <td>@Model.Trophy.Name</td>
-    <td style="width: 100%;">@Html.TextBoxFor(m => m.Reason, new { @class = "form-control"})</td>
+    <td>@Html.TextBoxFor(m => m.Reason, new { @class = "form-control"})</td>
     <td>@Html.CheckBoxFor(m => Model.Remove, new { data_toggle = "toggle", data_on = "Remove", data_off = "Keep", data_offstyle = "success", data_onstyle = "danger" })</td>
 </tr>
