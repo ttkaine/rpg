@@ -138,7 +138,7 @@ namespace Warhammer.Mvc.Models
         }
 
         public bool CanManageAwards => PlayerIsGm && IsPerson && IsLocalToCampaign;
-
+        public bool CanManagePersonAttributes => PlayerIsGm && IsPerson && IsLocalToCampaign;
 
         public bool CanSetAsPrivate
         {
@@ -221,6 +221,5 @@ namespace Warhammer.Mvc.Models
         public bool CanChangeImage => IsLocalToCampaign;
         public bool CanEditLinks => IsLocalToCampaign;
         public bool ShowManagePeopleLink => IsSession && ShowManagePeopleEnabled;
-        public bool CanManagePersonAttributes => PlayerIsGm;
     }
 }
