@@ -38,6 +38,7 @@
             }
         }
 
+        <hr />
         @if (Model.CanManageAwards)
         {
             @Html.ActionLink("Manage Awards", "ManageAwards", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-success btn-block" })
@@ -51,18 +52,14 @@
             @Html.ActionLink(" + Add Session Log", "SessionLog", "Create", new { personId = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
         }
 
-
         @if (Model.CanChangePlayer)
         {
             @Html.ActionLink("Change Player", "ChangePlayer", "Person", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
-
-            <hr />
         }
         @if (Model.CanKill)
         {
             @Html.ActionLink("Kill", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })
         }
-
         @if (Model.CanResurrect)
         {
             @Html.ActionLink("Resurrect", "KillPerson", "PageControls", new { id = Model.Page.Id }, new { @class = "btn btn-warning btn-block" })
@@ -70,7 +67,6 @@
 
         @if (Model.CanResetPersonAttributes)
         {
-            <hr />
             using (Ajax.BeginForm("ResetPersonAttributes", "PageControls", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "pageControls" }))
             {
                 <input type="hidden" name="Id" value="@Model.Page.Id" />

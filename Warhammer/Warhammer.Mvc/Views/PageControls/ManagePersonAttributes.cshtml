@@ -2,19 +2,19 @@
 @using Warhammer.Core.Entities
 
 @{
-    ViewBag.Title = "Manage Awards";
+    ViewBag.Title = "Manage Attributes";
 }
 
 <div class="content-wrapper">
 
-    <div class="main-content">
+    <div class="banner-content">
         <div class="content-block">
 
 
             <h2>Manage Attributes</h2>
+            <a href="@Url.Action("Index", "Page", new { id = Model.PersonId })"><img src="@Url.Action("Image", "Image", new {id = Model.PersonId }, null)" title="@Model.PersonName" alt="Picture of @Model.PersonName" class="mini-profile-image" /></a>
 
-
-            <h3>Current Awards for @Model.PersonName:</h3>
+            <h3>Current Attributes for @Model.PersonName:</h3>
             @using (Html.BeginForm())
             {
                 @Html.HiddenFor(m => m.PersonId)
@@ -61,7 +61,6 @@
 
                 <input type="submit" class="btn btn-block btn-success" value="Save" />
             }
-
         </div>
     </div>
 </div>
