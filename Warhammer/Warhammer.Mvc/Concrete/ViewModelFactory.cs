@@ -567,15 +567,20 @@ namespace Warhammer.Mvc.Concrete
             return model;
         }
 
-        public ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person)
+        public ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person, List<Session> sessions)
         {
             ManageAwardsViewModel model = new ManageAwardsViewModel
             {
                 Awards = person.Awards.ToList(),
                 PersonId = person.Id,
                 PersonName = person.FullName,
-                Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.Insignia || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.TrophyType == TrophyType.Insignia).ThenBy(t => t.QuickName), "Id", "QuickName")
+                Trophies = new SelectList(trophies.Where(t => t.TrophyType == TrophyType.DefaultAward || t.TrophyType == TrophyType.Insignia || t.TrophyType == TrophyType.MainPartyBanner).OrderBy(t => t.TrophyType == TrophyType.Insignia).ThenBy(t => t.QuickName), "Id", "QuickName"),
+                Sessions = sessions
             };
+            foreach (Award award in model.Awards)
+            {
+                award.PossibleSessions = sessions;
+            }
             return model;
         }
 
@@ -660,7 +665,8 @@ namespace Warhammer.Mvc.Concrete
             model.CanSetAnNemesis = person.IsNpc && person.Awards.All(a => !(a.Trophy.TypeId == (int) TrophyType.NemesisAward && a.NominatedById == CurrentPlayer.Id));
             model.CanSetAsFavourite = person.IsNpc && person.Awards.All(a => !(a.Trophy.TypeId == (int)TrophyType.FirstFavouriteNpc && a.NominatedById == CurrentPlayer.Id));
             model.ExistingNominations = nominations;
-            model.IsPrivate = _data.SettingIsEnabled(SettingNames.PrivateAwardNominations); 
+            model.IsPrivate = _data.SettingIsEnabled(SettingNames.PrivateAwardNominations);
+            model.Sessions = person.Sessions.ToList();
             return model;
         }
 

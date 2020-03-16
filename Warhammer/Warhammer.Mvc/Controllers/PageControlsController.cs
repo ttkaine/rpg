@@ -135,15 +135,16 @@ namespace Warhammer.Mvc.Controllers
             {
 
                 Person person = DataProvider.GetPerson(id);
-                List<Trophy> trophies = DataProvider.Trophies().ToList();
+
                 if (person == null)
                 {
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-
-                    ManageAwardsViewModel model = _factory.MakeManageAwardsViewModel(trophies, person);
+                    List<Trophy> trophies = DataProvider.Trophies().ToList();
+                    List<Session> sessions = person.Sessions.ToList();
+                    ManageAwardsViewModel model = _factory.MakeManageAwardsViewModel(trophies, person, sessions);
                     
                     return View(model);
                 }
@@ -162,7 +163,7 @@ namespace Warhammer.Mvc.Controllers
                 {
                     if (model.SelectedTrophy.HasValue)
                     {
-                        DataProvider.AwardTrophy(model.PersonId, model.SelectedTrophy.Value, model.Reason);
+                        DataProvider.AwardTrophy(model.PersonId, model.SelectedTrophy.Value, model.Reason, null, model.SelectedSessionId);
                     }
                     if (model.Awards != null)
                     {
@@ -174,7 +175,7 @@ namespace Warhammer.Mvc.Controllers
                             }
                             else
                             {
-                                DataProvider.UpdateAward(award.Id, award.Reason);
+                                DataProvider.UpdateAward(award.Id, award.Reason, award.SessionId);
                             }
 
                         }

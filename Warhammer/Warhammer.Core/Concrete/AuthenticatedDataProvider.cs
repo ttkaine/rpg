@@ -942,7 +942,7 @@ namespace Warhammer.Core.Concrete
                 .OrderBy(t => t.Name).Select(t => new SelectItem{ Id = t.Id, Name = t.Name }).ToList();
         }
 
-        public int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null)
+        public int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null, int? sessionId = null)
         {
             Award award = new Award
             {
@@ -950,7 +950,8 @@ namespace Warhammer.Core.Concrete
                 TrophyId = trophyId,
                 Reason = reason,
                 AwardedOn = DateTime.Now,
-                NominatedById = nominatedById ?? CurrentPlayerId
+                NominatedById = nominatedById ?? CurrentPlayerId,
+                SessionId = sessionId
             };
 
             int awardId = _repository.Save(award);
@@ -963,14 +964,14 @@ namespace Warhammer.Core.Concrete
                     if (trophy.TrophyType == TrophyType.DefaultAward)
                     {
                         decimal xpValue = trophy.PointsValue;
-                        xpValue = xpValue / 3.0m;
-                        if (xpValue > 5.0m)
+                        xpValue = xpValue * 1.25m;
+                        if (xpValue > 10.0m)
                         {
-                            xpValue = 5.0m;
+                            xpValue = 10.0m;
                         }
-                        if(xpValue < 0.01m)
+                        if(xpValue < 0.1m)
                         {
-                            xpValue = 0.01m;
+                            xpValue = 0.1m;
                         }
                         AddXp(personId, xpValue);
                     }
@@ -2291,12 +2292,13 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void UpdateAward(int id, string awardReason)
+        public void UpdateAward(int id, string awardReason, int? awardSessionId)
         {
             Award award = _repository.Awards().FirstOrDefault(a => a.Id == id);
             if (award != null)
             {
                 award.Reason = awardReason;
+                award.SessionId = awardSessionId;
                 _repository.Save(award);
             }
         }
@@ -2835,7 +2837,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void NominateForAward(int personId, int selectedAward, string reason, bool isPrivate)
+        public void NominateForAward(int personId, int selectedAward, string reason, bool isPrivate, int? sessionId = null)
         {
             AwardNomination award = new AwardNomination
             {
@@ -2845,7 +2847,8 @@ namespace Warhammer.Core.Concrete
                 NominatedDate = DateTime.Now,
                 TrophyId = selectedAward,
                 PersonId = personId,
-                IsPrivate = isPrivate
+                IsPrivate = isPrivate,
+                SessionId = sessionId
             };
             _repository.Save(award);
         }
@@ -2860,12 +2863,12 @@ namespace Warhammer.Core.Concrete
             return _repository.AwardNominations().Where(a => !a.AwardedOn.HasValue && !a.RejectedOn.HasValue).ToList();
         }
 
-        public void AcceptNomination(int nominationId, string acceptComment, string awardText)
+        public void AcceptNomination(int nominationId, string acceptComment, string awardText, int? nominationSessionId)
         {
             AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
             nomination.AwardedOn = DateTime.Now;
             nomination.AcceptedReason = acceptComment;
-            int awardId = AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById);
+            int awardId = AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById, nomination.SessionId);
             nomination.AwardId = awardId;
             _repository.Save(nomination);
         }

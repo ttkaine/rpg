@@ -1209,11 +1209,11 @@ namespace Warhammer.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult NominateForAward(int personId, string reason, int selectedTrophy, bool isPrivate)
+        public ActionResult NominateForAward(int personId, string reason, int selectedTrophy, bool isPrivate, int selectedSession)
         {
             if (DataProvider.SiteHasFeature(Feature.AwardNominations))
             {
-                DataProvider.NominateForAward(personId, selectedTrophy, reason, isPrivate);
+                DataProvider.NominateForAward(personId, selectedTrophy, reason, isPrivate, selectedSession);
 
                 Person person = DataProvider.GetPerson(personId);
 

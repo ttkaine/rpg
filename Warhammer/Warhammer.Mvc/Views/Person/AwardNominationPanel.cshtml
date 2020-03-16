@@ -37,7 +37,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading">Nominate for an Award</div>
                 <div class="panel-body">
-                    
+
                     @if (Model.JustNominated)
                     {
                         <div class="alert alert-success">
@@ -50,6 +50,7 @@
                     {
                         <input type="hidden" value="@Model.PersonId" name="personId" />
                         @Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--Choose a Trophy--", new { @class = "form-control" })
+                        @Html.DropDownListFor(m => Model.SelectedSession, new SelectList(Model.Sessions, "Id", "ShortName"), "-- Select a Session --", new { @class = "form-control" })
                         <input type="text" value="" placeholder="Reason for Nomination" name="reason" class="form-control" />
                         <input type="submit" value="Nominate for Award" class="btn btn-block btn-success" />
                         <hr />

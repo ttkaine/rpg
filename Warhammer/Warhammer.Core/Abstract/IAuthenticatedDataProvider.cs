@@ -52,7 +52,7 @@ namespace Warhammer.Core.Abstract
             TrophyType trophyType, string fileIdentifier, string mimeType);
         ICollection<Trophy> Trophies();
         List<SelectItem> TrophiesForSelect();
-        int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null);
+        int AwardTrophy(int personId, int trophyId, string reason, int? nominatedById = null, int? sessionId = null);
         void RemoveAward(int personId, int awardId);
         PageLinkModel PersonWithMyAward(TrophyType awardType);
         List<Page> Search(string searchTerm);
@@ -172,7 +172,7 @@ namespace Warhammer.Core.Abstract
         void SetSessionGm(int sessionId, int? selectedGm);
         List<PageLinkModel> PeopleWithXpToSpend();
         void AwardShiftForSession(int id);
-        void UpdateAward(int id, string awardReason);
+        void UpdateAward(int id, string awardReason, int? awardSessionId);
         List<Person> GetNpcSheetPeople();
         List<Person> GetCharacterSheetPeopleWithTrophy(int trophyId);
         List<PageLinkModel> GetFavourites();
@@ -190,10 +190,10 @@ namespace Warhammer.Core.Abstract
         Color[] GetDefaultColors(int count);
         void SetAsNemisis(int id);
         void SetAsTopFavourite(int personId);
-        void NominateForAward(int personId, int selectedAward, string reason, bool isPrivate);
+        void NominateForAward(int personId, int selectedAward, string reason, bool isPrivate, int? sessionId);
         List<AwardNomination> OutstandingPublicNominationsForPerson(int personId);
         List<AwardNomination> OutstandingNominations();
-        void AcceptNomination(int nominationId, string acceptComment, string awardText);
+        void AcceptNomination(int nominationId, string acceptComment, string awardText, int? nominationSessionId);
         void RejectNomination(int nominationId, string rejectedReason);
         void SaveGmNotes(int pageId, string gmNotes);
         void ApplyShift(int id);

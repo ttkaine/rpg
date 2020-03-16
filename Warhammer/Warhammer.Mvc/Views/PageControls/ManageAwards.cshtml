@@ -37,12 +37,13 @@
                         {
                             <tr><td colspan="4" class="text-center"><span class="alert-info">No Awards Yet...</span></td></tr>
                         }
-                        <tr>
-                            <td>@Html.HiddenFor(m => m.PersonId) + Add New</td>
-                            <td>@Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--NONE--", new { @class = "form-control" })</td>
-                            <td>@Html.TextBoxFor(m => m.Reason, new { @class = "form-control" })</td>
-                            <td></td>
-                        </tr>
+                    <tr>
+                        <td>@Html.HiddenFor(m => m.PersonId) + Add New</td>
+                        <td>@Html.DropDownListFor(m => m.SelectedTrophy, Model.Trophies, "--NONE--", new { @class = "form-control" })</td>
+                        <td>@Html.DropDownListFor(m => Model.SelectedSessionId, new SelectList(Model.Sessions, "Id", "ShortName"), "-- Select a Session --", new { @class = "form-control" })</td>
+                        <td>@Html.TextBoxFor(m => m.Reason, new { @class = "form-control" })</td>
+                        <td></td>
+                    </tr>
                     </tbody>
                 </table>
 

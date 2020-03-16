@@ -19,6 +19,8 @@ namespace Warhammer.Core.Entities
             this.Posts = new HashSet<Post>();
             this.PostOrders = new HashSet<PostOrder>();
             this.SessionLogs = new HashSet<SessionLog>();
+            this.Awards = new HashSet<Award>();
+            this.AwardNominations = new HashSet<AwardNomination>();
         }
     
         public Nullable<System.DateTime> DateTime { get; set; }
@@ -38,5 +40,7 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<SessionLog> SessionLogs { get; set; }
         public virtual GameDate GameDate { get; set; }
         public virtual Arc Arc { get; set; }
+        public virtual ICollection<Award> Awards { get; set; }
+        public virtual ICollection<AwardNomination> AwardNominations { get; set; }
     }
 }

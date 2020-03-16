@@ -115,6 +115,8 @@
         <EntityTypeShape EntityType="WarhammerModel.ScoreBreakdown" Width="1.5" PointX="15.375" PointY="14.75" />
         <AssociationConnector Association="WarhammerModel.FK_ScoreBreakdown_Person" />
         <EntityTypeShape EntityType="WarhammerModel.SiteIcon" Width="1.5" PointX="17.375" PointY="0.75" />
+        <AssociationConnector Association="WarhammerModel.FK_Award_Session" />
+        <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Session" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,5 +12,7 @@ namespace Warhammer.Mvc.Models
         public int PersonId { get; set; }
         public string PersonName { get; set; }
         public string Reason { get; set; }
+        public List<Session> Sessions { get; set; }
+        public int? SelectedSessionId { get; set; }
     }
 }

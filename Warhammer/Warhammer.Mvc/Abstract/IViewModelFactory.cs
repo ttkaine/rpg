@@ -16,7 +16,7 @@ namespace Warhammer.Mvc.Abstract
         PlayerSessionControlsViewModel MakePlayerSessionControlsViewModel(Session session, Player player, bool playerIsGm);
         SessionGmViewModel MakeSessionGmViewModel(int id, List<Player> players, int gmId);
         PageControlsViewModel MakePageControlsViewModel(Page page, bool isAdmin, bool playerIsGm, int currentPlayerId, List<Player> players);
-        ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person);
+        ManageAwardsViewModel MakeManageAwardsViewModel(List<Trophy> trophies, Person person, List<Session> sessions);
         EditTrophyViewModel Make(Trophy trophy, bool playerIsGm, bool playerIsAdmin);
         TrophyCabinetViewModel Make(List<Trophy> trophies, bool currentPlayerIsGm, bool playerIsAdmin);
         NpcSheetViewModel MakeNpcSheetViewModel(Person npc);

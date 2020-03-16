@@ -27,10 +27,12 @@ namespace Warhammer.Core.Entities
         public int CampaignId { get; set; }
         public bool IsPrivate { get; set; }
         public Nullable<int> AwardId { get; set; }
+        public Nullable<int> SessionId { get; set; }
     
         public virtual Person Person { get; set; }
         public virtual Player Player { get; set; }
         public virtual Trophy Trophy { get; set; }
         public virtual Award Award { get; set; }
+        public virtual Session Session { get; set; }
     }
 }

@@ -201,7 +201,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                DataProvider.AcceptNomination(nomination.Id, nomination.AcceptedReason, nomination.NominationReason);
+                DataProvider.AcceptNomination(nomination.Id, nomination.AcceptedReason, nomination.NominationReason, nomination.SessionId);
             }
             return RedirectToAction("OutstandingAwardNominations");
         }

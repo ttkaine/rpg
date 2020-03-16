@@ -1,12 +1,14 @@
-﻿@model Warhammer.Core.Entities.Award
+﻿@using Warhammer.Core.Extensions
+@model Warhammer.Core.Entities.Award
     
 <tr>
     <td>
         @Html.HiddenFor(a => a.Id)
         @Html.HiddenFor(a => a.PersonId)
-        <img src="@Url.Action("TrophyImage", "Home", new {id = Model.TrophyId})" title="@Model.Trophy.Name" alt="Picture of @Model.Trophy.Name" height="50" width="50"/>
+        <a href="@Url.Action("Trophy", "Home", new {id = Model.TrophyId})"> <img src="@Model.Trophy.FileIdentifier.ToImageUrl()" title="@Model.Trophy.Name @Model.Reason" alt="Picture of @Model.Trophy.Name" class="mini-trophy-image" /></a>
     </td>
     <td>@Model.Trophy.Name</td>
+    <td>@Html.DropDownListFor(m => Model.SessionId, new SelectList(Model.PossibleSessions, "Id", "ShortName"), "-- Select a Session --", new { @class = "form-control" })</td>
     <td>@Html.TextBoxFor(m => m.Reason, new { @class = "form-control"})</td>
     <td>@Html.CheckBoxFor(m => Model.Remove, new { data_toggle = "toggle", data_on = "Remove", data_off = "Keep", data_offstyle = "success", data_onstyle = "danger" })</td>
 </tr>

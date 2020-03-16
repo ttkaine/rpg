@@ -14,5 +14,7 @@ namespace Warhammer.Mvc.Models
         public IEnumerable<AwardNomination> ExistingNominations { get; set; }
         public bool IsPrivate { get; set; }
         public bool JustNominated { get; set; }
+        public List<Session> Sessions { get; set; }
+        public int SelectedSession { get; set; }
     }
 }
