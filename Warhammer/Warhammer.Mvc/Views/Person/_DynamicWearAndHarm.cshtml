@@ -1,25 +1,28 @@
 ﻿@using Warhammer.Core
 @model Warhammer.Core.Models.CharacterAttributeModel
 
-<h4>Wear</h4>
-<table class="table">
-    @Html.EditorFor(m => m.Wear)
-</table>
-
-@if (Model.CanAddNew(AttributeType.Wear))
+@if (Model.ShowWear)
 {
-    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+
+    <h4>Wear</h4>
+    <table class="table">
+        @Html.EditorFor(m => m.Wear)
+    </table>
+
+    if (Model.CanAddNew(AttributeType.Wear))
     {
-        <input type="hidden" value="@Model.PersonId" name="personId" />
-        <input type="hidden" value="@AttributeType.Wear" name="attributeType" />
-        <input type="submit" value="Add New Wear slot for @Model.NewCost(AttributeType.Wear) XP" class="btn btn-block btn-success" />
+        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+        {
+            <input type="hidden" value="@Model.PersonId" name="personId" />
+            <input type="hidden" value="@AttributeType.Wear" name="attributeType" />
+            <input type="submit" value="Add New Wear slot for @Model.NewCost(AttributeType.Wear) XP" class="btn btn-block btn-success" />
+        }
+    }
+    else
+    {
+        <input type="button" disabled="disabled" value="New Wear Slot: @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-default" />
     }
 }
-else
-{
-    <input type="button"  disabled="disabled" value="New Wear Slot: @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-default"/>
-}
-
 <h4>Harm</h4>
 <table class="table">
     @Html.EditorFor(m => m.Harm)
@@ -36,5 +39,5 @@ else
 }
 else
 {
-    <input type="button"  disabled="disabled" value="New Harm Slot: @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-default"/>
+    <input type="button" disabled="disabled" value="New Harm Slot: @(Model.NewCost(AttributeType.Harm)) XP" class="btn btn-block btn-default" />
 }

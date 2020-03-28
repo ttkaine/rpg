@@ -1081,6 +1081,20 @@ namespace Warhammer.Mvc.Controllers
             return null;
         }
 
+        public ActionResult SetCurrentResolve(int personId, int updatedResolve)
+        {
+            if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
+            {
+                bool success = _attributeManager.SetCurrentResolve(personId, updatedResolve);
+                CharacterAttributeModel model = _attributeManager.GetCharacterAttributes(personId);
+                if (model != null)
+                {
+                    return PartialView("AttributesPanel", model);
+                }
+            }
+            return null;
+        }
+
         public ActionResult AddToWishingWell(int personId)
         {
             if (DataProvider.SiteHasFeature(Feature.PersonAttributes))
@@ -1275,5 +1289,7 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+
     }
 }

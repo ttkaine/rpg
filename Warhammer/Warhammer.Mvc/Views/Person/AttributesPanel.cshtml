@@ -206,6 +206,23 @@
                 }
             </div>
 
+            if (Model.ShowResolveAndResilience)
+            {
+                <div class="alert alert-info">
+                    <h4>Resolve</h4>
+                    <p>Increasing Resolve gives a character more staying power</p>
+                    <table class="table">
+                        @Html.EditorFor(m => m.Resolve)
+                    </table>
+                    <h4>Resilience</h4>
+                    <p>Increasing Resilience means a character can absorb bigger hits without damage, as long as they have enough Resolve to spend.</p>
+                    <table class="table">
+                        @Html.EditorFor(m => m.Resilience)
+                    </table>
+                </div>
+            }
+
+
             <div class="alert alert-danger">
 
                 <h4>Edge</h4>
@@ -306,6 +323,25 @@
                 </div>
             }
 
+            if (Model.ShowResolveAndResilience)
+            {
+                <div class="alert alert-info">
+                    <h4>Resolve</h4>
+                    <p>This is the maximum reserve buffer of mental and physical endurance that the character has. You can think of this as a bit like Max Hit Points. As the hit points are reduced the character is not actually meaningfully hurt (maybe a few bumps and scratches).</p>
+                    <table class="table attribute-table">
+                        @Html.EditorFor(m => m.Resolve)
+                    </table>
+
+                </div>
+                <div class="alert alert-info">
+                    <h4>Resilience</h4>
+                    <p>This is the threshold for the amount of Resolve the character may spend on a single hit. If the damage is over your Resilience then Harm results, even if the character has remaining Resolve in the pool.</p>
+                    <table class="table attribute-table">
+                        @Html.EditorFor(m => m.Resilience)
+                    </table>
+                </div>
+            }
+
             if ((Model.Wear.Any() || Model.Harm.Any() || Model.Edge.Any()) && Model.CharacterInfo.CanEdit)
             {
                 <div class="alert alert-danger">
@@ -316,7 +352,7 @@
                             @Html.DisplayFor(m => m.Edge)
                         </table>
                     }
-                    @if (Model.Wear.Any())
+                    @if (Model.Wear.Any() && Model.ShowWear)
                     {
                         <h4>Wear</h4>
                         <table class="table attribute-table">

@@ -71,6 +71,8 @@ namespace Warhammer.Core.Models
         public List<PersonAttributeAdvanceModel> Skills => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Skill).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Roles => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Role).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Disciplines => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Discipline).OrderBy(a => a.PersonAttribute.Name).ToList();
+        public List<PersonAttributeAdvanceModel> Resilience => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Resilience).OrderBy(a => a.PersonAttribute.Name).ToList();
+        public List<PersonAttributeAdvanceModel> Resolve => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Resolve).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Descriptors => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Descriptor).OrderBy(a => a.PersonAttribute.Name).ToList();
         public List<PersonAttributeAdvanceModel> Wear => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Wear).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
         public List<PersonAttributeAdvanceModel> Harm => PersonAttributes.Where(a => a.PersonAttribute.AttributeType == AttributeType.Harm).OrderBy(a => a.PersonAttribute.CurrentValue).ToList();
@@ -81,6 +83,8 @@ namespace Warhammer.Core.Models
             switch (type)
             {
                 case AttributeType.Stat:
+                case AttributeType.Resilience:
+                case AttributeType.Resolve:
                     return false;
                 case AttributeType.Magic:
                 case AttributeType.MagicItem:
@@ -102,6 +106,8 @@ namespace Warhammer.Core.Models
             switch (type)
             {
                 case AttributeType.Stat:
+                case AttributeType.Resilience:
+                case AttributeType.Resolve:
                     break;
                 case AttributeType.Magic:
                 case AttributeType.MagicItem:
@@ -192,6 +198,8 @@ namespace Warhammer.Core.Models
             AttributeType.MagicItem,
             AttributeType.Role,
             AttributeType.Discipline,
+            AttributeType.Resolve,
+            AttributeType.Resilience,
             AttributeType.Skill,
             AttributeType.Stat
         };
@@ -206,10 +214,15 @@ namespace Warhammer.Core.Models
 
 
         public int WishingWell { get; set; }
+        public int CurrentResolve { get; set; }
         public bool PlayerIsGm => PlayerId == CampaignDetail?.GmId;
         public bool CanAddXp { get; set; }
         public bool ShowWearTrack { get; set; }
         public bool ShowWishingWell { get; set; }
+        public bool ShowResolveAndResilience { get; set; }
         public bool CanSellAdvance => PossibleAdvanceSales.Any();
+        public bool ShowWear => !ShowResolveAndResilience;
+
+        public int MaxResolve => Resolve.Select(s => s.Value).FirstOrDefault();
     }
 }

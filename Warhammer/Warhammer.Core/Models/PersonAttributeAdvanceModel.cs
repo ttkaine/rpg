@@ -32,6 +32,8 @@ namespace Warhammer.Core.Models
                     case AttributeType.Skill:
                     case AttributeType.Role:
                     case AttributeType.Discipline:
+                    case AttributeType.Resilience:
+                    case AttributeType.Resolve:
                     case AttributeType.Magic:
                     case AttributeType.MagicItem:
                         return $"One point of {Name} for {SaleValue} XP";
@@ -73,6 +75,18 @@ namespace Warhammer.Core.Models
                             return totalValue;
                         }
                         return -1;
+                    case AttributeType.Resolve:
+                        int resolveAdvance = PersonAttribute.CurrentValue;
+                        if (resolveAdvance < 2)
+                        {
+                            return -1;
+                        }
+
+                        if (resolveAdvance <= CharacterInfo.XpSpent)
+                        {
+                            return resolveAdvance;
+                        }
+                        return -1;
                     case AttributeType.Skill:
                         int skillAdvance = PersonAttribute.CurrentValue;
                         if (skillAdvance < 1)
@@ -86,9 +100,23 @@ namespace Warhammer.Core.Models
                         }
                         return -1;
 
-                        
+                    case AttributeType.Resilience:
+                        int resilienceAdvance = PersonAttribute.CurrentValue;
+                        if (resilienceAdvance < 2)
+                        {
+                            return -1;
+                        }
+
+                        resilienceAdvance = resilienceAdvance * 4;
+                        if (resilienceAdvance <= CharacterInfo.XpSpent)
+                        {
+                            return resilienceAdvance;
+                        }
+                        return -1;
+
                     case AttributeType.Role:
                     case AttributeType.Discipline:
+
                         int roleAdvance = PersonAttribute.CurrentValue;
                         if (roleAdvance < 1)
                         {
@@ -178,6 +206,7 @@ namespace Warhammer.Core.Models
                         }
                         totalValue = totalValue * totalValue;
                         return totalValue;
+                    case AttributeType.Resolve:
                     case AttributeType.Skill:
                         int skillAdvance = PersonAttribute.CurrentValue;
                         skillAdvance++;
@@ -188,6 +217,7 @@ namespace Warhammer.Core.Models
                         return skillAdvance;
                     case AttributeType.Role:
                     case AttributeType.Discipline:
+                    case AttributeType.Resilience:
                         int roleAdvance = PersonAttribute.CurrentValue;
                         roleAdvance++;
                         if (roleAdvance < 1)

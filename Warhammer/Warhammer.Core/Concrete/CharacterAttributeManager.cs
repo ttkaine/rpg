@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
+using Newtonsoft.Json.Serialization;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
@@ -83,6 +84,7 @@ namespace Warhammer.Core.Concrete
                         CharacterInfo = info
                     }).ToList(),
                     WishingWell =  person.WishingWell,
+                    CurrentResolve = person.CurrentResolve,
                     PlayerId = player.Id,
                     FixedWearAndHarm = _featureProvider.SiteHasFeature(Feature.FixedHarmAndWear),
                     IncludeMagic = _featureProvider.SiteHasFeature(Feature.CrowMagic),
@@ -90,7 +92,8 @@ namespace Warhammer.Core.Concrete
                     CampaignDetail = campaignDetail,
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
                     ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack),
-                    ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell)
+                    ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell),
+                    ShowResolveAndResilience = _featureProvider.SiteHasFeature(Feature.ResolveAndResilience)
                 };
 
                 return model;
@@ -379,7 +382,15 @@ namespace Warhammer.Core.Concrete
                     SetInitialDescriptor(model.InitialSecondDescriptorName, playerIsGm, person);
                     SetInitialDescriptor(model.InitialThirdDescriptorName, playerIsGm, person);
 
-                    AddDefaultWearAndHarm(person);
+                    if (_featureProvider.SiteHasFeature(Feature.ResolveAndResilience))
+                    {
+                        AddResolveAndResilience(person);
+                    }
+                    else
+                    {
+                        AddDefaultWearAndHarm(person);
+                    }
+
 
                     _repo.Save(person);
 
@@ -388,6 +399,71 @@ namespace Warhammer.Core.Concrete
 
                 return false;
             }
+        }
+
+        private void AddResolveAndResilience(Person person)
+        {
+            if (!person.IsNpc)
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Edge,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 1,
+                    CurrentValue = 1
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Harm,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 4,
+                    CurrentValue = 4
+                });
+
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Resolve,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 4,
+                    CurrentValue = 4
+                });
+            }
+            else
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Resolve,
+                    Name = "",
+                    Description = "",
+                    InitialValue = 2,
+                    CurrentValue = 2
+                });
+            }
+
+
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Resilience,
+                Name = "",
+                Description = "",
+                InitialValue = 2,
+                CurrentValue = 2
+            });
+
+
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "",
+                InitialValue = 2,
+                CurrentValue = 2
+            });
+
         }
 
         private static void SetInitialSkill(string skillName, bool playerIsGm, Person person, int skillLevel)
@@ -479,7 +555,23 @@ namespace Warhammer.Core.Concrete
                     personPersonAttribute.Name = null;
                 }
 
-                PostToTextSessions(person, $"Wear and Edge refreshed for {person.FullName}.");
+
+                if (_featureProvider.SiteHasFeature(Feature.ResolveAndResilience))
+                {
+                    PersonAttribute resolve =
+                        person.PersonAttributes.FirstOrDefault(r => r.AttributeType == AttributeType.Resolve);
+                    if (resolve != null)
+                    {
+                        person.CurrentResolve = resolve.CurrentValue;
+                    }
+
+                    PostToTextSessions(person, $"Resolve and Edge refreshed for {person.FullName}.");
+                }
+                else
+                {
+                    PostToTextSessions(person, $"Wear and Edge refreshed for {person.FullName}.");
+                }
+
 
                 _repo.Save(person);
 
@@ -621,6 +713,21 @@ namespace Warhammer.Core.Concrete
             return false;
         }
 
+        public bool SetCurrentResolve(int personId, int updatedResolve)
+        {
+            Person person = _repo.People().FirstOrDefault(p => p.Id == personId);
+            if (person != null)
+            {
+                person.CurrentResolve = updatedResolve;
+                _repo.Save(person);
+                string message = $"Resolve set to {updatedResolve} for {person.FullName}.";
+                PostToTextSessions(person, message);
+                return true;
+            }
+
+            return false;
+        }
+
         public bool AddXp(int personId, decimal amount)
         {
             lock (_editLock)
@@ -689,8 +796,6 @@ namespace Warhammer.Core.Concrete
         {
             if (!person.IsNpc)
             {
-
-
                 person.PersonAttributes.Add(new PersonAttribute
                 {
                     AttributeType = AttributeType.Edge,

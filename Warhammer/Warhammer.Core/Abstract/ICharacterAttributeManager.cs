@@ -19,7 +19,9 @@ namespace Warhammer.Core.Abstract
         bool SetDefaultWearAndHarm(int personId);
         bool SetAttributeVisibility(int personId, int attributeId, bool isVisible);
         bool AlterWishingWell(int personId, int amount);
+        bool SetCurrentResolve(int personId, int updatedResolve);
         bool AddXp(int personId, decimal amount);
         bool SellAttributePoint(int personId, int targetAttributeId);
+
     }
 }

@@ -352,6 +352,7 @@
           <Property Name="GenderEnum" Type="int" />
           <Property Name="XpGroup" Type="int" />
           <Property Name="DateOfBirthId" Type="int" />
+          <Property Name="CurrentResolve" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -2125,6 +2126,7 @@
           <Property Name="DateOfBirthId" Type="Int32" />
           <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Person_GameDate" FromRole="Person" ToRole="GameDate" />
           <NavigationProperty Name="ScoreBreakdowns" Relationship="WarhammerModel.FK_ScoreBreakdown_Person" FromRole="Person" ToRole="ScoreBreakdown" />
+          <Property Name="CurrentResolve" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -3432,6 +3434,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="CurrentResolve" ColumnName="CurrentResolve" />
                 <ScalarProperty Name="DateOfBirthId" ColumnName="DateOfBirthId" />
                 <ScalarProperty Name="XpGroup" ColumnName="XpGroup" />
                 <ScalarProperty Name="GenderEnum" ColumnName="GenderEnum" />

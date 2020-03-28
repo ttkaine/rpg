@@ -56,6 +56,7 @@ namespace Warhammer.Core.Entities
         public Nullable<int> GenderEnum { get; set; }
         public Nullable<int> XpGroup { get; set; }
         public Nullable<int> DateOfBirthId { get; set; }
+        public int CurrentResolve { get; set; }
     
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<Comment> PersonComments { get; set; }

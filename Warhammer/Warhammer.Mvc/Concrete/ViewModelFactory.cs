@@ -610,7 +610,10 @@ namespace Warhammer.Mvc.Concrete
         public NpcSheetViewModel MakeNpcSheetViewModel(Person npc)
         {
             Dictionary<string, int> roles = new Dictionary<string, int>();
-            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Role || a.AttributeType == AttributeType.Discipline))
+            foreach (PersonAttribute attribute in npc.PersonAttributes.Where(a => a.AttributeType == AttributeType.Role 
+                                                                                  || a.AttributeType == AttributeType.Discipline
+                                                                                  || a.AttributeType == AttributeType.Resolve
+                                                                                  || a.AttributeType == AttributeType.Resilience))
             {
                 if (!roles.ContainsKey(attribute.Name))
                 {
