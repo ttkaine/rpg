@@ -147,7 +147,13 @@ namespace Warhammer.Core.Concrete
                 });
             }
 
-            int? wearValue = _repo.PersonAttributes().Where(a => a.PersonId == personId).Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Wear || a.PersonAttributeTypeEnum == (int)AttributeType.Harm).Sum(a => (int?)a.CurrentValue);
+            int? wearValue = _repo.PersonAttributes().Where(a => a.PersonId == personId)
+                .Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Wear 
+                            || a.PersonAttributeTypeEnum == (int)AttributeType.Harm
+                            || a.PersonAttributeTypeEnum == (int)AttributeType.Resolve
+                            || a.PersonAttributeTypeEnum == (int)AttributeType.Resilience
+                            )
+                .Sum(a => (int?)a.CurrentValue);
     
 
             decimal wearPoints = (wearValue.GetValueOrDefault(0) - 8) / 4m;
