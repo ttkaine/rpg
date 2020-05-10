@@ -22,6 +22,7 @@ namespace Warhammer.Core.Entities
             this.Pages = new HashSet<Page>();
             this.PageImages = new HashSet<PageImage>();
             this.BookPages = new HashSet<BookPage>();
+            this.PlayerSecrets = new HashSet<PlayerSecret>();
         }
     
         public int Id { get; set; }
@@ -52,5 +53,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<Page> Pages { get; set; }
         public virtual ICollection<PageImage> PageImages { get; set; }
         public virtual ICollection<BookPage> BookPages { get; set; }
+        public virtual ICollection<PlayerSecret> PlayerSecrets { get; set; }
     }
 }

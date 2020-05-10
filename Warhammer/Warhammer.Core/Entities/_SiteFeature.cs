@@ -79,7 +79,8 @@ namespace Warhammer.Core.Entities
         ShowWishingWell,
         TrophyXp,
         Vampire,
-        ResolveAndResilience
+        ResolveAndResilience,
+        PlayerSecrets
     }
 
     public partial class SiteFeature

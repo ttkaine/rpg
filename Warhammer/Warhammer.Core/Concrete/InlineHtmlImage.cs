@@ -65,73 +65,76 @@ namespace Warhammer.Core.Concrete
         public List<ExtractedImage> ExtractImagesInHtml(string text)
         {
             List<ExtractedImage> images = new List<ExtractedImage>();
-            try
+            if (!string.IsNullOrWhiteSpace(text))
             {
-                const char separator1 = ',';
-                char separator2 = char.MinValue;
-
-                foreach (Match match in _imagePat.Matches(text))
+                try
                 {
-                    int pos = match.Index;
-                    string imgStr = text.Substring(pos, match.Length);
-                    Match mImg;
-                    switch (char.ToLower(imgStr[0]))
-                    {
-                        case 'i':   // background-image: url(foo.png);
-                            mImg = _imageUrlPat.Match(imgStr);
-                            separator2 = char.MinValue;
-                            break;
-                        case '<':
-                            mImg = _imageSrcPat.Match(imgStr);
-                            separator2 = '\n';
-                            break;
-                        default:
-                            mImg = null;
-                            break;
-                    }
+                    const char separator1 = ',';
+                    char separator2 = char.MinValue;
 
-                    if (mImg != null && mImg.Groups.Count == 2)
+                    foreach (Match match in _imagePat.Matches(text))
                     {
-                        string imageData = mImg.Groups[1].Value.Trim().Replace("'", "").Replace("\"", "");
-
-                        if (imageData.StartsWith("data"))
+                        int pos = match.Index;
+                        string imgStr = text.Substring(pos, match.Length);
+                        Match mImg;
+                        switch (char.ToLower(imgStr[0]))
                         {
-                            int sepIdx = imageData.IndexOf(separator1);
-                            if (separator2 != char.MinValue && imageData[sepIdx + 1] == separator2)
-                                sepIdx++;
+                            case 'i': // background-image: url(foo.png);
+                                mImg = _imageUrlPat.Match(imgStr);
+                                separator2 = char.MinValue;
+                                break;
+                            case '<':
+                                mImg = _imageSrcPat.Match(imgStr);
+                                separator2 = '\n';
+                                break;
+                            default:
+                                mImg = null;
+                                break;
+                        }
 
-                            string imageBase64 = imageData.Substring(sepIdx + 1);
-                            try
+                        if (mImg != null && mImg.Groups.Count == 2)
+                        {
+                            string imageData = mImg.Groups[1].Value.Trim().Replace("'", "").Replace("\"", "");
+
+                            if (imageData.StartsWith("data"))
                             {
-                                Image image = Base64ToImage(imageBase64);
-                                if(image != null)
+                                int sepIdx = imageData.IndexOf(separator1);
+                                if (separator2 != char.MinValue && imageData[sepIdx + 1] == separator2)
+                                    sepIdx++;
+
+                                string imageBase64 = imageData.Substring(sepIdx + 1);
+                                try
                                 {
-                                    images.Add(new ExtractedImage {Image = image, OriginalSrc = mImg.Value});
+                                    Image image = Base64ToImage(imageBase64);
+                                    if (image != null)
+                                    {
+                                        images.Add(new ExtractedImage {Image = image, OriginalSrc = mImg.Value});
+                                    }
+                                }
+// ReSharper disable once EmptyGeneralCatchClause
+                                catch (Exception)
+                                {
                                 }
                             }
+                            else
+                            {
+                                try
+                                {
+                                    //  Image bmp = Image.FromFile(imageData);
+                                    //   images.Add(new ExtractedImage { Image = bmp, OriginalSrc = mImg.Value });
+                                }
 // ReSharper disable once EmptyGeneralCatchClause
-                            catch (Exception)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                              //  Image bmp = Image.FromFile(imageData);
-                             //   images.Add(new ExtractedImage { Image = bmp, OriginalSrc = mImg.Value });
-                            }
-// ReSharper disable once EmptyGeneralCatchClause
-                            catch (Exception)
-                            {
+                                catch (Exception)
+                                {
+                                }
                             }
                         }
                     }
                 }
-            }
 // ReSharper disable once EmptyGeneralCatchClause
-            catch (Exception)
-            {
+                catch (Exception)
+                {
+                }
             }
 
             return images;

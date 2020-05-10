@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Warhammer.Core.Extensions;
@@ -84,7 +85,31 @@ namespace Warhammer.Core.Entities
             }
         }
 
+        private List<PlayerSecret> _visibleSecrets;
+        public List<PlayerSecret> VisibleSecrets
+        {
+            get
+            {
+                if (_visibleSecrets == null)
+                {
+                    List<PlayerSecret> secrets =
+                        PlayerSecrets.Where(s => s.PlayerId == CurrentPlayerId || PlayerIsGm).ToList();
+                    if (!secrets.Any() && !PlayerIsGm)
+                    {
+                        secrets.Add(new PlayerSecret {PlayerId = CurrentPlayerId, PageId = Id});
+                    }
+
+                    _visibleSecrets = secrets;
+                }
+
+                return _visibleSecrets;
+            }
+            set { _visibleSecrets = value; }
+        }
+
+        public int CurrentPlayerId { get; set; }
         public bool PlayerIsGm { get; set; }
         public bool ShowGmNotes { get; set; }
+        public bool ShowPlayerSecrets { get; set; }
     }
 }

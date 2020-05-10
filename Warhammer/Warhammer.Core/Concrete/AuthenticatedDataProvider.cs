@@ -3512,6 +3512,20 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+        public void UpdatePlayerSecret(int playerId, int pageId, string details)
+        {
+            PlayerSecret secret = _repository.PlayerSecrets()
+                .FirstOrDefault(s => s.PlayerId == playerId && s.PageId == pageId);
+            if (secret == null)
+            {
+                secret = new PlayerSecret {PageId =  pageId, PlayerId = playerId};
+            }
+
+            secret.Details = details;
+            _repository.Save(secret);
+
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);

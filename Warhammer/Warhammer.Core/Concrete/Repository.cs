@@ -111,6 +111,26 @@ namespace Warhammer.Core.Concrete
             return _entities.SiteFeatures;
         }
 
+        public IQueryable<PlayerSecret> PlayerSecrets()
+        {
+            return _entities.PlayerSecrets.Where(p => p.Page.CampaignId == CurrentCampaignId);
+        }
+
+        public int Save(PlayerSecret playerSecret)
+        {
+            if (playerSecret.Id == 0)
+            {
+                _entities.PlayerSecrets.Add(playerSecret);
+            }
+            else
+            {
+                _entities.Entry(playerSecret).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return playerSecret.Id;
+        }
+
         public int Save(SiteIcon icon)
         {
             if (icon.Id == 0)

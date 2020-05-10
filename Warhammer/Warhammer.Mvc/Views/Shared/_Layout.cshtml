@@ -78,8 +78,15 @@
                 }
             });
 
+
+
             $(document).ready(function() {
                 window.onbeforeunload = confirmExit;
+
+                $('.editor').change(function() {
+                    formmodified = 1;
+                    $("#saveControls").show(500);
+                });
 
                 function confirmExit() {
                     if (formmodified == 1) {

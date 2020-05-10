@@ -93,6 +93,8 @@ namespace Warhammer.Core.Abstract
         void Delete(PlayerCampaign playerCampaign);
         int Save(PlayerCampaign playerCampaign);
         IQueryable<SiteFeature> AllSiteFeatures();
+        IQueryable<PlayerSecret> PlayerSecrets();
+        int Save(PlayerSecret playerSecret);
     }
 }
 

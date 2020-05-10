@@ -27,6 +27,7 @@ namespace Warhammer.Core.Entities
             this.PlayerCampaigns = new HashSet<PlayerCampaign>();
             this.PostOrders = new HashSet<PostOrder>();
             this.AwardNominations = new HashSet<AwardNomination>();
+            this.PlayerSecrets = new HashSet<PlayerSecret>();
         }
     
         public int Id { get; set; }
@@ -46,5 +47,6 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<PlayerCampaign> PlayerCampaigns { get; set; }
         public virtual ICollection<PostOrder> PostOrders { get; set; }
         public virtual ICollection<AwardNomination> AwardNominations { get; set; }
+        public virtual ICollection<PlayerSecret> PlayerSecrets { get; set; }
     }
 }

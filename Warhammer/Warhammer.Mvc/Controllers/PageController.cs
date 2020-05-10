@@ -63,6 +63,13 @@ namespace Warhammer.Mvc.Controllers
                     {
                         page.ShowGmNotes = CurrentPlayerIsGm && page.CampaignId == DataProvider.CurrentCampaignId;
                     }
+
+                    if (DataProvider.SiteHasFeature(Feature.PlayerSecrets))
+                    {
+                        page.ShowPlayerSecrets = true;
+                        page.CurrentPlayerId = CurrentPlayer.Id;
+                        page.PlayerIsGm = CurrentPlayerIsGm;
+                    }
                     return View(page);
                 }
             }
@@ -94,6 +101,11 @@ namespace Warhammer.Mvc.Controllers
                     }
 
                     page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}' width='{width}%'");
+                }
+
+                foreach (PlayerSecret playerSecret in page.VisibleSecrets)
+                {
+                    DataProvider.UpdatePlayerSecret(playerSecret.PlayerId, playerSecret.PageId, playerSecret.Details);
                 }
 
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName,
@@ -138,7 +150,7 @@ namespace Warhammer.Mvc.Controllers
                     updatedPage.ShowGmNotes = CurrentPlayerIsGm;
                 }
 
-                return View(updatedPage);
+              //  return View(updatedPage);
             }
 
             return RedirectToAction("index", new {id = page.Id});

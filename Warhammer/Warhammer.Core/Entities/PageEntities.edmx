@@ -417,6 +417,15 @@
           <Property Name="PlayerModeEnum" Type="int" Nullable="false" />
           <Property Name="ShowInGlobal" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="PlayerSecrets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="PageId" Type="int" Nullable="false" />
+          <Property Name="Details" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Post">
           <Key>
             <PropertyRef Name="Id" />
@@ -1165,6 +1174,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PlayerSecrets_Page">
+          <End Role="Page" Type="Self.Page" Multiplicity="1" />
+          <End Role="PlayerSecrets" Type="Self.PlayerSecrets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerSecrets">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerSecrets_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerSecrets" Type="Self.PlayerSecrets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerSecrets">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_PageImage">
           <End Role="PageImage" Type="Self.PageImage" Multiplicity="0..1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -1447,6 +1480,7 @@
           <EntitySet Name="Place" EntityType="Self.Place" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlayerCampaign" EntityType="Self.PlayerCampaign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerSecrets" EntityType="Self.PlayerSecrets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceListItem" EntityType="Self.PriceListItem" Schema="dbo" store:Type="Tables" />
@@ -1641,6 +1675,14 @@
           <AssociationSet Name="FK_PlayerCampaign_Player" Association="Self.FK_PlayerCampaign_Player">
             <End Role="Player" EntitySet="Player" />
             <End Role="PlayerCampaign" EntitySet="PlayerCampaign" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerSecrets_Page" Association="Self.FK_PlayerSecrets_Page">
+            <End Role="Page" EntitySet="Page" />
+            <End Role="PlayerSecrets" EntitySet="PlayerSecrets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerSecrets_Player" Association="Self.FK_PlayerSecrets_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerSecrets" EntitySet="PlayerSecrets" />
           </AssociationSet>
           <AssociationSet Name="FK_Post_PageImage" Association="Self.FK_Post_PageImage">
             <End Role="PageImage" EntitySet="PageImage" />
@@ -1997,6 +2039,15 @@
             <End Role="Session" EntitySet="Pages" />
             <End Role="AwardNomination" EntitySet="AwardNominations" />
           </AssociationSet>
+          <EntitySet Name="PlayerSecrets" EntityType="WarhammerModel.PlayerSecret" />
+          <AssociationSet Name="FK_PlayerSecrets_Page" Association="WarhammerModel.FK_PlayerSecrets_Page">
+            <End Role="Page" EntitySet="Pages" />
+            <End Role="PlayerSecret" EntitySet="PlayerSecrets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerSecrets_Player" Association="WarhammerModel.FK_PlayerSecrets_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="PlayerSecret" EntitySet="PlayerSecrets" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -2072,6 +2123,7 @@
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="BookPages" Relationship="WarhammerModel.FK_BookPage_Page" FromRole="Page" ToRole="BookPage" />
           <Property Name="FileIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PlayerSecrets" Relationship="WarhammerModel.FK_PlayerSecrets_Page" FromRole="Page" ToRole="PlayerSecret" />
         </EntityType>
         <EntityType Name="PageView">
           <Key>
@@ -2155,6 +2207,7 @@
           <NavigationProperty Name="PlayerCampaigns" Relationship="WarhammerModel.FK_PlayerCampaign_Player" FromRole="Player" ToRole="PlayerCampaign" />
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
           <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Player" FromRole="Player" ToRole="AwardNomination" />
+          <NavigationProperty Name="PlayerSecrets" Relationship="WarhammerModel.FK_PlayerSecrets_Player" FromRole="Player" ToRole="PlayerSecret" />
         </EntityType>
         <EntityType Name="SessionLog" BaseType="WarhammerModel.Page">
           <Property Name="PersonId" Type="Int32" />
@@ -3356,6 +3409,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PlayerSecret">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="PageId" Type="Int32" Nullable="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PlayerSecrets_Page" FromRole="PlayerSecret" ToRole="Page" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PlayerSecrets_Player" FromRole="PlayerSecret" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK_PlayerSecrets_Page">
+          <End Type="WarhammerModel.Page" Role="Page" Multiplicity="1" />
+          <End Type="WarhammerModel.PlayerSecret" Role="PlayerSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Page">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerSecret">
+              <PropertyRef Name="PageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerSecrets_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.PlayerSecret" Role="PlayerSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerSecret">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3991,6 +4079,16 @@
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerSecrets">
+            <EntityTypeMapping TypeName="WarhammerModel.PlayerSecret">
+              <MappingFragment StoreEntitySet="PlayerSecrets">
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -73,6 +73,29 @@
                         </div>
                     </div>
                 }
+                
+                @if (Model.ShowPlayerSecrets && Model.VisibleSecrets.Any())
+                {
+                    <div class="panel panel-warning">
+                        <div class="page-header">
+                            <h3 class="panel-title">Player Secrets</h3>
+                        </div>
+                        <div class="panel-body">
+                            @if (ViewBag.EditMode)
+                            {
+                                @Html.EditorFor(m => m.VisibleSecrets)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(m => m.VisibleSecrets)
+                            }
+
+                        </div>
+                        <div class="panel-footer">
+                            <span class="note">The Player Secrets section is only visible to you and the GM. This can be used to keep notes handy for the current page without the other players being able to see it.</span>
+                        </div>
+                    </div>
+                }
 
                 <div class="profile-footer">
                     <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br/>

@@ -117,6 +117,9 @@
         <EntityTypeShape EntityType="WarhammerModel.SiteIcon" Width="1.5" PointX="17.375" PointY="0.75" />
         <AssociationConnector Association="WarhammerModel.FK_Award_Session" />
         <AssociationConnector Association="WarhammerModel.FK_AwardNomination_Session" />
+        <EntityTypeShape EntityType="WarhammerModel.PlayerSecret" Width="1.5" PointX="16.25" PointY="18.75" />
+        <AssociationConnector Association="WarhammerModel.FK_PlayerSecrets_Page" />
+        <AssociationConnector Association="WarhammerModel.FK_PlayerSecrets_Player" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
