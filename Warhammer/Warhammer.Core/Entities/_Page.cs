@@ -94,6 +94,7 @@ namespace Warhammer.Core.Entities
                 {
                     List<PlayerSecret> secrets =
                         PlayerSecrets.Where(s => s.PlayerId == CurrentPlayerId || PlayerIsGm).ToList();
+                    secrets = secrets.Where(s => !string.IsNullOrWhiteSpace(s.Details)).ToList();
                     if (!secrets.Any() && !PlayerIsGm)
                     {
                         secrets.Add(new PlayerSecret {PlayerId = CurrentPlayerId, PageId = Id});

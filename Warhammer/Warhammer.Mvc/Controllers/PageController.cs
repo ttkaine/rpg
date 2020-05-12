@@ -103,9 +103,16 @@ namespace Warhammer.Mvc.Controllers
                     page.Description = page.Description.Replace(image.OriginalSrc, $"src='{linkUrl}' width='{width}%'");
                 }
 
-                foreach (PlayerSecret playerSecret in page.VisibleSecrets)
+                if (DataProvider.SiteHasFeature(Feature.PlayerSecrets))
                 {
-                    DataProvider.UpdatePlayerSecret(playerSecret.PlayerId, playerSecret.PageId, playerSecret.Details);
+                    if (page.VisibleSecrets != null && page.VisibleSecrets.Any())
+                    {
+                        foreach (PlayerSecret playerSecret in page.VisibleSecrets)
+                        {
+                            DataProvider.UpdatePlayerSecret(playerSecret.PlayerId, playerSecret.PageId,
+                                playerSecret.Details);
+                        }
+                    }
                 }
 
                 Page updatedPage = DataProvider.UpdatePageDetails(page.Id, page.ShortName, page.FullName,
