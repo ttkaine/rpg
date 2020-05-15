@@ -85,6 +85,7 @@ namespace Warhammer.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
+                page.PlayerIsGm = CurrentPlayerIsGm;
                 List<ExtractedImage> images = _imageProcessor.GetImagesFromHtmlString(page.Description);
 
                 foreach (ExtractedImage image in images)
