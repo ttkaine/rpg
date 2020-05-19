@@ -326,7 +326,7 @@ namespace Warhammer.Mvc.Controllers
         public ActionResult ManagePersonAttributes(int id)
         {
             PageControlsViewModel controlModel = GetModel(id);
-            if (controlModel.CanManagePersonAttributes)
+            if (controlModel.CanManagePersonAttributes || DataProvider.CurrentUserIsAdmin)
             {
                 ManagePersonAttributesViewModel model = _factory.MakeManagePersonAttributesViewModel(id);
                 return View(model);
@@ -343,7 +343,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 PageControlsViewModel controlModel = GetModel(model.PersonId);
 
-                if (controlModel != null && controlModel.CanManagePersonAttributes)
+                if (controlModel != null && (controlModel.CanManagePersonAttributes || DataProvider.CurrentUserIsAdmin))
                 {
                     if (model.NewAttributeIsPopulated && model.NewAttributeType.HasValue)
                     {
