@@ -8,9 +8,11 @@
 }
 
 <div class="content-wrapper">
-
-    @Html.Action("TopStats", "Crow", new { id = Model.Id })
-
+    
+@if (Model is Person)
+{
+    @Html.Action("TopStats", "Crow", new {id = Model.Id})
+}
     @using (Html.BeginForm("Index", "Page", FormMethod.Post, new { id = "mainpageform" }))
     {
         <input type="submit" style="display: none" id="hiddenPageSubmit" />
@@ -34,6 +36,10 @@
                 @if (Model is Person)
                 {
                     @Html.Action("AwardBar", "Person", new { id = Model.Id })
+                    if (Model.ShowStatToggle)
+                    {
+                       <img data-toggle="collapse"  data-target="#allstats" class="mini-trophy-image" src="~/Content/Images/gold-star.png"/> 
+                    }
                 }
                 @if (Model.HasImage)
                 {

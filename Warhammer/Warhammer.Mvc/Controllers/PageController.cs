@@ -64,6 +64,12 @@ namespace Warhammer.Mvc.Controllers
                         page.ShowGmNotes = CurrentPlayerIsGm && page.CampaignId == DataProvider.CurrentCampaignId;
                     }
 
+                    if (page is Person && DataProvider.SiteHasFeature(Feature.CrowTopStatsPanel) && DataProvider.SiteHasFeature(Feature.PersonAttributes))
+                    {
+                        page.ShowStatToggle = true;
+                    }
+
+
                     if (DataProvider.SiteHasFeature(Feature.PlayerSecrets))
                     {
                         page.ShowPlayerSecrets = true;

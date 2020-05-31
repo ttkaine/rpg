@@ -112,5 +112,6 @@ namespace Warhammer.Core.Entities
         public bool PlayerIsGm { get; set; }
         public bool ShowGmNotes { get; set; }
         public bool ShowPlayerSecrets { get; set; }
+        public bool ShowStatToggle { get; set; }
     }
 }
