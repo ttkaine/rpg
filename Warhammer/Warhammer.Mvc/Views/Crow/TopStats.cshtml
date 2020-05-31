@@ -1,75 +1,158 @@
 ﻿@using Warhammer.Core.Entities
-@model Warhammer.Mvc.Models.PersonStatViewModel
+@model Warhammer.Core.Models.CharacterAttributeModel
 
 
-
-<div id="fateStats" class="banner-content hidden-md hidden-sm hidden-xs">
-    <div class="fate-stat-block">
-        <table class="table">
-            <thead>
-                <tr>
-                    @foreach (StatName header in Model.Stats.Select(s => (StatName)s.Key))
+@if (Model.PersonAttributes.Any())
+{
+    <div id="allstats" class="banner-content collapse">
+        <div class="fate-stat-block">
+            <img data-toggle="collapse"  data-target="#allstats" class="mini-trophy-image" src="~/Content/Images/gold-star.png"/> 
+            <table class="table table-bordered attribute-table">
+                <thead>
+                <tr class="alert-info">
+                    @foreach (string statName in Model.Stats.Select(s => s.Name))
                     {
-
-
-                        <th>@header.ToString().Replace("_", " ")</th>
+                        <th>@statName</th>
                     }
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
-                    @foreach (KeyValuePair<StatName, int> stat in Model.Stats)
+                    @foreach (PersonAttribute stat in Model.Stats.Select(s => s.PersonAttribute))
                     {
-                        int statValue = stat.Value;
-
-                        if (Model.IsCrow)
-                        {
-                            statValue = statValue - 2;
-                        }
-
-                        StatLevel level = (StatLevel)statValue;
-                        var statLevelName = level.ToString();
-
-                        if (statValue > 9)
-                        {
-                            statLevelName = "Divine";
-                        }
-                        if (statValue < -3)
-                        {
-                            statLevelName = "Shit";
-                        }
-
-                        <td title="@Html.Raw(stat.Key + " : " + stat.Value)">@Html.Raw(stat.Value > 0 ? "+" : "")@stat.Value (@statLevelName)</td>
+                        <td style="text-align: center;"><span class="personAttribute label label-info" title="@stat.Name">@stat.CurrentValue</span></td>
                     }
                 </tr>
-            </tbody>
+                </tbody>
+            </table>
+            <div >
 
-        </table>
+                @if (Model.Descriptors.Any())
+                {
+                    <div>
+                        <hr/>
+                        @foreach (string statName in Model.Descriptors.Select(s => s.Name))
+                        {
 
+                            <span class="personAttribute label label-info">@statName</span>
+
+                        }
+                        <hr/>
+                    </div>
+                }
+                @if (Model.Roles.Any())
+                {
+                    <hr/>
+                    <table class="table attribute-table">
+                        <thead>
+                        <tr class="alert-success">
+                            <th>Role Name</th>
+                            <th>Current Level</th>
+                            <th>XP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (PersonAttribute role in Model.Roles.Select(s => s.PersonAttribute))
+                        {
+                            <tr>
+                                <td><span class="personAttribute" title="@role.Name">@role.Name</span></td>
+                                <td style="text-align: center;"><span class="personAttribute label label-success" title="@role.Name">@role.CurrentValue</span></td>
+                                <td class="personAttribute"><span class="personAttribute label label-default">@role.XpSpent</span></td>
+                            </tr>
+                        }
+
+                        </tbody>
+                    </table>
+                    <hr/>
+                }
+                @if (Model.Skills.Any())
+                {
+                    <hr/>
+                    <table class="table attribute-table">
+                        <thead>
+                        <tr class="alert-success">
+                            <th>Skill Name</th>
+                            <th>Current Level</th>
+                            <th>XP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (PersonAttribute skill in Model.Skills.Select(s => s.PersonAttribute))
+                        {
+                            <tr>
+                                <td><span class="personAttribute" title="@skill.Name">@skill.Name</span></td>
+                                <td style="text-align: center;"><span class="personAttribute label label-success" title="@skill.Name">@skill.CurrentValue</span></td>
+                                <td class="personAttribute"><span class="personAttribute label label-default">@skill.XpSpent</span></td>
+                            </tr>
+                        }
+
+                        </tbody>
+                    </table>
+                    <hr/>
+                }
+
+                @if (Model.Resolve.Any())
+                {
+                    <hr/>
+                    var wear = Model.Resolve.First();
+                    <table class="table attribute-table">
+                        <thead>
+                        <tr class="alert-warning">
+                            <th>WEAR</th>
+                            <th>Level</th>
+                            <th>XP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="personAttribute">&nbsp;</td>
+                            <td class="personAttribute"><span class="personAttribute label label-warning">@wear.PersonAttribute.CurrentValue</span></td>
+                            <td class="personAttribute"><span class="personAttribute label label-default">@wear.PersonAttribute.XpSpent</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr/>
+                }
+
+                @if (Model.Harm.Any())
+                {
+                    <hr/>
+                    <table class="table attribute-table">
+                        <thead>
+                        <tr class="alert-danger">
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (PersonAttribute skill in Model.Harm.Select(s => s.PersonAttribute))
+                        {
+                            string used = string.IsNullOrWhiteSpace(skill.Name) ? "" : "alert-danger";
+                            <tr class="@used">
+                                <td><span class="personAttribute" title="@skill.Description">@skill.Description</span></td>
+                                <td style="text-align: center;"><span class="personAttribute label label-danger" title="@skill.Name">@skill.CurrentValue</span></td>
+                                <td class="personAttribute"><span class="personAttribute">@skill.Name</span></td>
+                            </tr>
+                        }
+
+                        </tbody>
+                    </table>
+                    <hr/>
+                }
+            </div>
+        </div>
     </div>
-</div>
-
-<div id="fateStats" class="banner-content visible-md visible-sm visible-xs">
-    <div class="fate-stat-block">
-        <table class="table">
-            <thead>
-                <tr>
-                    @foreach (StatName header in Model.Stats.Select(s => (StatName)s.Key))
-                    {
-                        <th>@header.ToString().PadLeft(2).Substring(0, 2)</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    @foreach (KeyValuePair<StatName, int> stat in Model.Stats)
-                    {
-                        <td title="@Html.Raw(stat.Key + " : " + stat.Value)">@stat.Value</td>
-                    }
-                </tr>
-            </tbody>
-
-        </table>
-
+}
+else
+{
+    <div id="allstats" class="banner-content collapse">
+        <div class="fate-stat-block">
+            <img data-toggle="collapse"  data-target="#allstats" class="mini-trophy-image" src="~/Content/Images/gold-star.png"/> 
+            <p>Stats not set</p>
+        </div>
     </div>
-</div>
+}
