@@ -217,6 +217,7 @@
     <Compile Include="Abstract\IApplicationInitalizeHandler.cs" />
     <Compile Include="Abstract\IAuthenticatedDataProvider.cs" />
     <Compile Include="Abstract\IAuthenticatedUserProvider.cs" />
+    <Compile Include="Abstract\ICrowCharacterManager.cs" />
     <Compile Include="Abstract\IDatabaseUpdateProvider.cs" />
     <Compile Include="Abstract\IDomainProvider.cs" />
     <Compile Include="Abstract\IEmailHandler.cs" />
@@ -451,6 +452,8 @@
     <Compile Include="Models\AwardSummaryModel.cs" />
     <Compile Include="Models\CharacterLeagueItemModel.cs" />
     <Compile Include="Models\CharacterLeagueModel.cs" />
+    <Compile Include="Models\Crow\CrowAttributeModel.cs" />
+    <Compile Include="Models\Crow\CrowCharacterAttributesModel.cs" />
     <Compile Include="Models\OpenTextSessionSummaryModel.cs" />
     <Compile Include="Models\PlayerCampaignLinkModel.cs" />
     <Compile Include="Models\SessionArcSummaryModel.cs" />
