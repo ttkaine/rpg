@@ -208,17 +208,24 @@
 
             if (Model.ShowResolveAndResilience)
             {
+
                 <div class="alert alert-info">
+                    @if(Model.Resolve.Any())
+                    {
                     <h4>Resolve</h4>
                     <p>Increasing Resolve gives a character more staying power</p>
                     <table class="table">
                         @Html.EditorFor(m => m.Resolve)
                     </table>
+                    }
+                    @if(Model.Resilience.Any())
+                    {
                     <h4>Resilience</h4>
                     <p>Increasing Resilience means a character can absorb bigger hits without damage, as long as they have enough Resolve to spend.</p>
-                    <table class="table">
-                        @Html.EditorFor(m => m.Resilience)
-                    </table>
+                        <table class="table">
+                            @Html.EditorFor(m => m.Resilience)
+                        </table>
+                    }
                 </div>
             }
 
