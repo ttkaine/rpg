@@ -19,7 +19,9 @@
                 {
                     if (Model.Resolve.Any())
                     {
-                        string currentResolveString = Model.CurrentResolve + "%";
+                        int maxResolve = Model.Resolve.First().Value;
+                        double percentageResolve = Model.CurrentResolve * 100.0 / maxResolve;
+                        string currentResolveString = percentageResolve.ToString("####") + "%";
                         <tr>
                             <td colspan="2">
                                 <div class="progress">
