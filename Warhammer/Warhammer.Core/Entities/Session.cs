@@ -21,6 +21,7 @@ namespace Warhammer.Core.Entities
             this.SessionLogs = new HashSet<SessionLog>();
             this.Awards = new HashSet<Award>();
             this.AwardNominations = new HashSet<AwardNomination>();
+            this.ExperiencePoints = new HashSet<ExperiencePoint>();
         }
     
         public Nullable<System.DateTime> DateTime { get; set; }
@@ -42,5 +43,6 @@ namespace Warhammer.Core.Entities
         public virtual Arc Arc { get; set; }
         public virtual ICollection<Award> Awards { get; set; }
         public virtual ICollection<AwardNomination> AwardNominations { get; set; }
+        public virtual ICollection<ExperiencePoint> ExperiencePoints { get; set; }
     }
 }

@@ -228,6 +228,19 @@
           <Property Name="Identifier" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EntityId" Type="int" />
         </EntityType>
+        <EntityType Name="ExperiencePoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="SessionId" Type="int" />
+          <Property Name="TermId" Type="int" />
+          <Property Name="PersonAttributeId" Type="int" />
+          <Property Name="Awarded" Type="datetime" Nullable="false" />
+          <Property Name="Spent" Type="datetime" />
+        </EntityType>
         <EntityType Name="FateAspect">
           <Key>
             <PropertyRef Name="Id" />
@@ -592,6 +605,20 @@
           <Property Name="Size" Type="int" Nullable="false" />
           <Property Name="Data" Type="varbinary(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="TermNumber" Type="int" Nullable="false" />
+          <Property Name="RolledStatId" Type="int" />
+          <Property Name="RollResultEnum" Type="int" />
+          <Property Name="Question" Type="nvarchar(max)" />
+          <Property Name="Answer" Type="nvarchar(max)" />
+          <Property Name="Outcome" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Trophy">
           <Key>
             <PropertyRef Name="Id" />
@@ -939,6 +966,66 @@
             </Principal>
             <Dependent Role="AspNetUserRoles">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="ExperiencePoint" Type="Self.ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_PersonAttribute">
+          <End Role="PersonAttribute" Type="Self.PersonAttribute" Multiplicity="0..1" />
+          <End Role="ExperiencePoint" Type="Self.ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonAttribute">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="PersonAttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="ExperiencePoint" Type="Self.ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Session">
+          <End Role="Session" Type="Self.Session" Multiplicity="0..1" />
+          <End Role="ExperiencePoint" Type="Self.ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Term">
+          <End Role="Term" Type="Self.Term" Multiplicity="0..1" />
+          <End Role="ExperiencePoint" Type="Self.ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="TermId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1432,6 +1519,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Term_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Term" Type="Self.Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Term_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Term" Type="Self.Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Term_RolledStatId">
+          <End Role="PersonAttribute" Type="Self.PersonAttribute" Multiplicity="0..1" />
+          <End Role="Term" Type="Self.Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonAttribute">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="RolledStatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserSetting_Player">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="UserSetting" Type="Self.UserSetting" Multiplicity="*" />
@@ -1465,6 +1588,7 @@
           <EntitySet Name="Creature" EntityType="Self.Creature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CreatureAbility" EntityType="Self.CreatureAbility" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExperiencePoint" EntityType="Self.ExperiencePoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateAspect" EntityType="Self.FateAspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStat" EntityType="Self.FateStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateStunt" EntityType="Self.FateStunt" Schema="dbo" store:Type="Tables" />
@@ -1494,6 +1618,7 @@
           <EntitySet Name="SimpleHitPoints" EntityType="Self.SimpleHitPoints" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteFeature" EntityType="Self.SiteFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteIcon" EntityType="Self.SiteIcon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Term" EntityType="Self.Term" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trophy" EntityType="Self.Trophy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSetting" EntityType="Self.UserSetting" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Arc_CurrentDate" Association="Self.FK_Arc_CurrentDate">
@@ -1599,6 +1724,26 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Person" Association="Self.FK_ExperiencePoint_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_PersonAttribute" Association="Self.FK_ExperiencePoint_PersonAttribute">
+            <End Role="PersonAttribute" EntitySet="PersonAttribute" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Player" Association="Self.FK_ExperiencePoint_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Session" Association="Self.FK_ExperiencePoint_Session">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Term" Association="Self.FK_ExperiencePoint_Term">
+            <End Role="Term" EntitySet="Term" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoint" />
           </AssociationSet>
           <AssociationSet Name="FK_FateAspect_Person" Association="Self.FK_FateAspect_Person">
             <End Role="Person" EntitySet="Person" />
@@ -1759,6 +1904,18 @@
           <AssociationSet Name="FK_SimpleHitPoints_Person" Association="Self.FK_SimpleHitPoints_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="SimpleHitPoints" EntitySet="SimpleHitPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Term_Person" Association="Self.FK_Term_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Term" EntitySet="Term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Term_Player" Association="Self.FK_Term_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Term" EntitySet="Term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Term_RolledStatId" Association="Self.FK_Term_RolledStatId">
+            <End Role="PersonAttribute" EntitySet="PersonAttribute" />
+            <End Role="Term" EntitySet="Term" />
           </AssociationSet>
           <AssociationSet Name="FK_UserSetting_Player" Association="Self.FK_UserSetting_Player">
             <End Role="Player" EntitySet="Player" />
@@ -2048,6 +2205,40 @@
             <End Role="Player" EntitySet="Players" />
             <End Role="PlayerSecret" EntitySet="PlayerSecrets" />
           </AssociationSet>
+          <EntitySet Name="ExperiencePoints" EntityType="WarhammerModel.ExperiencePoint" />
+          <EntitySet Name="Terms" EntityType="WarhammerModel.Term" />
+          <AssociationSet Name="FK_ExperiencePoint_Person" Association="WarhammerModel.FK_ExperiencePoint_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_PersonAttribute" Association="WarhammerModel.FK_ExperiencePoint_PersonAttribute">
+            <End Role="PersonAttribute" EntitySet="PersonAttributes" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Player" Association="WarhammerModel.FK_ExperiencePoint_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Session" Association="WarhammerModel.FK_ExperiencePoint_Session">
+            <End Role="Session" EntitySet="Pages" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExperiencePoint_Term" Association="WarhammerModel.FK_ExperiencePoint_Term">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="ExperiencePoint" EntitySet="ExperiencePoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Term_Person" Association="WarhammerModel.FK_Term_Person">
+            <End Role="Person" EntitySet="Pages" />
+            <End Role="Term" EntitySet="Terms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Term_RolledStatId" Association="WarhammerModel.FK_Term_RolledStatId">
+            <End Role="PersonAttribute" EntitySet="PersonAttributes" />
+            <End Role="Term" EntitySet="Terms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Term_Player" Association="WarhammerModel.FK_Term_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Term" EntitySet="Terms" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -2179,6 +2370,8 @@
           <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Person_GameDate" FromRole="Person" ToRole="GameDate" />
           <NavigationProperty Name="ScoreBreakdowns" Relationship="WarhammerModel.FK_ScoreBreakdown_Person" FromRole="Person" ToRole="ScoreBreakdown" />
           <Property Name="CurrentResolve" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ExperiencePoints" Relationship="WarhammerModel.FK_ExperiencePoint_Person" FromRole="Person" ToRole="ExperiencePoint" />
+          <NavigationProperty Name="Terms" Relationship="WarhammerModel.FK_Term_Person" FromRole="Person" ToRole="Term" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -2208,6 +2401,8 @@
           <NavigationProperty Name="PostOrders" Relationship="WarhammerModel.FK_PostOrder_Player" FromRole="Player" ToRole="PostOrder" />
           <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Player" FromRole="Player" ToRole="AwardNomination" />
           <NavigationProperty Name="PlayerSecrets" Relationship="WarhammerModel.FK_PlayerSecrets_Player" FromRole="Player" ToRole="PlayerSecret" />
+          <NavigationProperty Name="ExperiencePoints" Relationship="WarhammerModel.FK_ExperiencePoint_Player" FromRole="Player" ToRole="ExperiencePoint" />
+          <NavigationProperty Name="Terms" Relationship="WarhammerModel.FK_Term_Player" FromRole="Player" ToRole="Term" />
         </EntityType>
         <EntityType Name="SessionLog" BaseType="WarhammerModel.Page">
           <Property Name="PersonId" Type="Int32" />
@@ -3030,6 +3225,7 @@
           <NavigationProperty Name="Arc" Relationship="WarhammerModel.FK_Session_Arc" FromRole="Session" ToRole="Arc" />
           <NavigationProperty Name="Awards" Relationship="WarhammerModel.FK_Award_Session" FromRole="Session" ToRole="Award" />
           <NavigationProperty Name="AwardNominations" Relationship="WarhammerModel.FK_AwardNomination_Session" FromRole="Session" ToRole="AwardNomination" />
+          <NavigationProperty Name="ExperiencePoints" Relationship="WarhammerModel.FK_ExperiencePoint_Session" FromRole="Session" ToRole="ExperiencePoint" />
         </EntityType>
         <Association Name="FK_PostOrder_Player">
           <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
@@ -3094,6 +3290,8 @@
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_PersonAttribute_Person" FromRole="PersonAttribute" ToRole="Person" />
           <Property Name="IsPrivate" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ExperiencePoints" Relationship="WarhammerModel.FK_ExperiencePoint_PersonAttribute" FromRole="PersonAttribute" ToRole="ExperiencePoint" />
+          <NavigationProperty Name="Terms" Relationship="WarhammerModel.FK_Term_RolledStatId" FromRole="PersonAttribute" ToRole="Term" />
         </EntityType>
         <Association Name="FK_PersonAttribute_Person">
           <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1">
@@ -3440,6 +3638,138 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PlayerSecret">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ExperiencePoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="SessionId" Type="Int32" />
+          <Property Name="TermId" Type="Int32" />
+          <Property Name="PersonAttributeId" Type="Int32" />
+          <Property Name="Awarded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Spent" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_ExperiencePoint_Person" FromRole="ExperiencePoint" ToRole="Person" />
+          <NavigationProperty Name="PersonAttribute" Relationship="WarhammerModel.FK_ExperiencePoint_PersonAttribute" FromRole="ExperiencePoint" ToRole="PersonAttribute" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_ExperiencePoint_Player" FromRole="ExperiencePoint" ToRole="Player" />
+          <NavigationProperty Name="Session" Relationship="WarhammerModel.FK_ExperiencePoint_Session" FromRole="ExperiencePoint" ToRole="Session" />
+          <NavigationProperty Name="Term" Relationship="WarhammerModel.FK_ExperiencePoint_Term" FromRole="ExperiencePoint" ToRole="Term" />
+        </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="TermNumber" Type="Int32" Nullable="false" />
+          <Property Name="RolledStatId" Type="Int32" />
+          <Property Name="RollResultEnum" Type="Int32" />
+          <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Outcome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ExperiencePoints" Relationship="WarhammerModel.FK_ExperiencePoint_Term" FromRole="Term" ToRole="ExperiencePoint" />
+          <NavigationProperty Name="Person" Relationship="WarhammerModel.FK_Term_Person" FromRole="Term" ToRole="Person" />
+          <NavigationProperty Name="PersonAttribute" Relationship="WarhammerModel.FK_Term_RolledStatId" FromRole="Term" ToRole="PersonAttribute" />
+          <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_Term_Player" FromRole="Term" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK_ExperiencePoint_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.ExperiencePoint" Role="ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_PersonAttribute">
+          <End Type="WarhammerModel.PersonAttribute" Role="PersonAttribute" Multiplicity="0..1" />
+          <End Type="WarhammerModel.ExperiencePoint" Role="ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonAttribute">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="PersonAttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.ExperiencePoint" Role="ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Session">
+          <End Type="WarhammerModel.Session" Role="Session" Multiplicity="0..1" />
+          <End Type="WarhammerModel.ExperiencePoint" Role="ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExperiencePoint_Term">
+          <End Type="WarhammerModel.Term" Role="Term" Multiplicity="0..1" />
+          <End Type="WarhammerModel.ExperiencePoint" Role="ExperiencePoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExperiencePoint">
+              <PropertyRef Name="TermId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Term_Person">
+          <End Type="WarhammerModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="WarhammerModel.Term" Role="Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Term_RolledStatId">
+          <End Type="WarhammerModel.PersonAttribute" Role="PersonAttribute" Multiplicity="0..1" />
+          <End Type="WarhammerModel.Term" Role="Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonAttribute">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="RolledStatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Term_Player">
+          <End Type="WarhammerModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="WarhammerModel.Term" Role="Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Term">
               <PropertyRef Name="PlayerId" />
             </Dependent>
           </ReferentialConstraint>
@@ -4088,6 +4418,35 @@
               <MappingFragment StoreEntitySet="PlayerSecrets">
                 <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExperiencePoints">
+            <EntityTypeMapping TypeName="WarhammerModel.ExperiencePoint">
+              <MappingFragment StoreEntitySet="ExperiencePoint">
+                <ScalarProperty Name="Spent" ColumnName="Spent" />
+                <ScalarProperty Name="Awarded" ColumnName="Awarded" />
+                <ScalarProperty Name="PersonAttributeId" ColumnName="PersonAttributeId" />
+                <ScalarProperty Name="TermId" ColumnName="TermId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Terms">
+            <EntityTypeMapping TypeName="WarhammerModel.Term">
+              <MappingFragment StoreEntitySet="Term">
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="RollResultEnum" ColumnName="RollResultEnum" />
+                <ScalarProperty Name="RolledStatId" ColumnName="RolledStatId" />
+                <ScalarProperty Name="TermNumber" ColumnName="TermNumber" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

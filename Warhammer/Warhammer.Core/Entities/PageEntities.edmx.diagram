@@ -120,6 +120,16 @@
         <EntityTypeShape EntityType="WarhammerModel.PlayerSecret" Width="1.5" PointX="16.25" PointY="18.75" />
         <AssociationConnector Association="WarhammerModel.FK_PlayerSecrets_Page" />
         <AssociationConnector Association="WarhammerModel.FK_PlayerSecrets_Player" />
+        <EntityTypeShape EntityType="WarhammerModel.ExperiencePoint" Width="1.5" PointX="18.5" PointY="13.25" />
+        <EntityTypeShape EntityType="WarhammerModel.Term" Width="1.5" PointX="19.5" PointY="5.125" />
+        <AssociationConnector Association="WarhammerModel.FK_ExperiencePoint_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_ExperiencePoint_PersonAttribute" />
+        <AssociationConnector Association="WarhammerModel.FK_ExperiencePoint_Player" />
+        <AssociationConnector Association="WarhammerModel.FK_ExperiencePoint_Session" />
+        <AssociationConnector Association="WarhammerModel.FK_ExperiencePoint_Term" />
+        <AssociationConnector Association="WarhammerModel.FK_Term_Person" />
+        <AssociationConnector Association="WarhammerModel.FK_Term_RolledStatId" />
+        <AssociationConnector Association="WarhammerModel.FK_Term_Player" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

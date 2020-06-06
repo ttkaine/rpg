@@ -238,6 +238,7 @@
     <Compile Include="Concrete\AzureProvider.cs" />
     <Compile Include="Concrete\BackgroundRepo.cs" />
     <Compile Include="Concrete\CharacterAttributeManager.cs" />
+    <Compile Include="Concrete\CrowCharacterManager.cs" />
     <Compile Include="Concrete\DatabaseUpdateProvider.cs" />
     <Compile Include="Concrete\EmailHandler.cs" />
     <Compile Include="Concrete\ExceptionLogHandler.cs" />
@@ -308,6 +309,9 @@
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ExceptionLog.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ExperiencePoint.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FateAspect.cs">
@@ -409,6 +413,9 @@
     <Compile Include="Entities\SiteIcon.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Term.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Trophy.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -439,6 +446,7 @@
     <Compile Include="Entities\_SimpleHitPoints.cs" />
     <Compile Include="Entities\_SiteFeature.cs" />
     <Compile Include="Entities\_PersonAttribute.cs" />
+    <Compile Include="Entities\_Term.cs" />
     <Compile Include="Entities\_Trophy.cs" />
     <Compile Include="Entities\_UserSetting.cs" />
     <Compile Include="Enums.cs" />

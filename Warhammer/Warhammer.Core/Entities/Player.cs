@@ -28,6 +28,8 @@ namespace Warhammer.Core.Entities
             this.PostOrders = new HashSet<PostOrder>();
             this.AwardNominations = new HashSet<AwardNomination>();
             this.PlayerSecrets = new HashSet<PlayerSecret>();
+            this.ExperiencePoints = new HashSet<ExperiencePoint>();
+            this.Terms = new HashSet<Term>();
         }
     
         public int Id { get; set; }
@@ -48,5 +50,7 @@ namespace Warhammer.Core.Entities
         public virtual ICollection<PostOrder> PostOrders { get; set; }
         public virtual ICollection<AwardNomination> AwardNominations { get; set; }
         public virtual ICollection<PlayerSecret> PlayerSecrets { get; set; }
+        public virtual ICollection<ExperiencePoint> ExperiencePoints { get; set; }
+        public virtual ICollection<Term> Terms { get; set; }
     }
 }

@@ -12,27 +12,26 @@ namespace Warhammer.Core.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class PersonAttribute
+    public partial class Term
     {
-        public PersonAttribute()
+        public Term()
         {
             this.ExperiencePoints = new HashSet<ExperiencePoint>();
-            this.Terms = new HashSet<Term>();
         }
     
         public int Id { get; set; }
+        public int PlayerId { get; set; }
         public int PersonId { get; set; }
-        public int PersonAttributeTypeEnum { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int InitialValue { get; set; }
-        public int CurrentValue { get; set; }
-        public int XpSpent { get; set; }
-        public int CampaignId { get; set; }
-        public bool IsPrivate { get; set; }
+        public int TermNumber { get; set; }
+        public Nullable<int> RolledStatId { get; set; }
+        public Nullable<int> RollResultEnum { get; set; }
+        public string Question { get; set; }
+        public string Answer { get; set; }
+        public string Outcome { get; set; }
     
-        public virtual Person Person { get; set; }
         public virtual ICollection<ExperiencePoint> ExperiencePoints { get; set; }
-        public virtual ICollection<Term> Terms { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual PersonAttribute PersonAttribute { get; set; }
+        public virtual Player Player { get; set; }
     }
 }
