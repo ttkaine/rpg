@@ -95,6 +95,16 @@ namespace Warhammer.Core.Abstract
         IQueryable<SiteFeature> AllSiteFeatures();
         IQueryable<PlayerSecret> PlayerSecrets();
         int Save(PlayerSecret playerSecret);
+        IQueryable<DefaultPersonAttribute> DefaultPersonAttributes();
+        void Delete(DefaultPersonAttribute defaultPersonAttribute);
+        int Save(DefaultPersonAttribute defaultPersonAttribute);
+        IQueryable<Term> Terms(); 
+        void Delete(Term term);
+        int Save(Term term);
+
+        IQueryable<ExperiencePoint> ExperiencePoints();
+        void Delete(ExperiencePoint experiencePoint);
+        int Save(ExperiencePoint experiencePoint);
     }
 }
 

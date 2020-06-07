@@ -3486,10 +3486,36 @@ namespace Warhammer.Core.Concrete
             _repository.Save(attribute);
         }
 
+        public void AddDefaultPersonAttribute(AttributeType attributeType, string name, string description, int value, bool hidden,
+            bool isNpc)
+        {
+            DefaultPersonAttribute attribute = new DefaultPersonAttribute
+            {
+                AttributeType = attributeType,
+                CampaignId = CurrentCampaignId,
+                InitialValue = value,
+                Description = description,
+                Name = name,
+                IncludeForNpc = isNpc,
+                IsPrivate = hidden
+            };
+            _repository.Save(attribute);
+        }
+
         public void RemovePersonAttribute(int personId, int attributeId)
         {
             PersonAttribute attribute = _repository.PersonAttributes()
                 .FirstOrDefault(a => a.Id == attributeId && a.PersonId == personId);
+            if (attribute != null)
+            {
+                _repository.Delete(attribute);
+            }
+        }
+
+        public void RemoveDefaultPersonAttribute(int attributeId)
+        {
+            DefaultPersonAttribute attribute = _repository.DefaultPersonAttributes()
+                .FirstOrDefault(a => a.Id == attributeId);
             if (attribute != null)
             {
                 _repository.Delete(attribute);
@@ -3508,6 +3534,23 @@ namespace Warhammer.Core.Concrete
                 attribute.Description = description;
                 attribute.AttributeType = attributeType;
                 attribute.IsPrivate = hidden;
+                _repository.Save(attribute);
+            }
+        }
+
+        public void UpdateDefaultPersonAttribute(int attributeId, int initialValue, string name, string description,
+            AttributeType attributeType, bool isPrivate, bool includeForNpc)
+        {
+            DefaultPersonAttribute attribute = _repository.DefaultPersonAttributes()
+                .FirstOrDefault(a => a.Id == attributeId);
+            if (attribute != null)
+            {
+                attribute.InitialValue = initialValue;
+                attribute.Name = name;
+                attribute.Description = description;
+                attribute.AttributeType = attributeType;
+                attribute.IsPrivate = isPrivate;
+                attribute.IncludeForNpc = includeForNpc;
                 _repository.Save(attribute);
             }
         }

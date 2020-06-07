@@ -234,8 +234,14 @@ namespace Warhammer.Core.Abstract
         void SaveImage(PageImage pageImage);
         List<PersonAttribute> GetPersonAttributes(int id);
         void AddPersonAttribute(int personId, AttributeType attributeType, string name, string description, int value, bool hidden);
+        void AddDefaultPersonAttribute(AttributeType attributeType, string name, string description, int value, bool hidden, bool isNpc);
         void RemovePersonAttribute(int personId, int attributeId);
+        void RemoveDefaultPersonAttribute(int attributeId);
         void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description, AttributeType attributeType, bool hidden);
+        void UpdateDefaultPersonAttribute(int attributeId, int initialValue, string name, string description, AttributeType attributeType, bool isPrivate, bool includeForNpc);
         void UpdatePlayerSecret(int playerId, int pageId, string details);
+
+
+
     }
 }

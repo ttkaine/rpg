@@ -211,6 +211,19 @@
           <Property Name="AbilityThreatLevelId" Type="int" Nullable="false" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="DefaultPersonAttribute">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="PersonAttributeTypeEnum" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="InitialValue" Type="int" Nullable="false" />
+          <Property Name="IsPrivate" Type="bit" Nullable="false" />
+          <Property Name="IncludeForNpc" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ExceptionLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -1587,6 +1600,7 @@
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Creature" EntityType="Self.Creature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CreatureAbility" EntityType="Self.CreatureAbility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefaultPersonAttribute" EntityType="Self.DefaultPersonAttribute" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExperiencePoint" EntityType="Self.ExperiencePoint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FateAspect" EntityType="Self.FateAspect" Schema="dbo" store:Type="Tables" />
@@ -2239,6 +2253,7 @@
             <End Role="Player" EntitySet="Players" />
             <End Role="Term" EntitySet="Terms" />
           </AssociationSet>
+          <EntitySet Name="DefaultPersonAttributes" EntityType="WarhammerModel.DefaultPersonAttribute" />
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -3774,6 +3789,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DefaultPersonAttribute">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <Property Name="PersonAttributeTypeEnum" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InitialValue" Type="Int32" Nullable="false" />
+          <Property Name="IsPrivate" Type="Boolean" Nullable="false" />
+          <Property Name="IncludeForNpc" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4448,6 +4476,20 @@
                 <ScalarProperty Name="TermNumber" ColumnName="TermNumber" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefaultPersonAttributes">
+            <EntityTypeMapping TypeName="WarhammerModel.DefaultPersonAttribute">
+              <MappingFragment StoreEntitySet="DefaultPersonAttribute">
+                <ScalarProperty Name="IncludeForNpc" ColumnName="IncludeForNpc" />
+                <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
+                <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PersonAttributeTypeEnum" ColumnName="PersonAttributeTypeEnum" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

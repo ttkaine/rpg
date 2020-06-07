@@ -180,5 +180,10 @@
         {
             @Html.ActionLink("Delete", "DeletePage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-danger btn-block" })
         }
+        
+        @if (Model.ShowCharacterGeneration)
+        {
+            @Html.ActionLink("Character Generation", "CharacterGeneration", "Crow", new { id = Model.Page.Id }, new { @class = "btn btn-info btn-block" })
+        }
     </div>
 }

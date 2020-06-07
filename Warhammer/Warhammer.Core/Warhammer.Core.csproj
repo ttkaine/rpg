@@ -160,6 +160,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Omu.ValueInjecter, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5692a4ecdffbe736, processorArchitecture=MSIL">
+      <HintPath>..\packages\ValueInjecter.3.2.0\lib\net45\Omu.ValueInjecter.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -308,6 +311,9 @@
     <Compile Include="Entities\C__MigrationHistory.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DefaultPersonAttribute.cs">
+      <DependentUpon>PageEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ExceptionLog.cs">
       <DependentUpon>PageEntities.tt</DependentUpon>
     </Compile>
@@ -434,6 +440,7 @@
     <Compile Include="Entities\_FateStat.cs" />
     <Compile Include="Entities\_Page.cs" />
     <Compile Include="Entities\_Person.cs" />
+    <Compile Include="Entities\_DefaultPersonAttribute.cs" />
     <Compile Include="Entities\_Place.cs" />
     <Compile Include="Entities\_Player.cs" />
     <Compile Include="Entities\_PriceListItem.cs" />
@@ -460,8 +467,10 @@
     <Compile Include="Models\AwardSummaryModel.cs" />
     <Compile Include="Models\CharacterLeagueItemModel.cs" />
     <Compile Include="Models\CharacterLeagueModel.cs" />
+    <Compile Include="Models\Crow\AddedTermModel.cs" />
     <Compile Include="Models\Crow\CrowAttributeModel.cs" />
     <Compile Include="Models\Crow\CrowCharacterAttributesModel.cs" />
+    <Compile Include="Models\Crow\CrowCharacterGenerationModel.cs" />
     <Compile Include="Models\OpenTextSessionSummaryModel.cs" />
     <Compile Include="Models\PlayerCampaignLinkModel.cs" />
     <Compile Include="Models\SessionArcSummaryModel.cs" />

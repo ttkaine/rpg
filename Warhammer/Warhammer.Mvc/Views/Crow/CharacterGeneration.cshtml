@@ -1,0 +1,52 @@
+﻿@model Warhammer.Core.Models.Crow.CrowCharacterGenerationModel
+@using Warhammer.Core.Entities
+
+@{
+    ViewBag.Title = "Character Generation";
+}
+
+<div class="content-wrapper">
+
+    <div class="banner-content">
+        <div class="content-block">
+            <h2>Character Generation</h2>
+
+            @if (Model.HasAttributes)
+            {
+                using (Html.BeginForm())
+                {
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-block btn-success" value="Save" />
+
+                        <h3>Character Name</h3>
+                        @Html.EditorFor(m => m.Person.ShortName, new {@class = "form-control"})
+
+                        <h3>Add Term (@Model.NextTerm.Term.AgeBracket)</h3>
+                        @Html.CheckBoxFor(m => m.AddNewTerm, new {data_toggle = "collapse", data_target = "#newterm"})
+                        <div id="newterm" class="collapse">
+                            @Html.EditorFor(m => m.NextTerm)
+                        </div>
+
+
+                        <hr/>
+                        @Html.EditorFor(m => m.Terms)
+                        <hr/>
+
+                        <input type="submit" class="btn btn-block btn-success" value="Save"/>
+                    </div>
+                }
+
+            }
+            else
+            {
+                using (Html.BeginForm("InitializeCharacter", "Crow", new { id = Model.Person.Id }))
+                {
+                    <p>This character doesn't have any attributes set up yet.</p>
+                    <p>To get started initialize the default attributes</p>
+                    <input type="submit" class="btn btn-block btn-success" value="Initialize Character" />
+                }
+            }
+
+        </div>
+    </div>
+</div>

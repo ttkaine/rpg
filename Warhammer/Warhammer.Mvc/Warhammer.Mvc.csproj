@@ -307,6 +307,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\ManageAwardsViewModel.cs" />
+    <Compile Include="Models\ManageDefaultPersonAttributesViewModel.cs" />
     <Compile Include="Models\ManagePersonAttributesViewModel.cs" />
     <Compile Include="Models\ManageSessionPeopleViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -342,6 +343,7 @@
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
     <Content Include="Content\DbUpdateScripts\20060601.sql" />
+    <Content Include="Content\DbUpdateScripts\20060701.sql" />
     <Content Include="Content\DbUpdateScripts\20060602.sql" />
     <Content Include="Content\DbUpdateScripts\20051001.sql" />
     <Content Include="Content\DbUpdateScripts\20032801.sql" />
@@ -869,6 +871,11 @@
     <Content Include="Views\PageControls\EditorTemplates\PersonAttribute.cshtml" />
     <Content Include="Views\Page\DisplayTemplates\PlayerSecret.cshtml" />
     <Content Include="Views\Page\EditorTemplates\PlayerSecret.cshtml" />
+    <Content Include="Views\Crow\ManageDefaultAttributes.cshtml" />
+    <Content Include="Views\Crow\EditorTemplates\DefaultPersonAttribute.cshtml" />
+    <Content Include="Views\Crow\CharacterGeneration.cshtml" />
+    <Content Include="Views\Crow\EditorTemplates\Term.cshtml" />
+    <Content Include="Views\Crow\EditorTemplates\AddedTermModel.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

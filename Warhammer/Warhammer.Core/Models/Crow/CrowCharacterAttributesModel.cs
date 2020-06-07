@@ -7,7 +7,7 @@ namespace Warhammer.Core.Models.Crow
     {
         public int PersonId { get; set; }
         public string PersonName { get; set; }
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
 
 
         public List<CrowAttributeModel> PersonAttributes { get; set; }

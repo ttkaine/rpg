@@ -1,5 +1,5 @@
 ﻿@using Warhammer.Core.Entities
-@model Warhammer.Core.Models.CharacterAttributeModel
+@model Warhammer.Core.Models.Crow.CrowCharacterAttributesModel
 
 
 @if (Model.PersonAttributes.Any())
@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    @foreach (PersonAttribute stat in Model.Stats.Select(s => s.PersonAttribute))
+                    @foreach (PersonAttribute stat in Model.Stats)
                     {
                         <td style="text-align: center;"><span class="personAttribute label label-info" title="@stat.Name">@stat.CurrentValue</span></td>
                     }
@@ -53,7 +53,7 @@
                         </thead>
                         <tbody>
 
-                        @foreach (PersonAttribute role in Model.Roles.Select(s => s.PersonAttribute))
+                        @foreach (PersonAttribute role in Model.Roles)
                         {
                             <tr>
                                 <td><span class="personAttribute" title="@role.Name">@role.Name</span></td>
@@ -79,7 +79,7 @@
                         </thead>
                         <tbody>
 
-                        @foreach (PersonAttribute skill in Model.Skills.Select(s => s.PersonAttribute))
+                        @foreach (PersonAttribute skill in Model.Skills)
                         {
                             <tr>
                                 <td><span class="personAttribute" title="@skill.Name">@skill.Name</span></td>
@@ -108,8 +108,8 @@
                         <tbody>
                         <tr>
                             <td class="personAttribute">&nbsp;</td>
-                            <td class="personAttribute"><span class="personAttribute label label-warning">@wear.PersonAttribute.CurrentValue</span></td>
-                            <td class="personAttribute"><span class="personAttribute label label-default">@wear.PersonAttribute.XpSpent</span></td>
+                            <td class="personAttribute"><span class="personAttribute label label-warning">@wear.CurrentValue</span></td>
+                            <td class="personAttribute"><span class="personAttribute label label-default">@wear.XpSpent</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -129,7 +129,7 @@
                         </thead>
                         <tbody>
 
-                        @foreach (PersonAttribute skill in Model.Harm.Select(s => s.PersonAttribute))
+                        @foreach (PersonAttribute skill in Model.Harm)
                         {
                             string used = string.IsNullOrWhiteSpace(skill.Name) ? "" : "alert-danger";
                             <tr class="@used">

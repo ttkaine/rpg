@@ -1,4 +1,9 @@
-﻿namespace Warhammer.Core.Entities
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Warhammer.Core.Models.Crow;
+
+namespace Warhammer.Core.Entities
 {
     public partial class Term
     {
@@ -24,5 +29,12 @@
                 }
             }
         }
+
+        public List<ExperiencePoint> RolePoints => ExperiencePoints
+            .Where(s => s.PersonAttribute.PersonAttributeTypeEnum == (int) AttributeType.Role).ToList();
+        public List<ExperiencePoint> SkillPoints => ExperiencePoints
+            .Where(s => s.PersonAttribute.PersonAttributeTypeEnum == (int)AttributeType.Skill).ToList();
+
+        public List<CrowAttributeModel> StatOptions { get; set; }
     }
 }

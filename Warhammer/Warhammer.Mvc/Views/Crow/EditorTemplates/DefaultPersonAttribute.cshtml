@@ -1,0 +1,16 @@
+﻿@model Warhammer.Core.Entities.DefaultPersonAttribute
+    <tr>
+        <td>
+            @Html.HiddenFor(a => a.Id)
+            @Html.EnumDropDownListFor(m => m.AttributeType, new { @class = "form-control" })
+        </td>
+        <td>@Html.EditorFor(m => m.InitialValue, new { @class = "form-control" })</td>
+        <td>@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })</td>
+        <td>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </td>
+        <td>@Html.CheckBoxFor(m => Model.IsPrivate, new { data_toggle = "toggle", data_on = "Private", data_off = "Public", data_offstyle = "success", data_onstyle = "info" })</td>
+        <td>@Html.CheckBoxFor(m => Model.IncludeForNpc, new { data_toggle = "toggle", data_on = "PC & NPC", data_off = "PC Only", data_offstyle = "info", data_onstyle = "info" })</td>
+        <td>@Html.CheckBoxFor(m => Model.Remove, new { data_toggle = "toggle", data_on = "Remove", data_off = "Keep", data_offstyle = "success", data_onstyle = "danger" })</td>
+    </tr>
+

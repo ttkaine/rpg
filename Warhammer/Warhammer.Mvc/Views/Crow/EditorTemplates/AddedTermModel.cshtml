@@ -1,0 +1,52 @@
+﻿@model Warhammer.Core.Models.Crow.AddedTermModel
+
+
+<div class="panel">
+    <div class="page-header"><h4>Term @Model.Term.TermNumber (@Model.Term.AgeBracket)</h4></div>
+    <div class="panel-body">
+        <h4>Tallies</h4>
+        @if (Model.Attributes.Roles.Any())
+        {
+            @Html.LabelFor(m => m.SelectedRole)
+            @Html.DropDownListFor(m => m.SelectedRole, new SelectList(Model.Attributes.Roles, "Id", "Name"), "- Select a Role -", new { @class = "form-control" })
+            <p>Or</p>
+        }
+        @Html.LabelFor(m => m.AddedRole)
+        @Html.TextBoxFor(m => m.AddedRole, new { @class = "form-control" })
+
+        <p>Skill Points</p>
+        @if (Model.Attributes.Skills.Any())
+        {
+            @Html.LabelFor(m => m.SelectedSkill1)
+            @Html.DropDownListFor(m => m.SelectedSkill1, new SelectList(Model.Attributes.Skills, "Id", "Name"), "- Select a Skill -", new { @class = "form-control" })
+            <p>Or</p>
+        }
+        @Html.LabelFor(m => m.AddedSkill1)
+        @Html.TextBoxFor(m => m.AddedSkill1, new { @class = "form-control" })
+
+        @if (Model.Attributes.Skills.Any())
+        {
+            @Html.LabelFor(m => m.SelectedSkill2)
+            @Html.DropDownListFor(m => m.SelectedSkill2, new SelectList(Model.Attributes.Skills, "Id", "Name"), "- Select a Skill -", new { @class = "form-control" })
+            <p>Or</p>
+        }
+        @Html.LabelFor(m => m.AddedSkill2)
+        @Html.TextBoxFor(m => m.AddedSkill2, new { @class = "form-control" })
+
+
+        @if (Model.Term.StatOptions != null && Model.Term.StatOptions.Any())
+        {
+            <h4>Dice Roll</h4>
+            <p>Selected Stat</p>
+            @Html.DropDownListFor(m => m.Term.RolledStatId, new SelectList(Model.Term.StatOptions, "Id", "Name"), "- Select a Stat -", new { @class = "form-control" })
+        }
+        <p>Question</p>
+        @Html.TextAreaFor(m => m.Term.Question, new { @class = "form-control" })
+        <p>Answer</p>
+        @Html.TextAreaFor(m => m.Term.Answer, new { @class = "form-control" })
+        <p>Outcome</p>
+        @Html.TextAreaFor(m => m.Term.Outcome, new { @class = "form-control" })
+    </div>
+
+</div>
+

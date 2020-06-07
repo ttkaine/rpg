@@ -51,6 +51,23 @@ namespace Warhammer.Mvc.Models
             }
         }
 
+        public bool IsCurrentPlayerCharacter
+        {
+            get
+            {
+                Person person = Page as Person;
+                if (person != null)
+                {
+                    if (person.PlayerId == CurrentPlayerId)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public bool CanEditPerson
         {
             get
@@ -221,5 +238,6 @@ namespace Warhammer.Mvc.Models
         public bool CanChangeImage => IsLocalToCampaign;
         public bool CanEditLinks => IsLocalToCampaign;
         public bool ShowManagePeopleLink => IsSession && ShowManagePeopleEnabled;
+        public bool ShowCharacterGeneration => IsLivePerson && (PlayerIsGm || PlayerIsAdmin || IsCurrentPlayerCharacter);
     }
 }

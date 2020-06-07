@@ -131,6 +131,82 @@ namespace Warhammer.Core.Concrete
             return playerSecret.Id;
         }
 
+        public IQueryable<Term> Terms()
+        {
+            return _entities.Terms;
+        }
+
+        public void Delete(Term term)
+        {
+            _entities.Terms.Remove(term);
+            _entities.SaveChanges();
+        }
+
+        public int Save(Term term)
+        {
+            if (term.Id == 0)
+            {
+                _entities.Terms.Add(term);
+            }
+            else
+            {
+                _entities.Entry(term).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return term.Id;
+        }
+        public IQueryable<ExperiencePoint> ExperiencePoints()
+        {
+            return _entities.ExperiencePoints;
+        }
+
+        public int Save(ExperiencePoint experiencePoint)
+        {
+            if (experiencePoint.Id == 0)
+            {
+                _entities.ExperiencePoints.Add(experiencePoint);
+            }
+            else
+            {
+                _entities.Entry(experiencePoint).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return experiencePoint.Id;
+        }
+        public void Delete(ExperiencePoint experiencePoint)
+        {
+            _entities.ExperiencePoints.Remove(experiencePoint);
+            _entities.SaveChanges();
+        }
+
+        public IQueryable<DefaultPersonAttribute> DefaultPersonAttributes()
+        {
+            return _entities.DefaultPersonAttributes.Where(s => s.CampaignId == CurrentCampaignId);
+        }
+
+        public int Save(DefaultPersonAttribute defaultPersonAttribute)
+        {
+            defaultPersonAttribute.CampaignId = CurrentCampaignId;
+            if (defaultPersonAttribute.Id == 0)
+            {
+                _entities.DefaultPersonAttributes.Add(defaultPersonAttribute);
+            }
+            else
+            {
+                _entities.Entry(defaultPersonAttribute).State = EntityState.Modified;
+            }
+            _entities.SaveChanges();
+
+            return defaultPersonAttribute.Id;
+        }
+        public void Delete(DefaultPersonAttribute defaultPersonAttribute)
+        {
+            _entities.DefaultPersonAttributes.Remove(defaultPersonAttribute);
+            _entities.SaveChanges();
+        }
+
         public int Save(SiteIcon icon)
         {
             if (icon.Id == 0)

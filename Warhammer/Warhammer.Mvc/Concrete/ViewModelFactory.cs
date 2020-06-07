@@ -327,6 +327,15 @@ namespace Warhammer.Mvc.Concrete
                 });
             }
 
+            if (_data.CurrentPlayerIsGm || _data.CurrentUserIsAdmin)
+            {
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Manage Default Stats",
+                    Url = _urlHelper.Action("ManageDefaultAttributes", "Crow"),
+                });
+            }
+
             if (_data.CurrentPlayerIsGm)
             {
                 if (_data.SiteHasFeature(Feature.AwardNominations))
