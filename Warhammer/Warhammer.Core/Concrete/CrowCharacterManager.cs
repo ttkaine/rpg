@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Omu.ValueInjecter;
 using Warhammer.Core.Abstract;
@@ -96,8 +97,8 @@ namespace Warhammer.Core.Concrete
 
             ExperiencePoint roleExperiencePoint = new ExperiencePoint{
                 PersonId = addedTerm.Term.PersonId,
-                PlayerId = addedTerm.Term.PlayerId
-            
+                PlayerId = addedTerm.Term.PlayerId,
+                Awarded = DateTime.UtcNow
             };
 
             int roleId = 0;
@@ -121,6 +122,8 @@ namespace Warhammer.Core.Concrete
 
             GetSkillXpForNewTerm(term, addedTerm.SelectedSkill1, addedTerm.AddedSkill1);
             GetSkillXpForNewTerm(term, addedTerm.SelectedSkill2, addedTerm.AddedSkill2);
+
+            _repo.Save(term);
         }
 
         private void GetSkillXpForNewTerm(Term term, int? skillId, string skillName)
@@ -128,7 +131,8 @@ namespace Warhammer.Core.Concrete
             ExperiencePoint skillExperiencePoint = new ExperiencePoint
             {
                 PersonId = term.PersonId,
-                PlayerId = term.PlayerId
+                PlayerId = term.PlayerId,
+                Awarded = DateTime.UtcNow
             };
 
             if (!string.IsNullOrWhiteSpace(skillName))

@@ -5,6 +5,11 @@
     <div class="page-header"><h4>Term @Model.Term.TermNumber (@Model.Term.AgeBracket)</h4></div>
     <div class="panel-body">
         <h4>Tallies</h4>
+        @Html.HiddenFor(m => m.Term.TermNumber)
+        @Html.HiddenFor(m => m.Term.PersonId)
+        @Html.HiddenFor(m => m.Term.PlayerId)
+        @Html.HiddenFor(t => t.Term.Id)
+
         @if (Model.Attributes.Roles.Any())
         {
             @Html.LabelFor(m => m.SelectedRole)

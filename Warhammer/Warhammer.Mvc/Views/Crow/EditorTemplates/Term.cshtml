@@ -4,6 +4,10 @@
 <div class="panel">
     <div class="page-header"><h4>Term @Model.TermNumber (@Model.AgeBracket)</h4></div>
     <div class="panel-body">
+        @Html.HiddenFor(m => m.TermNumber)
+        @Html.HiddenFor(m => m.PersonId)
+        @Html.HiddenFor(m => m.PlayerId)
+        @Html.HiddenFor(t => t.Id)
         <h4>Tallies</h4>
         <p>Role Points</p>
         @Html.EditorFor(m => m.RolePoints)
@@ -13,14 +17,14 @@
 
         <h4>Dice Roll</h4>
         <p>Selected Stat</p>
-        @Html.DropDownListFor(m => m.RolledStatId, new SelectList(Model.StatOptions, "Id", "Name"), "- Select a Stat -", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.RolledStatId, new SelectList(Model.StatOptions, "Id", "Name"), "- Select a Stat -", new {@class = "form-control"})
 
         <p>Question</p>
-        @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
+        @Html.TextAreaFor(m => m.Question, new {@class = "form-control"})
         <p>Answer</p>
-        @Html.TextAreaFor(m => m.Answer, new { @class = "form-control" })
+        @Html.TextAreaFor(m => m.Answer, new {@class = "form-control"})
         <p>Outcome</p>
-        @Html.TextAreaFor(m => m.Outcome, new { @class = "form-control" })
+        @Html.TextAreaFor(m => m.Outcome, new {@class = "form-control"})
     </div>
 
 </div>

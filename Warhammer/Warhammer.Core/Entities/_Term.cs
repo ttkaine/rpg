@@ -23,6 +23,10 @@ namespace Warhammer.Core.Entities
                 {
                     return "0 - 14";
                 }
+                if (startAge == 15)
+                {
+                    return "15";
+                }
                 else
                 {
                     return $"{startAge} - {endAge}";
