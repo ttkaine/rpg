@@ -85,6 +85,8 @@ namespace Warhammer.Core.Concrete
                     }).ToList(),
                     WishingWell =  person.WishingWell,
                     CurrentResolve = person.CurrentResolve,
+                    CanEditResolve = _user.IsAdmin || campaignDetail.GmId == player.Id,
+                    CanEditWishingWell = _user.IsAdmin || campaignDetail.GmId == player.Id,
                     PlayerId = player.Id,
                     FixedWearAndHarm = _featureProvider.SiteHasFeature(Feature.FixedHarmAndWear),
                     IncludeMagic = _featureProvider.SiteHasFeature(Feature.CrowMagic),

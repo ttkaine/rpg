@@ -224,5 +224,7 @@ namespace Warhammer.Core.Models
         public bool ShowWear => !ShowResolveAndResilience;
 
         public int MaxResolve => Resolve.Select(s => s.Value).FirstOrDefault();
+        public bool CanEditResolve { get; set; }
+        public bool CanEditWishingWell { get; set; }
     }
 }

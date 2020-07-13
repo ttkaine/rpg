@@ -40,7 +40,7 @@
                             <td><span class="personAttribute label label-info">@Model.CurrentResolve</span></td>
                         </tr>
 
-                        if (Model.PlayerIsGm)
+                        if (Model.CanEditResolve)
                         {
                             <tr>
                                 <td>
@@ -63,7 +63,7 @@
                         <td><span class="personAttribute label label-info">@Model.WishingWell</span></td>
                     </tr>
 
-                    if (Model.PlayerIsGm)
+                    if (Model.CanEditWishingWell)
                     {
                         <tr>
                             <td>
