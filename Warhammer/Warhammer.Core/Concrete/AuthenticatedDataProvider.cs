@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
@@ -964,10 +964,10 @@ namespace Warhammer.Core.Concrete
                     if (trophy.TrophyType == TrophyType.DefaultAward)
                     {
                         decimal xpValue = trophy.PointsValue;
-                        xpValue = xpValue * 1.25m;
-                        if (xpValue > 10.0m)
+                        xpValue = xpValue * 0.5m;
+                        if (xpValue > 5.0m)
                         {
-                            xpValue = 10.0m;
+                            xpValue = 5.0m;
                         }
                         if(xpValue < 0.1m)
                         {
