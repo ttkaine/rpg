@@ -697,7 +697,16 @@ namespace Warhammer.Core.Concrete
             {
                 person.WishingWell = person.WishingWell + amount;
                 _repo.Save(person);
-                string message = $"Wishing Well changed by {amount} for {person.FullName}. New Value: {person.WishingWell}";
+                string message;
+                if (_featureProvider.SiteHasFeature(Feature.Version3))
+                {
+                    message = $"Wyrd changed by {amount} for {person.FullName}. New Value: {person.WishingWell}";
+                }
+                else
+                {
+                    message = $"Wishing Well changed by {amount} for {person.FullName}. New Value: {person.WishingWell}";
+                }
+               
                 PostToTextSessions(person, message);
 
                 return true;
@@ -713,7 +722,18 @@ namespace Warhammer.Core.Concrete
             {
                 person.CurrentResolve = updatedResolve;
                 _repo.Save(person);
-                string message = $"Resolve set to {updatedResolve} for {person.FullName}.";
+
+                string message;
+
+                if (_featureProvider.SiteHasFeature(Feature.Version3))
+                {
+                    message = $"WEAR set to {updatedResolve} for {person.FullName}";
+                }
+                else
+                {
+                    message = $"Resolve set to {updatedResolve} for {person.FullName}";
+                }
+                 
                 PostToTextSessions(person, message);
                 return true;
             }
