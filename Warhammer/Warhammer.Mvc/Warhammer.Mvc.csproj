@@ -341,6 +341,7 @@
     <Content Include="Content\DbUpdateScripts\18100601.sql" />
     <Content Include="Content\DbUpdateScripts\18100602.sql" />
     <Content Include="Content\DbUpdateScripts\18100701.sql" />
+    <Content Include="Content\DbUpdateScripts\20071901.sql" />
     <Content Include="Content\DbUpdateScripts\20051001.sql" />
     <Content Include="Content\DbUpdateScripts\20032801.sql" />
     <Content Include="Content\DbUpdateScripts\20031501.sql" />
@@ -867,6 +868,7 @@
     <Content Include="Views\PageControls\EditorTemplates\PersonAttribute.cshtml" />
     <Content Include="Views\Page\DisplayTemplates\PlayerSecret.cshtml" />
     <Content Include="Views\Page\EditorTemplates\PlayerSecret.cshtml" />
+    <Content Include="Views\Person\RandomInitStats.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

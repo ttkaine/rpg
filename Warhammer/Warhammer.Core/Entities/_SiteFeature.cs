@@ -80,7 +80,8 @@ namespace Warhammer.Core.Entities
         TrophyXp,
         Vampire,
         ResolveAndResilience,
-        PlayerSecrets
+        PlayerSecrets,
+        Version3RandomStats
     }
 
     public partial class SiteFeature

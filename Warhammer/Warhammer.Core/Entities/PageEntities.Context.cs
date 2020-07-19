@@ -67,5 +67,6 @@ namespace Warhammer.Core.Entities
         public virtual DbSet<ScoreBreakdown> ScoreBreakdowns { get; set; }
         public virtual DbSet<SiteIcon> SiteIcons { get; set; }
         public virtual DbSet<PlayerSecret> PlayerSecrets { get; set; }
+        public virtual DbSet<RandomAttributeOption> RandomAttributeOptions { get; set; }
     }
 }

@@ -353,6 +353,7 @@
           <Property Name="XpGroup" Type="int" />
           <Property Name="DateOfBirthId" Type="int" />
           <Property Name="CurrentResolve" Type="int" Nullable="false" />
+          <Property Name="GenerationComplete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PersonAtSession">
           <Key>
@@ -474,6 +475,14 @@
           <Property Name="PriceInPence" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RandomAttributeOptions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="AttributeTypeEnum" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Reputation">
           <Key>
@@ -1484,6 +1493,7 @@
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostOrder" EntityType="Self.PostOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceListItem" EntityType="Self.PriceListItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RandomAttributeOptions" EntityType="Self.RandomAttributeOptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reputation" EntityType="Self.Reputation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rumour" EntityType="Self.Rumour" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScoreBreakdown" EntityType="Self.ScoreBreakdown" Schema="dbo" store:Type="Tables" />
@@ -2048,6 +2058,7 @@
             <End Role="Player" EntitySet="Players" />
             <End Role="PlayerSecret" EntitySet="PlayerSecrets" />
           </AssociationSet>
+          <EntitySet Name="RandomAttributeOptions" EntityType="WarhammerModel.RandomAttributeOption" />
           </EntityContainer>
         <EntityType Name="Award">
           <Key>
@@ -2179,6 +2190,7 @@
           <NavigationProperty Name="GameDate" Relationship="WarhammerModel.FK_Person_GameDate" FromRole="Person" ToRole="GameDate" />
           <NavigationProperty Name="ScoreBreakdowns" Relationship="WarhammerModel.FK_ScoreBreakdown_Person" FromRole="Person" ToRole="ScoreBreakdown" />
           <Property Name="CurrentResolve" Type="Int32" Nullable="false" />
+          <Property Name="GenerationComplete" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Place" BaseType="WarhammerModel.Page">
           <Property Name="IsWithin" Type="Int32" />
@@ -3444,6 +3456,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="RandomAttributeOption">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="AttributeTypeEnum" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3522,6 +3542,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(WarhammerModel.Person)">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="GenerationComplete" ColumnName="GenerationComplete" />
                 <ScalarProperty Name="CurrentResolve" ColumnName="CurrentResolve" />
                 <ScalarProperty Name="DateOfBirthId" ColumnName="DateOfBirthId" />
                 <ScalarProperty Name="XpGroup" ColumnName="XpGroup" />
@@ -4089,6 +4110,15 @@
                 <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RandomAttributeOptions">
+            <EntityTypeMapping TypeName="WarhammerModel.RandomAttributeOption">
+              <MappingFragment StoreEntitySet="RandomAttributeOptions">
+                <ScalarProperty Name="AttributeTypeEnum" ColumnName="AttributeTypeEnum" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -59,6 +59,11 @@ namespace Warhammer.Core.Concrete
             return _entities.Pages.OfType<Arc>();
         }
 
+        public IQueryable<RandomAttributeOption> RandomAttributeOptions()
+        {
+            return _entities.RandomAttributeOptions;
+        }
+
         public IQueryable<ScoreBreakdown> ScoreBreakDowns()
         {
             return _entities.ScoreBreakdowns.Where(e => VisibleCampagins.Contains(e.CampaignId));

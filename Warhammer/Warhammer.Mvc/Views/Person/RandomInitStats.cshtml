@@ -1,0 +1,45 @@
+﻿@using Warhammer.Core
+@model Warhammer.Core.Models.RandomInitialStatsModel
+
+<div id="characterattributes" class="content-block">
+        @using (Ajax.BeginForm("InitRandomAttributes", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+        {
+            @Html.HiddenFor(m => m.PersonId)
+            <h3>Initialize Character Attributes</h3>
+            <table>
+                <tr>
+                    <td class="personAttribute">Role</td>
+                    <td class="personAttribute">
+                        @Html.TextBoxFor(m => m.PrimaryRole, new { @class = "form-control", placeholder="Optional" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="personAttribute">Main Stat</td>
+                    <td class="personAttribute">
+                        @Html.EnumDropDownListFor(m => m.PrimaryStat, "Optional", new { @class = "form-control", placeholder="Optional" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="personAttribute">Dump Stat</td>
+                    <td class="personAttribute">
+                        @Html.EnumDropDownListFor(m => m.DumpStat, "Optional", new { @class = "form-control", placeholder="Optional" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="personAttribute">Age</td>
+                    <td class="personAttribute">
+                        @Html.EnumDropDownListFor(m => m.AgeBracket, "Optional", new { @class = "form-control", placeholder="Optional" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="personAttribute">Level</td>
+                    <td class="personAttribute">
+                        @Html.EnumDropDownListFor(m => m.SkillLevel, "Optional", new { @class = "form-control", placeholder="Optional" })
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            <input type="submit" value="Set Random Stats!" class="btn btn-block btn-success" />
+        }
+</div>
+

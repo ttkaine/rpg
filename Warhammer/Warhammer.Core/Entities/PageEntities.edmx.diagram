@@ -120,6 +120,7 @@
         <EntityTypeShape EntityType="WarhammerModel.PlayerSecret" Width="1.5" PointX="16.25" PointY="18.75" />
         <AssociationConnector Association="WarhammerModel.FK_PlayerSecrets_Page" />
         <AssociationConnector Association="WarhammerModel.FK_PlayerSecrets_Player" />
+        <EntityTypeShape EntityType="WarhammerModel.RandomAttributeOption" Width="1.5" PointX="17.375" PointY="3.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

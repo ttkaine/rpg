@@ -23,5 +23,6 @@ namespace Warhammer.Core.Abstract
         bool AddXp(int personId, decimal amount);
         bool SellAttributePoint(int personId, int targetAttributeId);
 
+        bool InitRandomAttributes(RandomInitialStatsModel model);
     }
 }

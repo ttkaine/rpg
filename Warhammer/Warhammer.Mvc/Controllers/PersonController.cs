@@ -812,6 +812,14 @@ namespace Warhammer.Mvc.Controllers
                     {
                         if (model.CharacterInfo.CanEdit)
                         {
+                            if (DataProvider.SiteHasFeature(Feature.Version3RandomStats))
+                            {
+                                RandomInitialStatsModel randomInitModel = new RandomInitialStatsModel
+                                {
+                                    PersonId = id
+                                };
+                                return PartialView("RandomInitStats", randomInitModel);
+                            }
                             CharacterInitialStatsModel initModel = _attributeManager.GetDefaultStats(id);
                             return PartialView("InitStats", initModel);
                         }
@@ -820,6 +828,25 @@ namespace Warhammer.Mvc.Controllers
             }
             return null;
         }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Player")]
+        public ActionResult InitRandomAttributes(RandomInitialStatsModel model)
+        {
+            if (DataProvider.SiteHasFeature(Feature.Version3RandomStats))
+            {
+                bool success = _attributeManager.InitRandomAttributes(model);
+                CharacterAttributeModel updatedModel = _attributeManager.GetCharacterAttributes(model.PersonId);
+                if (updatedModel != null)
+                {
+                    return PartialView("AttributesPanel", updatedModel);
+                }
+            }
+
+            return null;
+        }
+
 
         [HttpPost]
         [Authorize(Roles = "Player")]

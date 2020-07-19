@@ -794,6 +794,277 @@ namespace Warhammer.Core.Concrete
             }
         }
 
+
+        private readonly Random _dice = new Random();
+        private int Roll(int sides = 6, int count = 1)
+        {
+            int total = 0;
+            for (int i = 0; i < count; i++)
+            {
+                total = total + _dice.Next(1, sides + 1);
+            }
+            return total;
+        }
+
+        public bool InitRandomAttributes(RandomInitialStatsModel model)
+        {
+            Person person = _repo.People().FirstOrDefault(p => p.Id == model.PersonId);
+            if(person != null && !person.PersonAttributes.Any())
+            {
+                SkillLevel level;
+                if (model.SkillLevel.HasValue)
+                {
+                    level = model.SkillLevel.Value;
+                }
+                else
+                {
+                    int randomLevel = 5;
+                    randomLevel = Roll(randomLevel);
+                    randomLevel = Roll(randomLevel);
+                    level = (SkillLevel) randomLevel;
+                }
+
+                AgeBracket age;
+                if(model.AgeBracket.HasValue)
+                {
+                    age = model.AgeBracket.Value;
+                }
+                else
+                {
+                    List<int> bracket = new List<int>
+                    {
+                        Roll(5),
+                        Roll(5),
+                        Roll(5)
+                    };
+                    age = (AgeBracket)bracket.OrderBy(b => b).Skip(1).Take(1).First();
+                }
+
+
+                AddRandomStats(model, person);
+                AddRandomRoles(model, level, age, person);
+                AddRandomSkills(age, person);
+                AddRandomDescriptors(person);
+                AddDefaultHarmV3(person);
+
+                _repo.Save(person);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void AddDefaultHarmV3(Person person)
+        {
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "Minor",
+                InitialValue = 1,
+                CurrentValue = 1
+            });
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "Serious",
+                InitialValue = 2,
+                CurrentValue = 2
+            });
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "Severe",
+                InitialValue = 3,
+                CurrentValue = 3
+            });
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "Critical",
+                InitialValue = 4,
+                CurrentValue = 4
+            });
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Harm,
+                Name = "",
+                Description = "Dead",
+                InitialValue = 5,
+                CurrentValue = 5
+            });
+        }
+
+        private void AddRandomSkills(AgeBracket age, Person person)
+        {
+            List<string> skills = new List<string>();
+            int numberOfSkills = Roll(4, (int) age) + 10;
+
+            for (int i = 0; i <= numberOfSkills; i++)
+            {
+                skills.Add(GetRandomAttribute(AttributeType.Skill));
+            }
+
+            int rounds = Roll(2, (int) age);
+
+            for (int i = 0; i <= rounds; i++)
+            {
+                int randomIndex = Roll(skills.Count) - 1;
+                string skill = skills[randomIndex];
+                skills.Add(skill);
+            }
+
+            var levels = from x in skills
+                group x by x into g
+                let count = g.Count()
+                orderby count descending
+                select new { Name = g.Key, Value = count - 1 };
+
+            foreach (var skill in levels.Where(l => l.Value > 0))
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Skill,
+                    Name = skill.Name,
+                    Description = skill.Name,
+                    InitialValue = skill.Value,
+                    CurrentValue = skill.Value
+                });
+            }
+        }
+
+        private void AddRandomDescriptors(Person person)
+        {
+            string descriptor = GetRandomAttribute(AttributeType.Descriptor);
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Descriptor,
+                Name = descriptor,
+                Description = descriptor,
+                InitialValue = 1,
+                CurrentValue = 1
+            });
+            descriptor = GetRandomAttribute(AttributeType.Descriptor);
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Descriptor,
+                Name = descriptor,
+                Description = descriptor,
+                InitialValue = 1,
+                CurrentValue = 1
+            });
+            descriptor = GetRandomAttribute(AttributeType.Descriptor);
+            person.PersonAttributes.Add(new PersonAttribute
+            {
+                AttributeType = AttributeType.Descriptor,
+                Name = descriptor,
+                Description = descriptor,
+                InitialValue = 1,
+                CurrentValue = 1
+            });
+        }
+
+        private void AddRandomRoles(RandomInitialStatsModel model, SkillLevel level, AgeBracket age, Person person)
+        {
+            Dictionary<string, int> roles = new Dictionary<string, int>();
+
+            string primaryRole = model.PrimaryRole;
+
+            if (string.IsNullOrWhiteSpace(primaryRole))
+            {
+                primaryRole = GetRandomAttribute(AttributeType.Role);
+            }
+
+            roles.Add(primaryRole, (int) level);
+
+            int tries = 0;
+            while (roles.Sum(r => r.Value) < (int) age && tries <= 4)
+            {
+                int currentSum = roles.Sum(r => r.Value);
+                int randomLevel = Roll((int) age - currentSum + Roll(3));
+                if (randomLevel > (int) level)
+                {
+                    randomLevel = (int) level;
+                }
+
+                randomLevel = Roll(randomLevel);
+                randomLevel = Roll(randomLevel);
+                randomLevel = Roll(randomLevel);
+
+                string role = GetRandomAttribute(AttributeType.Role);
+                if (!roles.ContainsKey(role))
+                {
+                    roles.Add(role, randomLevel);
+                }
+
+                tries++;
+            }
+
+            foreach (var role in roles)
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Role,
+                    Name = role.Key,
+                    Description = role.Key,
+                    InitialValue = role.Value,
+                    CurrentValue = role.Value
+                });
+            }
+        }
+
+        private string GetRandomAttribute(AttributeType type)
+        {
+            int count = _repo.RandomAttributeOptions()
+                .Count(e => e.AttributeTypeEnum == (int)type);
+            int item = Roll(count);
+            return _repo.RandomAttributeOptions().OrderBy(s => s.Name)
+                .Where(e => e.AttributeTypeEnum == (int) type)
+                .Skip(item).Take(1).Select(r => r.Name).FirstOrDefault();
+        }
+
+        private void AddRandomStats(RandomInitialStatsModel model, Person person)
+        {
+            Dictionary<string, int> stats = new Dictionary<string, int>();
+
+            foreach (string name in Enum.GetNames(typeof(CoreStat)))
+            {
+                if (name == model.PrimaryStat?.ToString())
+                {
+                    stats.Add(name, 3);
+                }
+                else
+                {
+                    stats.Add(name, 1);
+                }
+            }
+
+            while (stats.Sum(s => s.Value) < 15)
+            {
+                CoreStat stat = (CoreStat) Roll();
+                if (stat != model.DumpStat)
+                {
+                    stats[stat.ToString()]++;
+                }
+            }
+
+            foreach (var stat in stats)
+            {
+                person.PersonAttributes.Add(new PersonAttribute
+                {
+                    AttributeType = AttributeType.Stat,
+                    Name = stat.Key,
+                    Description = stat.Key,
+                    InitialValue = stat.Value,
+                    CurrentValue = stat.Value
+                });
+            }
+        }
+
         private void AddDefaultWearAndHarm(Person person)
         {
             if (!person.IsNpc)

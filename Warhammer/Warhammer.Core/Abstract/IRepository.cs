@@ -84,6 +84,7 @@ namespace Warhammer.Core.Abstract
         IQueryable<BookPage> BookPages();
         void Delete(BookPage bookPage);
         IQueryable<Arc> Arcs();
+        IQueryable<RandomAttributeOption> RandomAttributeOptions();
         IQueryable<ScoreBreakdown> ScoreBreakDowns();
         void Delete(ScoreBreakdown scoreBreakdown);
         int Save(SiteIcon icon);
@@ -95,6 +96,7 @@ namespace Warhammer.Core.Abstract
         IQueryable<SiteFeature> AllSiteFeatures();
         IQueryable<PlayerSecret> PlayerSecrets();
         int Save(PlayerSecret playerSecret);
+
     }
 }
 
