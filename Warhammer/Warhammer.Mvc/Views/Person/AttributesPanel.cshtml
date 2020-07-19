@@ -357,9 +357,11 @@
                 </div>
             }
 
-                if (Model.ShowResolveAndResilience)
+            if (Model.ShowResolveAndResilience)
+            {
+                if (Model.IsV3)
                 {
-                    if (!Model.IsV3)
+                    if (Model.Resolve.Any())
                     {
                         <div class="alert alert-info">
                             <h4>Resolve</h4>
@@ -368,6 +370,7 @@
                             </table>
                         </div>
                     }
+                }
                     else
                     {
 
