@@ -31,12 +31,27 @@
 
             </tr>
             <tr>
-                <td>Maximum Resolve</td>
+                @if (Model.IsV3)
+                {
+                    <td>Maximum WEAR</td>
+                }
+                else
+                {
+                    <td>Maximum Resolve</td>
+                }
+             
                 <td><span class="personAttribute label label-info">@Model.Resolve.First().Value</span></td>
             </tr>
 
             <tr>
-                <td>Current Resolve</td>
+                @if (Model.IsV3)
+                {
+                      <td>Current WEAR</td>
+                }
+                else
+                {
+                    <td>Current Resolve</td>
+                }
                 <td><span class="personAttribute label label-info">@Model.CurrentResolve</span></td>
             </tr>
 
@@ -61,8 +76,8 @@
         if (Model.IsV3)
         {
             <tr>
-                <td>Wyrd</td>
-                <td><span class="personAttribute label label-info">@Model.WishingWell</span></td>
+                <td>Current Wyrd</td>
+                <td><span class="personAttribute label label-warning">@Model.WishingWell</span></td>
             </tr>
         }
         else
@@ -75,19 +90,32 @@
         if (Model.CanEditWishingWell)
         {
             <tr>
+                @if (Model.IsV3)
+                {
+                    <td>Adjust Wyrd</td>
+                }
+                else
+                {
+                    <td>Adjust wishing Well</td>
+                }
                 <td>
-                    @using (Ajax.BeginForm("AddToWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    @if (Model.WishingWell < 3)
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="submit" value="+1" class="btn btn-block btn-success" />
+                        using (Ajax.BeginForm("AddToWishingWell", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="submit" value="+1" class="btn btn-success btn-block"/>
+                        }
                     }
-                </td>
-                <td>
-                    @using (Ajax.BeginForm("SubtractFromWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    @if (Model.WishingWell > 0)
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="submit" value="-1" class="btn btn-block btn-danger" />
+                        using (Ajax.BeginForm("SubtractFromWishingWell", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="submit" value="-1" class="btn btn-danger btn-block"/>
+                        }
                     }
+
                 </td>
             </tr>
         }
@@ -144,17 +172,17 @@
     }
 
 </table>
-
-    @if (Model.Wear.Any(e => e.Exhausted) || Model.Edge.Any(e => e.Exhausted) || Model.CurrentResolve < Model.MaxResolve)
+    @if (!Model.IsV3)
     {
-        using (Ajax.BeginForm("RefreshWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+        if (Model.Wear.Any(e => e.Exhausted) || Model.Edge.Any(e => e.Exhausted) || Model.CurrentResolve < Model.MaxResolve)
         {
-            <input type="hidden" value="@Model.PersonId" name="personId" />
-            <input type="submit" value="Refresh" class="btn btn-block btn-success" />
+            using (Ajax.BeginForm("RefreshWear", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+            {
+                <input type="hidden" value="@Model.PersonId" name="personId"/>
+                <input type="submit" value="Refresh" class="btn btn-block btn-success"/>
+            }
         }
     }
-
-
 
     <table class="table attribute-table">
 

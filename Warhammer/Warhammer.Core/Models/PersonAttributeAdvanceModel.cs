@@ -27,7 +27,7 @@ namespace Warhammer.Core.Models
             {
                 if (IsV3)
                 {
-                    return PersonAttribute.AttributeType == AttributeType.Role || PersonAttribute.AttributeType == AttributeType.Skill;
+                    return PersonAttribute.AttributeType == AttributeType.Role || PersonAttribute.AttributeType == AttributeType.Skill || PersonAttribute.AttributeType == AttributeType.Resolve;
                 }
                 else
                 {

@@ -96,7 +96,7 @@ namespace Warhammer.Core.Concrete
                     CampaignDetail = campaignDetail,
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
                     ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack),
-                    ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell),
+                    ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell) && !person.IsNpc,
                     ShowResolveAndResilience = _featureProvider.SiteHasFeature(Feature.ResolveAndResilience),
                     IsV3 = isV3,
                 };
@@ -431,24 +431,12 @@ namespace Warhammer.Core.Concrete
                 person.PersonAttributes.Add(new PersonAttribute
                 {
                     AttributeType = AttributeType.Resolve,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 4,
-                    CurrentValue = 4
+                    Name = "Resolve",
+                    Description = "Resolve",
+                    InitialValue = 3,
+                    CurrentValue = 3
                 });
             }
-            else
-            {
-                person.PersonAttributes.Add(new PersonAttribute
-                {
-                    AttributeType = AttributeType.Resolve,
-                    Name = "",
-                    Description = "",
-                    InitialValue = 2,
-                    CurrentValue = 2
-                });
-            }
-
 
             person.PersonAttributes.Add(new PersonAttribute
             {
@@ -849,6 +837,18 @@ namespace Warhammer.Core.Concrete
                 AddRandomSkills(age, person);
                 AddRandomDescriptors(person);
                 AddDefaultHarmV3(person);
+
+                if (!person.IsNpc)
+                {
+                    person.PersonAttributes.Add(new PersonAttribute
+                    {
+                        AttributeType = AttributeType.Resolve,
+                        Name = "Resolve",
+                        Description = "Resolve",
+                        InitialValue = 3,
+                        CurrentValue = 3
+                    });
+                }
 
                 _repo.Save(person);
 
