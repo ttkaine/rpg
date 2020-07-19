@@ -14,53 +14,62 @@
             <p>
                 In order to sell an advance use the form below. Once you have sold an advance this form will disappear and only return once you've finished another session.
             </p>
-            
+
             @if (Model.CanSellAdvance)
             {
                 <h3>Sell an Advance</h3>
-            
-                using (Ajax.BeginForm("SellAdvance", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+
+                using (Ajax.BeginForm("SellAdvance", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
                 {
-                    <input type="hidden" value="@Model.PersonId" name="personId"/>
+                    <input type="hidden" value="@Model.PersonId" name="personId" />
                     <span>Sell From:</span>
                     @Html.DropDownList("targetAttributeId", Model.PossibleAdvanceSales, new { @class = "form-control" })
                     <br />
                     <input type="submit" value="Sell Advance" class="btn btn-block btn-success" />
                 }
+
+
             }
             else
-            { 
+            {
                 <h3>Nothing to Sell</h3>
                 <p>Although you have a Shift available, you don't currently have any advances that you can sell.</p>
             }
-
-            @*@using (Ajax.BeginForm("MoveAttributePoint", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+            
+            @if (Model.IsV3)
             {
-                <input type="hidden" value="@Model.PersonId" name="personId" />
-                <span>From:</span>
-                @Html.DropDownList("sourceAttributeId", Model.PossibleSourceAttributes, new { @class = "form-control" })
-                <span>To:</span>
-                @Html.DropDownList("targetAttributeId", Model.PossibleTargetAttributes, new { @class = "form-control" })
-                <br />
-                <input type="submit" value="Move Point" class="btn btn-block btn-success" />
+                <h3> - OR - </h3>
+                <h3>Move a Stat Point</h3>
+
+                using (Ajax.BeginForm("MoveAttributePoint", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                {
+                    <input type="hidden" value="@Model.PersonId" name="personId"/>
+                    <span>From:</span>
+                    @Html.DropDownList("sourceAttributeId", Model.PossibleSourceAttributes, new {@class = "form-control"})
+                    <span>To:</span>
+                    @Html.DropDownList("targetAttributeId", Model.PossibleTargetAttributes, new {@class = "form-control"})
+                    <br/>
+                    <input type="submit" value="Move Point" class="btn btn-block btn-success"/>
+                }
+
+
+
+                <h3> - OR - </h3>
+                <h3>Rename something</h3>
+
+                using (Ajax.BeginForm("RenameAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                {
+                    <span>Choose a descriptor to rename:</span>
+                    <input type="hidden" value="@Model.PersonId" name="personId"/>
+                    @Html.DropDownList("attributeId", Model.RenamableAttributes, new {@class = "form-control"})
+                    <span>New Name:</span>
+                    <input type="text" class="form-control" name="Name" placeholder="Name"/>
+                    <span>Description (optional):</span>
+                    <textarea type="text" class="form-control" name="Description" placeholder="Description"></textarea>
+                    <br/>
+                    <input type="submit" value="Set New Name" class="btn btn-block btn-success"/>
+                }
             }
-
-
-            <h3> - OR - </h3>
-            <h3>Rename something</h3>
-
-            @using (Ajax.BeginForm("RenameAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-            {
-                <span>Choose a Role, Skill, or Descriptor to rename:</span>
-                <input type="hidden" value="@Model.PersonId" name="personId" />
-                @Html.DropDownList("attributeId", Model.RenamableAttributes, new { @class = "form-control" })
-                <span>New Name:</span>
-                <input type="text" class="form-control" name="Name" placeholder="Name" />
-                <span>Description (optional):</span>
-                <textarea type="text" class="form-control" name="Description" placeholder="Description"></textarea>
-                <br />
-                <input type="submit" value="Set New Name" class="btn btn-block btn-success" />
-            }*@
         </div>
     </div>
 }

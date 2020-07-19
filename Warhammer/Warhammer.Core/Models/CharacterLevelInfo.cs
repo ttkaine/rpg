@@ -4,7 +4,7 @@ namespace Warhammer.Core.Models
 {
     public class CharacterLevelInfo
     {
-        //public int CharacterLevel { get; set; }
+        public bool IsV3 { get; set; }
         public int TotalAdvancesTaken { get; set; }
         public decimal CurrentXp { get; set; }
         public int TotalRoles { get; set; }

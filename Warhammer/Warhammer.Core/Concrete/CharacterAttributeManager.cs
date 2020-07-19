@@ -26,6 +26,8 @@ namespace Warhammer.Core.Concrete
 
         public CharacterAttributeModel GetCharacterAttributes(int personId)
         {
+            bool isV3 = _featureProvider.SiteHasFeature(Feature.Version3);
+
             Person person = _repo.People().Where(p => p.Id == personId)
                 .Include(p => p.Player)
                 .Include(p => p.PersonAttributes).FirstOrDefault();
@@ -52,8 +54,8 @@ namespace Warhammer.Core.Concrete
                 CharacterLevelInfo info = new CharacterLevelInfo
                 {
                     TotalAdvancesTaken = person.TotalAdvancesTaken,
-                   // CharacterLevel = person.XpLevel,
-                   CurrentXp = person.CurrentXp,
+                    IsV3 = isV3,
+                    CurrentXp = person.CurrentXp,
                     XpSpent = person.XpSpent,
                     TotalRoles = totalRoles,
                     TotalDisciplines = totalDisciplines,
@@ -95,7 +97,8 @@ namespace Warhammer.Core.Concrete
                     CanAddXp = campaignDetail.GmId == player.Id || _featureProvider.SiteHasFeature(Feature.PlaygroundMode),
                     ShowWearTrack = _featureProvider.SiteHasFeature(Feature.ShowWearTrack),
                     ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell),
-                    ShowResolveAndResilience = _featureProvider.SiteHasFeature(Feature.ResolveAndResilience)
+                    ShowResolveAndResilience = _featureProvider.SiteHasFeature(Feature.ResolveAndResilience),
+                    IsV3 = isV3,
                 };
 
                 return model;

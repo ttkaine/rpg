@@ -61,7 +61,14 @@
             <div class="alert alert-info">
                 <h4>Stats</h4>
                 <table class="table">
-                    @Html.EditorFor(m => m.Stats)
+                    @if (Model.IsV3)
+                    {
+                        @Html.DisplayFor(m => m.Stats)
+                    }
+                    else
+                    {
+                        @Html.EditorFor(m => m.Stats)
+                    }
                 </table>
             </div>
             if (Model.IncludeMagic)
@@ -188,27 +195,28 @@
                 <table class="table">
                     @Html.EditorFor(m => m.Descriptors)
                 </table>
-
-                @if (Model.CanAddNew(AttributeType.Descriptor))
+                @if (!Model.IsV3)
                 {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    if (Model.CanAddNew(AttributeType.Descriptor))
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="hidden" value="@AttributeType.Descriptor" name="attributeType" />
-                        <input type="text" value="" placeholder="Descriptor Name" name="name" class="form-control" />
-                        <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Descriptor for @Model.NewCost(AttributeType.Descriptor) XP" class="btn btn-block btn-success" />
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@AttributeType.Descriptor" name="attributeType"/>
+                            <input type="text" value="" placeholder="Descriptor Name" name="name" class="form-control"/>
+                            <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                            <input type="submit" value="Add Descriptor for @Model.NewCost(AttributeType.Descriptor) XP" class="btn btn-block btn-success"/>
+                        }
                     }
-                }
-                else
-                {
-                    <input type="button" disabled="disabled" value="New Descriptor: @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-default" />
+                    else
+                    {
+                        <input type="button" disabled="disabled" value="New Descriptor: @(Model.NewCost(AttributeType.Descriptor)) XP" class="btn btn-block btn-default"/>
+                    }
                 }
             </div>
 
             if (Model.ShowResolveAndResilience)
             {
-
                 <div class="alert alert-info">
                     @if(Model.Resolve.Any())
                     {
@@ -231,34 +239,53 @@
 
 
             <div class="alert alert-danger">
-
-                <h4>Edge</h4>
-                <table class="table">
-                    @Html.EditorFor(m => m.Edge)
-                </table>
-
-                @if (Model.CanAddNew(AttributeType.Edge))
+                
+                @if (!Model.IsV3)
                 {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    <h4>Edge</h4>
+                    <table class="table">
+                        @Html.EditorFor(m => m.Edge)
+                    </table>
+
+                    if (Model.CanAddNew(AttributeType.Edge))
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="hidden" value="@AttributeType.Edge" name="attributeType" />
-                        <input type="submit" value="Add New Edge slot for @Model.NewCost(AttributeType.Edge) XP" class="btn btn-block btn-success" />
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@AttributeType.Edge" name="attributeType"/>
+                            <input type="submit" value="Add New Edge slot for @Model.NewCost(AttributeType.Edge) XP" class="btn btn-block btn-success"/>
+                        }
+                    }
+                    else
+                    {
+                        <input type="button" disabled="disabled" value="New Edge: @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-default"/>
+                    }
+                }
+                
+                @if (Model.IsV3)
+                {
+                    if (Model.Harm.Any())
+                    {
+                        <div class="alert alert-danger">
+                            <h4>Harm</h4>
+                            <table class="table attribute-table">
+                                @Html.DisplayFor(m => m.Harm)
+                            </table>
+                        </div>
                     }
                 }
                 else
                 {
-                    <input type="button" disabled="disabled" value="New Edge: @(Model.NewCost(AttributeType.Edge)) XP" class="btn btn-block btn-default" />
+                    if (Model.FixedWearAndHarm)
+                    {
+                        @Html.Partial("_FixedWearAndHarm", Model)
+                    }
+                    else
+                    {
+                        @Html.Partial("_DynamicWearAndHarm", Model)
+                    }
                 }
 
-                @if (Model.FixedWearAndHarm)
-                {
-                    @Html.Partial("_FixedWearAndHarm", Model)
-                }
-                else
-                {
-                    @Html.Partial("_DynamicWearAndHarm", Model)
-                }
 
             </div>
         }
@@ -330,23 +357,37 @@
                 </div>
             }
 
-            if (Model.ShowResolveAndResilience)
-            {
-                <div class="alert alert-info">
-                    <h4>Resolve</h4>
-                    <p>This is the maximum reserve buffer of mental and physical endurance that the character has. You can think of this as a bit like Max Hit Points. As the hit points are reduced the character is not actually meaningfully hurt (maybe a few bumps and scratches).</p>
-                    <table class="table attribute-table">
-                        @Html.EditorFor(m => m.Resolve)
-                    </table>
+                if (Model.ShowResolveAndResilience)
+                {
+                    if (!Model.IsV3)
+                    {
+                        <div class="alert alert-info">
+                            <h4>Resolve</h4>
+                            <table class="table attribute-table">
+                                @Html.EditorFor(m => m.Resolve)
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
 
-                </div>
-                <div class="alert alert-info">
-                    <h4>Resilience</h4>
-                    <p>This is the threshold for the amount of Resolve the character may spend on a single hit. If the damage is over your Resilience then Harm results, even if the character has remaining Resolve in the pool.</p>
-                    <table class="table attribute-table">
-                        @Html.EditorFor(m => m.Resilience)
-                    </table>
-                </div>
+
+                        <div class="alert alert-info">
+                            <h4>Resolve</h4>
+                            <p>This is the maximum reserve buffer of mental and physical endurance that the character has. You can think of this as a bit like Max Hit Points. As the hit points are reduced the character is not actually meaningfully hurt (maybe a few bumps and scratches).</p>
+                            <table class="table attribute-table">
+                                @Html.EditorFor(m => m.Resolve)
+                            </table>
+
+                        </div>
+                                <div class="alert alert-info">
+                                    <h4>Resilience</h4>
+                                    <p>This is the threshold for the amount of Resolve the character may spend on a single hit. If the damage is over your Resilience then Harm results, even if the character has remaining Resolve in the pool.</p>
+                                    <table class="table attribute-table">
+                                        @Html.EditorFor(m => m.Resilience)
+                                    </table>
+                                </div>
+                    }
             }
 
             if ((Model.Wear.Any() || Model.Harm.Any() || Model.Edge.Any()) && Model.CharacterInfo.CanEdit)

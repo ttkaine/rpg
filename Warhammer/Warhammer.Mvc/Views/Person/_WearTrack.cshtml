@@ -14,127 +14,136 @@
         }
     }
 
-            <table class="table attribute-table">
-                @if (Model.ShowResolveAndResilience)
-                {
-                    if (Model.Resolve.Any())
-                    {
-                        int maxResolve = Model.Resolve.First().Value;
-                        double percentageResolve = Model.CurrentResolve * 100.0 / maxResolve;
-                        string currentResolveString = percentageResolve.ToString("####") + "%";
-                        <tr>
-                            <td colspan="2">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: @currentResolveString" aria-valuenow="@currentResolveString" aria-valuemin="0" aria-valuemax="@Model.Resolve.First().Value"></div>
-                                </div>
-                            </td>
-                        
-                        </tr>
-                        <tr>
-                            <td>Maximum Resolve</td>
-                            <td><span class="personAttribute label label-info">@Model.Resolve.First().Value</span></td>
-                        </tr>
+<table class="table attribute-table">
+    @if (Model.ShowResolveAndResilience)
+    {
+        if (Model.Resolve.Any())
+        {
+            int maxResolve = Model.Resolve.First().Value;
+            double percentageResolve = Model.CurrentResolve * 100.0 / maxResolve;
+            string currentResolveString = percentageResolve.ToString("####") + "%";
+            <tr>
+                <td colspan="2">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: @currentResolveString" aria-valuenow="@currentResolveString" aria-valuemin="0" aria-valuemax="@Model.Resolve.First().Value"></div>
+                    </div>
+                </td>
 
-                        <tr>
-                            <td>Current Resolve</td>
-                            <td><span class="personAttribute label label-info">@Model.CurrentResolve</span></td>
-                        </tr>
+            </tr>
+            <tr>
+                <td>Maximum Resolve</td>
+                <td><span class="personAttribute label label-info">@Model.Resolve.First().Value</span></td>
+            </tr>
 
-                        if (Model.CanEditResolve)
+            <tr>
+                <td>Current Resolve</td>
+                <td><span class="personAttribute label label-info">@Model.CurrentResolve</span></td>
+            </tr>
+
+            if (Model.CanEditResolve)
+            {
+                <tr>
+                    <td>
+                        @using (Ajax.BeginForm("SetCurrentResolve", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
                         {
-                            <tr>
-                                <td>
-                                    @using (Ajax.BeginForm("SetCurrentResolve", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                                    {
-                                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                                        <input type="number" value="@Model.CurrentResolve" name="UpdatedResolve" class="form-control" />
-                                        <input type="submit" value="Update!" class="btn btn-block btn-success" />
-                                    }
-                                </td>
-                            </tr>
+                            <input type="hidden" value="@Model.PersonId" name="personId" />
+                            <input type="number" value="@Model.CurrentResolve" name="UpdatedResolve" class="form-control" />
+                            <input type="submit" value="Update!" class="btn btn-block btn-success" />
                         }
-                    }
-                }
+                    </td>
+                </tr>
+            }
+        }
+    }
 
-                @if (Model.ShowWishingWell)
-                {
-                    <tr>
-                        <td>Wishing Well</td>
-                        <td><span class="personAttribute label label-info">@Model.WishingWell</span></td>
-                    </tr>
+    @if (Model.ShowWishingWell)
+    {
+        if (Model.IsV3)
+        {
+            <tr>
+                <td>Wyrd</td>
+                <td><span class="personAttribute label label-info">@Model.WishingWell</span></td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>Wishing Well</td>
+                <td><span class="personAttribute label label-info">@Model.WishingWell</span></td>
+            </tr>
+        }
+        if (Model.CanEditWishingWell)
+        {
+            <tr>
+                <td>
+                    @using (Ajax.BeginForm("AddToWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="submit" value="+1" class="btn btn-block btn-success" />
+                    }
+                </td>
+                <td>
+                    @using (Ajax.BeginForm("SubtractFromWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    {
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="submit" value="-1" class="btn btn-block btn-danger" />
+                    }
+                </td>
+            </tr>
+        }
+    }
 
-                    if (Model.CanEditWishingWell)
+    @foreach (PersonAttributeAdvanceModel edge in Model.Edge)
+    {
+        if (edge.Exhausted)
+        {
+            <tr>
+                <td>@edge.PersonAttribute.Name</td>
+                <td><span class="personAttribute label label-danger">@edge.DisplayValue</span></td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>Apply Edge:</td>
+                <td>
+                    @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
                     {
-                        <tr>
-                            <td>
-                                @using (Ajax.BeginForm("AddToWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                                {
-                                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                                    <input type="submit" value="+1" class="btn btn-block btn-success" />
-                                }
-                            </td>
-                            <td>
-                                @using (Ajax.BeginForm("SubtractFromWishingWell", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                                {
-                                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                                    <input type="submit" value="-1" class="btn btn-block btn-danger" />
-                                }
-                            </td>
-                        </tr>
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="hidden" value="@edge.PersonAttribute.Id" name="attributeId" />
+                        <input type="submit" value="@edge.DisplayValue" class="btn btn-block btn-info" />
                     }
-                }
+                </td>
+            </tr>
+        }
+    }
 
-                @foreach (PersonAttributeAdvanceModel edge in Model.Edge)
-                {
-                    if (edge.Exhausted)
+    @foreach (PersonAttributeAdvanceModel wear in Model.Wear)
+    {
+        if (wear.Exhausted)
+        {
+            <tr>
+                <td>@wear.PersonAttribute.Name</td>
+                <td><span class="personAttribute label label-danger">@wear.DisplayValue</span></td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>Apply Wear:</td>
+                <td colspan="2">
+                    @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
                     {
-                        <tr>
-                            <td>@edge.PersonAttribute.Name</td>
-                            <td><span class="personAttribute label label-danger">@edge.DisplayValue</span></td>
-                        </tr>
+                        <input type="hidden" value="@Model.PersonId" name="personId" />
+                        <input type="hidden" value="@wear.PersonAttribute.Id" name="attributeId" />
+                        <input type="submit" value="@wear.DisplayValue" class="btn btn-block btn-success" />
                     }
-                    else
-                    {
-                        <tr>
-                            <td>Apply Edge:</td>
-                            <td>
-                                @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                                {
-                                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                                    <input type="hidden" value="@edge.PersonAttribute.Id" name="attributeId" />
-                                    <input type="submit" value="@edge.DisplayValue" class="btn btn-block btn-info" />
-                                }
-                            </td>
-                        </tr>
-                    }
-                }
+                </td>
+            </tr>
+        }
+    }
 
-                @foreach (PersonAttributeAdvanceModel wear in Model.Wear)
-                {
-                    if (wear.Exhausted)
-                    {
-                        <tr>
-                            <td>@wear.PersonAttribute.Name</td>
-                            <td><span class="personAttribute label label-danger">@wear.DisplayValue</span></td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>Apply Wear:</td>
-                            <td colspan="2">
-                                @using (Ajax.BeginForm("ApplyWear", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
-                                {
-                                    <input type="hidden" value="@Model.PersonId" name="personId" />
-                                    <input type="hidden" value="@wear.PersonAttribute.Id" name="attributeId" />
-                                    <input type="submit" value="@wear.DisplayValue" class="btn btn-block btn-success" />
-                                }
-                            </td>
-                        </tr>
-                    }
-                }
-
-            </table>
+</table>
 
     @if (Model.Wear.Any(e => e.Exhausted) || Model.Edge.Any(e => e.Exhausted) || Model.CurrentResolve < Model.MaxResolve)
     {

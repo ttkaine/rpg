@@ -81,7 +81,8 @@ namespace Warhammer.Core.Entities
         Vampire,
         ResolveAndResilience,
         PlayerSecrets,
-        Version3RandomStats
+        Version3RandomStats,
+        Version3
     }
 
     public partial class SiteFeature

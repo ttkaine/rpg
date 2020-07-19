@@ -28,13 +28,23 @@ namespace Warhammer.Core.Models
         {
             get
             {
-                return new SelectList(PersonAttributes
-                    .Where(p => p.PersonAttribute.AttributeType == AttributeType.Skill 
-                    || p.PersonAttribute.AttributeType == AttributeType.Role 
-                    || p.PersonAttribute.AttributeType == AttributeType.Descriptor
-                    || p.PersonAttribute.AttributeType == AttributeType.Magic
-                    || p.PersonAttribute.AttributeType == AttributeType.MagicItem
-                    ).Select(p => p), "Id", "Name");
+                if (IsV3)
+                {
+                    return new SelectList(PersonAttributes
+                        .Where(p => p.PersonAttribute.AttributeType == AttributeType.Descriptor
+                        ).Select(p => p), "Id", "Name");
+                }
+                else
+                {
+                    return new SelectList(PersonAttributes
+                        .Where(p => p.PersonAttribute.AttributeType == AttributeType.Skill
+                                    || p.PersonAttribute.AttributeType == AttributeType.Role
+                                    || p.PersonAttribute.AttributeType == AttributeType.Descriptor
+                                    || p.PersonAttribute.AttributeType == AttributeType.Magic
+                                    || p.PersonAttribute.AttributeType == AttributeType.MagicItem
+                        ).Select(p => p), "Id", "Name");
+                }
+
             }
         }
 
@@ -80,6 +90,15 @@ namespace Warhammer.Core.Models
 
         public bool CanAddNew(AttributeType type, int level = 1)
         {
+            if (IsV3)
+            {
+                if (type == AttributeType.Skill || type == AttributeType.Role)
+                {
+                    return NewCost(type, level) <= CurrentXp;
+                }
+
+                return false;
+            }
             switch (type)
             {
                 case AttributeType.Stat:
@@ -125,6 +144,7 @@ namespace Warhammer.Core.Models
                     int roleCost = 4;
                     return roleCost;
                 case AttributeType.Descriptor:
+                    if (IsV3) return -1;
                     int descCost = TotalDescriptors;
                     descCost++;
                     if (descCost < 1)
@@ -133,10 +153,12 @@ namespace Warhammer.Core.Models
                     }
                     return descCost;
                     case  AttributeType.Edge:
-                        int edgeLevel = CharacterInfo.TotalEdge;
+                        if (IsV3) return -1;
+                    int edgeLevel = CharacterInfo.TotalEdge;
                         edgeLevel++;
                         return (edgeLevel * edgeLevel * edgeLevel);
                 case AttributeType.Wear:
+                    if (IsV3) return -1;
                     if (FixedWearAndHarm)
                     {
                         return level + CharacterInfo.NumberOfWear;
@@ -152,6 +174,7 @@ namespace Warhammer.Core.Models
                         return 1;
                     }
                 case AttributeType.Harm:
+                    if (IsV3) return -1;
                     if (FixedWearAndHarm)
                     {
                         return level + CharacterInfo.NumberOfHarm;
@@ -226,5 +249,6 @@ namespace Warhammer.Core.Models
         public int MaxResolve => Resolve.Select(s => s.Value).FirstOrDefault();
         public bool CanEditResolve { get; set; }
         public bool CanEditWishingWell { get; set; }
+        public bool IsV3 { get; set; }
     }
 }
