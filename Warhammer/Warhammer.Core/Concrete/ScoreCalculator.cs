@@ -148,21 +148,19 @@ namespace Warhammer.Core.Concrete
             }
 
             int? wearValue = _repo.PersonAttributes().Where(a => a.PersonId == personId)
-                .Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Wear 
-                            || a.PersonAttributeTypeEnum == (int)AttributeType.Harm
+                .Where(a => a.PersonAttributeTypeEnum == (int)AttributeType.Wear
                             || a.PersonAttributeTypeEnum == (int)AttributeType.Resolve
-                            || a.PersonAttributeTypeEnum == (int)AttributeType.Resilience
-                            )
+                )
                 .Sum(a => (int?)a.CurrentValue);
     
 
-            decimal wearPoints = (wearValue.GetValueOrDefault(0) - 8) / 4m;
+            decimal wearPoints = (wearValue.GetValueOrDefault(0) - 3) / 4m;
 
             if (wearPoints > 0)
             {
                 scores.Add(new ScoreBreakdown
                 {
-                    ScoreType = ScoreType.WearHarm,
+                    ScoreType = ScoreType.Wear,
                     DateTime = calcDate,
                     PersonId = personId,
                     PointsValue = wearPoints,

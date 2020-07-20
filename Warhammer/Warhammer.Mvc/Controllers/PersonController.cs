@@ -535,8 +535,8 @@ namespace Warhammer.Mvc.Controllers
                 case ScoreType.Places:
                     baseColor = Color.DarkViolet;
                     break;
-                case ScoreType.WearHarm:
-                    baseColor = Color.Gray;
+                case ScoreType.Wear:
+                    baseColor = Color.Indigo;
                     break;
                 case ScoreType.Magic:
                     baseColor = Color.Lime;
