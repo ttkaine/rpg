@@ -185,7 +185,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 List<Person> npcs = DataProvider.GetNpcSheetPeopleForPage(id);
                 List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
-                return View(models);
+                return View("NpcSheet", models);
             }
             return RedirectToAction("Index", "Home");
         }

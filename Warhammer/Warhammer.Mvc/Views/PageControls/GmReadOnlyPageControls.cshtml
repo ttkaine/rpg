@@ -5,7 +5,9 @@
 @if (Model.ShowControlsPanel)
 {
     <div id="gmReadOnlyPageControls" class="content-block">
-      
+
+            @Html.ActionLink("Related Character Sheets", "NpcSheetForPage", "Gm", new { id = Model.Id }, new { @class = "btn btn-success btn-block" })
+
 
             @if (Model.LinksAvailable)
             {
