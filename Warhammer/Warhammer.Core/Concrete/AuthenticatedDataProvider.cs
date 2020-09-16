@@ -2314,6 +2314,16 @@ namespace Warhammer.Core.Concrete
                 .OrderByDescending(p => p.CurrentScore).ToList();
         }
 
+        public List<Person> GetNpcSheetPeopleForPage(int id)
+        {
+            return _repository.People()
+                .Include(p => p.PersonAttributes)
+                .Include(p => p.Awards)
+                .Where(p => p.Pages.Any(a => a.Id == id))
+                .Where(p => !p.IsDead)
+                .OrderBy(p => p.ShortName).ToList();
+        }
+
         public List<Person> GetCharacterSheetPeopleWithTrophy(int trophyId)
         {
             return _repository.People()

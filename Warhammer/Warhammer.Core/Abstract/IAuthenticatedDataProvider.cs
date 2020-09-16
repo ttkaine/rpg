@@ -174,6 +174,7 @@ namespace Warhammer.Core.Abstract
         void AwardShiftForSession(int id);
         void UpdateAward(int id, string awardReason, int? awardSessionId);
         List<Person> GetNpcSheetPeople();
+        List<Person> GetNpcSheetPeopleForPage(int id);
         List<Person> GetCharacterSheetPeopleWithTrophy(int trophyId);
         List<PageLinkModel> GetFavourites();
         void SetGender(int personId, Gender gender);
@@ -237,5 +238,6 @@ namespace Warhammer.Core.Abstract
         void RemovePersonAttribute(int personId, int attributeId);
         void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description, AttributeType attributeType, bool hidden);
         void UpdatePlayerSecret(int playerId, int pageId, string details);
+
     }
 }

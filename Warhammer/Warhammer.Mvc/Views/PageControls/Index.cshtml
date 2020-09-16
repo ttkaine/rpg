@@ -180,5 +180,10 @@
         {
             @Html.ActionLink("Delete", "DeletePage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-danger btn-block" })
         }
+        
+        @if (Model.PlayerIsGm)
+        {
+            @Html.ActionLink("Related Character Sheets", "NpcSheetForPage", "Gm", new { id = Model }, new { @class = "btn btn-success btn-block" })
+        }
     </div>
 }

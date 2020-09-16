@@ -179,6 +179,17 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult NpcSheetForPage(int id)
+        {
+            if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
+            {
+                List<Person> npcs = DataProvider.GetNpcSheetPeopleForPage(id);
+                List<NpcSheetViewModel> models = npcs.Select(n => ModelFactory.MakeNpcSheetViewModel(n)).ToList();
+                return View(models);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult PersonWithTrophyCharacterSheets(int id)
         {
             if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
