@@ -168,6 +168,7 @@ namespace Warhammer.Core.Abstract
         List<PageLinkModel> GetRelatedPages(int id);
         bool PlayerSettingEnabled(SettingNames setting);
         List<Award> AwardsForTrophy(int id);
+
         List<Player> GetAllPlayers();
         void SetSessionGm(int sessionId, int? selectedGm);
         List<PageLinkModel> PeopleWithXpToSpend();
@@ -238,6 +239,7 @@ namespace Warhammer.Core.Abstract
         void RemovePersonAttribute(int personId, int attributeId);
         void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description, AttributeType attributeType, bool hidden);
         void UpdatePlayerSecret(int playerId, int pageId, string details);
+
 
     }
 }

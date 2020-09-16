@@ -182,6 +182,7 @@
         @if (Model.PlayerIsGm)
         {
             @Html.ActionLink("Related Character Sheets", "NpcSheetForPage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-success btn-block" })
+            @Html.ActionLink("Related Image Sheet", "ImageSheetForPage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-success btn-block" })
         }
 
     </div>

@@ -201,6 +201,28 @@ namespace Warhammer.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        public ActionResult ImageSheet()
+        {
+            if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
+            {
+                List<PageLinkModel> npcs = DataProvider.AllNpcLinks();
+                return View(npcs);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ImageSheetForPage(int id)
+        {
+            if (DataProvider.CurrentPlayerIsGm || _user.IsAdmin)
+            {
+                List<PageLinkModel> linkedPages = DataProvider.GetRelatedPages(id);
+                linkedPages = linkedPages.Where(l => !string.IsNullOrWhiteSpace(l.ImageUrl)).ToList();
+                return View("ImageSheet", linkedPages);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult OutstandingAwardNominations()
         {
             List<AwardNomination> nominations = DataProvider.OutstandingNominations();

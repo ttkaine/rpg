@@ -358,6 +358,12 @@ namespace Warhammer.Mvc.Concrete
                     });
                 }
 
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Image Sheet",
+                    Url = _urlHelper.Action("ImageSheet", "Gm"),
+                });
+
                 if (_data.SiteHasFeature(Feature.PriceList) && !_data.SiteHasFeature(Feature.PublicPrices))
                 {
                     items.Add(new MenuItemViewModel

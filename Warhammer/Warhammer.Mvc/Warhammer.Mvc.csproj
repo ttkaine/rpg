@@ -871,6 +871,7 @@
     <Content Include="Views\Page\EditorTemplates\PlayerSecret.cshtml" />
     <Content Include="Views\Person\RandomInitStats.cshtml" />
     <Content Include="Views\Gm\GmToolsForTrophy.cshtml" />
+    <Content Include="Views\Gm\ImageSheet.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
