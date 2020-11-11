@@ -92,7 +92,7 @@ namespace Warhammer.Core.Models
         {
             if (IsV3)
             {
-                if (type == AttributeType.Skill || type == AttributeType.Role)
+                if (type == AttributeType.Skill || type == AttributeType.Role || type == AttributeType.Discipline)
                 {
                     return NewCost(type, level) <= CurrentXp;
                 }
