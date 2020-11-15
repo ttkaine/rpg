@@ -82,7 +82,8 @@ namespace Warhammer.Core.Entities
         ResolveAndResilience,
         PlayerSecrets,
         Version3RandomStats,
-        Version3
+        Version3,
+        RandomMonsterGenerator
     }
 
     public partial class SiteFeature

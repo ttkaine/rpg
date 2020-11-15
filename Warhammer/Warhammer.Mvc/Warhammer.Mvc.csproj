@@ -318,6 +318,7 @@
     <Compile Include="Models\PersonDetailsViewModel.cs" />
     <Compile Include="Models\PersonStatViewModel.cs" />
     <Compile Include="Models\PlayerSessionControlsViewModel.cs" />
+    <Compile Include="Models\RandomMonsterViewModel.cs" />
     <Compile Include="Models\RelatedLinksModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionGmViewModel.cs" />
@@ -872,6 +873,7 @@
     <Content Include="Views\Person\RandomInitStats.cshtml" />
     <Content Include="Views\Gm\GmToolsForTrophy.cshtml" />
     <Content Include="Views\Gm\ImageSheet.cshtml" />
+    <Content Include="Views\Random\Monster.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

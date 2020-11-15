@@ -1,0 +1,39 @@
+﻿
+@model Warhammer.Mvc.Models.RandomMonsterViewModel
+
+@{
+    ViewBag.Title = "Random Monster!";
+}
+
+<div class="content-wrapper">
+    <div class="banner-content">
+        <div class="header-block">
+            <h1 id="fullName">Random Monster</h1>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="content-block">
+            <h2>Here's your monster!</h2>
+            <p>Half <strong>@Model.FirstAnimal</strong> and half <strong>@Model.SecondAnimal</strong></p>
+            <p>Feature: <strong>@Model.Feature</strong></p>
+            <p>Trait: <strong>@Model.Trait</strong></p>
+            <p>Ability: <strong>@Model.Ability</strong></p>
+            <p>Tactic: <strong>@Model.Tactic</strong></p>
+            <p>Personality: <strong>@Model.Personality</strong></p>
+            <p>Weakness: <strong>@Model.Weakness</strong></p>
+
+            <INPUT Type="button" VALUE="Gimmie Another!" class="btn btn-success" onClick="history.go(0)">
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+            <h3>Here is a Random Monster</h3>
+            <p>@Model.Blurb</p>
+            <p>Refresh the page to get another!</p>
+        </div>
+    </div>
+
+</div>

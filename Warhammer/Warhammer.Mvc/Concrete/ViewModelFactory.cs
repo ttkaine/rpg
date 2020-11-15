@@ -390,6 +390,15 @@ namespace Warhammer.Mvc.Concrete
                         Url = _urlHelper.Action("Index", "Random"),
                     });
                 }
+
+                if (_data.SiteHasFeature(Feature.RandomMonsterGenerator))
+                {
+                    items.Add(new MenuItemViewModel
+                    {
+                        Name = "Random Monster",
+                        Url = _urlHelper.Action("Monster", "Random"),
+                    });
+                }
             }
 
             return items;
