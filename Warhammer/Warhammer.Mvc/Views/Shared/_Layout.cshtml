@@ -10,7 +10,8 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+    @*<script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>*@
+    <script src="https://cdn.tiny.cloud/1/4hk348c6157tdpytnlp09j14p6kufxuh321sqzgq4kga4f41/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
     <link href="//fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet" type="text/css">
     <link href="//fonts.googleapis.com/css?family=Oswald|Roboto" rel="stylesheet">
@@ -112,24 +113,24 @@
         </script>
 
         <script>
-            var applyToggles = function() {
+            var applyToggles = function () {
                 $("[data-toggle='toggle']").bootstrapToggle('destroy');
                 $("[data-toggle='toggle']").bootstrapToggle();
             }
 
         </script>
         <script>
-          $( function() {
-            $( ".game-datepicker" ).datepicker({
-              showOtherMonths: true,
-              selectOtherMonths: true,
-              changeMonth: true,
-              changeYear: true,
-              minDate: new Date(2430, 1 - 1, 26),
-              maxDate: new Date(2600, 1 - 1, 26),
-              dateFormat: "yy-mm-dd"
+            $(function () {
+                $(".game-datepicker").datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    changeMonth: true,
+                    changeYear: true,
+                    minDate: new Date(2430, 1 - 1, 26),
+                    maxDate: new Date(2600, 1 - 1, 26),
+                    dateFormat: "yy-mm-dd"
+                });
             });
-          } );
         </script>
 
     }
