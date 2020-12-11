@@ -16,6 +16,10 @@
                 @Html.ActionLink("Manage People", "MangePeople", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
             }
         }
+        @if (Model.IsPlace)
+        {
+            @Html.ActionLink("Change Parent", "ChangeParent", "Page", new { id = Model.Page.Id }, new { @class = "btn btn-default btn-block" })
+        }
         @if (Model.CanPin)
         {
             <hr />
@@ -178,7 +182,7 @@
         {
             @Html.ActionLink("Delete", "DeletePage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-danger btn-block" })
         }
-        
+
         @if (Model.PlayerIsGm)
         {
             @Html.ActionLink("Related Character Sheets", "NpcSheetForPage", "Gm", new { id = Model.Page.Id }, new { @class = "btn btn-success btn-block" })

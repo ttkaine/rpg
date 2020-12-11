@@ -88,6 +88,7 @@ namespace Warhammer.Mvc.Models
 
         public bool IsSession => Page is Session;
         public bool IsPerson => Page is Person;
+        public bool IsPlace => Page is Place;
 
         public bool CanUseSessionControls => IsLocalToCampaign && IsSession && (PlayerIsGm || PlayerIsCreator || PlayerIsSessionGm);
 

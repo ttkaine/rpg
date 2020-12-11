@@ -25,7 +25,8 @@ namespace Warhammer.Mvc.Controllers
         private readonly ILinkGenerator _linkGenerator;
 
         // GET: Page
-        public PageController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor, ILinkGenerator linkGenerator) : base(data)
+        public PageController(IAuthenticatedDataProvider data, IImageProcessor imageProcessor,
+            ILinkGenerator linkGenerator) : base(data)
         {
             _imageProcessor = imageProcessor;
             _linkGenerator = linkGenerator;
@@ -55,7 +56,7 @@ namespace Warhammer.Mvc.Controllers
                                 session.PlayerCharacters.Any(c => c.PlayerId == CurrentPlayer.Id)
                                 ||
                                 CurrentPlayerIsGm
-                                );
+                            );
                     }
 
                     page.PlayerIsGm = CurrentPlayerIsGm;
@@ -64,7 +65,8 @@ namespace Warhammer.Mvc.Controllers
                         page.ShowGmNotes = CurrentPlayerIsGm && page.CampaignId == DataProvider.CurrentCampaignId;
                     }
 
-                    if (page is Person && DataProvider.SiteHasFeature(Feature.CrowTopStatsPanel) && DataProvider.SiteHasFeature(Feature.PersonAttributes))
+                    if (page is Person && DataProvider.SiteHasFeature(Feature.CrowTopStatsPanel) &&
+                        DataProvider.SiteHasFeature(Feature.PersonAttributes))
                     {
                         page.ShowStatToggle = true;
                     }
@@ -76,6 +78,7 @@ namespace Warhammer.Mvc.Controllers
                         page.CurrentPlayerId = CurrentPlayer.Id;
                         page.PlayerIsGm = CurrentPlayerIsGm;
                     }
+
                     return View(page);
                 }
             }
@@ -164,7 +167,7 @@ namespace Warhammer.Mvc.Controllers
                     updatedPage.ShowGmNotes = CurrentPlayerIsGm;
                 }
 
-              //  return View(updatedPage);
+                //  return View(updatedPage);
             }
 
             return RedirectToAction("index", new {id = page.Id});
@@ -179,6 +182,7 @@ namespace Warhammer.Mvc.Controllers
                 DataProvider.RemoveLink(id, linkToDeleteId);
                 return RedirectToAction("EditLinks", new {id = id});
             }
+
             return RedirectToAction("index", new {id = id});
         }
 
@@ -219,7 +223,7 @@ namespace Warhammer.Mvc.Controllers
                 }
             }
 
-            return RedirectToAction("index", "home");           
+            return RedirectToAction("index", "home");
         }
 
         [System.Web.Mvc.Authorize(Roles = "Player")]
@@ -268,6 +272,7 @@ namespace Warhammer.Mvc.Controllers
                     return View(model);
                 }
             }
+
             return RedirectToAction("index", "home");
         }
 
@@ -288,6 +293,7 @@ namespace Warhammer.Mvc.Controllers
                     return View(model);
                 }
             }
+
             return RedirectToAction("index", "home");
         }
 
@@ -295,7 +301,8 @@ namespace Warhammer.Mvc.Controllers
         [HttpPost]
         [System.Web.Mvc.Authorize(Roles = "Player")]
         [ValidateInput(false)]
-        public ActionResult ChangeImage(string saveAction, int id, HttpPostedFileBase profileImageFile, double? y1, double? x1, double? h, double? w)
+        public ActionResult ChangeImage(string saveAction, int id, HttpPostedFileBase profileImageFile, double? y1,
+            double? x1, double? h, double? w)
         {
             if (ModelState.IsValid)
             {
@@ -313,12 +320,14 @@ namespace Warhammer.Mvc.Controllers
                         return RedirectToAction("Index", new {id = id});
                     }
                 }
+
                 if (saveAction == "Remove Image")
                 {
                     DataProvider.RemoveProfileImage(id);
                     return RedirectToAction("Index", new {id = id});
                 }
             }
+
             // there is something wrong with the data values
             Page model = DataProvider.GetPage(id);
             return View(model);
@@ -343,10 +352,13 @@ namespace Warhammer.Mvc.Controllers
                 {
                     int currentGmId = DataProvider.GetGmId(page.Id);
                     bool currentPlayerIsSessionGm = currentGmId == CurrentPlayer.Id;
-                    PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer, currentPlayerIsSessionGm);
+                    PlayerSessionControlsViewModel model =
+                        ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer,
+                            currentPlayerIsSessionGm);
                     return PartialView(model);
                 }
             }
+
             return null;
         }
 
@@ -369,12 +381,16 @@ namespace Warhammer.Mvc.Controllers
                     {
                         DataProvider.SetPlayerSuspended(page.Id, playerId, false);
                     }
+
                     UpdateRoleplayHub();
                 }
 
-                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer, currentPlayerIsSessionGm);
+                PlayerSessionControlsViewModel model =
+                    ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer,
+                        currentPlayerIsSessionGm);
                 return PartialView("PlayerSessionControls", model);
             }
+
             return null;
         }
 
@@ -397,12 +413,16 @@ namespace Warhammer.Mvc.Controllers
                     {
                         DataProvider.SetPlayerSuspended(page.Id, playerId, true);
                     }
+
                     UpdateRoleplayHub();
                 }
 
-                PlayerSessionControlsViewModel model = ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer, currentPlayerIsSessionGm);
+                PlayerSessionControlsViewModel model =
+                    ModelFactory.MakePlayerSessionControlsViewModel((Session) page, CurrentPlayer,
+                        currentPlayerIsSessionGm);
                 return PartialView("PlayerSessionControls", model);
             }
+
             return null;
         }
 
@@ -433,6 +453,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 return null;
             }
+
             CampaignDetail campaignDetail = DataProvider.GetCampaginDetailsForPage(id);
 
             if (campaignDetail == null)
@@ -475,6 +496,7 @@ namespace Warhammer.Mvc.Controllers
                     return PartialView(model);
                 }
             }
+
             return null;
         }
 
@@ -494,6 +516,7 @@ namespace Warhammer.Mvc.Controllers
                             model.Title = "Session Date";
                             model.Date = ((Session) page).GameDate;
                         }
+
                         if (page is Arc)
                         {
                             if (isStartDate)
@@ -534,6 +557,7 @@ namespace Warhammer.Mvc.Controllers
                     return PartialView(model);
                 }
             }
+
             return null;
         }
 
@@ -600,7 +624,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 if (model.AddDay)
                 {
-                    DataProvider.AddDayToDate(model.PageId, model.IsStartDate);    
+                    DataProvider.AddDayToDate(model.PageId, model.IsStartDate);
                 }
                 else if (model.AddMonth)
                 {
@@ -616,7 +640,7 @@ namespace Warhammer.Mvc.Controllers
                 }
             }
 
-            return RedirectToAction("EditGameDate", new { id = model.PageId, isStartDate = model.IsStartDate });
+            return RedirectToAction("EditGameDate", new {id = model.PageId, isStartDate = model.IsStartDate});
         }
 
         [System.Web.Mvc.Authorize(Roles = "Player")]
@@ -636,6 +660,7 @@ namespace Warhammer.Mvc.Controllers
                     }
                 }
             }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -661,6 +686,7 @@ namespace Warhammer.Mvc.Controllers
                     return RedirectToAction("EditArcSessions", new {id = model.ArcId});
                 }
             }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -681,6 +707,7 @@ namespace Warhammer.Mvc.Controllers
                     return RedirectToAction("EditArcSessions", new {id});
                 }
             }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -698,6 +725,7 @@ namespace Warhammer.Mvc.Controllers
                     return PartialView(model);
                 }
             }
+
             return null;
         }
 
@@ -717,7 +745,8 @@ namespace Warhammer.Mvc.Controllers
                     }
                 }
             }
-            return RedirectToAction("EditSessionArc", new { id = model.SessionId });
+
+            return RedirectToAction("EditSessionArc", new {id = model.SessionId});
         }
 
         public ActionResult ArcPanel(int id)
@@ -725,15 +754,64 @@ namespace Warhammer.Mvc.Controllers
             if (DataProvider.SiteHasFeature(Feature.SessionArcs))
             {
                 SessionArcSummaryModel session = DataProvider.GetSessionArcSummary(id);
-                
-                if(session != null)
+
+                if (session != null)
                 {
                     return PartialView(session);
                 }
-                
+
             }
+
             return null;
         }
 
+        public ActionResult ChangeParent(int? id)
+        {
+            if (id.HasValue)
+            {
+                Page page = DataProvider.GetPage(id.Value);
+                if (page != null && page is Place)
+                {
+                    Place place = (Place) page;
+                    ChangePlaceParentViewModel model = new ChangePlaceParentViewModel();
+                    model.PlaceId = place.Id;
+                    model.ParentPlace =
+                        new SelectList(DataProvider.Places().Where(p => p.Id != id).OrderBy(l => l.Breadcrumb), "Id",
+                            "Breadcrumb");
+                    model.ParentId = place.Parent?.Id;
+
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("index", "home");
+        }
+
+        [HttpPost]
+        [System.Web.Mvc.Authorize(Roles = "Player")]
+        public ActionResult ChangeParent(ChangePlaceParentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DataProvider.SetPlaceParent(model.PlaceId, model.ParentId);
+                return RedirectToAction("Index", "Page", new {id = model.PlaceId});
+            }
+
+            model = new ChangePlaceParentViewModel();
+            Place place = DataProvider.Places().FirstOrDefault(p => p.Id == model.PlaceId);
+            if (place != null)
+            {
+                model.PlaceId = place.Id;
+                    model.ParentPlace =
+                        new SelectList(
+                            DataProvider.Places().Where(p => p.Id != model.PlaceId).OrderBy(l => l.Breadcrumb),
+                            "Id", "Breadcrumb");
+                model.ParentId = place.Parent?.Id;
+
+                return View(model);
+            }
+
+            return RedirectToAction("index", "home");
+        }
     }
 }

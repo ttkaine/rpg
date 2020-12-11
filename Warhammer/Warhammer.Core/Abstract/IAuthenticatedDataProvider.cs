@@ -239,7 +239,6 @@ namespace Warhammer.Core.Abstract
         void RemovePersonAttribute(int personId, int attributeId);
         void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description, AttributeType attributeType, bool hidden);
         void UpdatePlayerSecret(int playerId, int pageId, string details);
-
-
+        void SetPlaceParent(int placeId, int? parentId);
     }
 }

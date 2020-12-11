@@ -283,6 +283,7 @@
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
     <Compile Include="Models\ArcListItemViewModel.cs" />
     <Compile Include="Models\ArcSessionsViewModel.cs" />
+    <Compile Include="Models\ChangePlaceParentViewModel.cs" />
     <Compile Include="Models\ChangePersonPlayerViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
     <Compile Include="Models\CreateArcViewModel.cs" />
@@ -874,6 +875,7 @@
     <Content Include="Views\Gm\GmToolsForTrophy.cshtml" />
     <Content Include="Views\Gm\ImageSheet.cshtml" />
     <Content Include="Views\Random\Monster.cshtml" />
+    <Content Include="Views\Page\ChangeParent.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

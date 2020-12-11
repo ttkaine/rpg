@@ -1,0 +1,58 @@
+﻿@model Warhammer.Mvc.Models.ChangePlaceParentViewModel
+@{
+    ViewBag.Title = "ChangeParent";
+}
+
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+
+            <h2>Change Place Parent</h2>
+            <p>Select which other place this place is within.</p>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(m => Model.PlaceId)
+
+
+                <div class="form-horizontal">
+                    <h1>Change Place Parent</h1>
+
+
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="form-group">
+                        @Html.Label("Parent:", htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.ParentId, Model.ParentPlace, "-", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ParentId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Update" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
