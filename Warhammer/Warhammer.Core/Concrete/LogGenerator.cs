@@ -236,11 +236,11 @@ namespace Warhammer.Core.Concrete
 					output.Append("<p>");
 					if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
 					{
-						output.AppendLine(postFormatter.ApplyPostFormatting(post.RevisedContent.Replace("{CR}", "</p><p>"), true));
+						output.AppendLine(postFormatter.ApplyPostFormatting(post.RevisedContent.Replace("{CR}", "[/p][p]"), true));
 					}
 					else
 					{
-						output.AppendLine(postFormatter.ApplyPostFormatting(post.OriginalContent.Replace("{CR}", "</p><p>"), true));
+						output.AppendLine(postFormatter.ApplyPostFormatting(post.OriginalContent.Replace("{CR}", "[/p][p]"), true));
 					}
 					output.Append("</p>");
 					if (post.PostType == (int) PostType.OutOfCharacter)

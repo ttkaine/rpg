@@ -513,20 +513,23 @@ namespace Warhammer.Mvc.HtmlBuilders
 		}
 
 		public string ApplyPostFormatting(string postContent, bool preserveParagraphs)
-		{
+        {
+            postContent = postContent.Replace("<br/>", "{RN}").Replace("<br />", "{RN}");
+            postContent = postContent.Replace("#", "{XX}").Replace("<", "{LL}").Replace(">", "{RR}");
             Markdown md = new Markdown { SafeMode = true, ExtraMode = false };
             postContent = md.Transform(postContent);
-            postContent = postContent.Replace("<em>", "[i]").Replace("</em>", "[/i]").Replace("<strong>", "[b]").Replace("</strong>", "[/b]"); //.Replace("<strike>", "[s]").Replace("</strike>","[/s]");
+            postContent = postContent.Replace("{XX}", "#").Replace("<em>", "[i]").Replace("</em>", "[/i]").Replace("<strong>", "[b]").Replace("</strong>", "[/b]").Replace("<a", "[[a").Replace("</a>", "[/a]"); //.Replace("<strike>", "[s]").Replace("</strike>","[/s]");
             if (preserveParagraphs)
             {
                 postContent = postContent.Replace("<p>", "[p]").Replace("</p>", "[/p]");
             }
             postContent = StripHTML(postContent);
-            postContent = WebUtility.HtmlDecode(postContent);
+            postContent = WebUtility.HtmlDecode(postContent) ?? string.Empty;
             if (preserveParagraphs)
             {
                 postContent = postContent.Replace("[p]", "<p>").Replace("[/p]", "</p>");
             }
+            postContent = postContent.Replace("{LL}", "&lt;").Replace("{RR}", "&gt;").Replace("{RN}", "<br/>");
 
             Regex bold = new Regex(@"\[b\](.*?)\[/b\]");
 			Regex italic = new Regex(@"\[i\](.*?)\[/i\]");
@@ -563,18 +566,20 @@ namespace Warhammer.Mvc.HtmlBuilders
             //}
 
 
-            postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty); //.Replace("[s]", string.Empty).Replace("[/s]", string.Empty);
+            postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty).Replace("[[a", "<a").Replace("[/a]", "</a>"); //.Replace("[s]", string.Empty).Replace("[/s]", string.Empty);
 
             return postContent;
 		}
 
         public string RemoveHtmlAndMarkdown(string postContent)
         {
+            postContent = postContent.Replace("<br/>", "{CR}").Replace("<br />", "{CR}");
+            postContent = postContent.Replace("#", "{XX}").Replace("<", "{LL}").Replace(">", "{RR}");
             Markdown md = new Markdown { SafeMode = true, ExtraMode = false };
             postContent = md.Transform(postContent);
             postContent = WebUtility.HtmlDecode(postContent);
             postContent = StripHTML(postContent);
-            postContent = postContent.Replace("\r", string.Empty).Replace("\n", string.Empty);
+            postContent = postContent.Replace("\r", string.Empty).Replace("\n", string.Empty).Replace("{LL}", "<").Replace("{RR}", ">").Replace("{XX}", "#");
 
             return postContent;
         }
