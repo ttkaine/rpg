@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI;
+using MarkdownDeep;
 using Warhammer.Core;
 using Warhammer.Core.Abstract;
 using Warhammer.Core.Entities;
@@ -209,7 +211,7 @@ namespace Warhammer.Mvc.Controllers
 				PostResult result = PostResult.Success;
 				if (text.Trim().Length > 0)
 				{
-					text = StripTagsFromString(text);
+					text = PostBuilder.StripHTML(text);
 					text = text.Replace("\n", "{CR}");
 					text = text.Replace("&quote;", "\"");
 
@@ -353,12 +355,6 @@ namespace Warhammer.Mvc.Controllers
                 return Json("[" + serializer.Serialize(postCollection) + "]");
             }
         }
-
-
-        private string StripTagsFromString(string source)
-		{
-			return Regex.Replace(source, "<.*?>", string.Empty);
-		}
 
         [Authorize(Roles = "Player")]
         public JsonResult MakeDiceRollPost(int sessionId, int characterId, int lastPostId, int dieSize, int dieCount, int rollType, int rollTarget, bool reRollMaximum, string lastUpdateTime)
@@ -599,7 +595,7 @@ namespace Warhammer.Mvc.Controllers
 
 			if (DataProvider.IsLoggedIn())
 			{
-				text = StripTagsFromString(text);
+				text = PostBuilder.StripHTML(text);
 				text = text.Replace("\n", "{CR}");
 				text = text.Replace("&quote;", "\"");
 
@@ -819,7 +815,7 @@ namespace Warhammer.Mvc.Controllers
 
         public FileContentResult TextLog(int id)
 	    {
-		    string textLog = LogGenerator.GenerateTextLog(id, false);
+		    string textLog = LogGenerator.GenerateTextLog(id, false, new PostBuilder());
 
 			return File(Encoding.UTF8.GetBytes(textLog), "text/plain", string.Format("{0}.txt", "session_log"));
 	    }
@@ -846,9 +842,11 @@ namespace Warhammer.Mvc.Controllers
 					    sessionTranscript.Id = page.Id;
 					    sessionTranscript.FullName = page.FullName;
 					    sessionTranscript.ShortName = page.ShortName;
-					    sessionTranscript.Transcript = LogGenerator.GenerateHtmlLog(id, true);
+					    string postContent = LogGenerator.GenerateHtmlLog(id, true, new PostBuilder());
+                        sessionTranscript.Transcript = postContent;
 
-					    return View(sessionTranscript);
+
+                        return View(sessionTranscript);
 				    }
 			    }
 		    }

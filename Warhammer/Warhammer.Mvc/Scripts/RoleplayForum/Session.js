@@ -877,6 +877,11 @@ function editPost(postId)
     $("#btnEditPostSubmit").attr("onclick", "btnEditPostSubmit_click(" + postId + ");");
     var text = $("#postContent" + postId).html();
     text = text.replace(/<br>/g, "\n");
+    text = text.replace(/<em>/g, "_");
+    text = text.replace(/<\/em>/g, "_");
+    text = text.replace(/<strong>/g, "**");
+    text = text.replace(/<\/strong>/g, "**");
+
     $("#txtEditPost").val(text);
     $("#modalOverlay").fadeIn(200);
     $("#editPostPopup").fadeIn(200);

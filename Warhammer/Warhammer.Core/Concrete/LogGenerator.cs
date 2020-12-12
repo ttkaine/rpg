@@ -56,7 +56,7 @@ namespace Warhammer.Core.Concrete
 	        return Gm?.Id ?? 0;
 	    }
 
-        public string GenerateTextLog(int sessionId, bool includeOoc)
+        public string GenerateTextLog(int sessionId, bool includeOoc, IPostFormatter postFormatter)
 		{
 			List<Post> posts = (from p in Repo.Posts()
 				where
@@ -130,15 +130,15 @@ namespace Warhammer.Core.Concrete
 						    }
 						}
 					}
-					if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
-					{
-						output.AppendLine(post.RevisedContent.Replace("{CR}", "\r\n"));
-					}
-					else
-					{
-						output.AppendLine(post.OriginalContent.Replace("{CR}", "\r\n"));
-					}
-				}
+                    if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
+                    {
+                        output.AppendLine(postFormatter.RemoveHtmlAndMarkdown(post.RevisedContent).Replace("{CR}", "\r\n"));
+                    }
+                    else
+                    {
+                        output.AppendLine(postFormatter.RemoveHtmlAndMarkdown(post.OriginalContent).Replace("{CR}", "\r\n"));
+                    }
+                }
 
 				output.AppendLine();
 			}
@@ -146,7 +146,7 @@ namespace Warhammer.Core.Concrete
 			return output.ToString().Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty);
 		}
 
-		public string GenerateHtmlLog(int sessionId, bool includeOoc)
+		public string GenerateHtmlLog(int sessionId, bool includeOoc, IPostFormatter postFormatter)
 		{
 			List<Post> posts = (from p in Repo.Posts()
 								where
@@ -236,11 +236,11 @@ namespace Warhammer.Core.Concrete
 					output.Append("<p>");
 					if (post.IsRevised && !string.IsNullOrWhiteSpace(post.RevisedContent))
 					{
-						output.AppendLine(ApplyPostFormatting(post.RevisedContent.Replace("{CR}", "</p><p>")));
+						output.AppendLine(postFormatter.ApplyPostFormatting(post.RevisedContent.Replace("{CR}", "</p><p>"), true));
 					}
 					else
 					{
-						output.AppendLine(ApplyPostFormatting(post.OriginalContent.Replace("{CR}", "</p><p>")));
+						output.AppendLine(postFormatter.ApplyPostFormatting(post.OriginalContent.Replace("{CR}", "</p><p>"), true));
 					}
 					output.Append("</p>");
 					if (post.PostType == (int) PostType.OutOfCharacter)
@@ -255,44 +255,6 @@ namespace Warhammer.Core.Concrete
 			return output.ToString();
 		}
 
-		private string ApplyPostFormatting(string postContent)
-		{
-			Regex bold = new Regex(@"\[b\](.*)\[/b\]");
-			Regex italic = new Regex(@"\[i\](.*)\[/i\]");
 
-			MatchCollection boldMatches = bold.Matches(postContent);
-			foreach (Match match in boldMatches)
-			{
-				if (match.Groups.Count > 1)
-				{
-					string content = match.Groups[1].Value.Replace("[b]", string.Empty).Replace("[/b]", string.Empty);
-					postContent = postContent.Replace(match.Value, string.Format("<strong>{0}</strong>", content));
-				}
-			}
-
-			MatchCollection italicMatches = italic.Matches(postContent);
-			foreach (Match match in italicMatches)
-			{
-				if (match.Groups.Count > 1)
-				{
-					string content = match.Groups[1].Value.Replace("[i]", string.Empty).Replace("[/i]", string.Empty);
-					postContent = postContent.Replace(match.Value, string.Format("<em>{0}</em>", content));
-				}
-			}
-
-			postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty);
-
-			return postContent;
-		}
-
-        private int GetGmId(int sessionId)
-        {
-            int? sessionGm = Repo.Pages().OfType<Session>().FirstOrDefault(s => s.Id == sessionId)?.GmId;
-            if (sessionGm.HasValue)
-            {
-                return sessionGm.Value;
-            }
-            return GetGmId();
-        }
     }
 }
