@@ -1,12 +1,15 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Razor.Parser;
 using Warhammer.Core;
 using Warhammer.Core.RoleplayViewModels;
+using MarkdownDeep;
+using Warhammer.Core.Abstract;
 
 namespace Warhammer.Mvc.HtmlBuilders
 {
-	public class PostBuilder
+	public class PostBuilder : IPostFormatter
 	{
 		//private Dictionary<PostType, string> Templates { get; set; }
 
@@ -152,7 +155,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append(post.ID);
 			html.Append("\" class=\"PostContent\">");
 			//html.Append(post.Content);
-			html.Append(ApplyPostFormatting(post.Content));
+			html.Append(ApplyPostFormatting(post.Content, false));
 			html.Append("</div><div class=\"Clear\"></div>");
 			if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
 			{
@@ -229,7 +232,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append(post.ID);
 			html.Append("\" class=\"PostContent\">");
 			//html.Append(post.Content);
-			html.Append(ApplyPostFormatting(post.Content));
+			html.Append(ApplyPostFormatting(post.Content, false));
 			html.Append("</div><span class=\"PostedDate\">");
 			html.Append(post.DatePosted);
 			html.Append("</span><div class=\"Clear\"></div>");
@@ -320,7 +323,7 @@ namespace Warhammer.Mvc.HtmlBuilders
 			html.Append(post.ID);
 			html.Append("\" class=\"PostContent\">");
 			//html.Append(post.Content);
-			html.Append(ApplyPostFormatting(post.Content));
+			html.Append(ApplyPostFormatting(post.Content, false));
 			html.Append("</div><div class=\"Clear\"></div>");
 			if (includeEditControls && (playerId == post.PlayerId || playerIsGm))
 			{
@@ -509,12 +512,27 @@ namespace Warhammer.Mvc.HtmlBuilders
 			return html.ToString();
 		}
 
-		private string ApplyPostFormatting(string postContent)
+		public string ApplyPostFormatting(string postContent, bool preserveParagraphs)
 		{
-			Regex bold = new Regex(@"\[b\](.*?)\[/b\]");
-			Regex italic = new Regex(@"\[i\](.*?)\[/i\]");
+            Markdown md = new Markdown { SafeMode = true, ExtraMode = false };
+            postContent = md.Transform(postContent);
+            postContent = postContent.Replace("<em>", "[i]").Replace("</em>", "[/i]").Replace("<strong>", "[b]").Replace("</strong>", "[/b]"); //.Replace("<strike>", "[s]").Replace("</strike>","[/s]");
+            if (preserveParagraphs)
+            {
+                postContent = postContent.Replace("<p>", "[p]").Replace("</p>", "[/p]");
+            }
+            postContent = StripHTML(postContent);
+            postContent = WebUtility.HtmlDecode(postContent);
+            if (preserveParagraphs)
+            {
+                postContent = postContent.Replace("[p]", "<p>").Replace("[/p]", "</p>");
+            }
 
-			MatchCollection boldMatches = bold.Matches(postContent);
+            Regex bold = new Regex(@"\[b\](.*?)\[/b\]");
+			Regex italic = new Regex(@"\[i\](.*?)\[/i\]");
+            //Regex strike = new Regex(@"\[s\](.*?)\[/s\]");
+
+            MatchCollection boldMatches = bold.Matches(postContent);
 			foreach (Match match in boldMatches)
 			{
 				if (match.Groups.Count > 1)
@@ -534,10 +552,37 @@ namespace Warhammer.Mvc.HtmlBuilders
 				}
 			}
 
-			postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty);
+            //MatchCollection strikeMatches = strike.Matches(postContent);
+            //foreach (Match match in strikeMatches)
+            //{
+            //    if (match.Groups.Count > 1)
+            //    {
+            //        string content = match.Groups[1].Value.Replace("[s]", string.Empty).Replace("[/s]", string.Empty);
+            //        postContent = postContent.Replace(match.Value, string.Format("<strike>{0}</strike>", content));
+            //    }
+            //}
 
-			return postContent;
+
+            postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty); //.Replace("[s]", string.Empty).Replace("[/s]", string.Empty);
+
+            return postContent;
 		}
+
+        public string RemoveHtmlAndMarkdown(string postContent)
+        {
+            Markdown md = new Markdown { SafeMode = true, ExtraMode = false };
+            postContent = md.Transform(postContent);
+            postContent = WebUtility.HtmlDecode(postContent);
+            postContent = StripHTML(postContent);
+            postContent = postContent.Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+            return postContent;
+        }
+
+        public static string StripHTML(string input)
+        {
+            return Regex.Replace(input, "<.*?>", string.Empty);
+        }
 
         private string GetHtmlForImagePost(ImagePostViewModel post, bool includeEditControls, int playerId, bool playerIsGm)
         {

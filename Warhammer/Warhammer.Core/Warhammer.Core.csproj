@@ -224,6 +224,7 @@
     <Compile Include="Abstract\IImageProcessor.cs" />
     <Compile Include="Abstract\IImageRepository.cs" />
     <Compile Include="Abstract\ILogGenerator.cs" />
+    <Compile Include="Abstract\IPostFormatter.cs" />
     <Compile Include="Abstract\IPostManager.cs" />
     <Compile Include="Abstract\IModelFactory.cs" />
     <Compile Include="Abstract\IPublicDataProvider.cs" />
