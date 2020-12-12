@@ -518,7 +518,7 @@ namespace Warhammer.Mvc.HtmlBuilders
             postContent = postContent.Replace("#", "{XX}").Replace("<", "{LL}").Replace(">", "{RR}");
             Markdown md = new Markdown { SafeMode = true, ExtraMode = false };
             postContent = md.Transform(postContent);
-            postContent = postContent.Replace("{XX}", "#").Replace("<em>", "[i]").Replace("</em>", "[/i]").Replace("<strong>", "[b]").Replace("</strong>", "[/b]").Replace("<a", "[[a").Replace("</a>", "[/a]"); //.Replace("<strike>", "[s]").Replace("</strike>","[/s]");
+            postContent = postContent.Replace("{XX}", "#").Replace("<em>", "[i]").Replace("</em>", "[/i]").Replace("<strong>", "[b]").Replace("</strong>", "[/b]"); //.Replace("<a", "[[a").Replace("</a>", "[/a]"); //.Replace("<strike>", "[s]").Replace("</strike>","[/s]");
             if (preserveParagraphs)
             {
                 postContent = postContent.Replace("<p>", "[p]").Replace("</p>", "[/p]");
@@ -566,7 +566,7 @@ namespace Warhammer.Mvc.HtmlBuilders
             //}
 
 
-            postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty).Replace("[[a", "<a").Replace("[/a]", "</a>"); //.Replace("[s]", string.Empty).Replace("[/s]", string.Empty);
+            postContent = postContent.Replace("[b]", string.Empty).Replace("[/b]", string.Empty).Replace("[i]", string.Empty).Replace("[/i]", string.Empty); //.Replace("[[a", "<a").Replace("[/a]", "</a>"); //.Replace("[s]", string.Empty).Replace("[/s]", string.Empty);
 
             return postContent;
 		}
