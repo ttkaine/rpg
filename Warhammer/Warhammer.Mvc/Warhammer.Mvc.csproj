@@ -69,6 +69,9 @@
     <Reference Include="LazyCache, Version=0.7.1.44, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LazyCache.0.7.1.44\lib\net45\LazyCache.dll</HintPath>
     </Reference>
+    <Reference Include="MarkdownDeep, Version=1.5.4615.26275, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MarkdownDeep.NET.1.5\lib\.NetFramework 3.5\MarkdownDeep.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>True</Private>
@@ -283,6 +286,7 @@
     <Compile Include="Models\ActiveTextSessionViewModel.cs" />
     <Compile Include="Models\ArcListItemViewModel.cs" />
     <Compile Include="Models\ArcSessionsViewModel.cs" />
+    <Compile Include="Models\ChangePlaceParentViewModel.cs" />
     <Compile Include="Models\ChangePersonPlayerViewModel.cs" />
     <Compile Include="Models\CommentListViewModel.cs" />
     <Compile Include="Models\CreateArcViewModel.cs" />
@@ -874,6 +878,7 @@
     <Content Include="Views\Gm\GmToolsForTrophy.cshtml" />
     <Content Include="Views\Gm\ImageSheet.cshtml" />
     <Content Include="Views\Random\Monster.cshtml" />
+    <Content Include="Views\Page\ChangeParent.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

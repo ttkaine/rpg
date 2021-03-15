@@ -3536,6 +3536,16 @@ namespace Warhammer.Core.Concrete
 
         }
 
+        public void SetPlaceParent(int placeId, int? parentId)
+        {
+            Place place = (Place) GetPage(placeId);
+            if (place != null)
+            {
+                place.IsWithin = parentId;
+                _repository.Save(place);
+            }
+        }
+
         public void RemoveAward(int personId, int awardId)
         {
             Person person = GetPerson(personId);
