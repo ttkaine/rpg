@@ -6,6 +6,7 @@ namespace Warhammer.Core.Models
     public class PersonAttributeAdvanceModel
     {
         public bool IsV3 => CharacterInfo.IsV3;
+        public bool IsV4 => CharacterInfo.IsV4;
 
         public static int StartingWear = 2;
         public static int StartingHarm = 6;
@@ -25,6 +26,10 @@ namespace Warhammer.Core.Models
         public bool CanAdvance {
             get
             {
+                if (IsV4)
+                {
+                    return PersonAttribute.AttributeType == AttributeType.Skill || PersonAttribute.AttributeType == AttributeType.Resolve;
+                }
                 if (IsV3)
                 {
                     return PersonAttribute.AttributeType == AttributeType.Role || PersonAttribute.AttributeType == AttributeType.Skill || PersonAttribute.AttributeType == AttributeType.Resolve || PersonAttribute.AttributeType == AttributeType.Discipline;
@@ -74,6 +79,7 @@ namespace Warhammer.Core.Models
                     case AttributeType.Stat:
                     case AttributeType.Magic:
                     case AttributeType.MagicItem:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         if (TotalStats <= StartingStats)
                             return -1;
@@ -97,6 +103,11 @@ namespace Warhammer.Core.Models
                             return -1;
                         }
 
+                        if (IsV4)
+                        {
+                            return resolveAdvance * 2;
+                        }
+
                         if (resolveAdvance <= CharacterInfo.XpSpent)
                         {
                             return resolveAdvance;
@@ -110,6 +121,11 @@ namespace Warhammer.Core.Models
                             skillAdvance = 1;
                         }
 
+                        if (IsV4)
+                        {
+                            return skillAdvance * 5;
+                        }
+
                         if (skillAdvance <= CharacterInfo.XpSpent || IsV3)
                         {
                             return skillAdvance;
@@ -117,6 +133,7 @@ namespace Warhammer.Core.Models
                         return -1;
 
                     case AttributeType.Resilience:
+                        if (IsV4) return -1;
                         int resilienceAdvance = PersonAttribute.CurrentValue;
                         if (resilienceAdvance < 2)
                         {
@@ -132,6 +149,7 @@ namespace Warhammer.Core.Models
 
                     case AttributeType.Role:
                     case AttributeType.Discipline:
+                        if (IsV4) return -1;
 
                         int roleAdvance = PersonAttribute.CurrentValue;
                         if (roleAdvance < 1)
@@ -146,6 +164,7 @@ namespace Warhammer.Core.Models
                         }
                         return -1;
                     case AttributeType.Descriptor:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         int descriptor = TotalDescriptors;
                         if(descriptor > 2)
@@ -159,6 +178,7 @@ namespace Warhammer.Core.Models
 
                         return -1;
                     case AttributeType.Edge:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         if (CharacterInfo.TotalEdge > 1)
                         {
@@ -171,6 +191,7 @@ namespace Warhammer.Core.Models
                         }
                         return -1;
                     case AttributeType.Wear:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         if (CharacterInfo.TotalWear > StartingWear)
                         {
@@ -187,6 +208,7 @@ namespace Warhammer.Core.Models
                         return -1;
 
                     case AttributeType.Harm:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         if (CharacterInfo.TotalHarm > StartingHarm)
                         {
@@ -218,6 +240,7 @@ namespace Warhammer.Core.Models
                     case AttributeType.Magic:
                     case AttributeType.MagicItem:
                         if (IsV3) return -1;
+                        if (IsV4) return -1;
                         int totalValue = TotalStats;
                         totalValue = totalValue - StartingStats;
                         totalValue++;
@@ -228,6 +251,18 @@ namespace Warhammer.Core.Models
                         totalValue = totalValue * totalValue;
                         return totalValue;
                     case AttributeType.Resolve:
+                        int resolveAdvance = PersonAttribute.CurrentValue;
+                        resolveAdvance++;
+                        if (resolveAdvance < 1)
+                        {
+                            resolveAdvance = 1;
+                        }
+
+                        if (IsV4)
+                        {
+                            resolveAdvance = resolveAdvance * 2;
+                        }
+                        return resolveAdvance;
                     case AttributeType.Skill:
                         int skillAdvance = PersonAttribute.CurrentValue;
                         skillAdvance++;
@@ -235,10 +270,16 @@ namespace Warhammer.Core.Models
                         {
                             skillAdvance = 1;
                         }
+
+                        if (IsV4)
+                        {
+                            skillAdvance = skillAdvance * 5;
+                        }
                         return skillAdvance;
                     case AttributeType.Role:
                     case AttributeType.Discipline:
                     case AttributeType.Resilience:
+                        if (IsV4) return -1;
                         int roleAdvance = PersonAttribute.CurrentValue;
                         roleAdvance++;
                         if (roleAdvance < 1)
@@ -250,6 +291,7 @@ namespace Warhammer.Core.Models
                     case AttributeType.Edge:
                         return -1;
                     case AttributeType.Wear:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         int wearValue = CharacterInfo.TotalWear - StartingWear;
                         wearValue++;
@@ -259,6 +301,7 @@ namespace Warhammer.Core.Models
                         }
                         return wearValue;
                     case AttributeType.Harm:
+                        if (IsV4) return -1;
                         if (IsV3) return -1;
                         int harmValue = CharacterInfo.TotalHarm - StartingHarm;
                         harmValue++;

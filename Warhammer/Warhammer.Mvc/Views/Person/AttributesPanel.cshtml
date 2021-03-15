@@ -93,7 +93,10 @@
                     }
                     else
                     {
-                        <input type="button" disabled="disabled" value="New Magic: @(Model.NewCost(AttributeType.Magic)) XP" class="btn btn-block btn-default" />
+                        if (Model.NewCost(AttributeType.Magic) > 0)
+                        {
+                            <input type="button" disabled="disabled" value="New Magic: @(Model.NewCost(AttributeType.Magic)) XP" class="btn btn-block btn-default"/>
+                        }
                     }
 
                     @if (Model.CanAddNew(AttributeType.MagicItem))
@@ -109,7 +112,10 @@
                     }
                     else
                     {
-                        <input type="button" disabled="disabled" value="New Magic Item: @(Model.NewCost(AttributeType.MagicItem)) XP" class="btn btn-block btn-default" />
+                        if (Model.NewCost(AttributeType.MagicItem) > 0)
+                        {
+                            <input type="button" disabled="disabled" value="New Magic Item: @(Model.NewCost(AttributeType.MagicItem)) XP" class="btn btn-block btn-default"/>
+                        }
                     }
 
                 </div>
@@ -137,36 +143,44 @@
                     }
                     else
                     {
-                        <input type="button" disabled="disabled" value="New Discipline: @(Model.NewCost(AttributeType.Discipline)) XP" class="btn btn-block btn-default" />
+                        if (Model.NewCost(AttributeType.Discipline) > 0)
+                        {
+                            <input type="button" disabled="disabled" value="New Discipline: @(Model.NewCost(AttributeType.Discipline)) XP" class="btn btn-block btn-default" />
+                        }
+                     
                     }
                 </div>
             }
 
+            if (Model.IncludeRoles)
+            {
+                <div class="alert alert-success">
+                    <h4>Roles</h4>
+                    <table class="table attribute-table">
+                        @Html.EditorFor(m => m.Roles)
+                    </table>
 
-            <div class="alert alert-success">
-                <h4>Roles</h4>
-                <table class="table attribute-table">
-                    @Html.EditorFor(m => m.Roles)
-                </table>
 
-
-                @if (Model.CanAddNew(AttributeType.Role))
-                {
-                    using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions { InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes" }))
+                    @if (Model.CanAddNew(AttributeType.Role))
                     {
-                        <input type="hidden" value="@Model.PersonId" name="personId" />
-                        <input type="hidden" value="@AttributeType.Role" name="attributeType" />
-                        <input type="text" value="" placeholder="Role Name" name="name" class="form-control" />
-                        <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
-                        <input type="submit" value="Add Role for @Model.NewCost(AttributeType.Role) XP" class="btn btn-block btn-success" />
+                        using (Ajax.BeginForm("BuyNewAttribute", "Person", new AjaxOptions {InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post", UpdateTargetId = "characterattributes"}))
+                        {
+                            <input type="hidden" value="@Model.PersonId" name="personId"/>
+                            <input type="hidden" value="@AttributeType.Role" name="attributeType"/>
+                            <input type="text" value="" placeholder="Role Name" name="name" class="form-control"/>
+                            <textarea value="" placeholder="Description" name="description" class="form-control"></textarea>
+                            <input type="submit" value="Add Role for @Model.NewCost(AttributeType.Role) XP" class="btn btn-block btn-success"/>
+                        }
                     }
-                }
-                else
-                {
-                    <input type="button" disabled="disabled" value="New Role: @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-default" />
-                }
-            </div>
-
+                    else
+                    {
+                        if (Model.NewCost(AttributeType.Role) > 0)
+                        {
+                            <input type="button" disabled="disabled" value="New Role: @(Model.NewCost(AttributeType.Role)) XP" class="btn btn-block btn-default"/>
+                        }
+                    }
+                </div>
+            }
             <div class="alert alert-success">
                 <h4>Skills</h4>
                 <table class="table attribute-table">
@@ -195,7 +209,7 @@
                 <table class="table">
                     @Html.EditorFor(m => m.Descriptors)
                 </table>
-                @if (!Model.IsV3)
+                @if (!Model.IsV3 && !Model.IsV4)
                 {
                     if (Model.CanAddNew(AttributeType.Descriptor))
                     {
@@ -242,7 +256,7 @@
 
             <div class="alert alert-danger">
                 
-                @if (!Model.IsV3)
+                @if (!Model.IsV3 && !Model.IsV4)
                 {
                     <h4>Edge</h4>
                     <table class="table">
@@ -264,7 +278,7 @@
                     }
                 }
                 
-                @if (Model.IsV3)
+                @if (Model.IsV3 || Model.IsV4)
                 {
                     if (Model.Harm.Any())
                     {
@@ -361,7 +375,7 @@
 
             if (Model.ShowResolveAndResilience)
             {
-                if (Model.IsV3)
+                if (Model.IsV3 || Model.IsV4)
                 {
                     if (Model.Resolve.Any())
                     {

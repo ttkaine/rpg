@@ -90,6 +90,15 @@ namespace Warhammer.Core.Models
 
         public bool CanAddNew(AttributeType type, int level = 1)
         {
+            if (IsV4)
+            {
+                if (type == AttributeType.Skill)
+                {
+                    return NewCost(type, level) <= CurrentXp;
+                }
+
+                return false;
+            }
             if (IsV3)
             {
                 if (type == AttributeType.Skill || type == AttributeType.Role || type == AttributeType.Discipline)
@@ -127,9 +136,11 @@ namespace Warhammer.Core.Models
                 case AttributeType.Stat:
                 case AttributeType.Resilience:
                 case AttributeType.Resolve:
+                    if (IsV4) return -1;
                     break;
                 case AttributeType.Magic:
                 case AttributeType.MagicItem:
+                    if (IsV4) return -1;
                     var aStat = PersonAttributes.FirstOrDefault(s => s.PersonAttribute.IsStatType);
                     if (aStat != null)
                     {
@@ -137,13 +148,16 @@ namespace Warhammer.Core.Models
                     }
                     return 99;
                 case AttributeType.Skill:
+                    if (IsV4) return 5;
                     int skillCost = 1;
                     return skillCost;
                 case AttributeType.Role:
                 case AttributeType.Discipline:
+                    if (IsV4) return -1;
                     int roleCost = 4;
                     return roleCost;
                 case AttributeType.Descriptor:
+                    if (IsV4) return -1;
                     if (IsV3) return -1;
                     int descCost = TotalDescriptors;
                     descCost++;
@@ -154,10 +168,12 @@ namespace Warhammer.Core.Models
                     return descCost;
                     case  AttributeType.Edge:
                         if (IsV3) return -1;
+                        if (IsV4) return -1;
                     int edgeLevel = CharacterInfo.TotalEdge;
                         edgeLevel++;
                         return (edgeLevel * edgeLevel * edgeLevel);
                 case AttributeType.Wear:
+                    if (IsV4) return -1;
                     if (IsV3) return -1;
                     if (FixedWearAndHarm)
                     {
@@ -175,6 +191,7 @@ namespace Warhammer.Core.Models
                     }
                 case AttributeType.Harm:
                     if (IsV3) return -1;
+                    if (IsV4) return -1;
                     if (FixedWearAndHarm)
                     {
                         return level + CharacterInfo.NumberOfHarm;
@@ -250,5 +267,7 @@ namespace Warhammer.Core.Models
         public bool CanEditResolve { get; set; }
         public bool CanEditWishingWell { get; set; }
         public bool IsV3 { get; set; }
+        public bool IsV4 { get; set; }
+        public bool IncludeRoles => !IsV4;
     }
 }

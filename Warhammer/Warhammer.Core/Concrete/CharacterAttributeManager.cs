@@ -27,6 +27,7 @@ namespace Warhammer.Core.Concrete
         public CharacterAttributeModel GetCharacterAttributes(int personId)
         {
             bool isV3 = _featureProvider.SiteHasFeature(Feature.Version3);
+            bool isV4 = _featureProvider.SiteHasFeature(Feature.Version4);
 
             Person person = _repo.People().Where(p => p.Id == personId)
                 .Include(p => p.Player)
@@ -55,6 +56,7 @@ namespace Warhammer.Core.Concrete
                 {
                     TotalAdvancesTaken = person.TotalAdvancesTaken,
                     IsV3 = isV3,
+                    IsV4 = isV4,
                     CurrentXp = person.CurrentXp,
                     XpSpent = person.XpSpent,
                     TotalRoles = totalRoles,
@@ -99,6 +101,7 @@ namespace Warhammer.Core.Concrete
                     ShowWishingWell = _featureProvider.SiteHasFeature(Feature.ShowWishingWell) && !person.IsNpc,
                     ShowResolveAndResilience = _featureProvider.SiteHasFeature(Feature.ResolveAndResilience),
                     IsV3 = isV3,
+                    IsV4 = isV4,
                 };
 
                 return model;
@@ -819,6 +822,7 @@ namespace Warhammer.Core.Concrete
 
         public bool InitRandomAttributes(RandomInitialStatsModel model)
         {
+            bool isV4 = _featureProvider.SiteHasFeature(Feature.Version4);
             Person person = _repo.People().FirstOrDefault(p => p.Id == model.PersonId);
             if(person != null && !person.PersonAttributes.Any())
             {
@@ -853,7 +857,10 @@ namespace Warhammer.Core.Concrete
 
 
                 AddRandomStats(model, person);
-                AddRandomRoles(model, level, age, person);
+                if (!isV4)
+                {
+                    AddRandomRoles(model, level, age, person);
+                }
                 AddRandomSkills(age, person);
                 AddRandomDescriptors(person);
                 AddDefaultHarmV3(person);
@@ -924,8 +931,16 @@ namespace Warhammer.Core.Concrete
 
         private void AddRandomSkills(AgeBracket age, Person person)
         {
+            bool isV4 = _featureProvider.SiteHasFeature(Feature.Version4);
+
+            int skillBase = 10;
+            if (isV4)
+            {
+                skillBase = 3;
+            }
+
             List<string> skills = new List<string>();
-            int numberOfSkills = Roll(4, (int) age) + 10;
+            int numberOfSkills = Roll(4, (int) age) + skillBase;
 
             for (int i = 0; i <= numberOfSkills; i++)
             {
@@ -933,6 +948,15 @@ namespace Warhammer.Core.Concrete
             }
 
             int rounds = Roll(2, (int) age);
+
+            if (isV4)
+            {
+                rounds = rounds / 4;
+                if (rounds < 1)
+                {
+                    rounds = 1;
+                }
+            }
 
             for (int i = 0; i <= rounds; i++)
             {
