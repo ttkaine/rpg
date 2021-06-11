@@ -31,7 +31,7 @@
 
             </tr>
             <tr>
-                @if (Model.IsV3)
+                @if (Model.IsV3 || Model.IsV4)
                 {
                     <td>Maximum WEAR</td>
                 }
@@ -44,7 +44,7 @@
             </tr>
 
             <tr>
-                @if (Model.IsV3)
+                @if (Model.IsV3 || Model.IsV4)
                 {
                       <td>Current WEAR</td>
                 }
@@ -73,7 +73,7 @@
 
     @if (Model.ShowWishingWell)
     {
-        if (Model.IsV3)
+        if (Model.IsV3 || Model.IsV4)
         {
             <tr>
                 <td>Current Wyrd</td>
@@ -90,7 +90,7 @@
         if (Model.CanEditWishingWell)
         {
             <tr>
-                @if (Model.IsV3)
+                @if (Model.IsV3 || Model.IsV4)
                 {
                     <td>Adjust Wyrd</td>
                 }
@@ -172,7 +172,7 @@
     }
 
 </table>
-    @if (!Model.IsV3)
+    @if (!Model.IsV3 || Model.IsV4)
     {
         if (Model.Wear.Any(e => e.Exhausted) || Model.Edge.Any(e => e.Exhausted) || Model.CurrentResolve < Model.MaxResolve)
         {
