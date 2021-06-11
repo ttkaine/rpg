@@ -1,4 +1,5 @@
-﻿@using Warhammer.Core.Entities
+﻿@using Humanizer
+@using Warhammer.Core.Entities
 @using Warhammer.Core.Extensions
 @using Page = Warhammer.Core.Entities.Page
 @model Page
@@ -110,9 +111,9 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <div style="width: 100%; display: flex; flex-direction: row; align-items: flex-end; justify-content: end;">
-                            @foreach (PageView pageView in Model.PageViews.OrderBy(d => d.Viewed))
+                            @foreach (PageView pageView in Model.PageViews.OrderByDescending(d => d.Viewed))
                             {
-                            <div title="@pageView.Player.DisplayName at @pageView.Viewed" style="margin: 5px; width: 20px; height: 20px; border-radius: 10px; background-color: rgba(200, 44, 44, 0.5);">
+                            <div title="@pageView.Player.DisplayName @pageView.Viewed.Humanize()" style="margin: 5px; width: 20px; height: 20px; border-radius: 10px; background-color: rgba(200, 44, 44, 0.5);">
 
                             </div>
                             }
