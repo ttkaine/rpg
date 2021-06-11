@@ -105,8 +105,8 @@
                 }
 
                 <div class="profile-footer">
-                    <span title="Created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created by @Model.CreatedBy.DisplayName</span><br/>
-                    <span title="Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName">Modifed at @Model.Modified by @Model.ModifiedBy.DisplayName</span>
+                    <span title="Initially created @Model.Created by @Model.CreatedBy.DisplayName">Created @Model.Created.Humanize() by @Model.CreatedBy.DisplayName</span><br/>
+                    <span title="Last modified @Model.Modified by @Model.ModifiedBy.DisplayName">Modified @Model.Modified.Humanize() by @Model.ModifiedBy.DisplayName</span>
 
                     @if (User.IsInRole("Admin"))
                     {
