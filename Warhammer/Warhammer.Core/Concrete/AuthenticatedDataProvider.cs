@@ -781,7 +781,7 @@ namespace Warhammer.Core.Concrete
             }
         }
 
-        public void MarkAsSeen(int id)
+        public void MarkAsSeen(int id, bool fullView = false)
         {
             Page page = _repository.Pages().FirstOrDefault(p => p.Id == id);
             if (page != null)
@@ -790,10 +790,11 @@ namespace Warhammer.Core.Concrete
                 if (pageView != null)
                 {
                     pageView.Viewed = DateTime.Now;
+                    pageView.FullView = fullView;
                 }
                 else
                 {
-                    pageView = new PageView { PageId = page.Id, PlayerId = CurrentPlayer.Id, Viewed = DateTime.Now };
+                    pageView = new PageView { PageId = page.Id, PlayerId = CurrentPlayer.Id, Viewed = DateTime.Now, FullView = fullView };
                 }
                 _repository.Save(pageView);
             }

@@ -1298,7 +1298,7 @@ small,
 mark,
 .mark {
   background-color: #fcf8e3;
-  padding: 0.2em;
+  padding: .2em;
 }
 .text-left {
   text-align: left;
@@ -1601,71 +1601,13 @@ pre code {
   margin-left: -15px;
   margin-right: -15px;
 }
-.col-xs-1,
-.col-sm-1,
-.col-md-1,
-.col-lg-1,
-.col-xs-2,
-.col-sm-2,
-.col-md-2,
-.col-lg-2,
-.col-xs-3,
-.col-sm-3,
-.col-md-3,
-.col-lg-3,
-.col-xs-4,
-.col-sm-4,
-.col-md-4,
-.col-lg-4,
-.col-xs-5,
-.col-sm-5,
-.col-md-5,
-.col-lg-5,
-.col-xs-6,
-.col-sm-6,
-.col-md-6,
-.col-lg-6,
-.col-xs-7,
-.col-sm-7,
-.col-md-7,
-.col-lg-7,
-.col-xs-8,
-.col-sm-8,
-.col-md-8,
-.col-lg-8,
-.col-xs-9,
-.col-sm-9,
-.col-md-9,
-.col-lg-9,
-.col-xs-10,
-.col-sm-10,
-.col-md-10,
-.col-lg-10,
-.col-xs-11,
-.col-sm-11,
-.col-md-11,
-.col-lg-11,
-.col-xs-12,
-.col-sm-12,
-.col-md-12,
-.col-lg-12 {
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
-.col-xs-1,
-.col-xs-2,
-.col-xs-3,
-.col-xs-4,
-.col-xs-5,
-.col-xs-6,
-.col-xs-7,
-.col-xs-8,
-.col-xs-9,
-.col-xs-10,
-.col-xs-11,
-.col-xs-12 {
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left;
 }
 .col-xs-12 {
@@ -1822,18 +1764,7 @@ pre code {
   margin-left: 0%;
 }
 @media (min-width: 768px) {
-  .col-sm-1,
-  .col-sm-2,
-  .col-sm-3,
-  .col-sm-4,
-  .col-sm-5,
-  .col-sm-6,
-  .col-sm-7,
-  .col-sm-8,
-  .col-sm-9,
-  .col-sm-10,
-  .col-sm-11,
-  .col-sm-12 {
+  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left;
   }
   .col-sm-12 {
@@ -1991,18 +1922,7 @@ pre code {
   }
 }
 @media (min-width: 992px) {
-  .col-md-1,
-  .col-md-2,
-  .col-md-3,
-  .col-md-4,
-  .col-md-5,
-  .col-md-6,
-  .col-md-7,
-  .col-md-8,
-  .col-md-9,
-  .col-md-10,
-  .col-md-11,
-  .col-md-12 {
+  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
     float: left;
   }
   .col-md-12 {
@@ -2160,18 +2080,7 @@ pre code {
   }
 }
 @media (min-width: 1200px) {
-  .col-lg-1,
-  .col-lg-2,
-  .col-lg-3,
-  .col-lg-4,
-  .col-lg-5,
-  .col-lg-6,
-  .col-lg-7,
-  .col-lg-8,
-  .col-lg-9,
-  .col-lg-10,
-  .col-lg-11,
-  .col-lg-12 {
+  .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
     float: left;
   }
   .col-lg-12 {
@@ -4963,7 +4872,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 }
 .label {
   display: inline;
-  padding: 0.2em 0.6em 0.3em;
+  padding: .2em .6em .3em;
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
@@ -4971,7 +4880,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: 0.25em;
+  border-radius: .25em;
 }
 a.label:hover,
 a.label:focus {
@@ -6923,9 +6832,9 @@ div.session-container {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: #333333 5px 5px 15px;
-  -webkit-box-shadow: #333333 5px 5px 15px;
-  box-shadow: #333333 5px 5px 15px;
+  -moz-box-shadow: #333333 5px 5px 15px ;
+  -webkit-box-shadow: #333333 5px 5px 15px ;
+  box-shadow: #333333 5px 5px 15px ;
 }
 .main-content {
   text-align: justify;
@@ -7026,9 +6935,9 @@ div.session-container {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -moz-box-shadow: #333333 5px 5px 15px;
-  -webkit-box-shadow: #333333 5px 5px 15px;
-  box-shadow: #333333 5px 5px 15px;
+  -moz-box-shadow: #333333 5px 5px 15px ;
+  -webkit-box-shadow: #333333 5px 5px 15px ;
+  box-shadow: #333333 5px 5px 15px ;
 }
 .content-block {
   background-color: white;
@@ -7087,9 +6996,9 @@ footer {
   -moz-border-radius: 100px;
   -webkit-border-radius: 100px;
   border-radius: 100px;
-  -moz-box-shadow: #333333 5px 5px 15px;
-  -webkit-box-shadow: #333333 5px 5px 15px;
-  box-shadow: #333333 5px 5px 15px;
+  -moz-box-shadow: #333333 5px 5px 15px ;
+  -webkit-box-shadow: #333333 5px 5px 15px ;
+  box-shadow: #333333 5px 5px 15px ;
 }
 .trophy-image,
 .mini-profile-image {
@@ -7124,9 +7033,9 @@ footer {
   height: 30px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  -moz-box-shadow: #333333 1px 1px 1px;
-  -webkit-box-shadow: #333333 1px 1px 1px;
-  box-shadow: #333333 1px 1px 1px;
+  -moz-box-shadow: #333333 1px 1px 1px ;
+  -webkit-box-shadow: #333333 1px 1px 1px ;
+  box-shadow: #333333 1px 1px 1px ;
   text-align: center;
   padding: 0 8px 5px ;
   background-color: blue;
@@ -7191,9 +7100,9 @@ footer {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  -moz-box-shadow: #333333 5px 5px 5px;
-  -webkit-box-shadow: #333333 5px 5px 5px;
-  box-shadow: #333333 5px 5px 5px;
+  -moz-box-shadow: #333333 5px 5px 5px ;
+  -webkit-box-shadow: #333333 5px 5px 5px ;
+  box-shadow: #333333 5px 5px 5px ;
   width: 30px;
   height: 30px;
   margin-right: 10px;
@@ -7266,9 +7175,9 @@ table.graveyard td {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  -moz-box-shadow: #333333 5px 5px 5px;
-  -webkit-box-shadow: #333333 5px 5px 5px;
-  box-shadow: #333333 5px 5px 5px;
+  -moz-box-shadow: #333333 5px 5px 5px ;
+  -webkit-box-shadow: #333333 5px 5px 5px ;
+  box-shadow: #333333 5px 5px 5px ;
 }
 #characterLeagueList .mini-profile-image {
   clear: both;
@@ -7282,9 +7191,9 @@ table.graveyard td {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  -moz-box-shadow: #333333 5px 5px 5px;
-  -webkit-box-shadow: #333333 5px 5px 5px;
-  box-shadow: #333333 5px 5px 5px;
+  -moz-box-shadow: #333333 5px 5px 5px ;
+  -webkit-box-shadow: #333333 5px 5px 5px ;
+  box-shadow: #333333 5px 5px 5px ;
 }
 .obiturary h2 {
   font: 800 28px 'Great Vibes', Helvetica, sans-serif;
@@ -7716,7 +7625,7 @@ textarea {
 .jcrop-light .jcrop-hline {
   background: #ffffff;
   filter: alpha(opacity=70) !important;
-  opacity: 0.7 !important;
+  opacity: .70!important;
 }
 .jcrop-light .jcrop-handle {
   -moz-border-radius: 3px;

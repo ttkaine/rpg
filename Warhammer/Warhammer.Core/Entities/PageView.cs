@@ -19,6 +19,7 @@ namespace Warhammer.Core.Entities
         public int PlayerId { get; set; }
         public System.DateTime Viewed { get; set; }
         public int CampaignId { get; set; }
+        public bool FullView { get; set; }
     
         public virtual Page Page { get; set; }
         public virtual Player Player { get; set; }

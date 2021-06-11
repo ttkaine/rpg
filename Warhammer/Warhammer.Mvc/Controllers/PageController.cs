@@ -39,7 +39,7 @@ namespace Warhammer.Mvc.Controllers
                 Page page = DataProvider.GetPage(id.Value);
                 if (page != null)
                 {
-                    DataProvider.MarkAsSeen(page.Id);
+                    DataProvider.MarkAsSeen(page.Id, true);
                     if (!IsEditMode)
                     {
                         page.Description = _linkGenerator.CreoleLinksToHtml(page.Description);

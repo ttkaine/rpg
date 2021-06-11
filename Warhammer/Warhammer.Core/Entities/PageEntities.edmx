@@ -322,6 +322,7 @@
           <Property Name="PlayerId" Type="int" Nullable="false" />
           <Property Name="Viewed" Type="datetime" Nullable="false" />
           <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="FullView" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -2147,6 +2148,7 @@
           <NavigationProperty Name="Page" Relationship="WarhammerModel.FK_PageView_Page" FromRole="PageView" ToRole="Page" />
           <NavigationProperty Name="Player" Relationship="WarhammerModel.FK_PageView_Player" FromRole="PageView" ToRole="Player" />
           <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <Property Name="FullView" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Person" BaseType="WarhammerModel.Page">
           <Property Name="IsDead" Type="Boolean" Nullable="false" />
@@ -3618,6 +3620,7 @@
           <EntitySetMapping Name="PageViews">
             <EntityTypeMapping TypeName="WarhammerModel.PageView">
               <MappingFragment StoreEntitySet="PageView">
+                <ScalarProperty Name="FullView" ColumnName="FullView" />
                 <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
                 <ScalarProperty Name="Viewed" ColumnName="Viewed" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />

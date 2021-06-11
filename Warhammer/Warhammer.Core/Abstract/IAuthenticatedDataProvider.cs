@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Web.Mvc;
 using Warhammer.Core.Entities;
 using Warhammer.Core.Models;
 using Warhammer.Core.Models.Reports;
@@ -19,7 +18,7 @@ namespace Warhammer.Core.Abstract
         int AddPerson(string shortName, string longName, string description, bool personCreateAsNpc, Gender personGender);
         int AddArc(string shortName, string longName, string description, GameDate startDate);
         void ChangePicture(int id, byte[] data, string mimeType);
-        Page UpdatePageDetails(int id, string shortName, string fullName, string description);    
+        Page UpdatePageDetails(int id, string shortName, string fullName, string description);
         Page GetPage(int id, bool asNoTracking = false);
         ICollection<PageLinkWithUpdateDateModel> RecentPages();
         ICollection<Page> MyStuff();
@@ -41,7 +40,7 @@ namespace Warhammer.Core.Abstract
         ICollection<PageLinkModel> NewPages();
         ICollection<PageLinkModel> ModifiedPages();
         void TogglePagePin(int id);
-        void MarkAsSeen(int id);
+        void MarkAsSeen(int id, bool fullView = false);
         void ResurrectPerson(int id);
         void KillPerson(int id, string obiturary, string causeOfDeath);
         Trophy GetTrophy(int id);
@@ -62,7 +61,7 @@ namespace Warhammer.Core.Abstract
         List<PageLinkModel> TopNpcs();
         List<Person> AllNpcs();
         void SetMyAward(int personId, TrophyType trophyType);
-	    bool IsLoggedIn();
+        bool IsLoggedIn();
         void OpenOrCloseTextSession(int id);
         void ToggleSetAsTextSession(int id);
         List<Session> UpdatedTextSessions();
@@ -76,9 +75,9 @@ namespace Warhammer.Core.Abstract
         void DeleteComment(int commentId);
         CharacterLeagueModel GetLeague();
         List<PageLinkModel> OtherPCs();
-	    Player PlayerToPostInSession(int sessionId);
-	//	List<Session> OpenTextSessions();
-		List<OpenTextSessionSummaryModel> MyOpenTextSessions();
+        Player PlayerToPostInSession(int sessionId);
+        //	List<Session> OpenTextSessions();
+        List<OpenTextSessionSummaryModel> MyOpenTextSessions();
         bool SiteHasFeature(Feature featureName);
         void EnableFeature(string featureName);
         void DisableFeature(string featureName);
@@ -92,7 +91,7 @@ namespace Warhammer.Core.Abstract
         bool CheckStatSummaryPermissions();
         List<Person> PeopleInGraveyard();
         bool CurrentUserIsAdmin { get; }
-        bool ShowGraveyard { get;  }
+        bool ShowGraveyard { get; }
         bool ShowLeague { get; }
         bool ShowCharacterSheet { get; }
         bool CurrentUserIsGuest { get; }
@@ -112,7 +111,7 @@ namespace Warhammer.Core.Abstract
         void EnsureFeatures();
         List<Object> RecentActivity();
         void ToggleSessionPrivacy(int id);
-       // List<ScoreHistory> PersonScoreHistory(int id);
+        // List<ScoreHistory> PersonScoreHistory(int id);
         List<PageListItemModel> NpcList();
         List<FateAspect> GetAspects(int id);
         void SaveAspects(List<FateAspect> fateAspects);
@@ -123,7 +122,7 @@ namespace Warhammer.Core.Abstract
         void DeleteStunt(int stuntId);
         void ToggleStuntVisibility(int stuntId);
         List<Award> GetLatestAwards(int count);
-       // List<ScoreHistory> GetCurrentScoresForPerson(int id);
+        // List<ScoreHistory> GetCurrentScoresForPerson(int id);
         void SetDefaultHitPoints(int id);
         void BuyHitPointSlot(int id, SimpleHitPointLevel simpleHitPointLevel, SimpleHitPointType simpleHitPointType, bool free = false);
         void AddXpForSession(int sessionId, decimal xpAwarded);
