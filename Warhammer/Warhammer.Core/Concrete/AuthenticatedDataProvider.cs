@@ -3550,7 +3550,7 @@ namespace Warhammer.Core.Concrete
         public List<PageView> GetFullViews()
         {
             return _repository.PageViews().Where(s => s.FullView).OrderBy(s => s.Player.DisplayName)
-                .ThenBy(s => s.Viewed).ToList();
+                .ThenByDescending(s => s.Viewed).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)
