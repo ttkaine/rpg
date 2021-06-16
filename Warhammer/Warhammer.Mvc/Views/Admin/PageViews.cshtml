@@ -23,7 +23,7 @@
                     <tr>
                         <td>@view.Player.DisplayName</td>
                         <td>@Html.ActionLink(view.Page.ShortName, "Index", "Page",new { id = view.Page.Id }, null)</td>
-                        <td>@view.Viewed.ToLocalTime().Humanize()</td>
+                        <td data-order="@view.Viewed.Ticks">@view.Viewed.ToLocalTime().Humanize()</td>
                     </tr>
                 }
                 </tbody>
