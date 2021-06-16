@@ -239,5 +239,6 @@ namespace Warhammer.Core.Abstract
         void UpdatePersonAttribute(int attributeId, int currentValue, string name, string description, AttributeType attributeType, bool hidden);
         void UpdatePlayerSecret(int playerId, int pageId, string details);
         void SetPlaceParent(int placeId, int? parentId);
+        List<PageView> GetFullViews();
     }
 }

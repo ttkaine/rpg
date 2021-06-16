@@ -305,5 +305,11 @@ namespace Warhammer.Mvc.Controllers
             DataProvider.UpdatePlayerSiteLinks(players);
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult PageViews()
+        {
+            List<PageView> views = DataProvider.GetFullViews();
+            return View(views);
+        }
     }
 }

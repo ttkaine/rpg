@@ -1,0 +1,47 @@
+﻿@using Humanizer
+@using Warhammer.Core.Entities
+@model List<Warhammer.Core.Entities.PageView>
+
+@{
+    ViewBag.Title = "Who saw what?";
+}
+<div class="content-wrapper">
+
+    <div class="main-content">
+        <div class="content-block">
+            <table class="table table-striped" id="PageViewTable">
+                <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Page</th>
+                    <th>When?</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (PageView view in Model)
+                {
+                    <tr>
+                        <td>@view.Player.DisplayName</td>
+                        <td>@Html.ActionLink(view.Page.ShortName, "Index", "Page",new { id = view.Page.Id }, null)</td>
+                        <td>@view.Viewed.ToLocalTime().Humanize()</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+
+    <div class="side-bar">
+        <div class="content-block">
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#PageViewTable').DataTable();
+    } );
+
+</script>

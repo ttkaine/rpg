@@ -453,6 +453,11 @@ namespace Warhammer.Mvc.Concrete
                     Name = "Campaign Settings",
                     Url = _urlHelper.Action("CampaignSettings", "Admin"),
                 });
+                items.Add(new MenuItemViewModel
+                {
+                    Name = "Page Views",
+                    Url = _urlHelper.Action("PageViews", "Admin"),
+                });
             }
 
             return items;

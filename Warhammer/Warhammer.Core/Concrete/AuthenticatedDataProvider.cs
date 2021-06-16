@@ -789,7 +789,7 @@ namespace Warhammer.Core.Concrete
                 PageView pageView = page.PageViews.FirstOrDefault(p => p.PlayerId == CurrentPlayer.Id);
                 if (pageView != null)
                 {
-                    pageView.Viewed = DateTime.Now;
+                    pageView.Viewed = DateTime.UtcNow;
                     pageView.FullView = fullView;
                 }
                 else
@@ -3545,6 +3545,12 @@ namespace Warhammer.Core.Concrete
                 place.IsWithin = parentId;
                 _repository.Save(place);
             }
+        }
+
+        public List<PageView> GetFullViews()
+        {
+            return _repository.PageViews().Where(s => s.FullView).OrderBy(s => s.Player.DisplayName)
+                .ThenBy(s => s.Viewed).ToList();
         }
 
         public void RemoveAward(int personId, int awardId)

@@ -889,6 +889,7 @@
     <Content Include="Views\Gm\ImageSheet.cshtml" />
     <Content Include="Views\Random\Monster.cshtml" />
     <Content Include="Views\Page\ChangeParent.cshtml" />
+    <Content Include="Views\Admin\PageViews.cshtml" />
     <None Include="Web.Bob.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

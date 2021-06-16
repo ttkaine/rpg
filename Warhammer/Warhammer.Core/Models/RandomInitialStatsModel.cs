@@ -10,7 +10,7 @@ namespace Warhammer.Core.Models
         Work = 3,
         Reason = 4,
         Social = 5,
-        Self = 6
+        Heart = 6
     }
 
     public enum SkillLevel
