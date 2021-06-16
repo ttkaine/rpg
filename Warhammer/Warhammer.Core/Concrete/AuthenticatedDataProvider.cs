@@ -316,7 +316,7 @@ namespace Warhammer.Core.Concrete
 
                 if (changedLength > (originalLength + 200))
                 {
-                    existingPage.SignificantUpdate = DateTime.Now;
+                    existingPage.SignificantUpdate = DateTime.UtcNow;
                     existingPage.SignificantUpdateById = CurrentPlayer.Id;
                 }
 
@@ -403,9 +403,9 @@ namespace Warhammer.Core.Concrete
 
             if (existingPage == null)
             {
-                page.Created = DateTime.Now;
+                page.Created = DateTime.UtcNow;
                 page.CreatedById = CurrentPlayer.Id;
-                page.SignificantUpdate = DateTime.Now;
+                page.SignificantUpdate = DateTime.UtcNow;
                 page.SignificantUpdateById = CurrentPlayer.Id;
 
                 if (page is Person)
@@ -426,7 +426,7 @@ namespace Warhammer.Core.Concrete
             {
                 page.ShortName = page.ShortName + " - New";
             }
-            page.Modified = DateTime.Now;
+            page.Modified = DateTime.UtcNow;
             page.ModifedById = CurrentPlayer.Id;
             page.PlainText = page.RawText;
             page.WordCount = page.CalculatedWordCount;
@@ -439,7 +439,7 @@ namespace Warhammer.Core.Concrete
             }
             else
             {
-                if (page.SignificantUpdate >= DateTime.Now.AddSeconds(-5) && page.Created <= DateTime.Now.AddHours(-1))
+                if (page.SignificantUpdate >= DateTime.UtcNow.AddSeconds(-5) && page.Created <= DateTime.UtcNow.AddHours(-1))
                 {
                     NotifyEditPage(pageId);
                 }
@@ -794,7 +794,7 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    pageView = new PageView { PageId = page.Id, PlayerId = CurrentPlayer.Id, Viewed = DateTime.Now, FullView = fullView };
+                    pageView = new PageView { PageId = page.Id, PlayerId = CurrentPlayer.Id, Viewed = DateTime.UtcNow, FullView = fullView };
                 }
                 _repository.Save(pageView);
             }
@@ -825,7 +825,7 @@ namespace Warhammer.Core.Concrete
                 person.IsDead = true;
                 person.Obiturary = obiturary;
                 person.CauseOfDeath = causeOfDeath;
-                person.SignificantUpdate = DateTime.Now;
+                person.SignificantUpdate = DateTime.UtcNow;
                 person.SignificantUpdateById = CurrentPlayer.Id;
 
                 Save(person);
@@ -950,7 +950,7 @@ namespace Warhammer.Core.Concrete
                 PersonId = personId,
                 TrophyId = trophyId,
                 Reason = reason,
-                AwardedOn = DateTime.Now,
+                AwardedOn = DateTime.UtcNow,
                 NominatedById = nominatedById ?? CurrentPlayerId,
                 SessionId = sessionId
             };
@@ -1545,7 +1545,7 @@ namespace Warhammer.Core.Concrete
                         person.SimpleHitPoints.Add(hitPoint);
                     }
 
-                    hitPoint.Purchased = DateTime.Now;
+                    hitPoint.Purchased = DateTime.UtcNow;
 
                     Save(person);
                 }
@@ -1611,7 +1611,7 @@ namespace Warhammer.Core.Concrete
             };
             _repository.Save(player);
 
-            DateTime createDate = DateTime.Now;
+            DateTime createDate = DateTime.UtcNow;
 
             List<int> ids = _repository.Pages().Select(p => p.Id).ToList();
 
@@ -1673,7 +1673,7 @@ namespace Warhammer.Core.Concrete
             {
                 if (!session.XpAwarded.HasValue)
                 {
-                    session.XpAwarded = DateTime.Now;
+                    session.XpAwarded = DateTime.UtcNow;
                     xp = 1;
                     sessionId = session.Id;
                 }
@@ -1695,7 +1695,7 @@ namespace Warhammer.Core.Concrete
 
                     xp = xp + wordBonus;
 
-                    log.XpAwarded = DateTime.Now;
+                    log.XpAwarded = DateTime.UtcNow;
                     //    Save(log);
                 }
             }
@@ -1782,7 +1782,7 @@ namespace Warhammer.Core.Concrete
                 {
                     if (!session.XpAwarded.HasValue)
                     {
-                        session.XpAwarded = DateTime.Now;
+                        session.XpAwarded = DateTime.UtcNow;
                     }
                 }
 
@@ -1791,7 +1791,7 @@ namespace Warhammer.Core.Concrete
                 {
                     if (!log.XpAwarded.HasValue)
                     {
-                        log.XpAwarded = DateTime.Now;
+                        log.XpAwarded = DateTime.UtcNow;
                     }
                 }
 
@@ -1912,7 +1912,7 @@ namespace Warhammer.Core.Concrete
                 {
                     if (!string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Description))
                     {
-                        item.Created = DateTime.Now;
+                        item.Created = DateTime.UtcNow;
                         _repository.Save(item);
                     }
                 }
@@ -2855,7 +2855,7 @@ namespace Warhammer.Core.Concrete
                 CampaignId = CurrentCampaignId,
                 NominationReason = reason,
                 NominatedById = CurrentPlayerId,
-                NominatedDate = DateTime.Now,
+                NominatedDate = DateTime.UtcNow,
                 TrophyId = selectedAward,
                 PersonId = personId,
                 IsPrivate = isPrivate,
@@ -2877,7 +2877,7 @@ namespace Warhammer.Core.Concrete
         public void AcceptNomination(int nominationId, string acceptComment, string awardText, int? nominationSessionId)
         {
             AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
-            nomination.AwardedOn = DateTime.Now;
+            nomination.AwardedOn = DateTime.UtcNow;
             nomination.AcceptedReason = acceptComment;
             int awardId = AwardTrophy(nomination.PersonId, nomination.TrophyId, awardText, nomination.NominatedById, nomination.SessionId);
             nomination.AwardId = awardId;
@@ -2887,7 +2887,7 @@ namespace Warhammer.Core.Concrete
         public void RejectNomination(int nominationId, string rejectedReason)
         {
             AwardNomination nomination = _repository.AwardNominations().Single(a => a.Id == nominationId);
-            nomination.RejectedOn = DateTime.Now;
+            nomination.RejectedOn = DateTime.UtcNow;
             nomination.RejectedReason = rejectedReason;
             _repository.Save(nomination);
         }
@@ -3212,7 +3212,7 @@ namespace Warhammer.Core.Concrete
                 }
                 else
                 {
-                    date = DateTime.Now.ToGameDate();
+                    date = DateTime.UtcNow.ToGameDate();
                 }
             }
 
@@ -3346,7 +3346,7 @@ namespace Warhammer.Core.Concrete
 
         public List<PageLinkModel> RecentSessionsToLink(int id)
         {
-            DateTime twentyFourHoursAgo = DateTime.Now.AddDays(-1);
+            DateTime twentyFourHoursAgo = DateTime.UtcNow.AddDays(-1);
             return _repository.Pages().OfType<Session>()
                 .Where(s => s.Created > twentyFourHoursAgo)
                 .Where(p => p.CampaignId == CurrentCampaignId)
@@ -3846,7 +3846,7 @@ namespace Warhammer.Core.Concrete
                 {
                     if (session.PostOrders.All(s => s.PlayerId != playerId))
                     {
-                        session.PostOrders.Add(new PostOrder { SessionId = sessionId, PlayerId = playerId, LastTurnEnded = DateTime.Now });
+                        session.PostOrders.Add(new PostOrder { SessionId = sessionId, PlayerId = playerId, LastTurnEnded = DateTime.UtcNow });
                         _repository.Save(session);
                     }
                 }
@@ -3999,7 +3999,7 @@ namespace Warhammer.Core.Concrete
             if (page != null)
             {
                 Comment comment = new Comment();
-                comment.Created = DateTime.Now;
+                comment.Created = DateTime.UtcNow;
                 comment.Description = description;
                 comment.IsAdmin = isAdmin;
                 comment.PersonId = personId;

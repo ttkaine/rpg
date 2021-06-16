@@ -29,7 +29,7 @@ namespace Warhammer.Mvc.JsonObjects
 			EditedPosts = new List<JsonPost>();
 			DeletedPosts = new List<int>();
 			ErrorMessage = string.Empty;
-			LastUpdate = DateTime.Now.ToString("dd MMM yyyy HH:mm:ss");
+			LastUpdate = DateTime.UtcNow.ToString("dd MMM yyyy HH:mm:ss");
 		}
 	}
 }

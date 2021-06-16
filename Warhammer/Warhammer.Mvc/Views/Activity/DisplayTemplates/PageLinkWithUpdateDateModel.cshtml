@@ -1,5 +1,6 @@
 ﻿
 
+@using Humanizer
 @using Warhammer.Mvc.Models
 @model Warhammer.Core.Models.PageLinkWithUpdateDateModel
 
@@ -15,6 +16,6 @@
 </tr>
 <tr>
     <td colspan="3">
-        <span class="note">@Model.LastUpdate.ToLongDateString() @Model.LastUpdate.ToShortTimeString()</span>
+        <span class="note">@Model.LastUpdate.ToLocalTime().Humanize()</span>
     </td>
 </tr>

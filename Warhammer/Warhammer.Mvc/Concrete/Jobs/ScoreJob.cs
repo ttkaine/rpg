@@ -33,7 +33,7 @@ namespace Warhammer.Mvc.Concrete.Jobs
                 catch (Exception ex)
                 {
                     IExceptionLogHandler log = DependencyResolver.Current.GetService<IExceptionLogHandler>();
-                    log.LogException(ex, "Score Job", 101, DateTime.Now);
+                    log.LogException(ex, "Score Job", 101, DateTime.UtcNow);
                 }
             }
         }

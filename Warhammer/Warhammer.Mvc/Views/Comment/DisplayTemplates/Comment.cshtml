@@ -1,4 +1,5 @@
-﻿@model Warhammer.Core.Entities.Comment
+﻿@using Humanizer
+@model Warhammer.Core.Entities.Comment
 <li id="comment_@Model.Id" class="@(Model.IsPlayerComment ? "player-comment" : "character-comment")">
     @if (!Model.IsPlayerComment)
     {
@@ -44,11 +45,11 @@
             </span>
         }
 
-        <p class="note">
-            Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new {id = Model.PageId}, null)
-            <br/>
-            @Model.Created.ToLongTimeString() @Model.Created.ToLongDateString()
-        </p>
+    <p class="note">
+        Posted on @Html.ActionLink(Model.Page.ShortName, "Index", "Page", new { id = Model.PageId }, null)
+        <br />
+        @Model.Created.ToLocalTime().Humanize()
+    </p>
 
     </div>
 

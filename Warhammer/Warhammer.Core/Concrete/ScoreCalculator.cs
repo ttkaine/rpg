@@ -20,7 +20,7 @@ namespace Warhammer.Core.Concrete
 
         private IEnumerable<ScoreBreakdown> CalculateScore(int personId, int campaignId)
         {
-            DateTime calcDate = DateTime.Now;
+            DateTime calcDate = DateTime.UtcNow;
 
             Person person = _repo.Pages().OfType<Person>().FirstOrDefault(s => s.Id == personId);
 
@@ -300,7 +300,7 @@ namespace Warhammer.Core.Concrete
                 
             if (person != null)
             {
-                DateTime now = DateTime.Now;
+                DateTime now = DateTime.UtcNow;
                 int campaignId = person.CampaignId;
                 List<ScoreBreakdown> scores = CalculateScore(personId, campaignId).ToList();
                 decimal current = scores.Sum(s => s.PointsValue);
@@ -335,7 +335,7 @@ namespace Warhammer.Core.Concrete
 
         public void UpdateScores()
         {
-            DateTime cutOff = DateTime.Now.AddMinutes(-_scoreUpdateInterval);
+            DateTime cutOff = DateTime.UtcNow.AddMinutes(-_scoreUpdateInterval);
             List<int> personIds = _repo.Pages().OfType<Person>()
                 .Where(p => p.LastScoreCalculation < cutOff || p.LastScoreCalculation < p.Modified || p.LastScoreCalculation == null)
                 .OrderByDescending(s => s.LastScoreCalculation == null)

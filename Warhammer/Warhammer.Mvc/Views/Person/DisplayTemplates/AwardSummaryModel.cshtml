@@ -1,4 +1,5 @@
-﻿@model Warhammer.Core.Models.AwardSummaryModel
+﻿@using Humanizer
+@model Warhammer.Core.Models.AwardSummaryModel
 <tr>
     <td>
         <a href="@Url.Action("Trophy", "Home", new {id = Model.TrophyId})"> <img src="@Model.ImageUrl" title="@Model.TrophyName @Model.Reason" alt="Picture of @Model.TrophyName" class="mini-trophy-image"/></a>
@@ -6,6 +7,6 @@
     <td class="name">
         @Model.TrophyName @Model.Reason
         <br />
-        <span class="note">Awarded @Model.AwardedOn.ToLongDateString()</span>
+        <span class="note">Awarded @Model.AwardedOn.ToLocalTime().Humanize()</span>
     </td>
 </tr>

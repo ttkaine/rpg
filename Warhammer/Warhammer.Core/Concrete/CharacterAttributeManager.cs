@@ -134,7 +134,7 @@ namespace Warhammer.Core.Concrete
 
                         model = GetCharacterAttributes(personId);
                         person.XpSpendAvailable = model.NpcAdvanceAvailable;
-                        person.Modified = DateTime.Now;
+                        person.Modified = DateTime.UtcNow;
                         
                         _repo.Save(person);
 
@@ -651,7 +651,7 @@ namespace Warhammer.Core.Concrete
                     OriginalContent = message,
                     SessionId = session.Id,
                     CampaignId = person.CampaignId,
-                    DatePosted = DateTime.Now,
+                    DatePosted = DateTime.UtcNow,
                     PlayerId = playerId,
                     RevisedContent = "",
                     RollValues = "",

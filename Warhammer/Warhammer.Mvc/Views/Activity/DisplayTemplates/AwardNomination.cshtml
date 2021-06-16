@@ -1,4 +1,5 @@
-﻿@using Warhammer.Core.Extensions
+﻿@using Humanizer
+@using Warhammer.Core.Extensions
 @using Warhammer.Mvc.Models
 @model Warhammer.Core.Entities.AwardNomination
 <tr>
@@ -33,20 +34,20 @@
             @if (Model.NominatedDate.HasValue)
             {
                 <text>
-                   Nominated @Model.NominatedDate.Value.ToLongDateString() : @Model.NominatedDate.Value.ToShortTimeString()
+                    Nominated @Model.NominatedDate.Value.ToLocalTime().Humanize()
                 </text>
             }
-           
+
             @if (Model.AwardedOn.HasValue)
             {
                 <text>
-                   ::  Awarded @Model.AwardedOn.Value.ToLongDateString() : @Model.AwardedOn.Value.ToShortTimeString()
+                    ::  Awarded @Model.AwardedOn.Value.ToLocalTime().Humanize()
                 </text>
             }
             @if (Model.RejectedOn.HasValue)
             {
                 <text>
-                  ::  Rejected @Model.RejectedOn.Value.ToLongDateString() : @Model.RejectedOn.Value.ToShortTimeString()
+                    ::  Rejected @Model.RejectedOn.Value.ToLocalTime().Humanize()
                 </text>
             }
         </span>

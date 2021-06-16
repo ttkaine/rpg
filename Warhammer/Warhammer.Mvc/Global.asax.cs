@@ -34,7 +34,7 @@ namespace Warhammer.Mvc
             HangfireBootstrapper.Instance.Start();
 
             JobManager.Initialize(new FluentSchedulerRegistry());
-            JobManager.JobException += (info) => log.LogException(info.Exception, "JobManager", 99, DateTime.Now);
+            JobManager.JobException += (info) => log.LogException(info.Exception, "JobManager", 99, DateTime.UtcNow);
         }
 
         protected void Application_End(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace Warhammer.Mvc
             {
                 versions = $"{newline}{newline} Database Versions: {newline}{string.Join(newline, result.Versions.Select(v => $"{v.Id} - {v.DateTime.ToShortDateString()} - {v.Comment}"))}";
             }
-            string fileData = $"{DateTime.Now}{newline}{errors}{newline}{debug}{newline}{versions}{newline}";
+            string fileData = $"{DateTime.UtcNow}{newline}{errors}{newline}{debug}{newline}{versions}{newline}";
             File.WriteAllText(applcationOfflineLog, fileData);
         }
 
@@ -117,7 +117,7 @@ namespace Warhammer.Mvc
             }
 
             var exception = Server.GetLastError();
-            exception = exception.LogExceptionSequence(DateTime.Now, new HttpRequestWrapper(Context.Request));
+            exception = exception.LogExceptionSequence(DateTime.UtcNow, new HttpRequestWrapper(Context.Request));
 
             var controller = new ErrorController();
             var routeData = new RouteData();

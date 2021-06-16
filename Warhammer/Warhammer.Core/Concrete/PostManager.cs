@@ -96,7 +96,7 @@ namespace Warhammer.Core.Concrete
 				CharacterId = characterId > 0 ? (int?)characterId : null,
 				OriginalContent = text,
 				RevisedContent = string.Empty,
-				DatePosted = DateTime.Now,
+				DatePosted = DateTime.UtcNow,
 				DieCount = 0,
 				DieSize = 0,
 				PlayerId = player.Id,
@@ -202,7 +202,7 @@ namespace Warhammer.Core.Concrete
 				CharacterId = characterId > 0 ? (int?)characterId : null,
 				OriginalContent = string.Empty,
 				RevisedContent = string.Empty,
-				DatePosted = DateTime.Now,
+				DatePosted = DateTime.UtcNow,
 				DieCount = dieCount,
 				DieSize = dieSize,
 				PlayerId = player.Id,
@@ -263,7 +263,7 @@ namespace Warhammer.Core.Concrete
                 CharacterId = null,
                 OriginalContent = fileName,
                 RevisedContent = string.Empty,
-                DatePosted = DateTime.Now,
+                DatePosted = DateTime.UtcNow,
                 DieCount = 0,
                 DieSize = 0,
                 PlayerId = player.Id,
@@ -298,7 +298,7 @@ namespace Warhammer.Core.Concrete
 						if (player.Id == GetGmId(post.SessionId) || player.Id == post.PlayerId)
 						{
 							post.IsDeleted = true;
-							post.DeletedDate = DateTime.Now;
+							post.DeletedDate = DateTime.UtcNow;
 							Repo.Save(post);
 							return true;
 						}
@@ -333,7 +333,7 @@ namespace Warhammer.Core.Concrete
 					{
 						post.RevisedContent = text;
 						post.IsRevised = true;
-						post.LastEdited = DateTime.Now;
+						post.LastEdited = DateTime.UtcNow;
 						Repo.Save(post);
 
 						return PostResult.Success;
@@ -369,7 +369,7 @@ namespace Warhammer.Core.Concrete
 						if (player.Id == GetGmId(post.SessionId))
 						{
 							post.IsRevised = false;
-							post.LastEdited = DateTime.Now;
+							post.LastEdited = DateTime.UtcNow;
 							Repo.Save(post);
 							return true;
 						}
@@ -396,7 +396,7 @@ namespace Warhammer.Core.Concrete
 						{
 							post.PostType = (int) PostType.OutOfCharacter;
 							post.IsRevised = true;
-							post.LastEdited = DateTime.Now;
+							post.LastEdited = DateTime.UtcNow;
 							Repo.Save(post);
 							return true;
 						}
@@ -416,7 +416,7 @@ namespace Warhammer.Core.Concrete
 	            PostOrder order = session.PostOrders.FirstOrDefault(p => p.PlayerId == player.Id);
 	            if (order != null)
 	            {
-	                order.LastTurnEnded = DateTime.Now;
+	                order.LastTurnEnded = DateTime.UtcNow;
 	            }
 
 	            int gmId = GetGmId(sessionId);

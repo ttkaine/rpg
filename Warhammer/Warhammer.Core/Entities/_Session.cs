@@ -24,7 +24,7 @@ namespace Warhammer.Core.Entities
             {
                 if (DateTime.HasValue)
                 {
-                    TimeSpan span = System.DateTime.Now - DateTime.Value;
+                    TimeSpan span = System.DateTime.UtcNow - DateTime.Value;
                     double days = span.TotalDays;
                     return days;
                 }

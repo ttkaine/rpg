@@ -169,12 +169,12 @@ namespace Warhammer.Core.Concrete
                 catch (Exception exception)
                 {
                     int i = 0;
-                    LogException(exception, "Send Grid Emailer", i, DateTime.Now);
+                    LogException(exception, "Send Grid Emailer", i, DateTime.UtcNow);
                     Exception inner = exception.InnerException;
                     while (inner != null)
                     {
                         i++;
-                        LogException(inner, "Send Grid Emailer", i, DateTime.Now);
+                        LogException(inner, "Send Grid Emailer", i, DateTime.UtcNow);
                         inner = inner.InnerException;
                     }
                     throw;
@@ -197,13 +197,13 @@ namespace Warhammer.Core.Concrete
                 catch (SmtpException ex)
                 {
                     int i = 0;
-                    LogException(ex, "emailer", i, DateTime.Now);
+                    LogException(ex, "emailer", i, DateTime.UtcNow);
 
                     Exception inner = ex.InnerException;
                     while (inner != null)
                     {
                         i++;
-                        LogException(inner, "emailer", i, DateTime.Now);
+                        LogException(inner, "emailer", i, DateTime.UtcNow);
                         inner = inner.InnerException;
                     }
 
@@ -216,12 +216,12 @@ namespace Warhammer.Core.Concrete
                     }
 
                     var ex2 = new SmtpException($"Failed to send email to {recipent}: {ex.Message}", ex);
-                    LogException(ex2, "emailer", i, DateTime.Now);
+                    LogException(ex2, "emailer", i, DateTime.UtcNow);
                     throw ex2;
                 }
                 catch (Exception exception)
                 {
-                    LogException(exception, "emailer", 0, DateTime.Now);
+                    LogException(exception, "emailer", 0, DateTime.UtcNow);
                     throw;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿
+@using Humanizer
 @model Warhammer.Core.Entities.Page
 
 @{
@@ -24,6 +25,6 @@
 </tr>
 <tr>
     <td colspan="3">
-            <span class="note">@(isUpdate ? "Changed" : "Added") by @Model.ModifiedBy.DisplayName on @Model.SignificantUpdate.ToLongDateString() : @Model.SignificantUpdate.ToShortTimeString()</span>
+            <span class="note">@(isUpdate ? "Changed" : "Added") by @Model.ModifiedBy.DisplayName on @Model.SignificantUpdate.ToLocalTime().Humanize()</span>
     </td>
 </tr>

@@ -130,7 +130,7 @@ namespace Warhammer.Mvc.Controllers
             {
                 if (!model.Session.DateTime.HasValue)
                 {
-                    model.Session.DateTime = DateTime.Now;
+                    model.Session.DateTime = DateTime.UtcNow;
                 }
                 GameDate gameDate = model.GameDate?.ToWarhammerGameDate();
                 Arc arc = DataProvider.GetArc(model.SelectedArcId);
@@ -143,7 +143,7 @@ namespace Warhammer.Mvc.Controllers
                     else
                     {
                         CampaignDetail campaignDetail = DataProvider.GetCampaginDetails();
-                        DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
+                        DateTime date = campaignDetail.CurrentGameDate ?? DateTime.UtcNow;
                         gameDate = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date"};
                     }
                 }
@@ -253,7 +253,7 @@ namespace Warhammer.Mvc.Controllers
                 if (startDate == null)
                 {
                     CampaignDetail campaignDetail = DataProvider.GetCampaginDetails();
-                    DateTime date = campaignDetail.CurrentGameDate ?? DateTime.Now;
+                    DateTime date = campaignDetail.CurrentGameDate ?? DateTime.UtcNow;
                     startDate = new GameDate() {Year = date.Year, Month = date.Month, Day = date.Day, Comment = "Set from Campaign Date"};
                 }
 

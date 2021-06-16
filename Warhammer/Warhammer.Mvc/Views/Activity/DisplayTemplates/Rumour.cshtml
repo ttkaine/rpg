@@ -1,5 +1,6 @@
 ﻿
 
+@using Humanizer
 @model Warhammer.Core.Entities.Rumour
 
 <tr>
@@ -22,6 +23,6 @@
 </tr>
 <tr>
     <td colspan="3">
-        <span class="note">Added @Model.Created.ToShortDateString()</span>
+        <span class="note">Added @Model.Created.ToLocalTime().Humanize()</span>
     </td>
 </tr>

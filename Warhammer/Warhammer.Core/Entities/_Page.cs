@@ -35,13 +35,13 @@ namespace Warhammer.Core.Entities
 
         public double AgeInMonths
         {
-            get { return DateTime.Now.Subtract(Created).Days/(365.25/12); }           
+            get { return DateTime.UtcNow.Subtract(Created).Days/(365.25/12); }           
         }
         public virtual double AgeInDays
         {
             get
             {
-                TimeSpan span = DateTime.Now - Created;
+                TimeSpan span = DateTime.UtcNow - Created;
                 double days = span.TotalDays;
                 return days;
             }
@@ -51,7 +51,7 @@ namespace Warhammer.Core.Entities
         {
             get
             {
-                TimeSpan span = DateTime.Now - Modified;
+                TimeSpan span = DateTime.UtcNow - Modified;
                 double days = span.TotalDays;
                 return days;
             }
