@@ -8,7 +8,7 @@ namespace Warhammer.Core.Models
         Combat = 1,
         Action = 2,
         Work = 3,
-        Reason = 4,
+        Insight = 4,
         Social = 5,
         Heart = 6
     }
